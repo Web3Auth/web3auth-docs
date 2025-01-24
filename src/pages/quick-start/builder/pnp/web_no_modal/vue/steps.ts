@@ -36,11 +36,27 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.NO_MODAL_VUE_HOME_VUE,
+        files[hostedFileLinks.NO_MODAL_VUE_HOME_VUE],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.NO_MODAL_VUE_HOME_VUE,
         files[hostedFileLinks.NO_MODAL_VUE_HOME_VUE],
         "SDK Initialization",
+      ),
+    },
+    {
+      ...STEPS.configureExternalWallets,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.NO_MODAL_VUE_HOME_VUE,
+        files[hostedFileLinks.NO_MODAL_VUE_HOME_VUE],
+        "Configuring External Wallets",
       ),
     },
     {

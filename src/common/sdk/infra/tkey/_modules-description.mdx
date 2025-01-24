@@ -1,0 +1,135 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+Modules extend the tKey SDK's capability to provide additional functionality for managing your tKey
+shares. Out of the multiple modules available, you can choose the module you want to include in your
+implementation. Here is the list of available modules:
+
+### Storage Modules (Share B)
+
+Storage Modules are used to store the tKey shares in the user's device storage. You can choose any
+of the following modules:
+
+#### Web Storage Module
+
+Adds the capability to add or remove a share from the local and file storage.
+
+##### [`@tkey/web-storage`](https://www.npmjs.com/package/@tkey/web-storage)
+
+```tsx
+import { WebStorageModule } from "@tkey/web-storage";
+const webStorageModule = new WebStorageModule();
+```
+
+#### React Native Storage Module
+
+Adds the capability to add or remove a share from the React Native Encrypted Store/ Expo Secure
+Store.
+
+##### [`@tkey/react-native-storage`](https://www.npmjs.com/package/@tkey/react-native-storage)
+
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo React Native", value: "expo" },
+  ]}
+>
+
+<TabItem value="bare">
+
+```tsx
+import { ReactNativeStorageModule } from "@tkey/react-native-storage";
+import EncryptedStorage from "react-native-encrypted-storage";
+const reactNativeStorageModule = new ReactNativeStorageModule(EncryptedStorage);
+```
+
+</TabItem>
+
+<TabItem value="expo">
+
+```tsx
+import { ReactNativeStorageModule } from "@tkey/react-native-storage";
+import * as SecureStore from "expo-secure-store";
+const reactNativeStorageModule = new ReactNativeStorageModule(SecureStore);
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Chrome Storage Module
+
+Adds the capability to add or remove a share from the Chrome Extension storage.
+
+##### [`@tkey/chrome-storage`](https://www.npmjs.com/package/@tkey/chrome-storage)
+
+```tsx
+import { ChromeExtensionStorageModule } from "@tkey/chrome-storage";
+const chromeStorageModule = new ChromeExtensionStorageModule();
+```
+
+### Recovery Modules (Share C)
+
+Recovery Modules are used to recover the tKey shares in the case user doesn't have access to their
+device/storage or needs additional security.
+
+#### Security Questions Module
+
+Adds the capability to add or remove a question and password as a share.
+
+##### [`@tkey/security-questions`](https://www.npmjs.com/package/@tkey/security-questions)
+
+```tsx
+import { SecurityQuestionsModule } from "@tkey/security-questions";
+const securityQuestionsModule = new SecurityQuestionsModule();
+```
+
+#### Share Transfer Module
+
+Adds the capability to transfer a share to another device.
+
+##### [`@tkey/share-transfer`](https://www.npmjs.com/package/@tkey/share-transfer)
+
+```tsx
+import { ShareTransferModule } from "@tkey/share-transfer";
+const shareTransferModule = new ShareTransferModule();
+```
+
+#### Share Serialization Module
+
+Adds the capability to serialize/ deserialize a BN (private key) into a mnemonic.
+
+##### [`@tkey/share-serialization`](https://www.npmjs.com/package/@tkey/share-serialization)
+
+```tsx
+import { ShareSerializationModule } from "@tkey/share-serialization";
+const shareSerializationModule = new ShareSerializationModule();
+```
+
+### Additional Modules
+
+These modules provide extra capability to the tKey SDK, like importing user's existing private keys
+or seedphrases.
+
+#### Seed Phrase Module
+
+Adds the capability to store and use seed phrases on the metadata.
+
+##### [`@tkey/seed-phrase`](https://www.npmjs.com/package/@tkey/seed-phrase)
+
+```tsx
+import { SeedPhraseModule } from "@tkey/seed-phrase";
+const seedPhraseModule = new SeedPhraseModule();
+```
+
+#### Private Key Module
+
+Adds the capability to store extra private keys on the metadata.
+
+##### [`@tkey/private-keys`](https://www.npmjs.com/package/@tkey/private-keys)
+
+```tsx
+import { PrivateKeyModule } from "@tkey/private-keys";
+const privateKeyModule = new PrivateKeyModule();
+```

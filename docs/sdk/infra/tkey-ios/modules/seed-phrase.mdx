@@ -1,0 +1,112 @@
+---
+title: Seed Phrase Module - tKey iOS SDK
+sidebar_label: Seed Phrase
+description: "Core Kit tKey iOS SDK - Modules - Seed Phrase Module | Documentation - Web3Auth"
+---
+
+SeedPhraseModule is a Swift module that provides functionality for setting, changing, getting, and
+deleting seed phrases for a ThresholdKey object.
+
+To use the SeedPhraseModule in your Swift project, you will need to import the module as follows:
+
+```swift
+import tkey_pkg
+```
+
+`SeedPhraseModule` is a class that provides the following methods:
+
+| Function             | Description                           | Arguments                                                                                 | Async | return                |
+| -------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------- | ----- | --------------------- |
+| `set_seed_phrase`    | Set seed phrase to corresponding tKey | `threshold_key: ThresholdKey, format: String, phrase: String?, number_of_wallets: UInt32` | Yes   | `void`                |
+| `change_phrase`      | Changes specific seed phrase          | `threshold_key: ThresholdKey, old_phrase: String, new_phrase: String`                     | Yes   | `void`                |
+| `get_seed_phrases`   | Gets all seed phrases stored in tKey. | `threshold_key: ThresholdKey`                                                             | Yes   | `[seedPhraseStruct] ` |
+| `delete_seed_phrase` | Delete the seed phrase                | `threshold_key: ThresholdKey, phrase: String`                                             | Yes   | `void`                |
+
+## `set_seed_phrase()`
+
+`set_seed_phrase(threshold_key: ThresholdKey, format: String, phrase: String?, number_of_wallets: UInt32) async throws`
+
+This function sets the seed phrase for the given ThresholdKey.
+
+#### Parameters
+
+| Parameters        | Type         | Description                                                 |
+| ----------------- | ------------ | ----------------------------------------------------------- |
+| threshold_key     | ThresholdKey | The ThresholdKey object to set the seed phrase for.         |
+| format            | String       | The format of the seed phrase.                              |
+| phrase            | String?      | The seed phrase. If nil, a random seed phrase is generated. |
+| number_of_wallets | UInt32       | The number of wallets to derive from the seed phrase.       |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- Error: An error if the operation fails.
+
+## `change_phrase()`
+
+`change_phrase(threshold_key: ThresholdKey, old_phrase: String, new_phrase: String) async throws`
+
+This function changes the seed phrase of the given ThresholdKey. The old_phrase parameter specifies
+the old seed phrase, and the new_phrase parameter specifies the new seed phrase. The function is
+asynchronous and can throw an error.
+
+#### Parameters
+
+| Parameters    | Type         | Description                                            |
+| ------------- | ------------ | ------------------------------------------------------ |
+| threshold_key | ThresholdKey | The ThresholdKey object to change the seed phrase for. |
+| old_phrase    | String       | The old seed phrase.                                   |
+| new_phrase    | String       | The new seed phrase.                                   |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- Error: An error if the operation fails.
+
+## `get_seed_phrases()`
+
+`get_seed_phrases(threshold_key: ThresholdKey) throws -> [seedPhraseStruct]`
+
+This function returns an array of seedPhraseStruct objects, which contain the seed phrases and their
+type for the given ThresholdKey.
+
+#### Parameters
+
+| Parameters    | Type         | Description                                          |
+| ------------- | ------------ | ---------------------------------------------------- |
+| threshold_key | ThresholdKey | The ThresholdKey object to get the seed phrases for. |
+
+**Returns**
+
+- seedPhraseStruct
+
+**Throws**
+
+- Error: An error if the operation fails.
+
+## `delete_seed_phrase()`
+
+`delete_seed_phrase(threshold_key: ThresholdKey, phrase: String ) async throws`
+
+This method deletes a seed phrase from the given ThresholdKey.
+
+#### Parameters
+
+| Parameters    | Type         | Description                                                     |
+| ------------- | ------------ | --------------------------------------------------------------- |
+| threshold_key | ThresholdKey | The ThresholdKey instance from which to delete the seed phrase. |
+| phrase        | String       | The seed phrase to delete, as a string.                         |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- Error: An error if the operation fails.

@@ -1,0 +1,141 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+#### `privateKeyProvider`
+
+`privateKeyProvider` parameter helps you to connect with various wallet SDKs. These are
+preconfigured RPC clients for different blockchains used to interact with the respective blockchain
+networks.
+
+:::note
+
+It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more
+in-depth about providers, have a look at the [Providers reference](/docs/sdk/pnp/web/providers).
+
+:::
+
+You can choose between the following providers based on your usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/docs/sdk/pnp/web/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/docs/sdk/pnp/web/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/docs/sdk/pnp/web/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/docs/sdk/pnp/web/providers/common)
+
+<Tabs
+  defaultValue="eth"
+  values={[
+    { label: "ETH", value: "eth" },
+    { label: "Solana", value: "solana" },
+    { label: "XRPL", value: "xrpl"},
+    { label: "Other Chains", value: "other" },
+  ]}
+>
+
+<TabItem value="eth">
+
+```javascript title="Usage"
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with.
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: "0x1",
+      rpcTarget: "https://rpc.ankr.com/eth",
+      displayName: "Ethereum Mainnet",
+      blockExplorerUrl: "https://etherscan.io",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```javascript title="Usage"
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with.
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.SOLANA,
+      chainId: "0x1",
+      rpcTarget: "https://rpc.ankr.com/solana",
+      displayName: "Solana Mainnet",
+      blockExplorerUrl: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+    },
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="xrpl">
+
+```javascript title="Usage"
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with.
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.OTHER,
+      chainId: "0x1",
+      rpcTarget: "https://s.altnet.rippletest.net:51234",
+      displayName: "XRPL",
+      blockExplorerUrl: "https://testnet.xrpl.org",
+      ticker: "XRP",
+      tickerName: "XRP",
+    },
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="other">
+
+```javascript title="Usage"
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const privateKeyProvider = new CommonPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with.
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.OTHER,
+      chainId: "0x1",
+      rpcTarget: `https://rpc.target.url`,
+      displayName: "Display Name",
+      blockExplorerUrl: "https://chain.explorer.link",
+      ticker: "TKR",
+      tickerName: "Ticker Name",
+    },
+  },
+});
+```
+
+</TabItem>
+</Tabs>

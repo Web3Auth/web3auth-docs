@@ -1,0 +1,104 @@
+---
+title: SFA Flutter SDK - v4 to v5
+description: "SFA Flutter SDK - v4 to v5 | Documentation - Web3Auth"
+sidebar_label: v4 to v5
+---
+
+This migration guide provides steps for upgrading from version v4 to v5 of the SFA Flutter SDK. The
+guide outlines significant changes and enhancements, including the support of Web3Auth's Sapphire
+network support.
+
+## Breaking Changes
+
+### Changes in `SFAParams` constructor parameters
+
+In v5, we try to improve the developer experience by renaming the parameter, and introducing a new
+parameter for session management.
+
+- `clientid` parameter, used to define Web3Auth's Client ID, has been renamed to `clientId` to align
+  with naming conventions.
+- `sessionTime` was added to specify session duration in seconds. By default, the value is set to
+  86400 seconds (1 day), with a maximum session duration of up to 30 days
+
+```dart
+final singleFactAuthFlutter = SingleFactAuthFlutter();
+
+await singleFactAuthFlutter.init(
+    // focus-start
+    SFAParams(
+        network: Web3AuthNetwork.mainnet,
+        // remove-next-line
+        clientid: "YOUR_WEB3AUTH_CLIENT_ID",
+        // add-start
+        clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+        // Defines the session time of 40 seconds
+        sessionTime: 40,
+        // add-end
+    ),
+    // focus-end
+);
+```
+
+### TorusKey is renamed to SFAKey
+
+In v5, the `TorusKey` is now removed. Developers can now use `SFAKey` to access the private key and
+address for the account. It was renamed to maintain consistency across SDKs.
+
+### Deprecation of authentication methods
+
+#### `getKey` method
+
+In v5, the `getKey` method is removed. Developers can now use `connect`, the common method for
+single verifier and aggregate verifier login. This change was done to improve the developer
+experience and align with other Web3Auth SFA SDKs.
+
+```dart
+// remove-next-line
+final TorusKey key = await singleFactAuthFlutter.getKey(
+// add-next-line
+final SFAKey key = await singleFactAuthFlutter.connect(
+    LoginParams(
+        verifier: 'YOUR_VERIFIER_NAME',
+        verifierId: "VERIFIER_ID",
+        idToken: "ID_TOKEN",
+    ),
+);
+```
+
+#### `getAggregateKey` method
+
+In v5, the `getAggregateKey` method is removed. Developers can now use `connect`, the common method
+for single verifier and aggregate verifier login. This change was done to improve the developer
+experience and align with other Web3Auth SFA SDKs.
+
+```dart
+// remove-next-line
+final TorusKey key = await singleFactAuthFlutter.getAggregateKey(
+// add-next-line
+final SFAKey key = await singleFactAuthFlutter.connect(
+    LoginParams(
+        verifier: 'YOUR_SUB_VERIFIER_NAME',
+        verifierId: "VERIFIER_ID",
+        idToken: "ID_TOKEN",
+        aggregateVerifier: "AGGREGATE_VERIFIER_NAME"
+    ),
+);
+```
+
+## New Addition: Sapphire Support
+
+We are happy to announce that with v5, SFA Flutter SDK now supports the Web3Auth Sapphire networks.
+Developers can now use the verifiers deployed on sapphire networks. Please check the supported
+networks by the SDK.
+
+```dart
+enum Web3AuthNetwork {
+  mainnet,
+  testnet,
+  cyan,
+  aqua,
+  celeste,
+  sapphire_devnet,
+  sapphire_mainnet
+}
+```

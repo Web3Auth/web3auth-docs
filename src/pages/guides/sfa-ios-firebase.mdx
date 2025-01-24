@@ -1,0 +1,229 @@
+---
+title: How to integrate Firebase with Web3Auth iOS SFA SDK
+image: "guides-banners/sfa-ios-firebase.png"
+description:
+  Web3Auth Single Factor Auth(SFA) iOS SDK with Firebase enables secure blockchain authentication
+  using Email and Password login. The process involves setting up Firebase and Web3Auth,
+  initializing the SDK, and interacting with the Ethereum blockchain.
+type: guide
+tags: [single factor auth, firebase, ios, custom authentication]
+date: May 19, 2024
+author: Web3Auth Team
+---
+
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import SPM from "@site/src/common/sdk/sfa/ios/_sfa-ios-spm.mdx";
+import Cocoapods from "@site/src/common/sdk/sfa/ios/_sfa-ios-cocoapods.mdx";
+import Initialize from "@site/src/common/sdk/sfa/ios/_sfa-ios-initialization.mdx";
+import SessionManagement from "@site/src/common/sdk/sfa/ios/_sfa-ios-session-management.mdx";
+
+<SEO
+  title="How to integrate Firebase with Web3Auth iOS SFA SDK"
+  description="Learn how to use Web3Auth Single Factor Auth with Firebase in your iOS Application."
+  image="https://web3auth.io/docs/guides-banners/sfa-ios-firebase.png"
+  slug="/guides/sfa-ios-firebase"
+/>
+
+In this guide, we'll talk about how we can use Web3Auth Single Factor Auth with Firebase in your iOS
+application.
+
+As an overview, the guide is quite simple, with functionality to log in, display user details, and
+perform blockchain interactions. The signing of the blockchain transactions is done through the
+Web3Auth embedded wallet. You can check out the infrastructure docs,
+["Web3Auth Wallet Management Infrastructure"](/docs/infrastructure) for a high-level overview of the
+Web3Auth architecture and implementation. For those who want to skip straight to the code, you can
+find it on
+[GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-ios/sfa-ios-quick-start).
+
+## How to set up Web3Auth Dashboard
+
+If you haven't already, sign up on the Web3Auth platform. It is free and gives you access to the
+Web3Auth's base plan. After the basic setup, explore other features and functionalities offered by
+the Web3Auth Dashboard. It includes custom verifiers, whitelabeling, analytics, and more. Head to
+[Web3Auth's documentation](/docs/dashboard-setup) page for detailed instructions on setting up the
+Web3Auth Dashboard.
+
+## How to set up Firebase for iOS
+
+If you haven't already setup the Firebase for your iOS app, please setup the Firebase, as it's the
+prerequisites for the guide. Head to the
+[Firebase's documentation](https://firebase.google.com/docs/ios/setup) for the details instructions.
+
+## How to set up Custom verifier
+
+Once, you have set up the Web3Auth Dashboard, created a new project, and set up Firebase, it's time
+to create a Custom Verifier for your Firebase application. We already have detail instructions on
+how to create a Custom Verifier for Firebase, please head to our
+[documentation](https://web3auth.io/docs/auth-provider-setup/authentication-service-providers/firebase-service-provider).
+
+## Integrating Web3Auth SFA in iOS
+
+Once, you have set up the Custom Verifier, it's time to integrate Web3Auth in your iOS application.
+For the implementation, we'll use the "single-factor-auth-swift". This SDK facilitates integration
+with Web3Auth. This way you can easily manage embedded wallet in your iOS application.
+
+### Installation
+
+To install the single-factor-auth-swift package, you have two options. You can either use the Swift
+Package Manager, or you can install using Cocoapods.
+
+<Tabs defaultValue = "spm"
+  values={[
+    { label: "Swift Package Manager", value: "spm", },
+    { label: "Cocoapods", value: "pods", },
+  ]}
+>
+
+<TabItem value="spm">
+
+<SPM />
+
+</TabItem>
+
+<TabItem value="pods">
+
+<Cocoapods />
+
+</ TabItem>
+</ Tabs>
+
+### Initialization
+
+After successfully installing the package, the next step is to initialize `SingleFactorAuth` in your
+iOS app. This sets up the necessary configurations using Web3Auth network and prepares the SDK.
+[Learn more about SingleFactorAuth Initialization](/docs/sdk/sfa/sfa-ios/initialize).
+
+<Initialize />
+
+### Session Management
+
+To check whether the user is authenticated, you can use the `initialize` method. For a user already
+authenticated, the result would be a non-nullable `SFAKey`. You can navigate to different views
+based on the result.
+
+<SessionManagement />
+
+### Authentication
+
+If the user is not authenticated, you should utilize the `connect` method. For the guide, we will
+add Email Password login using Firebase. The `connect` method is pretty straightforward in
+SingleFactorAuth and takes `LoginParams` as input. After successfully logging in, the method will
+return the `SFAKey`.
+
+Learn more about [SingleFactorAuth LoginParams](/docs/sdk/sfa/sfa-ios/usage#parameters). To more
+about Firebase login methods, please
+[checkout the Firebase documentation](https://firebase.google.com/docs/auth/ios/start).
+
+```swift
+do {
+    // Replace email and password with user's email and password
+    let res = try await Auth.auth().signIn(withEmail: "ios@firebase.com", password: "iOS@Web3Auth")
+    let id_token = try await res.user.getIDToken()
+
+    // Replace with the verifier you created in Web3Auth Dashboard
+    // for your project.
+    let verifierName = "w3a-firebase-demo"
+
+    // focus-start
+    let sfaKey = try await singleFactorAuth.connect(
+        loginParams: .init(
+            verifier: verifierName,
+            verifierId: res.user.uid,
+            idToken: id_token
+        )
+    )
+    // focus-end
+} catch {
+    // Handle error
+}
+```
+
+## Set up Blockchain Providers
+
+Once we have successfully authenticated the user, the next step would be to fetch the user details,
+retrieve wallet address and prepare blockchain providers for interactions. For this guide, we are
+supporting only Ethereum ecosystem, but the general idea can be used for any blockchain ecosystem.
+
+For interacting with ethereum chains, we'll use the
+[web3.swift](https://github.com/argentlabs/web3.swift) package. To install the
+single-factor-auth-swift package, you have two options. You can either use the Swift Package
+Manager, or you can install using Cocoapods.
+
+<Tabs defaultValue = "spm"
+  values={[
+    { label: "Swift Package Manager", value: "spm", },
+    { label: "Cocoapods", value: "pods", },
+  ]}
+>
+
+<TabItem value="spm">
+
+1. In Xcode, with your app project open, navigate to **File > Add Packages**.
+
+2. When prompted, add the web3.swift package repository:
+
+   ```sh
+   https://github.com/argentlabs/web3.swift
+   ```
+
+   From the `Dependency Rule` dropdown, select `Exact Version` and enter `1.6.1` as the version.
+
+3. When finished, Xcode will automatically begin resolving and downloading your dependencies in the
+   background.
+
+</TabItem>
+
+<TabItem value="pods">
+Add `web3.swift` as a dependency to your `Podfile`.
+
+```sh
+pod 'web3.swift', '~> 1.6.1'
+```
+
+</TabItem>
+</Tabs>
+
+After successfully installing package, it's time to create an extension for `SFAKey` which conforms
+to `EthereumSingleKeyStorageProtocol`.
+
+```swift
+extension SFAKey: EthereumSingleKeyStorageProtocol {
+    public func storePrivateKey(key: Data) throws {}
+
+    public func loadPrivateKey() throws -> Data {
+        guard let privKeyData = Data.init(hex: self.getPrivateKey()) else {
+            return Data()
+        }
+        return privKeyData
+
+    }
+}
+```
+
+Once, we have created the extension, we will create `EthereumAccount` instance to retrive user's EOA
+address, and sign the transactions.
+
+```swift
+let ethereumAccount = try! EthereumAccount(
+  keyStorage: sfaKey as EthereumSingleKeyStorageProtocol
+)
+
+let address = ethereumAccount.address
+```
+
+To retrive user's balance, and interacting with Blockcahin, you can follow our detailed guide on how
+to [interact with EVM chain guides](/docs/connect-blockchain/evm/ethereum/ios#get-balance). To
+interact with Solana blockchain, you can checkout our
+[Solana blockchain guide](/docs/connect-blockchain/solana/ios).
+
+## Conclusion
+
+Voila, you have learned how to use Web3Auth SFA SDK with iOS application.
+
+If you are interested in learning more about SFA SDK, please checkout our
+[documentation for iOS SFA SDK](/docs/sdk/sfa/sfa-ios/). You can find the code used for the guide on
+our
+[examples repo](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-ios/sfa-ios-quick-start).

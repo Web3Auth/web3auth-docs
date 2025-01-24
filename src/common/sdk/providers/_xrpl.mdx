@@ -1,0 +1,114 @@
+import XRPLProviderSetup from "@site/src/common/docs/_xrpl-provider-setup.mdx";
+
+## [`@web3auth/xrpl-provider`](https://npmjs.com/package/@web3auth/xrpl-provider)
+
+The `@web3auth/xrpl-provider` is a Web3Auth provider that simplifies interaction with the XRPL
+Blockchain by serving as a wrapper around the
+[XRPL JSON RPC API](https://xrpl.org/request-formatting.html). It is used to interact with the XRPL
+blockchain and perform various operations like getting user's account, balance, signing a
+transaction, sending a transaction etc.
+
+In this section we'll explore more about how you can use this provider with our SDKs.
+
+## Installation
+
+#### [`@web3auth/xrpl-provider`](https://npmjs.com/package/@web3auth/xrpl-provider)
+
+```bash npm2yarn
+npm install --save @web3auth/xrpl-provider
+```
+
+## Initialisation
+
+Import the `XrplPrivateKeyProvider` **class** from `@web3auth/xrpl-provider`.
+
+```javascript
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+```
+
+### Assign the `XrplPrivateKeyProvider` class to a variable
+
+After creating your Web3Auth instance, you need to initialize the Torus Wallet UI Plugin and add it
+to a class for further usage.
+
+```javascript
+const privateKeyProvider = new XrplPrivateKeyProvider({ config: XrplPrivKeyProviderConfig });
+```
+
+This constructor takes an object with a config of `XrplPrivKeyProviderConfig` as input.
+
+#### Arguments
+
+`XrplPrivKeyProviderConfig`
+
+```tsx
+export interface XrplPrivKeyProviderConfig extends BaseProviderConfig {
+  chainConfig: Omit<CustomChainConfig, "chainNamespace"> & Pick<CustomChainConfig, "wsTarget">;
+}
+export type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /**
+   * The chain id of the chain
+   */
+  chainId: string;
+  /**
+   * RPC target Url for the chain
+   */
+  rpcTarget: string;
+  /**
+   * web socket target Url for the chain
+   */
+  wsTarget?: string;
+  /**
+   * Display Name for the chain
+   */
+  displayName: string;
+  /**
+   * Url of the block explorer
+   */
+  blockExplorer: string;
+  /**
+   * Default currency ticker of the network (e.g: ETH)
+   */
+  ticker: string;
+  /**
+   * Name for currency ticker (e.g: `Ethereum`)
+   */
+  tickerName: string;
+  /**
+   * Number of decimals for the currency ticker (e.g: 18)
+   */
+  decimals?: number;
+};
+export interface BaseProviderConfig extends BaseConfig {
+  chainConfig: Partial<CustomChainConfig>;
+  networks?: Record<string, CustomChainConfig>;
+  skipLookupNetwork?: boolean;
+}
+export interface BaseConfig {
+  /**
+   *  Determines if this controller is enabled
+   */
+  disabled?: boolean;
+}
+```
+
+<XRPLProviderSetup />
+
+## Usage
+
+---
+
+After configuring the provider, you may utilize various functions from the `@web3auth/xrpl-provider`
+library for tasks such as obtaining the user's account, executing transactions, and signing
+messages.
+
+:::info
+
+All the RPC methods which are available by default on XRPL Blockchain are also available on the XRPL
+Provider.
+
+Please refer to our [XRPL Connect Blockchain Reference](/connect-blockchain/xrpl) for more
+information.
+
+:::

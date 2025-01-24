@@ -1,9 +1,11 @@
 ---
 title: "Installing PnP Web No Modal SDK"
 sidebar_label: "Install"
-displayed_sidebar: sdk
 description: "Installing Web3Auth Plug and Play No Modal SDK | Documentation - Web3Auth"
 ---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 ## [`@web3auth/no-modal`](https://npmjs.com/package/@web3auth/no-modal)
 
@@ -17,16 +19,72 @@ npm install --save @web3auth/no-modal
 npm install --save @web3auth/base
 ```
 
-This package gives access to common types and interfaces for Web3Auth. This comes in handy by providing you a standard way of importing the values you
-need to work with the SDKs. We highly recommend using it while working with `typescript`.
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by
+providing you a standard way of importing the values you need to work with the SDKs. We highly
+recommend using it while working with `typescript`.
+
+### Add a Provider to your project
+
+The `@web3auth/no-modal` package requires a private key provider to facilitate interaction with your
+preferred blockchain network. You can choose between the following providers based on your usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/pnp/web/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/sdk/pnp/web/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/sdk/pnp/web/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/sdk/pnp/web/providers/common)
+
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "EIP1193 Provider", value: "evm" },
+    { label: "Solana Provider", value: "solana" },
+    { label: "XRPL Provider", value: "xrpl" },
+    { label: "Common Provider", value: "common" },
+  ]}
+>
+
+<TabItem value="evm">
+
+```bash npm2yarn
+npm install --save @web3auth/ethereum-provider
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```bash npm2yarn
+npm install --save @web3auth/solana-provider
+```
+
+</TabItem>
+
+<TabItem value="xrpl">
+
+```bash npm2yarn
+npm install --save @web3auth/xrpl-provider
+```
+
+</TabItem>
+
+<TabItem value="common">
+
+```bash npm2yarn
+npm install --save @web3auth/base-provider
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Troubleshooting
 
 ### Bundler Issues: Missing Dependencies
 
-You might face issues mentioning that certain dependencies are missing within the browser environment. These are node dependencies that need to be
-polyfilled in your application, to enable Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while building the
-app. We have created guides for different bundlers to help you with this issue:
+You might face issues mentioning that certain dependencies are missing within the browser
+environment. These are node dependencies that need to be polyfilled in your application, to enable
+Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while
+building the app. We have created guides for different bundlers to help you with this issue:
 
-- Please check out our **[Webpack 5 Troubleshooting Guide](/troubleshooting/webpack-issues)**
 - Please check out our **[Vite Troubleshooting Guide](/troubleshooting/vite-issues)**
+- Please check out our **[Webpack 5 Troubleshooting Guide](/troubleshooting/webpack-issues)**

@@ -3,9 +3,9 @@
 ```gradle title="android/build.gradle"
 buildToolsVersion = "31.0.0"
 minSdkVersion = 21
-# highlight-next-line
+# focus-next-line
 compileSdkVersion = 31
-# highlight-next-line
+# focus-next-line
 targetSdkVersion = 31
 ```
 
@@ -17,13 +17,13 @@ targetSdkVersion = 31
   <category android:name="android.intent.category.DEFAULT" />
   <category android:name="android.intent.category.BROWSABLE" />
   # replace with your own scheme
-  # highlight-next-line
+  # focus-next-line
   <data android:scheme="web3authrnexample" />
 </intent-filter>
 ```
 
-- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, and check whether it is correctly present or
-  not.
+- SDK version 31 requires you to explicitly define `android:exported="true"` in
+  `AndroidManifest.xml`, and check whether it is correctly present or not.
 
 ```xml title="android/app/src/main/AndroidManifest.xml"
 <activity
@@ -32,12 +32,13 @@ targetSdkVersion = 31
   android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
   android:launchMode="singleTask"
   android:windowSoftInputMode="adjustResize"
-# highlight-next-line
+# focus-next-line
   android:exported="true">
 ```
 
-- Your `redirectUrl` is your defined scheme following some identifier or your choice. For example, if your scheme is `web3authrnexample`, you can
-  define your `redirectUrl` as `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
+- Your `redirectUrl` is your defined scheme following some identifier or your choice. For example,
+  if your scheme is `web3authrnexample`, you can define your `redirectUrl` as
+  `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
   [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 ```tsx title="App.js"

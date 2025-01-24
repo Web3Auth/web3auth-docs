@@ -1,0 +1,45 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The `initialize` function accepts the following optional parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declaration", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                           | Description                                                                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `withShare?`                        | Initializes tKey with an existing share store. This allows you to directly initialize tKey without using the service provider login.        |
+| `importKey?`                        | Imports a SEC1 key into tKey for initialization.                                                                                            |
+| `importEd25519Seed?`                | Imports a Ed25519 seed into tKey for initialization.                                                                                        |
+| `neverInitializeNewKey?`            | Never initialize using a new key if the shares are already formed                                                                           |
+| `transitionMetadata?`               | If transition metadata has been provided, it uses that as the current metadata instead of maintaining state before and after serialization. |
+| `previouslyFetchedCloudMetadata?`   | Pass the previous cloud metadata                                                                                                            |
+| `previousLocalMetadataTransitions?` | Pass the previous transition metadata                                                                                                       |
+| `delete1OutOf1?`                    | If true, deletes the SFA and Custom Auth key, once it's imported into tKey.                                                                 |
+
+</TabItem>
+
+<TabItem value="type">
+
+```tsx
+export type TKeyInitArgs = {
+  withShare?: ShareStore;
+  importKey?: BN;
+  importEd25519Seed?: Buffer;
+  neverInitializeNewKey?: boolean;
+  transitionMetadata?: IMetadata;
+  previouslyFetchedCloudMetadata?: IMetadata;
+  previousLocalMetadataTransitions?: LocalMetadataTransitions;
+  delete1OutOf1?: boolean;
+};
+```
+
+</TabItem>
+</Tabs>

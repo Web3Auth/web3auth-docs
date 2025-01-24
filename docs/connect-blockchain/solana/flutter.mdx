@@ -1,42 +1,47 @@
 ---
 title: Integrate Web3Auth with the Solana Blockchain in Flutter
 sidebar_label: Flutter
-image: "guides/banners/solana.png"
-displayed_sidebar: resources
+image: "banners/solana.png"
+
 keywords: [flutter, solana, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Solana Blockchain in Flutter | Documentation - Web3Auth"
 ---
 
-While using the Web3Auth Flutter SDK, you can retrive the Ed25519 private key upon successful authentication. This private key can be used to derive
-user's public address and interact with [Solana](https://solana.org/) chain. We have highlighted a few methods here for getting you started quickly on
-that.
+While using the Web3Auth Flutter SDK, you can retrive the Ed25519 private key upon successful
+authentication. This private key can be used to derive user's public address and interact with
+[Solana](https://solana.org/) chain. We have highlighted a few methods here for getting you started
+quickly on that.
 
 ## Installation
 
-To interact with the Solana blockchain in Flutter, you can use any Solana compatible package. Here, we're using
-[solana](https://pub.dev/packages/solana) to demonstrate how to interact with Solana chain using Web3Auth.
+To interact with the Solana blockchain in Flutter, you can use any Solana compatible package. Here,
+we're using [solana](https://pub.dev/packages/solana) to demonstrate how to interact with Solana
+chain using Web3Auth.
 
 ```dart
 flutter pub add solana get_it hex
 ```
 
-> Note: We will also be using `get_it` package for dependency injection, and `hex` package to perform Hex encoding and decoding.
+> Note: We will also be using `get_it` package for dependency injection, and `hex` package to
+> perform Hex encoding and decoding.
 
 ## Initialize
 
-To Initialize the `SolanaClient` we require `rpcUrl` and `websocketUrl`. The `rpcUrl` will provide a gateway & protocol to interact with Solana
-cluster while sending requests and receving response. For this example, we are using `rpcUrl` & `websocketUrl` for Devnet-beta. To interact with
-Testnet or Mainnet, you can simply change the `rpcUrl` and `websocketUrl`.
+To Initialize the `SolanaClient` we require `rpcUrl` and `websocketUrl`. The `rpcUrl` will provide a
+gateway & protocol to interact with Solana cluster while sending requests and receving response. For
+this example, we are using `rpcUrl` & `websocketUrl` for Devnet-beta. To interact with Testnet or
+Mainnet, you can simply change the `rpcUrl` and `websocketUrl`.
 
 ### Initializing Solana SDK
 
-In the below code block, we'll initialize the `SolanaClient` using the Devnet-beta rpc and websocket urls. We'll also register the instance in GetIt
-for it to be accessed anywhere using service locator.
+In the below code block, we'll initialize the `SolanaClient` using the Devnet-beta rpc and websocket
+urls. We'll also register the instance in GetIt for it to be accessed anywhere using service
+locator.
 
 ```dart
 import 'package:flutter_solana_example/core/solana/solana_provider.dart';
 import 'package:get_it/get_it.dart';
-// highlight-next-line
+// focus-next-line
 import 'package:solana/solana.dart';
 
 class ServiceLocator {
@@ -45,12 +50,12 @@ class ServiceLocator {
   static GetIt get getIt => GetIt.instance;
 
   static Future<void> init() async {
-    // highlight-start
+    // focus-start
     final solanaClient = SolanaClient(
       rpcUrl: Uri.parse('https://api.devnet.solana.com'),
       websocketUrl: Uri.parse('ws://api.devnet.solana.com'),
     );
-     // highlight-end
+     // focus-end
 
     // Register SolanaClient to be accessed using service locator
     getIt.registerLazySingleton<SolanaClient>(() => solanaClient);
@@ -60,12 +65,14 @@ class ServiceLocator {
 
 ### Initializing Web3Auth
 
-In the below code block, we'll initialize the Web3Auth SDK and check whether the user has any Web3Auth session persisted or not. If the user is
-already authenticated, we can route them directly to `HomeScreen`, otherwise we can route them to `LoginScreen`.
+In the below code block, we'll initialize the Web3Auth SDK and check whether the user has any
+Web3Auth session persisted or not. If the user is already authenticated, we can route them directly
+to `HomeScreen`, otherwise we can route them to `LoginScreen`.
 
-By default, the session is persisted for 1 day. You can modify it using `sessionTime` parameter during initialization.
+By default, the session is persisted for 1 day. You can modify it using `sessionTime` parameter
+during initialization.
 
-> Note: The session can be persisted only for 7 days max.
+> Note: The session can be persisted only for 30 days max.
 
 ```dart
 // Additional imports
@@ -85,7 +92,7 @@ Future<void> main() async {
     redirectUrl = Uri.parse('com.web3auth.fluttersolanasample://auth');
   }
 
-  // highlight-start
+  // focus-start
   await Web3AuthFlutter.init(
     Web3AuthOptions(
       clientId:
@@ -95,7 +102,7 @@ Future<void> main() async {
     ),
   );
 
-  // highlight-end
+  // focus-end
 
   runApp(const MainApp());
 }
@@ -122,7 +129,7 @@ class _MainAppState extends State<MainApp> {
         future: privateKeyFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            // highlight-start
+            // focus-start
             if (snapshot.hasData) {
               // Check if user is already authenticated. If user is already
               // authenticated the snapshot.data will be non empty string
@@ -132,7 +139,7 @@ class _MainAppState extends State<MainApp> {
               }
             }
             return const LoginScreen();
-            // highlight-end
+            // focus-end
           }
           return const Center(
             child: CircularProgressIndicator.adaptive(),
@@ -146,8 +153,9 @@ class _MainAppState extends State<MainApp> {
 
 ## Get User Info
 
-After logging in, the Web3Auth instance will provide you with information regarding the user that is logged in. This information is obtained directly
-from the JWT token and is not stored by Web3Auth. Therefore, this information can only be accessed through social logins after the user has logged
+After logging in, the Web3Auth instance will provide you with information regarding the user that is
+logged in. This information is obtained directly from the JWT token and is not stored by Web3Auth.
+Therefore, this information can only be accessed through social logins after the user has logged
 into your application.
 
 ```dart
@@ -160,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final Ed25519HDKeyPair keyPair;
   late final SolanaProvider provider;
   late double balance;
-  // highlight-next-line
+  // focus-next-line
   late final dynamic web3AuthInfo;
 
   @override
@@ -178,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // getUserInfo method can be used to fetch the user information
       // such as email, name, isMFA enabled. Checkout documentation
       // to know more.
-      // highlight-next-line
+      // focus-next-line
       web3AuthInfo = await Web3AuthFlutter.getUserInfo();
 
       // ..
@@ -217,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     balance.toString(),
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
-                  // highlight-start
+                  // focus-start
                   if (web3AuthInfo.email != null) ...[
                     verticalGap,
                     Text(
@@ -225,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     )
                   ],
-                  // highlight-end
+                  // focus-end
 
                   // ..
                   // Additional code
@@ -234,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   verticalGap,
 
                   // Logs the user information in the console
-                  // highlight-start
+                  // focus-start
                   OutlinedButton(
                     onPressed: () async {
                      showInfoDialog(
@@ -245,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: const Text("Get user info"),
                   ),
-                  // highlight-end
+                  // focus-end
                 ],
               ),
             );
@@ -259,9 +267,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
 ## Get Account and Balance
 
-We can use `getEd25519PrivKey` method in Web3Auth to retrive the priavte key for the Solana ecosystem. In the below code block, we'll use the Ed25519
-private key to retive user's public address, and solana balance. We'll use `SolanaProvider` class to interact with Solana cluster and fetch user
-balance.
+We can use `getEd25519PrivKey` method in Web3Auth to retrive the priavte key for the Solana
+ecosystem. In the below code block, we'll use the Ed25519 private key to retive user's public
+address, and solana balance. We'll use `SolanaProvider` class to interact with Solana cluster and
+fetch user balance.
 
 ### Setup Solana Provider
 
@@ -280,7 +289,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
-  // highlight-start
+  // focus-start
   Future<double> getBalance(String address) async {
     final balanceResponse = await solanaClient.rpcClient.getBalance(
       address,
@@ -290,7 +299,7 @@ class SolanaProvider {
     /// token decimals is set to be 9;
     return balanceResponse.value / pow(10, tokenDecimals);
   }
-  // highlight-end
+  // focus-end
 
    // ..
   // Additional methods
@@ -315,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     isAccountLoaded = ValueNotifier<bool>(false);
-    // highlight-next-line
+    // focus-next-line
     provider = ServiceLocator.getIt<SolanaProvider>();
     loadAccount(context);
   }
@@ -330,12 +339,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       /// The ED25519 PrivateKey returns a key pair from
       /// which we only require first 32 byte.
-      // highlight-start
+      // focus-start
       keyPair = await Ed25519HDKeyPair.fromPrivateKeyBytes(
         privateKey: privateKey.hexToBytes.take(32).toList(),
       );
       balance = await provider.getBalance(keyPair.address);
-      // highlight-end
+      // focus-end
       isAccountLoaded.value = true;
     } catch (e, _) {
       if (context.mounted) {
@@ -355,16 +364,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // highlight-start
+                  // focus-start
                   Text(
                     balance.toString(),
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
-                  // highlight-end
+                  // focus-end
                   // ..
                   // Additional code
                   // ..
-                  // highlight-start
+                  // focus-start
                   Row(
                     children: [
                       const Spacer(),
@@ -384,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Spacer(),
                     ],
                   ),
-                  // highlight-end
+                  // focus-end
                   // ..
                   // Additional code
                   // ..
@@ -402,8 +411,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
 ## Sign Transaction
 
-Let's now go through how can we sign the transaction. In the below code block, we'll add a new method inside `SolanaProvider` we setup earlier to help
-us sign a transfer transaction. After successful implementation, we can use the method in `HomeScreen`.
+Let's now go through how can we sign the transaction. In the below code block, we'll add a new
+method inside `SolanaProvider` we setup earlier to help us sign a transfer transaction. After
+successful implementation, we can use the method in `HomeScreen`.
 
 ```dart
 class SolanaProvider {
@@ -411,7 +421,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
-  // highlight-start
+  // focus-start
   Future<String> signSendTransaction({
     required Ed25519HDKeyPair keyPair,
     required String destination,
@@ -434,7 +444,7 @@ class SolanaProvider {
     final signedTx = await signTransaction(recentBlockHash, message, [keyPair]);
     return signedTx.signatures.first.toBase58();
   }
-  // highlight-end
+  // focus-end
 
   Future<RecentBlockhash> getRecentBlockhash() async {
     return await solanaClient.rpcClient
@@ -456,7 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     isAccountLoaded = ValueNotifier<bool>(false);
-    // highlight-next-line
+    // focus-next-line
     provider = ServiceLocator.getIt<SolanaProvider>();
     loadAccount(context);
   }
@@ -477,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // highlight-start
+                  // focus-start
                   OutlinedButton(
                     onPressed: () {
                       signSelfTransfer(context);
@@ -486,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Sign Self transfer 0.0001 Sol",
                     ),
                   ),
-                  // highlight-end
+                  // focus-end
                 ],
               ),
             );
@@ -497,7 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // highlight-start
+  // focus-start
   Future<void> signSelfTransfer(BuildContext context) async {
     showLoader(context);
     try {
@@ -517,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-  // highlight-end
+  // focus-end
 }
 
 ```
@@ -532,7 +542,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
-  // highlight-start
+  // focus-start
   Future<String> sendSol({
     required Ed25519HDKeyPair keyPair,
     required String destination,
@@ -549,11 +559,12 @@ class SolanaProvider {
 
     return transactionHash;
   }
-  // highlight-end
+  // focus-end
 }
 ```
 
-Once created, we can use the method in `HomeScreen` to transfer SOL. Upon successful transfer, we'll also refresh the balance of the user.
+Once created, we can use the method in `HomeScreen` to transfer SOL. Upon successful transfer, we'll
+also refresh the balance of the user.
 
 ```dart
 // ..
@@ -608,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // ..
                   verticalGap,
-                  // highlight-start
+                  // focus-start
                   OutlinedButton(
                     onPressed: () {
                       selfTransfer(context);
@@ -617,7 +628,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Self transfer 0.0001 Sol",
                     ),
                   ),
-                  // highlight-end
+                  // focus-end
                   // ..
                 ],
               ),
@@ -629,7 +640,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // highlight-start
+  // focus-start
   Future<void> selfTransfer(BuildContext context) async {
     showLoader(context);
     try {
@@ -650,6 +661,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-  // highlight-end
+  // focus-end
 }
 ```

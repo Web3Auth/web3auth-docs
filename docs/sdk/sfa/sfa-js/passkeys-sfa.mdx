@@ -1,0 +1,390 @@
+---
+title: Passkeys Plugin for SFA JS SDK
+sidebar_label: Passkeys Plugin
+description: "Web3Auth - Passkeys Plugin for SFA JS SDK | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+### [`@web3auth/passkeys-sfa-plugin`](https://npmjs.com/package/@web3auth/passkeys-sfa-plugin)
+
+The Passkeys SFA Plugin allows your application to use passkeys for secure and easy authentication.
+This plugin integrates seamlessly with Web3Auth Single Factor Auth (SFA) Web SDK, enabling passkey
+registration, login, and management functionalities.
+
+:::note Note
+
+Passkeys SFA Plugin is designed for Web3Auth Single Factor Auth (SFA) Web SDK.
+
+:::
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/passkeys-sfa-plugin
+```
+
+## Initialization
+
+Import the `PasskeysPlugin` **class** from `@web3auth/passkeys-sfa-plugin`.
+
+```javascript
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
+```
+
+#### Assign the `PasskeysPlugin` class to a variable
+
+After creating your Web3Auth SFA instance, you need to initialize the Passkeys Plugin and add it to
+the class for further usage.
+
+```javascript
+const passkeysPlugin = new PasskeysPlugin(options);
+```
+
+This constructor takes an object with `IPasskeysPluginOptions` as input.
+
+### Arguments
+
+While initializing the Passkeys plugin, you need to pass the following parameters to the
+constructor:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter   | Description                                                                                                             |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `rpID?`     | Stands for relying party ID. Your app domain. If your app is hosted on "your.app.xyz", the RPID can be "your.app.xyz".  |
+| `rpName?`   | Stands for relying party name. Name of your app. We recommend setting it to the correctly capitalized name of your app. |
+| `buildEnv?` | Specifies the build environment to use: `production`, `staging`, `testing`, or `development`.                           |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface IPasskeysPluginOptions {
+  buildEnv?: BUILD_ENV_TYPE;
+  /**
+   * `rpID` should be your app domain.
+   *
+   * If your app is hosted on "your.app.xyz" the RPID can be "your.app.xyz" or "app.xyz".
+   *
+   * Be aware: if you create passkeys on "your.app.xyz", they won't be usable on other subdomains (e.g. "other.app.xyz").
+   * So unless you have good reasons not to, use the top-level domain as the RPID.
+   *
+   * `rpID` will show up in the initial registration popup:
+   *
+   * @defaultValue tld
+   */
+  rpID?: string;
+  /**
+   * `rpName` doesn't show up in the popup so can be set to anything.
+   *
+   * We recommend setting it to the correctly capitalized name of your app,
+   * in case browsers start showing it in their native UIs in the future.
+   *
+   * @defaultValue window.title || window.location.hostname
+   */
+  rpName?: string;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Add the `passkeysPlugin` class to your Web3Auth SFA instance
+
+After initializing the `passkeysPlugin`, use the `addPlugin()` function to add it to your Web3Auth
+SFA instance.
+
+```javascript
+web3AuthInstance.addPlugin(passkeysPlugin);
+```
+
+### Example
+
+```javascript
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
+
+const passkeysPlugin = new PasskeysPlugin({
+  rpID: "your.app.xyz",
+  rpName: "Your App",
+});
+
+web3auth.addPlugin(passkeysPlugin); // Add the plugin to web3auth
+
+// Register a new passkey
+await passkeysPlugin.registerPasskey({ username: "user@example.com" });
+
+// Login with a passkey
+await passkeysPlugin.loginWithPasskey();
+
+// List all registered passkeys
+const passkeys = await passkeysPlugin.listAllPasskeys();
+console.log(passkeys);
+```
+
+:::note Note
+
+Here’s the refined version:
+
+First, users need to log in with their authentication provider. Once logged in, they can register a
+passkey. The next time they log in, they can seamlessly use the registered passkey with a
+passkey-enabled authentication device.
+
+:::
+
+## Using Passkeys SFA Plugin
+
+### `registerPasskey()`
+
+Registers a new passkey for the user.
+
+#### Parameters
+
+| Parameter                  | Description                                                                                          |
+| -------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `authenticatorAttachment?` | Option to restrict the type of authenticators that can be registered.                                |
+| `username?`                | The passkey in the user device will be saved with this name. Default is `loginProvider\|verifierId.` |
+
+#### Usage
+
+```javascript
+await passkeysPlugin.registerPasskey({
+  username: "user@example.com",
+  authenticatorAttachment: "platform",
+});
+```
+
+### `loginWithPasskey()`
+
+Logs in the user with an existing passkey.
+
+#### Parameters
+
+| Parameter          | Description                                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `authenticatorId?` | The ID of the specific authenticator you want to log in with, useful when multiple authenticators are set up. |
+
+#### Usage
+
+```javascript
+await passkeysPlugin.loginWithPasskey({
+  authenticatorId: "authenticator_id",
+});
+```
+
+:::tip
+
+When you call `listAllPasskeys()`, the `credential_id` from the response is the authenticator ID
+that can be used for logging in with a specific passkey. This improves UX by reducing the number of
+prompts the user has to face when multiple authenticators are set up. Here’s a sample output for
+`listAllPasskeys()`:
+
+```json
+{
+  "id": "123",
+  // focus-next-line
+  "credential_id": "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz",
+  "verifier_id": "verifier987zyx654wvu321tsr098qpo765nml432kji109gfe",
+  "browser": "Chrome",
+  "browser_version": "126.0.0.0",
+  "transport": "hybrid,internal",
+  "os": "macOS",
+  "os_version": "12.5.1",
+  "platform": "desktop",
+  "provider_name": "Samsung Pass",
+  "created_at": "2024-06-25T07:41:38.000Z",
+  "updated_at": "2024-06-25T07:41:38.000Z"
+}
+```
+
+:::
+
+### `listAllPasskeys()`
+
+Lists all registered passkeys for the user.
+
+#### Usage
+
+```javascript
+const passkeys = await passkeysPlugin.listAllPasskeys();
+console.log(passkeys);
+```
+
+## Using with Web3Auth SFA
+
+:::note Note
+
+Below are two files, `App.tsx` and `utils.ts`, demonstrating the implementation of the Passkeys SFA
+Plugin. The `utils.ts` file is kept non-opinionated and can be configured according to your
+requirements for your users. Also, note that the passkeys flow is **only supported on browsers that
+support WebAuthn**. You need to check for browser support before registering or logging in with a
+passkey.
+
+:::
+
+<Tabs
+  defaultValue="App.tsx"
+  values={[
+    { label: "App.tsx", value: "App.tsx" },
+    { label: "utils.ts", value: "utils.ts" },
+  ]}
+>
+
+<TabItem value="App.tsx">
+
+```typescript
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, IProvider } from "@web3auth/base";
+import Web3Auth from "@web3auth/single-factor-auth";
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
+import { shouldSupportPasskey } from "./utils";
+
+const clientId = "Your_Web3Auth_Client_ID";
+
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
+
+const web3AuthOptions = {
+  clientId,
+  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+};
+
+const web3auth = new Web3Auth(web3AuthOptions);
+
+const passkeysPlugin = new PasskeysPlugin({
+  rpID: "your.app.xyz",
+  rpName: "Your App",
+});
+
+web3auth.addPlugin(passkeysPlugin); // Add the plugin to web3auth
+
+await web3auth.init();
+
+await web3auth.connect({
+  verifier: "your_verifier_name", // Pass the verifier name created on the Web3Auth dashboard
+  verifierId: "your_verifier_id", // Pass the verifierId received from the OAuth provider
+  idToken: "id_token", // Pass the idToken received from the OAuth provider
+});
+
+const result = shouldSupportPasskey();
+
+if (!result.isBrowserSupported) {
+  console.log("Browser not supported");
+} else {
+  // Register a new passkey
+  await passkeysPlugin.registerPasskey({ username: "user@example.com" });
+
+  // Login with a passkey
+  await passkeysPlugin.loginWithPasskey();
+
+  // List all registered passkeys
+  const passkeys = await passkeysPlugin.listAllPasskeys();
+  console.log(passkeys);
+}
+```
+
+</TabItem>
+
+<TabItem value="utils.ts">
+
+```typescript
+import bowser from "bowser";
+
+const PASSKEYS_ALLOWED_MAP = [
+  bowser.OS_MAP.iOS,
+  bowser.OS_MAP.MacOS,
+  bowser.OS_MAP.Android,
+  bowser.OS_MAP.Windows,
+];
+
+const getWindowsVersion = (osVersion: string) => {
+  const windowsVersionRegex = /NT (\d+\.\d+)/;
+  const match = osVersion.match(windowsVersionRegex);
+  if (match) return parseInt(match[1], 10);
+  return 0;
+};
+
+const checkIfOSIsSupported = (osName: string, osVersion: string) => {
+  if (!PASSKEYS_ALLOWED_MAP.includes(osName)) return false;
+  if (osName === bowser.OS_MAP.MacOS) return true;
+  switch (osName) {
+    case bowser.OS_MAP.iOS: {
+      const version = parseInt(osVersion.split(".")[0], 10);
+      return version >= 16;
+    }
+    case bowser.OS_MAP.Android: {
+      const version = parseInt(osVersion.split(".")[0], 10);
+      return version >= 9;
+    }
+    case bowser.OS_MAP.Windows: {
+      const version = getWindowsVersion(osVersion);
+      return version >= 10;
+    }
+    default:
+      return false;
+  }
+};
+
+export function shouldSupportPasskey(): {
+  isBrowserSupported: boolean;
+  isOsSupported: boolean;
+  supported;
+
+  Browser?: Record<string, string>;
+} {
+  const browser = bowser.getParser(navigator.userAgent);
+  const osDetails = browser.parseOS();
+  if (!osDetails) return { isBrowserSupported: false, isOsSupported: false };
+  const osName = osDetails.name || "";
+  const result = checkIfOSIsSupported(osName, osDetails.version || "");
+  if (!result) return { isBrowserSupported: false, isOsSupported: false };
+  const browserData: Record<string, Record<string, string>> = {
+    iOS: {
+      safari: ">=16",
+      chrome: ">=108",
+    },
+    macOS: {
+      safari: ">=16",
+      chrome: ">=108",
+      firefox: ">=122",
+    },
+    Android: {
+      chrome: ">=108",
+    },
+    Windows: {
+      edge: ">=108",
+      chrome: ">=108",
+    },
+  };
+  const isBrowserSupported = browser.satisfies({ ...browserData }) || false;
+  return { isBrowserSupported, isOsSupported: true, supportedBrowser: browserData[osName] };
+}
+
+export function browserSupportsWebAuthn() {
+  return (
+    window?.PublicKeyCredential !== undefined && typeof window.PublicKeyCredential === "function"
+  );
+}
+```
+
+</TabItem>
+
+</Tabs>

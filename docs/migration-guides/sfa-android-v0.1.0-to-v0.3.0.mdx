@@ -1,0 +1,48 @@
+---
+title: SFA Android SDK - v0.1.0 to v0.3.0
+description: "SFA Android SDK - v0.1.0 to v0.3.0 | Documentation - Web3Auth"
+sidebar_label: v0.1.0 to v0.3.0
+---
+
+# Migration Guide from v0.1.0 to v0.3.0 for SFA Andriod SDK
+
+## Overview
+
+This migration guide provides steps for upgrading from version v0.1.0 to v0.3.0 of the Web3Auth
+Single Factor Auth Android SDK. The guide outlines breaking changes in the constructor of
+`SingleFactorAuthArgs` class, and renaming of `TorusNetwork` to `Web3AuthNetwork`.
+
+## Changes in Detail
+
+### SingleFactorAuthArgs constructor changes
+
+In v0.3.0, we have introduce a new parameter `clientId` for the `SingleFactorAuthArgs` constructor.
+
+#### Before (v0.1.0)
+
+```kotlin
+val singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+```
+
+#### After (v0.3.0)
+
+```kotlin
+val singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.MAINNET, "YOUR_WEB3AUTH_CLIENT_ID")
+```
+
+### Introduction of Web3AuthNetwork enum
+
+In v0.3.0, the `TorusNetwork` enum is renamed to `Web3AuthNetwork` to make it align with other SFA
+SDKs of Web3Auth.
+
+#### Before (v0.1.0)
+
+```kotlin
+val singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+```
+
+#### After (0.3.0)
+
+```kotlin
+val singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.MAINNET, "YOUR_WEB3AUTH_CLIENT_ID")
+```

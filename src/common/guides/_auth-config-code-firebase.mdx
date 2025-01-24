@@ -1,0 +1,20 @@
+```tsx
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    uxMode: "redirect", // redirect or popup
+    loginConfig: {
+      jwt: {
+        verifier: "w3a-firebase-demo", // name of the verifier created on Web3Auth Dashboard
+        typeOfLogin: "jwt",
+        clientId:
+          "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+      },
+    },
+  },
+  privateKeyProvider,
+});
+
+web3auth.configureAdapter(authAdapter);
+```

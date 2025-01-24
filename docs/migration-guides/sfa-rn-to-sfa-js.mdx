@@ -1,0 +1,213 @@
+---
+title: SFA React Native SDK to SFA JS SDK Migration Guide
+description: SFA React Native SDK to SFA JS SDK Migration Guide | Documentation - Web3Auth
+sidebar_label: SFA React Native SDK Migration
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## Overview
+
+This migration guide provides steps for updating your existing SFA Node.js SDK integration to the
+SFA JS SDK. This migration is coming after we have deprecated the SFA Node.js SDK in favour a
+unified, platform-agnostic solution, the Single Factor Auth JS SDK. This new SDK is an evolution of
+our popular SFA Web SDK, designed to support all platforms, including React Native, Node.js, and
+Web.
+
+#### Key Benefits of the SFA JS SDK:
+
+• Unified API: Simplified and consistent API across platforms.
+
+• Cross-platform Support: One SDK for Web, React Native, and Node.js, reducing integration
+complexity.
+
+• Feature Enhancements: Incorporates the latest updates and improvements, ensuring a better
+development experience.
+
+## Changes in Detail
+
+### Package Changes
+
+Use the `@web3auth/single-factor-auth` instead of `@web3auth/single-factor-auth-react-native`
+
+```js
+// remove-next-line
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+// add-next-line
+import { Web3Auth, SDK_MODE, decodeToken } from "@web3auth/single-factor-auth";
+import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+```
+
+### `ChainConfig`
+
+`ChainConfig` now requires a `logo` parameter for the chain's logo and the parameter formerly called
+`blockExplorer` has been renamed to `blockExplorerUrl`. Additionally, `isTestnet` has been
+introduced which can be used to define whether the network is testnet or not.
+
+```tsx
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  // remove-next-line
+  blockExplorer: "https://etherscan.io/",
+  // add-next-line
+  blockExplorerUrl: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  decimals: 18,
+  // add-next-line
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+```
+
+### Constructor Changes
+
+Pass the `privateKeyProvider` in the constructor, alongside setting the SDK's `mode` to
+`SDK_MODE.REACT_NATIVE`. You need to also pass the storage module separately in the `storage`
+parameter.
+
+<Tabs>
+<TabItem value="bare" label="Bare React Native" default>
+
+```js
+import { Web3Auth, SDK_MODE, decodeToken } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import EncryptedStorage from "react-native-encrypted-storage";
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+// remove-start
+const web3auth = new Web3Auth(EncryptedStorage, {
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+});
+// remove-end
+
+// add-start
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+  storage: EncryptedStorage,
+  mode: SDK_MODE.REACT_NATIVE,
+});
+// add-end
+```
+
+</TabItem>
+
+<TabItem value="expo" label="Expo">
+
+```js
+import { Web3Auth, SDK_MODE, decodeToken } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import * as SecureStore from "expo-secure-store";
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+// remove-start
+const web3auth = new Web3Auth(EncryptedStorage, {
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+});
+// remove-end
+
+// add-start
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+  storage: SecureStore,
+  mode: SDK_MODE.REACT_NATIVE,
+});
+// add-end
+```
+
+</TabItem>
+</Tabs>
+
+### Initialization
+
+We have removed the need to pass the privateKeyProvider during Initialization.
+
+```js
+// remove-next-line
+await web3auth.init(privateKeyProvider);
+// add-next-line
+await web3auth.init();
+```
+
+### Removal of the sessionId parameter
+
+We have removed the direct access to the session Id within the SDK. Now the SDK will give a
+`connected` flag as `true` if login is successful/ session exists, else `false`.
+
+```js
+// remove-start
+if (web3auth.sessionId) {
+  setProvider(web3auth.provider);
+  setLoggedIn(true);
+  uiConsole("Logged In", web3auth.sessionId);
+}
+// remove-end
+
+// add-start
+if (web3auth.connected) {
+  setProvider(web3auth.provider);
+  setLoggedIn(true);
+  uiConsole("Logged In");
+}
+// add-end
+```
+
+### globals.js Updates
+
+Update your globals.js file with react-native-quick-crypto. This is required for polyfilling the
+`crypto` module.
+
+```typescript
+global.Buffer = require("buffer").Buffer;
+
+// add-start
+// eslint-disable-next-line import/first
+import { install } from "react-native-quick-crypto";
+
+install();
+// add-end
+
+// Needed so that 'stream-http' chooses the right default protocol.
+global.location = {
+  protocol: "file:",
+};
+
+global.process.version = "v16.0.0";
+if (!global.process.version) {
+  global.process = require("process");
+  console.log({ process: global.process });
+}
+
+process.browser = true;
+```
+
+Make sure to import required files in your entry point:
+
+```typescript
+import "./globals";
+import "@ethersproject/shims";
+import "@expo/metro-runtime";
+```
+
+## Need Help?
+
+If you encounter any issues during migration, please:
+
+- Refer to our [official documentation](https://web3auth.io/docs/sdk/sfa/sfa-js)
+- Open a new thread in our [community forum](https://web3auth.io/community/)

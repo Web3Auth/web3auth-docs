@@ -1,0 +1,51 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+#### `TKeyArgs`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declaration", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enableLogging?`    | This option is used to specify whether to enable logging.                                                                                      |
+| `modules?`          | An object mapping of the modules, needed to be configured with their instances within the app.                                                 |
+| `serviceProvider?`  | Takes in the Service Provider Instance to authenticate the user using social or custom login.                                                  |
+| `storageLayer?`     | Takes in the Storage Layer Instance.                                                                                                           |
+| `customAuthArgs?`   | Optional, you can pass the custom authentication arguments from Web3Auth Service Provider here as well.                                        |
+| `manualSync?`       | Helps you turn on manual sync, which helps you configure tKey to not sync with the server for every request. You can sync at your convenience. |
+| `serverTimeOffset?` | Time offset for letting user connect to metadata server.                                                                                       |
+
+</TabItem>
+
+<TabItem value="type">
+
+```tsx
+declare type TKeyArgs = {
+  enableLogging?: boolean;
+  // Pass over the modules you want to use
+  modules?: ModuleMap;
+  // Pass over the service provider variable you instantiated
+  serviceProvider?: IServiceProvider;
+  // Pass over the storage layer variable you instantiated
+  storageLayer?: IStorageLayer;
+  // You need to pass the customAuthArgs from Web3Auth Service Provider here.
+  customAuthArgs?: CustomAuthArgs;
+  manualSync?: boolean;
+  serverTimeOffset?: number;
+};
+
+export declare type ModuleMap = {
+  [moduleName: string]: IModule;
+};
+```
+
+</TabItem>
+</Tabs>

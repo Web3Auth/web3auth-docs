@@ -11,51 +11,126 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter               | Description                                                                                                                                                                                                                                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginMethodsOrder?`    | The list of login methods can be reordered with this parameter. Those methods specified will be first on the list. Default value is ["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]. |
-| `modalZIndex?`          | Z-index of the modal and iframe. The default value is `99998` and accepts a `string` as a value.                                                                                                                                                                                               |
-| `displayErrorsOnModal?` | Whether to show errors on Web3Auth modal. Default value is `true`.                                                                                                                                                                                                                             |
-| `loginGridCol?`         | Number of columns to display the Social Login buttons. Default value is 3, available options are 2 or 3.                                                                                                                                                                                       |
-| `primaryButton?`        | Decides which button will be displayed as primary button in modal. Only one button will be primary and other buttons in modal will be secondary. Default value is `socialLogin`. Available options are `externalLogin`, `socialLogin`, and `emailLogin`.                                       |
+| Parameter         | Description                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `appName`         | App name to display in the UI                                                                                                          |
+| `appUrl`          | App url                                                                                                                                |
+| `logoLight`       | App logo to use in light mode                                                                                                          |
+| `logoDark`        | App logo to use in dark mode                                                                                                           |
+| `defaultLanguage` | language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en" |
+| `mode`            | theme                                                                                                                                  |
+| `useLogoLoader`   | Use logo loader                                                                                                                        |
+| `theme`           | Used to customize your theme                                                                                                           |
+| `tncLink`         | Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure                                  |
+| `privacyPolicy`   | Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure                                        |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface UIConfig extends WhiteLabelData {
+export type WhiteLabelData = {
   /**
-   * order of how login methods are shown
+   * App name to display in the UI
+   */
+  appName?: string;
+  /**
+   * App url
+   */
+  appUrl?: string;
+  /**
+   * App logo to use in light mode
+   */
+  logoLight?: string;
+  /**
+   * App logo to use in dark mode
+   */
+  logoDark?: string;
+  /**
+   * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
+   * en: english
+   * de: german
+   * ja: japanese
+   * ko: korean
+   * zh: mandarin
+   * es: spanish
+   * fr: french
+   * pt: portuguese
+   * nl: dutch
+   * tr: turkish
    *
-   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
+   * @defaultValue en
    */
-  loginMethodsOrder?: string[];
+  defaultLanguage?: LANGUAGE_TYPE;
   /**
-   * Z-index of the modal and iframe
-   * @defaultValue 99998
-   */
-  modalZIndex?: string;
+     theme
+     *
+     * @defaultValue light
+     */
+  mode?: THEME_MODE_TYPE;
   /**
-   * Whether to show errors on Web3Auth modal.
+   * Use logo loader
    *
-   * @defaultValue `true`
+   * @defaultValue false
    */
-  displayErrorsOnModal?: boolean;
+  useLogoLoader?: boolean;
   /**
-   * number of columns to display the Social Login buttons
-   *
-   * @defaultValue `3`
+   * Used to customize your theme
    */
-  loginGridCol?: 2 | 3;
+  theme?: WHITE_LABEL_THEME;
   /**
-   * decides which button will be displayed as primary button in modal
-   * only one button will be primary and other buttons in modal will be secondary
-   *
-   * @defaultValue `socialLogin`
+   * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+   * e.g.
+   * tncLink: {
+   *  en: "http://example.com/tnc/en",
+   *  ja: "http://example.com/tnc/ja",
+   * }
    */
-  primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
-}
+  tncLink?: Partial<Record<LANGUAGE_TYPE, string>>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   * e.g.
+   * privacyPolicy: {
+   *  en: "http://example.com/tnc/en",
+   *  ja: "http://example.com/tnc/ja",
+   * }
+   */
+  privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
+};
+
+export declare const LANGUAGES: {
+  readonly en: "en";
+  readonly ja: "ja";
+  readonly ko: "ko";
+  readonly de: "de";
+  readonly zh: "zh";
+  readonly es: "es";
+  readonly fr: "fr";
+  readonly pt: "pt";
+  readonly nl: "nl";
+  readonly tr: "tr";
+};
+export type LANGUAGE_TYPE = (typeof LANGUAGES)[keyof typeof LANGUAGES];
+
+export declare const THEME_MODES: {
+  readonly light: "light";
+  readonly dark: "dark";
+  readonly auto: "auto";
+};
+export type THEME_MODE_TYPE = (typeof THEME_MODES)[keyof typeof THEME_MODES];
+
+export type WHITE_LABEL_THEME = {
+  /**
+   * `primary` color that represents your brand
+   * Will be applied to elements such as primary button, nav tab(selected), loader, input focus, etc.
+   */
+  primary?: string;
+  /**
+   * `onPrimary` color that is meant to contrast with the primary color
+   * Applies to elements such as the text in a primary button or nav tab(selected), blocks of text on top of a primary background, etc.
+   */
+  onPrimary?: string;
+};
 ```
 
 </TabItem>

@@ -1,0 +1,201 @@
+---
+title: "Log in with JWT(BYOA)"
+
+sidebar_label: "Log in with JWT(BYOA)"
+description: "Web3Auth MPC Core Kit JS SDK - Login with JWT(BYOA) | Documentation - Web3Auth"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+To authenticate users using Regular Web Application(RWA) flow, you can use the `loginWithJWT`
+method. This methods takes the `JWTLoginParams` as a parameter, which is an object that contains the
+details of the verifier, and additional authentication parameters like idToken, subVerifier, etc.
+
+In JWT login flow, you'll have to manually get the idToken from the auth provider and pass it to the
+login function.
+
+## Parameters
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`                | Name of the verifier created on Web3Auth Dashboard. In the case of Aggregate Verifier, the name of the top-level aggregate verifier.                                                                                                                                                                                                                                                                                       |
+| `verifierId`              | Unique Identifier for the User. The verifier identifier field is set for the verifier/sub verifier. E.g. "sub" field in your JWT ID Token.                                                                                                                                                                                                                                                                                 |
+| `idToken`                 | The idToken received from the Auth Provider.                                                                                                                                                                                                                                                                                                                                                                               |
+| `subVerifier?`            | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in the case of an aggregate verifier.                                                                                                                                                                                                                                                                                                |
+| `extraVerifierParams?`    | Extra verifier params in case of a WebAuthn verifier type.                                                                                                                                                                                                                                                                                                                                                                 |
+| `additionalParams?`       | Any additional parameter (key-value pair) you'd like to pass to the login function.                                                                                                                                                                                                                                                                                                                                        |
+| `importTssKey?`           | Key to import key into TSS during first time login. For secp256k1 curve, you need to pass the private key, and for ed25519 curve you need to pass the seed. The ed25519 seed is hashed to generate 64 bytes, where first 32 bytes are used to generate the public key, and last 32 bytes are used as private key.                                                                                                          |
+| `prefetchTssPublicKeys?`  | Defines the number of TSS public keys to prefetch.The SDK by default starts with 2/2 flow, and this parameter should be used in the flow where you want to generate the recovery factor during first time login. The parameters helps you to reduce the operation time by pre-fetching the TSS public key and use it during generating new shares. For existing user you can set it to `0`. Default is `1`, maximum is `3` |
+| `registerExistingSFAKey?` | Allows to import the [Single Factor Auth(SFA) SDK](/docs/sdk/sfa/sfa-js/) key into the MPC Core Kit SDK. Default value is `false`. Please note, once SFA Key is imported, users won't be able to access their account using the SFA SDK.                                                                                                                                                                                   |
+
+</TabItem>
+<TabItem value="type">
+
+```tsx
+interface JWTLoginParams {
+  /**
+   * Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.
+   */
+  verifier: string;
+  /**
+   * Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token.
+   */
+  verifierId: string;
+  /**
+   * The idToken received from the Auth Provider.
+   */
+  idToken: string;
+  /**
+   * Name of the sub verifier in case of aggregate verifier setup. This field should only be provided in case of an aggregate verifier.
+   */
+  subVerifier?: string;
+  /**
+   * Extra verifier params in case of a WebAuthn verifier type.
+   */
+  extraVerifierParams?: PasskeyExtraParams;
+  /**
+   * Any additional parameter (key value pair) you'd like to pass to the login function.
+   */
+  additionalParams?: ExtraParams;
+  /**
+   * Key to import key into Tss during first time login.
+   */
+  importTssKey?: string;
+  /**
+   * Number of TSS public keys to prefetch. For the best performance, set it to
+   * the number of factors you want to create. Set it to 0 for an existing user.
+   * Default is 1, maximum is 3.
+   */
+  prefetchTssPublicKeys?: number;
+}
+
+export interface ExtraParams {
+  [key: string]: unknown;
+}
+
+export type WebAuthnExtraParams = {
+  signature?: string;
+  clientDataJSON?: string;
+  authenticatorData?: string;
+  publicKey?: string;
+  challenge?: string;
+  rpOrigin?: string;
+  credId?: string;
+  transports?: AuthenticatorTransport[];
+};
+
+type AuthenticatorTransport = "ble" | "hybrid" | "internal" | "nfc" | "usb";
+```
+
+</TabItem>
+
+</Tabs>
+
+## Usage
+
+### Single Verifier
+
+To login with a single verifier, you will require to create a custom verifier in the Web3Auth
+dashboard. If you haven't already created one,
+[learn how to create a verifier](/docs/auth-provider-setup/byo-jwt-provider/#set-up-custom-jwt-verifier).
+
+```tsx
+import { JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const jwtLoginParams: JWTLoginParams = {
+  verifier: "YOUR_VERIFIER_NAME",
+  verifierId: "USER'S_VERIFIER_ID",
+  idToken: "USER'S_ID_TOKEN",
+};
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```
+
+### Aggregate Verifier
+
+To login with an aggregate verifier, you will require to create an aggregate verifier in the
+Web3Auth dashboard. If you haven't already created one,
+[learn how to create an aggregate verifier](/docs/auth-provider-setup/aggregate-verifier#set-up-an-aggregate-verifier).
+
+```tsx
+import {  JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const jwtLoginParams = {
+  verifier: "YOUR_AGGREGATE_VERIFIER_NAME"
+  subVerifier: "YOUR_SUB_VERIFIER_NAME",
+  verifierId: "USER'S_VERIFIER_ID",
+  idToken: "USER'S_ID_TOKEN",
+} as JWTLoginParams;
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```
+
+## Importing an existing account.
+
+During the first-time login with `Web3AuthMPCCoreKit`, you can import an existing account using the
+`importTssKey` parameter. To import a secp256k1 chain account, be sure to provide the private key in
+hex format. For an ed25519 chain account, you need to pass the seed.
+
+By default, the ed25519 key is formatted in base58 and is 64 bytes long. This consists of the first
+32 bytes as the seed (also known as the private key) and the last 32 bytes as the public key. Ensure
+that the first 32 bytes are provided in hexadecimal format when using the ed25519 seed.
+
+```tsx
+import { JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const jwtLoginParams: JWTLoginParams = {
+  verifier: "YOUR_VERIFIER_NAME",
+  verifierId: "USER'S_VERIFIER_ID",
+  idToken: "USER'S_ID_TOKEN",
+  // focus-next-line
+  importTssKey: "SECP256K1_PRIVATE_KEY_OR_ED25519_SEED",
+};
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```
+
+## Importing an existing Single Factor Auth(SFA) Key.
+
+When logging in for the first time, you can import an existing [SFA SDK](/docs/sdk/sfa/sfa-js/) key
+using the `registerExistingSFAKey` parameter. By default, the value of this parameter is `false`.
+
+Additionally, this parameter allows you to leverage the
+[wallet pregeneration API](/docs/features/wallet-pregeneration) to pre-generate a wallet address.
+This approach enhances the user experience by enabling the creation of a wallet without requiring
+end users to initiate or complete an authentication flow.
+
+To use this feature, you need to make sure that you are using the same `verifier` for both the SFA
+SDK/ Wallet Pregeneration API and MPC Core Kit SDK.
+
+:::info
+
+Please note, once the SFA Key is imported, users will no longer be able to access their account
+through the SFA SDK.
+
+:::
+
+```tsx
+import { JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const jwtLoginParams: JWTLoginParams = {
+  // Please make sure to use the same verifier of the SFA/ Wallet Pregeneration API
+  verifier: "YOUR_VERIFIER_NAME",
+  verifierId: "USER'S_VERIFIER_ID",
+  idToken: "USER'S_ID_TOKEN",
+  // focus-next-line
+  registerExistingSFAKey: true,
+};
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```

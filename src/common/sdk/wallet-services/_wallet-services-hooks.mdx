@@ -1,0 +1,168 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import ShowCheckoutParameters from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup-parameters.mdx";
+import ShowSwapParameters from "@site/src/common/sdk/pnp/web/_plugin-show-swap-parameters.mdx";
+import ShowWCScannerParameters from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner-parameters.mdx";
+import ShowWalletUIParameters from "@site/src/common/sdk/pnp/web/_plugin-show-wallet-ui-parameters.mdx";
+
+Web3Auth provides essential React hooks for the Wallet Services Plugin SDK for managing wallet
+services such as WalletConnect, TopUp, and Wallet UI. These hooks can be directly imported from the
+[@web3auth/wallet-services-plugin-react-hooks](https://www.npmjs.com/package/@web3auth/wallet-services-plugin-react-hooks)
+package.
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/wallet-services-plugin-react-hooks
+```
+
+For more information on React hooks, refer to the
+[official React documentation](https://react.dev/learn/reusing-logic-with-custom-hooks).
+
+## Initialization
+
+To initialize the Wallet Services plugin, pass the `WalletServicesPlugin` instance to the list of
+plugins in `Web3AuthContextConfig`. For more details, refer to the
+[Wallet Services Plugin initialization documentation](/docs/sdk/pnp/web/wallet-services/#initialization).
+
+```ts
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+import { Web3AuthContextConfig } from "@web3auth/modal-react-hooks";
+
+const walletServicesPlugin = new WalletServicesPlugin();
+
+export const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+  plugins: [walletServicesPlugin],
+};
+```
+
+Once `Web3AuthContextConfig` is created you can use `Web3AuthProvider` component to wrap the main
+component and inject the Web3Auth-related context. For more details, please refer to the
+[Web3AuthProvider documentation](/sdk/pnp/web/modal/modal-hooks#web3authprovider).
+
+## Available Hooks
+
+To access the Wallet Services Plugin context, which is initialized via the `WalletServicesProvider`
+component, use the `useWalletServicesPlugin` function.
+
+### Hook Context Interface
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                  | Description                                                                                                                                                                   |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isPluginConnected`        | Indicates whether the plugin is connected and ready to be used.                                                                                                               |
+| `showWalletConnectScanner` | Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is useful for interoperability with dApps having Wallet Connect login option. |
+| `showCheckout`             | Shows the TopUp modal to select local currency and amount to top up the wallet.                                                                                               |
+| `showWalletUI`             | Shows the Wallet Services modal UI to be used as a wallet UI.                                                                                                                 |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface IBaseWalletServicesHookContext {
+  isPluginConnected: boolean;
+  showWalletConnectScanner(
+    showWalletConnectParams?: BaseEmbedControllerState["showWalletConnect"],
+  ): Promise<void>;
+  showCheckout(showCheckoutParams?: BaseEmbedControllerState["showCheckout"]): Promise<void>;
+  showWalletUI(showWalletUiParams?: BaseEmbedControllerState["showWalletUi"]): Promise<void>;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## isPluginConnected
+
+Indicates whether the plugin is connected and ready to be used
+
+### Usage
+
+```ts
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+
+const { isPluginConnected } = useWalletServicesPlugin();
+```
+
+## showWalletConnectScanner
+
+Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is
+useful for interoperability with dApps having Wallet Connect login option.
+
+### Parameters
+
+<ShowWCScannerParameters />
+
+### Usage
+
+```ts
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+
+const { showWalletConnectScanner } = useWalletServicesPlugin();
+await showWalletConnectScanner();
+```
+
+## showCheckout
+
+Displays the TopUp modal, allowing users to select their local currency and specify the token to top
+up their wallet
+
+### Parameters
+
+<ShowCheckoutParameters />
+
+### Usage
+
+```ts
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+
+const { showCheckout } = useWalletServicesPlugin();
+await showCheckout();
+```
+
+## showSwap
+
+Displays the Swap modal, allowing users to swap between tokens.
+
+### Parameters
+
+<ShowSwapParameters />
+
+### Usage
+
+```javascript
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const walletServicesPlugin = new WalletServicesPlugin();
+web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
+
+await walletServicesPlugin.showSwap(); // Opens the Swap Modal
+```
+
+## showWalletUI
+
+Shows the modal, and allows you to use the templated wallet UI services.
+
+### Parameters
+
+<ShowWalletUIParameters />
+
+### Usage
+
+```ts
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+
+const { showWalletUI } = useWalletServicesPlugin();
+await showWalletUI();
+```

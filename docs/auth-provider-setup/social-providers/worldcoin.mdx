@@ -1,0 +1,98 @@
+---
+title: Sign in with World ID with Web3Auth
+sidebar_label: WorldCoin
+description: "Create a WorldCoin verifier with Web3Auth | Documentation - Web3Auth"
+keywords:
+  [
+    worldcoin,
+    WorldID,
+    OAuth,
+    Sign in with WorldID,
+    authentication,
+    worldcoin login,
+    worldcoin oauth,
+    worldcoin verifier,
+  ]
+---
+
+import CreateVerifierFirstStep from "@site/src/common/docs/_create-verifier-first-step.mdx";
+
+:::note
+
+Sign in with World ID can be performed in various ways, depending on the use case. We have
+demonstrated this with Auth0, but this can be done by hosting your own server with Auth.js or using
+NextAuth implementation. Check out the [Sign in with World ID](https://docs.worldcoin.org/sign-in)
+documentation.
+
+:::
+
+## Add WorldCoin to your Auth0 Application
+
+1. In your Auth0 Dashboard, Add the
+   [WorldCoin Social Connection](https://marketplace.auth0.com/integrations/worldcoin) to your Auth0
+   application.
+
+## Create a WorldCoin Verifier
+
+<CreateVerifierFirstStep />
+
+1. Give a unique name to your verifier in the `Verifier Identifier` field. e.g.,
+   `web3auth-worldcoin-verifier`.
+
+1. From the list of Login Providers, select `Social Login Providers` and from the Select Login
+   Provider dropdown, select `Auth0`.
+   ![WorldCoin - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
+1. Select `Other` as the **Authentication Type** based on the dropdown.
+   ![WorldCoin - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-other.png)
+1. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a
+   new Auth0 application [here](https://auth0.com/docs/quickstart/webapp/).
+
+   ![WorldCoin - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-other-filled.png)
+
+1. Click on the `Create` button to create the `WorldCoin` Custom Authentication via Auth0 verifier.
+
+   :::note
+
+   It typically takes 5-10 minutes for the verifier to go live. Once deployed & live, you'll receive
+   an email and the dashboard will display the 'Live' status for the verifier.
+
+   :::
+
+## Example
+
+```tsx
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    loginConfig: {
+      // focus-start
+      jwt: {
+        verifier: "w3a-worldcoin-demo", // Pass the Verifier name here
+        typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
+        clientId: "7u5jfJ3bakrfLBJYhyTquohpOth0Tmt7", // Pass on the Auth0 `Client ID` here
+      },
+      // focus-end
+    },
+  },
+});
+
+web3AuthNoModalInstance.configureAdapter(authAdapter);
+
+// Initialize
+await web3AuthNoModalInstance.init();
+
+// Login with WorldCoin
+// focus-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.AUTH, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    domain: "https://web3auth.jp.auth0.com", // Pass on the Auth0 `Domain` here
+    verifierIdField: "sub", // Pass on the field name of the `sub` field in the JWT
+    // focus-next-line
+    connection: "worldcoin", // Use this to skip Auth0 Modal for WorldCoin's World ID
+  },
+});
+// focus-end
+```

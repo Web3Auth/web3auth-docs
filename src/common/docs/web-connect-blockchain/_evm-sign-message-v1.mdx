@@ -2,12 +2,14 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <Tabs
-  defaultValue="web3"
+  defaultValue="viem"
   values={[
+    { label: "viem", value: "viem" },
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
   ]}
 >
+
 <TabItem value="web3">
 
 ```tsx
@@ -15,7 +17,7 @@ import Tabs from "@theme/Tabs";
   Use code from the above Initializing Provider here
 */
 
-// web3 is const web3 = new Web3(web3authProvider); from above.
+// web3 is const web3 = new Web3(web3Auth.provider); from above.
 
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
@@ -51,7 +53,7 @@ const signedMessage = await web3.currentProvider.sendAsync({
   Use code from the above Initializing Provider here
 */
 
-// provider is const provider = new ethers.providers.Web3Provider(web3authProvider); from above.
+// provider is const provider = new ethers.providers.Web3Provider(web3Auth.provider); from above.
 
 const signer = await provider.getSigner();
 
@@ -80,6 +82,9 @@ const signedMessage = await signer.provider.send(method, params);
 <TabItem value="viem">
 
 ```tsx
+// SignTypedData in viem
+// https://viem.sh/docs/actions/wallet/signTypedData
+
 /*
   Use code from the above Initializing Provider here
 */
@@ -91,24 +96,37 @@ const walletClient = createWalletClient({
 
 const address = await walletClient.getAddresses();
 
-// Get user's Ethereum public address
-const fromAddress = await signer.getAddress();
-
-const originalMessage = [
-  {
-    type: "string",
-    name: "fullName",
-    value: "Satoshi Nakamoto",
+const signature = await walletClient.signTypedData({
+  account: address[0],
+  domain: {
+    name: "Ether Mail",
+    version: "1",
+    chainId: 1,
+    verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
   },
-  {
-    type: "uint32",
-    name: "userId",
-    value: "1212",
+  types: {
+    Person: [
+      { name: "name", type: "string" },
+      { name: "wallet", type: "address" },
+    ],
+    Mail: [
+      { name: "from", type: "Person" },
+      { name: "to", type: "Person" },
+      { name: "contents", type: "string" },
+    ],
   },
-];
-await walletClient.signTypedData({
-  account: address,
-  message: originalMessage,
+  primaryType: "Mail",
+  message: {
+    from: {
+      name: "Cow",
+      wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+    },
+    to: {
+      name: "Bob",
+      wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+    },
+    contents: "Hello, Bob!",
+  },
 });
 ```
 

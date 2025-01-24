@@ -1,0 +1,113 @@
+---
+title: SFA Node.js SDK to SFA JS SDK Migration Guide
+description: SFA Node.js SDK to SFA JS SDK Migration Guide | Documentation - Web3Auth
+sidebar_label: SFA Node.js SDK Migration
+---
+
+## Overview
+
+This migration guide provides steps for updating your existing SFA Node.js SDK integration to the
+SFA JS SDK. This migration is coming after we have deprecated the SFA Node.js SDK in favour a
+unified, platform-agnostic solution, the Single Factor Auth JS SDK. This new SDK is an evolution of
+our popular SFA Web SDK, designed to support all platforms, including React Native, Node.js, and
+Web.
+
+#### Key Benefits of the SFA JS SDK:
+
+• Unified API: Simplified and consistent API across platforms.
+
+• Cross-platform Support: One SDK for Web, React Native, and Node.js, reducing integration
+complexity.
+
+• Feature Enhancements: Incorporates the latest updates and improvements, ensuring a better
+development experience.
+
+## Changes in Detail
+
+### Package Changes
+
+Use the `@web3auth/single-factor-auth` instead of `@web3auth/node-sdk`
+
+```js
+// remove-next-line
+const { Web3Auth } = require("@web3auth/node-sdk");
+// add-next-line
+const { Web3Auth, SDK_MODE } = require("@web3auth/single-factor-auth");
+const { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } = require("@web3auth/base");
+const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
+```
+
+### `ChainConfig`
+
+`ChainConfig` now requires a `logo` parameter for the chain's logo and the parameter formerly called
+`blockExplorer` has been renamed to `blockExplorerUrl`. Additionally, `isTestnet` has been
+introduced which can be used to define whether the network is testnet or not.
+
+```tsx
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  // remove-next-line
+  blockExplorer: "https://etherscan.io/",
+  // add-next-line
+  blockExplorerUrl: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  decimals: 18,
+  // add-next-line
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+```
+
+### Constructor Changes
+
+Pass the `privateKeyProvider` in the constructor, alongside setting the SDK's `mode` to
+`SDK_MODE.NODE`.
+
+```js
+const { Web3Auth, SDK_MODE } = require("@web3auth/single-factor-auth");
+const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  // add-start
+  privateKeyProvider,
+  mode: SDK_MODE.NODE,
+  // add-end
+});
+```
+
+### Getting the provider
+
+Now the provider is not returned on the successful login, instead it is always present in the
+web3auth instance using the `provider` param.
+
+```js
+// remove-next-line
+const web3authNodeprovider = await web3auth.connect({
+// add-next-line
+    await web3auth.connect({
+    verifier: web3authVerifier,
+    verifierId,
+    idToken,
+});
+
+// remove-next-line
+const ethPublicAddress = await web3authNodeprovider.request({ method: "eth_accounts" });
+// add-next-line
+const ethPublicAddress = await web3auth.provider.request({ method: "eth_accounts" });
+```
+
+## Need Help?
+
+If you encounter any issues during migration, please:
+
+- Refer to our [official documentation](https://web3auth.io/docs/sdk/sfa/sfa-js)
+- Open a new thread in our [community forum](https://web3auth.io/community/)

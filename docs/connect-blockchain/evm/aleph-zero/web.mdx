@@ -1,0 +1,114 @@
+---
+title: Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications
+sidebar_label: Web
+image: "banners/aleph-zero.png"
+
+keywords: [web, aleph-zero, web3auth, authentication, blockchain]
+description:
+  "Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
+import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-get-account-n-balance.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
+import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
+import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications"
+  description="Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/aleph-zero.png"
+  slug="/connect-blockchain/evm/aleph-zero/web"
+/>
+
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Aleph Zero Blockchain](https://alephzero.org) calls like getting the user's `account`, fetching
+`balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
+etc. We have highlighted a few examples to get you started.
+
+## Installation
+
+<InstallationSnippet />
+
+## Chain Details for Aleph Zero
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xA1EF", // hex of 41455, Aleph Zero Mainnet
+  rpcTarget: "https://rpc.alephzero.raas.gelato.cloud",
+  displayName: "Aleph Zero Mainnet",
+  blockExplorerUrl: "https://evm-explorer.alephzero.org",
+  ticker: "AZERO",
+  tickerName: "Aleph Zero",
+  logo: "https://i.ibb.co/cYcFtr4/A0-mark-graphite.png",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x7F7", // hex of 2039, Aleph Zero Testnet
+  rpcTarget: "https://rpc.alephzero-testnet.gelato.digital",
+  displayName: "Aleph Zero Testnet",
+  blockExplorerUrl: "https://evm-explorer-testnet.alephzero.org",
+  ticker: "tAZERO",
+  tickerName: "Aleph Zero Testnet",
+  logo: "https://i.ibb.co/cYcFtr4/A0-mark-graphite.png",
+};
+```
+
+</TabItem>
+</Tabs>
+
+## Initializing Web3Auth
+
+<InitializeWeb3Auth />
+
+## Get Account and Balance
+
+<GetAccountAndBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign Transaction
+
+<SignTransactionSnippet />
+
+## Sign Message
+
+### Personal Sign
+
+<SignPersonalMessageSnippet />
+
+### Sign Typed Data V4
+
+<SignTypedDataV4Snippet />

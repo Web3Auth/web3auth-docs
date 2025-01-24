@@ -1,0 +1,25 @@
+Once you have an `Web3AuthMPCCoreKit` instance, it can be used as along with `solana/web3.js`
+package.
+
+To generate the Solana EOA address, you can use the `getPubKeyEd25519` method to retrieve the
+ed25519 curve compatible pubKey. Since solana uses the base58 enocded address, you can simply encode
+pubKey with base58 to get the user's EOA address.
+
+```tsx
+import { base58 } from "@scure/base";
+
+const address = base58.encode(Uint8Array.from(coreKitInstance.getPubKeyEd25519()));
+```
+
+If you want to verify that the public key is on ed25519 curve, you can create a new `PublicKey`
+instance using the generated `address`. Once you have the `PublicKey` instance, you can use the
+`isOnCurve` static method to verify the curve.
+
+```tsx
+import { PublicKey } from "@solana/web3.js";
+
+const publicKey = new PublicKey(address);
+
+// Returns whether the public is on ed25519 curve
+const isValidAddress = PublicKey.isOnCurve(publicKey.toBytes());
+```

@@ -1,0 +1,438 @@
+---
+title: "React Hooks for PnP No Modal SDK"
+sidebar_label: React Hooks
+description: " React Hooks for Web3Auth PnP Web No Modal SDK| Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import ExampleCards from "@theme/ExampleCards";
+import { examples } from "@site/src/common/maps";
+
+Web3Auth provides essential React hooks for Web3Auth No Modal SDK for managing authentication, chain
+configuration, and user interactions within your application. These hooks can be directly imported
+from the `@web3auth/no-modal-react-hooks` package. Here's an example of how to import them:
+
+```jsx
+import { useWeb3Auth } from "@web3auth/no-modal-react-hooks";
+```
+
+For more information on React hooks, refer to the
+[official React documentation](https://react.dev/learn/reusing-logic-with-custom-hooks).
+
+### Available Hooks
+
+- `useWeb3Auth`: Provides access to the Web3Auth context initialized via the `Web3AuthProvider`
+  component.
+
+### Hook Context Interface
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter            | Description                                                                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `isConnected`        | Indicates whether a user is currently logged in or not.                                                                                    |
+| `provider`           | The current provider, or `null` if not connected.                                                                                          |
+| `userInfo`           | Information about the logged-in user.                                                                                                      |
+| `isMFAEnabled`       | Indicates whether Multi-Factor Authentication (MFA) is enabled or not.                                                                     |
+| `isInitialized`      | Indicates whether Web3Auth has been initialized or not.                                                                                    |
+| `status`             | The current status of Web3Auth. Can take the following values: `NOT_READY`, `READY`, `CONNECTING`, `CONNECTED`, `DISCONNECTED`, `ERRORED`. |
+| `enableMFA(params?)` | Enables Multi-Factor Authentication for the user. Returns a Promise.                                                                       |
+| `logout(params?)`    | Logs out the user, with an optional cleanup parameter. Returns a Promise.                                                                  |
+| `addAndSwitchChain`  | Adds and switches to a new blockchain. Takes `chainConfig` of type `CustomChainConfig` as a parameter. Returns a Promise.                  |
+| `addPlugin`          | Adds a plugin to the Web3Auth instance. Takes a `plugin` of type `IPlugin` as a parameter.                                                 |
+| `getPlugin`          | Retrieves a plugin by name. Takes `pluginName` of type `string` as parameter. Returns an `IPlugin` or `null`.                              |
+| `authenticateUser`   | Retrieves the idToken for the logged-in user. Returns a Promise.                                                                           |
+| `addChain`           | Adds a new blockchain configuration. Takes `chainConfig` of type `CustomChainConfig` as a parameter. Returns a Promise.                    |
+| `switchChain`        | Switches to a specified blockchain by chain ID. Takes `params` of type `{ chainId: string }` as a parameter. Returns a Promise.            |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+interface IBaseWeb3AuthHookContext {
+  /**
+   * Indicates whether a user is currently logged in or not.
+   */
+  isConnected: boolean;
+  /**
+   * The current provider, or `null` if not connected.
+   */
+  provider: IProvider | null;
+  /**
+   * Information about the logged-in user.
+   */
+  userInfo: Partial<AuthUserInfo> | null;
+  /**
+   * Indicates whether Multi-Factor Authentication (MFA) is enabled or not.
+   */
+  isMFAEnabled: boolean;
+  /**
+   * Indicates whether Web3Auth has been initialized or not.
+   */
+  isInitialized: boolean;
+  /**
+   * The current status of the Web3Auth adapter.
+   */
+  status: ADAPTER_STATUS_TYPE | null;
+  /**
+   * Enables Multi-Factor Authentication for the user.
+   * @param params - Optional login parameters.
+   * @returns A Promise that resolves when the MFA is enabled.
+   */
+  enableMFA(params?: LoginParams): Promise<void>;
+  /**
+   * Logs out the user, optionally performing cleanup.
+   * @param params - Optional cleanup parameter.
+   * @returns A Promise that resolves when the user is logged out.
+   */
+  logout(params?: { cleanup: boolean }): Promise<void>;
+  /**
+   * Adds a new blockchain configuration and switches to it.
+   * @param chainConfig - The configuration for the new blockchain.
+   * @returns A Promise that resolves when the chain is added and switched to.
+   */
+  addAndSwitchChain(chainConfig: CustomChainConfig): Promise<void>;
+  /**
+   * Adds a plugin to the Web3Auth instance.
+   * @param plugin - The plugin to add.
+   */
+  addPlugin(plugin: IPlugin): void;
+  /**
+   * Retrieves a plugin by name.
+   * @param pluginName The name of the plugin.
+   * @returns The plugin instance or `null` if not found.
+   */
+  getPlugin(pluginName: string): IPlugin | null;
+  /**
+   * Retrieves the idToken for the logged-in user.
+   * @returns A Promise that resolves with the authenticated user's information.
+   */
+  authenticateUser(): Promise<UserAuthInfo>;
+  /**
+   * Adds a new blockchain configuration.
+   * @param chainConfig Configuration for the new blockchain.
+   * @returns A Promise that resolves when the chain is added.
+   */
+  addChain(chainConfig: CustomChainConfig): Promise<void>;
+  /**
+   * Switches to a specified blockchain by chain ID.
+   * @param params Parameters for switching the chain.
+   * @returns A Promise that resolves when the chain is switched.
+   */
+  switchChain(params: { chainId: string }): Promise<void>;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Web3AuthProvider
+
+The `Web3AuthProvider` component wraps the main component and injects the Web3Auth-related context
+into it. It takes the following properties as its context:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Description                                                           |
+| ----------------- | --------------------------------------------------------------------- |
+| `web3AuthOptions` | Configuration options for Web3Auth.                                   |
+| `adapters`        | An array of adapters for connecting to different blockchain networks. |
+| `plugins`         | An array of plugins to add additional functionality to Web3Auth.      |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface Web3AuthProviderProps {
+  config: Web3AuthContextConfig;
+}
+
+export type Web3AuthContextConfig = {
+  web3AuthOptions: Web3AuthOptions;
+  adapters?: IAdapter<unknown>[];
+  plugins?: IPlugin[];
+};
+
+export interface Web3AuthOptions extends IWeb3AuthCoreOptions {
+  /**
+   * Config for configuring modal ui display properties
+   */
+  uiConfig?: Omit<UIConfig, "adapterListener">;
+  /**
+   * Private key provider for your chain namespace
+   */
+  privateKeyProvider: IBaseProvider<string>;
+}
+
+export interface IWeb3AuthCoreOptions {
+  clientId: string;
+  chainConfig?: CustomChainConfig;
+  enableLogging?: boolean;
+  storageKey?: "session" | "local";
+  sessionTime?: number;
+  web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
+  useCoreKitKey?: boolean;
+  uiConfig?: WhiteLabelData;
+  privateKeyProvider?: IBaseProvider<string>;
+}
+
+export interface UIConfig extends WhiteLabelData {
+  /**
+   * order of how login methods are shown
+   *
+   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
+   */
+  loginMethodsOrder?: string[];
+  /**
+   * Z-index of the modal and iframe
+   * @defaultValue 99998
+   */
+  modalZIndex?: string;
+  /**
+   * Whether to show errors on Web3Auth modal.
+   *
+   * @defaultValue `true`
+   */
+  displayErrorsOnModal?: boolean;
+  /**
+   * number of columns to display the Social Login buttons
+   *
+   * @defaultValue `3`
+   */
+  loginGridCol?: 2 | 3;
+  /**
+   * Decides which button will be the focus of the modal
+   * For `socialLogin` the social icon will be colored
+   * For other options like `emailLogin` and `externalLogin` the respective buttons will be coverted into a primary button
+   *
+   * @defaultValue `socialLogin`
+   */
+  primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
+  adapterListener: SafeEventEmitter;
+  /**
+   * UX Mode for the auth adapter
+   */
+  uxMode?: UX_MODE_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+:::info
+
+Please check out the [PnP No Modal SDK references](/sdk/pnp/web/no-modal/initialize#arguments) for
+interfaces for the inner parameters.
+
+:::
+
+### Shared Methods Descriptions
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
+users. Further, you can use the native provider given by Web3Auth to connect the users to the
+respective blockchain network.
+
+Natively, the instance of `Web3Auth` _(referred to as `web3auth` in our examples)_ returns the
+following functions:
+
+- **`init()`** - Initializes the Web3Auth instance.
+
+  ```javascript
+  await init();
+  ```
+
+  Returns:
+
+  ```tsx
+  init(): Promise<void>;
+  ```
+
+- **`connectTo(walletName, loginParams?)`** - Connect to a specific wallet adapter.
+
+  ```javascript
+  await connectTo(WALLET_ADAPTERS.AUTH, {
+    loginProvider: "google",
+  });
+  ```
+
+  Returns:
+
+  ```tsx
+  connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<IProvider | null>;
+  ```
+
+  On successful login, the `connectTo` function returns an `IProvider` instance. You can use this
+  provider to connect your user to the blockchain and make transactions.
+
+- **`provider()`** - Returns the native provider that can be used to make different blockchain
+  transactions. Returns:
+
+  ```js
+  get provider(): IProvider | null;
+  ```
+
+- **`connected()`** - Returns `true` or `false` depending on whether the web3auth instance is
+  available or not. Returns:
+
+  ```js
+  get connected(): boolean;
+  ```
+
+- **`getUserInfo()`** - Getting the User's Information.
+
+  ```javascript
+  const userInfo = await getUserInfo();
+  ```
+
+- **`authenticateUser()`** - Getting the idToken from Web3Auth.
+
+  ```javascript
+  const idToken = await authenticateUser();
+  ```
+
+- **`addChain()`** - Add chain config details to the connected adapter.
+
+  ```javascript
+  await addChain(chainConfig);
+  ```
+
+- **`switchChain()`** - Switch chain as per chainId already added to chain config.
+
+  ```javascript
+  await switchChain({ chainId: "0x1" });
+  ```
+
+- **`getAdapter()`** - Get the connected adapter instance.
+
+  ```javascript
+  const adapter = await getAdapter(adapterName);
+  ```
+
+- **`configureAdapter()`** - Configure the adapter instance.
+
+  ```javascript
+  await configureAdapter(adapterConfig);
+  ```
+
+- **`clearCache()`** - Clear the cache.
+
+  ```javascript
+  await clearCache();
+  ```
+
+- **`addPlugin()`** - Add a plugin to Web3Auth.
+
+  ```javascript
+  await addPlugin(plugin);
+  ```
+
+- **`logout()`** - Logging out the User.
+  ```javascript
+  await logout();
+  ```
+
+### Usage
+
+```typescript title="App.tsx"
+import React from "react";
+import { Web3AuthProvider, useWeb3Auth } from "@web3auth/no-modal-react-hooks";
+import { web3AuthContextConfig } from "./web3AuthProviderProps";
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const App = () => {
+  const {
+    init,
+    connectTo,
+    logout,
+    isConnected,
+    enableMFA,
+    addAndSwitchChain,
+    authenticateUser,
+    addChain,
+    switchChain,
+  } = useWeb3Auth();
+
+  React.useEffect(() => {
+    const initialize = async () => {
+      await init();
+    };
+    initialize();
+  }, [init]);
+
+  return (
+    <Web3AuthProvider config={web3AuthContextConfig}>
+      <div>
+        {isConnected ? (
+          <>
+            <button onClick={logout}>Logout</button>
+            <button onClick={enableMFA}>Enable MFA</button>
+            <button
+              onClick={() =>
+                addAndSwitchChain({
+                  chainId: "0x89",
+                  rpcTarget: "https://rpc.ankr.com/polygon",
+                  displayName: "Polygon Ecosystem Token",
+                  ticker: "POL",
+                })
+              }
+            >
+              Add and Switch Chain
+            </button>
+            <button onClick={authenticateUser}>Authenticate User</button>
+            <button
+              onClick={() =>
+                addChain({
+                  chainId: "0x89",
+                  rpcTarget: "https://rpc.ankr.com/polygon",
+                  displayName: "Polygon Mainnet",
+                  ticker: "MATIC",
+                })
+              }
+            >
+              Add Chain
+            </button>
+            <button onClick={() => switchChain({ chainId: "0x89" })}>Switch Chain</button>
+          </>
+        ) : (
+          <button
+            onClick={() =>
+              connectTo(WALLET_ADAPTERS.AUTH, {
+                loginProvider: "google",
+              })
+            }
+          >
+            Login
+          </button>
+        )}
+      </div>
+    </Web3AuthProvider>
+  );
+};
+
+export default App;
+```
+
+## Examples
+
+<ExampleCards exampleMap={[examples["react-modal-playground"], examples["evm-modal-example"]]} />

@@ -1,0 +1,30 @@
+#### `connectedAdapterName`
+
+This function gives you the name of the connected adapter. This can be used to check which adapter
+is connected to the user.
+
+```javascript
+const adapter = web3auth.connectedAdapterName;
+```
+
+#### Returns
+
+```javascript
+connectedAdapterName: WALLET_ADAPTER_TYPE | null;
+
+export type WALLET_ADAPTER_TYPE = (typeof WALLET_ADAPTERS)[keyof typeof WALLET_ADAPTERS];
+
+export declare const WALLET_ADAPTERS: {
+  AUTH: string;
+  WALLET_CONNECT_V2: string;
+  SFA: string;
+  TORUS_SOLANA: string;
+  TORUS_EVM: string;
+  COINBASE: string;
+};
+```
+
+- If a user is connected, it will return the name of the adapter via which the login has happened.
+- If connecting via MIPD (EIP6163) in default evm/ solana adapters, it will return the name of the
+  wallet connected.
+- If no user is connected, this function will return a `null` value.

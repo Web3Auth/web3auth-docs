@@ -1,0 +1,173 @@
+---
+title: Migration Guide from v11 to v15 for tKey CoreKit JS SDK
+description: "tKey CoreKit Web SDK - v11 to v15 | Documentation - Web3Auth"
+sidebar_label: v11 to v15
+---
+
+## Overview
+
+This migration guide provides steps for upgrading from version v11 to v15 of the Web3Auth tKey
+CoreKit Web SDK. The guide outlines significant changes and enhancements, including the support of
+`ed25519` curve. This guide also mentions about different Service Providers you can use with your
+tKey integration, including a newly introduced SFA Service Provider.
+
+## Breaking Changes
+
+### ThresholdKey renaming
+
+In v15, the `ThresholdKey` import is reanmed to `TKey` in the `@tkey/core` package.
+
+```tsx
+// focus-start
+// remove-start
+import ThresholdKey from "@tkey/core";
+
+const tKey = new ThresholdKey({
+// remove-end
+
+// add-start
+import { TKey } from "@tkey/core";
+
+const tKey = new TKey({
+// add-end
+// focus-end
+  serviceProvider,
+  storageLayer: storageLayer,
+  modules: {
+    webStorage: webStorageModule,
+    shareSerialization,
+  },
+});
+```
+
+While in `@tkey/default` package the `ThresholdKey` has been renamed to `TkeyDefault`.
+
+```tsx
+// focus-start
+// remove-start
+import ThresholdKey from "@tkey/default";
+
+const tKey = new ThresholdKey({
+// remove-end
+
+// add-start
+import { TKeyDefault } from "@tkey/default";
+
+const tKey = new TKeyDefault({
+// add-end
+// focus-end
+  modules: {
+    webStorage: webStorageModule,
+    securityQuestions: securityQuestionsModule,
+  },
+  customAuthArgs: {
+    web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    baseUrl: `${window.location.origin}/serviceworker`,
+    network: TORUS_SAPPHIRE_NETWORK.SAPPHIRE_MAINNET,
+  },
+});
+```
+
+### `privKey` is now renamed to `secp256k1Key`
+
+The `privKey` getter in `TKey` which used to return the secp256k1 curve private key is now renamed
+to `secp256k1Key`.
+
+```tsx
+//remove-next-line
+const privateKey = tKey.privKey?.toString("hex");
+//add-next-line
+const privateKey = tKey.secp256k1Key?.toString("hex");
+```
+
+Similar to `TKey`, the `privKey` in `ReconstructedKeyResult` is now renamed to `secp256k1Key`.
+
+```tsx
+const reconstructedKey = await tKey.reconstructKey();
+
+//remove-next-line
+const privateKey = reconstructedKey?.privKey.toString("hex");
+//add-next-line
+const privateKey = reconstructedKey?.secp256k1Key.toString("hex");
+```
+
+## Additional `ed25519` Support
+
+We are happy to announce that with v15, tKey will natively support the `ed25519` curve. Starting
+from v15, developers can use the tKey with the Blockchain ecosystem which uses the `ed25519` curve.
+
+:::warning
+
+Please note, this is a native support for `ed25519` curve in tKey SDK, unlike the previous
+integrations where, using the `@web3auth/base-provider` package, a sub key was derived for
+supporting the curve.
+
+If you are already using the `@web3auth/base-provider` package for your application, please do not
+upgrade to this method as **it might cause the keys to change** for existing users.
+
+For new integrations, we recommend using this new flow of native support for `ed25519` curve.
+
+:::
+
+```tsx
+const tKey = new TKey({
+  serviceProvider,
+  storageLayer: storageLayer,
+  modules: {
+    webStorage: webStorageModule,
+    shareSerialization,
+  },
+});
+
+// focus-start
+// Get the ed25519 seed once the tKey is reconstructed
+// highlight-next-line
+const seed = await tKey.retrieveEd25519Seed();
+
+// Use the seed with any ed25519 curve blockchain to retrive public key, and sign
+// the transactions.
+// focus-end
+```
+
+## Addition of SFA Service Provider
+
+As part of the broader updates to the tKey SDK, one of the key changes we've introduced is the
+Single Factor Auth Service Provider. This update simplifies the authentication process by reducing
+complexity and decreasing package size, making it the preferred option for most use cases.
+
+### Previous Default: Torus Service Provider
+
+The Torus Service Provider was previously the default service provider in tKey SDK, offering both
+implicit logins and ID token-based logins. While feature-rich, the Torus Service Provider introduced
+a level of complexity that could make integration challenging, particularly for developers who
+didn't need both login flows. Additionally, the package size was larger due to its extended
+functionality.
+
+### New Introduction: SFA Service Provider
+
+The new Single Factor Auth (SFA) Service Provider simplifies the authentication flow by focusing
+solely on ID token-based authentication. The authentication interface closely resembles our Single
+Factor Auth SDKs, reducing integration complexity. It additionally cuts down the package size, and
+gives you more control over your authentication logic.
+
+- What it Offers: Only ID token-based authentication (no implicit login flow).
+- Why Use It: Simplified integration and smaller package size.
+- Recommendation: We recommend migrating to the SFA Service Provider unless you specifically require
+  implicit login flows.
+
+:::info
+
+Our default documentation is now updated to reflect the SFA Service Provider as the default option.
+If you are using `@tkey/default` package it is still using Torus Service Provider behind the scenes.
+You can still find our documentation for Torus Service Provider in the
+[implicit flow docs](/sdk/infra/tkey/implicit-flow)
+
+:::
+
+:::warning update to sfa service provider is not mandatory
+
+Any migration to SFA Service provider is **not required**. This addition is to provide more options
+and make integration less complex for new users. Both the service providers will be maintained and
+supported.
+
+:::

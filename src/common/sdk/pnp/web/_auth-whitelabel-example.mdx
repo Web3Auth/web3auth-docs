@@ -1,0 +1,34 @@
+```tsx
+import { AuthAdapter, WHITE_LABEL_THEME, WhiteLabelData } from "@web3auth/auth-adapter";
+import {
+  CHAIN_NAMESPACES,
+  IProvider,
+  UX_MODE,
+  WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
+} from "@web3auth/base";
+
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    uxMode: UX_MODE.REDIRECT,
+    // focus-start
+    whiteLabel: {
+      appName: "W3A Heroes",
+      appUrl: "https://web3auth.io",
+      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
+      mode: "dark", // whether to enable dark mode. defaultValue: auto
+      theme: {
+        primary: "#00D1B2",
+      } as WHITE_LABEL_THEME,
+      useLogoLoader: true,
+    } as WhiteLabelData,
+    // focus-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(authAdapter);
+```

@@ -1,0 +1,178 @@
+---
+title: "Web3Auth MPC Core Kit JS SDK"
+sidebar_label: Overview
+description: "Web3Auth MPC Core Kit JS SDK | Documentation - Web3Auth"
+---
+
+import TkeyMpcFlowDark from "@site/static/images/tkey-mpc-flow-dark.png";
+import TkeyMpcFlowLight from "@site/static/images/tkey-mpc-flow-light.png";
+
+Web3Auth's [`@web3auth/mpc-core-kit`](https://github.com/Web3Auth/mpc-core-kit) SDK is simple and
+easy-to-use SDK, that helps you implement Web3Auth's MPC Threshold Signature Scheme (TSS) features
+in which the private key is never reconstructed.
+
+Compared to other Web3Auth SDKs, such as Plug and Play(PnP), and Single Factor Auth(SFA) SDKs where
+the private key is securely reconstructed on user's device, and is used to sign transactions. In the
+MPC TSS architecture, the private key is never reconstructed.
+
+Instead, the partial key shares are stored at different locations which are used to generate the
+partial signatures. The final signature is generated combining the partial signatures using the TSS.
+Since the private key is never reconstructed, it's more secure approach.
+
+:::info
+
+The SDK is only available for the [Enterprise Plan](https://web3auth.io/pricing.html). However, you
+can test the SDK with all features enabled in the `sapphire_devnet`.
+
+:::
+
+## Web3Auth MPC Infrastructure
+
+The Web3Auth infrastructure is designed to ensure the security of user keys. Instead of being stored
+in a single location, the key is divided into multiple parts and distributed across the user's
+devices and our Auth Network. This means that the key is always available and never in danger of
+being compromised.
+
+The traditional Web3Auth SDK uses threshold signatures to dynamically reconstruct the key in the
+frontend. However, with the new Web3Auth MPC (Multi Party Computation) architecture, this is no
+longer necessary. Instead, partial keys are stored in different locations, and the user's device is
+used to make partial signatures for messages and transactions.
+
+These partial signatures are then combined using the TSS (Threshold Signature Scheme) to create a
+final signature, which can be used to make a transaction on the blockchain. The result is a more
+secure and user-friendly authentication process that helps to protect against key theft and other
+types of security breaches.
+
+The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and
+signing. The use of TSS in Web3Auth's Auth Network is a new paradigm that can provide numerous
+benefits, especially in terms of security.
+
+<picture>
+  <source srcset={TkeyMpcFlowLight} media="(prefers-color-scheme: light)" />
+  <source srcset={TkeyMpcFlowDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={TkeyMpcFlowLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
+
+As you can notice in this diagram above, the final output, i.e., the User's TSS Account, is
+generated in multiple stages within the infrastructure. Since this is a TSS- MPC based
+infrastructure, you don't get back a private key, but signatures that can be used to make
+transactions on the blockchain. Let's understand each of these stages in detail.
+
+## Types of Factors
+
+### Hashed Cloud Factor
+
+The MPC Core Kit SDK starts in a 2/2 flow by default. This means when user's logs in, a social login
+factor is generated and at the same time SDK will generate a hashed cloud factor. This hashed cloud
+factor is derived on the front end and stored in the encrypted metadata server. Please refer to the
+above architecture to understand more about factors.
+
+This is done to make sure the user can access their account from any device without having to
+generate a new factor. The hashed cloud factor is deleted when the user enables the MFA.
+
+### Social Login Factor
+
+This is the primary way for a user to access their account. This step involves authentication of
+user using a preferred social login provider. The `idToken` received from the social login provider
+here is passed to the Web3Auth Auth Network to generate the TSS Shares in the Nodes.
+
+By default, these nodes have a threshold of 3/5 that can be customized according to requirements.
+When a user logs in, the Auth Network generates signatures corresponding to the TSS Shares in the
+nodes and returns them to the user's end. These signatures are then used alongside other shares to
+generate the final TSS Account signatures.
+
+### Device Factor (Factor Index: 2)
+
+This is the second factor used to access the user's account. This step involves the generation of a
+TSS Share on the user's device and using that to generate a final signature for the TSS Account
+alongside the social login factor. This ensures the user logs in using their trusted device and
+maintains a proper non-custodial setup.
+
+### Backup Factor (Factor Index: 3)
+
+A user has a choice to generate as many backup factors as needed to access their account. This step
+involves the generation of a TSS Share on the user's end and storing them in whichever location they
+prefer. This share can be used similarly to the device share to generate a final signature for the
+TSS Account alongside the social login and/or device factors.
+
+When user changes their device, their device factor will not be present on the new device. In that
+case, the user can use the backup factor to access their account. You can choose to define the
+backup factor of your choice like social recovery, Email OTP, SMS OTP, Authenticator app, etc.
+
+## Threshold
+
+The threshold is the minimum number of shares required to generate a final signature for the TSS
+Account. This threshold, by default, is set to 3/5 on the Auth Network and 2/3 for the user's device
+front. This ensures high availability and ease of access on both ends alongside optimum security.
+Both these thresholds can be customized according to the requirements.
+
+Please note that when user logs in for the first time, the threshold is set to 2/2. The threshold is
+set to 2/3 after the user enables the MFA flow.
+
+## Components of a Factor
+
+### TSS Shares
+
+The TSS Shares are the main component needed for the generation of the final working signature of
+the user. These shares are generated using distributed key generation(DKG) and are stored in the
+Auth Network and the user's device. Since these shares are generated using MPC, they are **never
+reconstructed** and always stay decentralized and secure.
+
+However, we have exposed a function to reconstruct the TSS Key from the shares in the SDK. This
+function has been marked unsafe since there is no direct use case for it other than key exports in
+the case the user wants to own it completely.
+
+### Metadata Key & Shares
+
+The Metadata Key closely mimics the storage of the TSS Shares. The only difference is that the
+metadata key is always reconstructed and used for its encryption/decryption capabilities. It
+utilizes basic Shamir's Secret Sharing and is initially generated on a user's front end. The
+metadata key is utilized for the encryption/decryption of the user metadata stored in the Web3Auth
+Metadata Server.
+
+One metadata share gives you the **read** access to the metadata server, while two or more (as the
+threshold is reached) give you the **write** access.
+
+### Factor Keys
+
+To enable refresh, deletion, and rotational capabilities on the TSS Key, we also introduce factor
+keys. Factor Keys are randomly generated keys unique to each factor-generated user's device and
+backups, like users' phones, chrome extensions, on their cloud, assisting third parties, etc.
+
+As share to the TSS Key and/or Metadata Key may rotate, Factor Keys allow a consistent secret to be
+saved in these different locations.
+
+## Understanding the SDK Flow
+
+By default, for a new user, the MPC Core Kit SDK starts in a 2/2 flow. This means that the user will
+have to generate a social login factor and a hashed cloud factor. This hashed cloud factor is
+derived on the SDK front end and stored in the encrypted metadata server. This enables the user to
+start the login process from any device without creating an MFA factor.
+
+This is done to make sure the user can access their account from any device without having to
+generate a new factor. However, this makes the initial onboarding, semi-custodial. To make the
+account completely non-custodial, the user can use the enable MFA feature to generate a device and
+backup factor and delete the hashed cloud factor. This makes the user's account completely
+non-custodial in 2/3 setup and enables them to access their account from any device using the backup
+share. Device share is saved on a trusted device and can be used to access the account from that
+device seamlessly without having to generate a new factor.
+
+## Resources
+
+- [Quick Start](/quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=REACT&stepIndex=0&stepIndex=0):
+  Get Started with an easy to follow integration of Web3Auth
+
+- [Example Applications](/examples?product=Core+Kit&sdk=MPC+Core+Kit): Explore our example
+  applications and try the SDK yourself.
+
+- [Troubleshooting](/troubleshooting): Find quick solutions to common issues faced by developers.
+
+- [Source Code](https://github.com/web3auth/mpc-core-kit): Web3Auth is open sourced. You can find
+  the source code on our GitHub repository.
+
+- [Community Support Portal](https://web3auth.io/community): Join our community to get support from
+  our team and other developers.

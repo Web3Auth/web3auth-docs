@@ -1,9 +1,9 @@
 ---
-title: Using Web3Auth Flutter SDK
-image: "guides/banners/flutter.png"
+title: How to use Web3Auth Flutter SDK
+image: "guides-banners/flutter.png"
 description: Learn how to use Web3Auth Flutter SDK in your Flutter application.
 type: guide
-tags: [mobile, flutter, whitelabel, custom authentication, dapp share, blockchain]
+tags: [plug and play, flutter, evm, android, ios]
 date: September 13, 2022
 author: Web3Auth Team
 communityPortalTopicId: 53
@@ -18,9 +18,9 @@ import Initialization from "@site/src/common/sdk/pnp/flutter/_initialization.mdx
 import FlutterInstallation from "@site/src/common/guides/_flutter-installation.mdx";
 
 <SEO
-  title="Using Web3Auth Flutter SDK"
+  title="How to use Web3Auth Flutter SDK"
   description="Learn how to use Web3Auth Flutter SDK in your Flutter application"
-  image="https://web3auth.io/docs/guides/banners/flutter.png"
+  image="https://web3auth.io/docs/guides-banners/flutter.png"
   slug="/guides/flutter"
 />
 
@@ -133,12 +133,12 @@ VoidCallback _login(Future<Web3AuthResponse> Function() method) {
 }
 
 Future<Web3AuthResponse> _withGoogle() {
-  // highlight-start
+  // focus-start
   return Web3AuthFlutter.login(LoginParams(
     loginProvider: Provider.google,
     mfaLevel: MFALevel.OPTIONAL,
   ));
-  // highlight-end
+  // focus-end
 }
 ```
 
@@ -160,13 +160,10 @@ Using the `web3AuthFlutter.login` function, you can get the details of the logge
 note that these details are not stored anywhere in Web3Auth network.
 
 If you wish you **[add Multi Factor Authentication](/sdk/pnp/flutter/mfa)**,
-**[use dApp Share](/sdk/pnp/flutter/dapp-share)** or
-**[select Curve](/sdk/pnp/flutter/usage#selecting-curve)** for your Android application, read the
-linked documentation.
+**[use dApp Share](/sdk/pnp/flutter/dapp-share)**
 
 - [Multi Factor Authentication](/sdk/pnp/flutter/mfa)
 - [Using dApp Share](/sdk/pnp/flutter/dapp-share)
-- [Selecting Curve](/sdk/pnp/flutter/usage#selecting-curve)
 
 ### Logout
 
@@ -174,7 +171,7 @@ linked documentation.
 VoidCallback _logout() {
   return () async {
     try {
-      // highlight-next-line
+      // focus-next-line
       await Web3AuthFlutter.logout();
       setState(() {
         _result = '<empty>';

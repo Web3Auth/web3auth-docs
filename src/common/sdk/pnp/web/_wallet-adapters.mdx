@@ -11,37 +11,56 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Variable                            | Value                              | Description                                                               |
-| ----------------------------------- | ---------------------------------- | ------------------------------------------------------------------------- |
-| `WALLET_ADAPTERS.OPENLOGIN`         | `"openlogin"`                      | Helps you connect to the Openlogin Adapter                                |
-| `WALLET_ADAPTERS.WALLET_CONNECT_V1` | `"wallet-connect-v1"` (deprecated) | Helps you connect to the Wallet Connect V1 Adapter. Currently deprecated. |
-| `WALLET_ADAPTERS.WALLET_CONNECT_V2` | `"wallet-connect-v2"`              | Helps you connect to the Wallet Connect V2 Adapter                        |
-| `WALLET_ADAPTERS.TORUS_SOLANA`      | `"torus-solana"`                   | Helps you connect to the Torus Solana Wallet Adapter                      |
-| `WALLET_ADAPTERS.PHANTOM`           | `"phantom"`                        | Helps you connect to the Phantom Wallet Adapter                           |
-| `WALLET_ADAPTERS.SOLFLARE`          | `"solflare"`                       | Helps you connect to the Solflare Wallet Adapter                          |
-| `WALLET_ADAPTERS.SLOPE`             | `"slope"`                          | Helps you connect to the Slope Wallet Adapter                             |
-| `WALLET_ADAPTERS.TORUS_EVM`         | `"torus-evm"`                      | Helps you connect to the Torus EVM Wallet Adapter                         |
-| `WALLET_ADAPTERS.METAMASK`          | `"metamask"`                       | Helps you connect to the Metamask Wallet Adapter                          |
-| `WALLET_ADAPTERS.COINBASE`          | `"coinbase"`                       | Helps you connect to the Coinbase Wallet Adapter                          |
+| Variable                   | Value                                                                       | Description                    |
+| -------------------------- | --------------------------------------------------------------------------- | ------------------------------ |
+| `MULTI_CHAIN_ADAPTERS`     | `AUTH`, `WALLET_CONNECT_V2`, `SFA`                                          | Multi-chain adapters for Auth. |
+| `SOLANA_ADAPTERS`          | `AUTH`, `WALLET_CONNECT_V2`, `SFA`, `TORUS_SOLANA`                          | Solana adapters for Auth.      |
+| `EVM_ADAPTERS`             | `AUTH`, `WALLET_CONNECT_V2`, `SFA`, `TORUS_EVM`, `COINBASE`                 | EVM adapters for Auth.         |
+| `WALLET_ADAPTERS`          | `AUTH`, `WALLET_CONNECT_V2`, `SFA`, `TORUS_SOLANA`, `TORUS_EVM`, `COINBASE` | All wallet adapters for Auth.  |
+| `WALLET_ADAPTER_TYPE`      | `WALLET_ADAPTERS[keyof WALLET_ADAPTERS]`                                    | Type for wallet adapters.      |
+| `SOLANA_ADAPTER_TYPE`      | `SOLANA_ADAPTERS[keyof SOLANA_ADAPTERS]`                                    | Type for Solana adapters.      |
+| `EVM_ADAPTER_TYPE`         | `EVM_ADAPTERS[keyof EVM_ADAPTERS]`                                          | Type for EVM adapters.         |
+| `MULTI_CHAIN_ADAPTER_TYPE` | `MULTI_CHAIN_ADAPTERS[keyof MULTI_CHAIN_ADAPTERS]`                          | Type for multi-chain adapters. |
+| `ADAPTER_NAMES`            | `{ [adapter: string]: string }`                                             | Adapter names for Auth.        |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```tsx
-export declare type WALLET_ADAPTER_TYPE = typeof WALLET_ADAPTERS[keyof typeof WALLET_ADAPTERS];
-
+export declare const MULTI_CHAIN_ADAPTERS: {
+  AUTH: string;
+  WALLET_CONNECT_V2: string;
+  SFA: string;
+};
+export declare const SOLANA_ADAPTERS: {
+  AUTH: string;
+  WALLET_CONNECT_V2: string;
+  SFA: string;
+  TORUS_SOLANA: string;
+};
+export declare const EVM_ADAPTERS: {
+  AUTH: string;
+  WALLET_CONNECT_V2: string;
+  SFA: string;
+  TORUS_EVM: string;
+  COINBASE: string;
+};
 export declare const WALLET_ADAPTERS: {
-  readonly OPENLOGIN: "openlogin";
-  readonly WALLET_CONNECT_V1: "wallet-connect-v1";
-  readonly WALLET_CONNECT_V2: "wallet-connect-v2";
-  readonly TORUS_SOLANA: "torus-solana";
-  readonly PHANTOM: "phantom";
-  readonly SOLFLARE: "solflare";
-  readonly SLOPE: "slope";
-  readonly TORUS_EVM: "torus-evm";
-  readonly METAMASK: "metamask";
-  readonly COINBASE: "coinbase";
+  AUTH: string;
+  WALLET_CONNECT_V2: string;
+  SFA: string;
+  TORUS_SOLANA: string;
+  TORUS_EVM: string;
+  COINBASE: string;
+};
+export type WALLET_ADAPTER_TYPE = (typeof WALLET_ADAPTERS)[keyof typeof WALLET_ADAPTERS];
+export type SOLANA_ADAPTER_TYPE = (typeof SOLANA_ADAPTERS)[keyof typeof SOLANA_ADAPTERS];
+export type EVM_ADAPTER_TYPE = (typeof EVM_ADAPTERS)[keyof typeof EVM_ADAPTERS];
+export type MULTI_CHAIN_ADAPTER_TYPE =
+  (typeof MULTI_CHAIN_ADAPTERS)[keyof typeof MULTI_CHAIN_ADAPTERS];
+export declare const ADAPTER_NAMES: {
+  [x: string]: string;
 };
 ```
 

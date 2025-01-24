@@ -30,8 +30,13 @@ export default function Layout(props) {
 
       <Navbar />
 
-      <div id={SkipToContentFallbackId} className={clsx(ThemeClassNames.wrapper.main, styles.mainWrapper, wrapperClassName)}>
-        <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>{children}</ErrorBoundary>
+      <div
+        id={SkipToContentFallbackId}
+        className={clsx(ThemeClassNames.wrapper.main, styles.mainWrapper, wrapperClassName)}
+      >
+        <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>
+          {children}
+        </ErrorBoundary>
       </div>
 
       {!noFooter && <Footer />}

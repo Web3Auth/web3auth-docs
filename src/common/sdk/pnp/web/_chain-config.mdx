@@ -1,6 +1,18 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
+```javascript
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
+```
+
 <Tabs
   defaultValue="table"
   values={[
@@ -11,33 +23,35 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter          | Description                                                                                                                                                                                                                                          |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chainNamespace`   | The namespace of your preferred chain. Checkout [Providers SDK Reference](/sdk/providers) for understanding RPC Calls. It accepts `ChainNamespaceType` as a value.                                                                                   |
-| `chainId`          | The chain id of the selected blockchain in hex `string` format.                                                                                                                                                                                      |
-| `rpcTarget`        | <ul><li>RPC Target URL for the selected `chainNamespace` & `chainId`.</li><li> We provide a default RPC Target for certain blockchains, but due to congestion it might be slow hence it is recommended to provide your own RPC Target URL.</li></ul> |
-| `wsTarget`         | Web socket target URL for the chain in `string`.                                                                                                                                                                                                     |
-| `displayName`      | Display Name for the chain in `string`.                                                                                                                                                                                                              |
-| `blockExplorerUrl` | Blockchain's explorer URL in `string`. (eg: `https://etherscan.io`)                                                                                                                                                                                  |
-| `ticker`           | Default currency ticker in `string` for the network (e.g: `ETH`)                                                                                                                                                                                     |
-| `tickerName`       | Name for currency ticker in `string` (e.g: `Ethereum`)                                                                                                                                                                                               |
-| `decimals?`        | Number of decimals in `number` for the currency ticker (e.g: `18`)                                                                                                                                                                                   |
-| `logo`             | Logo for the chain.                                                                                                                                                                                                                                  |
-| `isTestnet?`       | Defines whether the network is testnet or not.                                                                                                                                                                                                       |
+| Parameter           | Description                            |
+| ------------------- | -------------------------------------- |
+| `chainNamespace`    | Namespace of the chain                 |
+| `chainId`           | Chain ID of the chain                  |
+| `rpcTarget`         | RPC target URL for the chain           |
+| `wsTarget?`         | Web socket target URL for the chain    |
+| `displayName?`      | Display name for the chain             |
+| `blockExplorerUrl?` | URL of the block explorer              |
+| `ticker?`           | Default currency ticker of the network |
+| `tickerName?`       | Name for currency ticker               |
+| `decimals?`         | Number of decimals for the currency    |
+| `logo?`             | Logo for the token                     |
+| `isTestnet?`        | Whether the network is testnet or not  |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```tsx
-declare const CHAIN_NAMESPACES: {
+export declare const CHAIN_NAMESPACES: {
   readonly EIP155: "eip155";
   readonly SOLANA: "solana";
+  readonly CASPER: "casper";
+  readonly XRPL: "xrpl";
   readonly OTHER: "other";
 };
 
-declare type ChainNamespaceType = (typeof CHAIN_NAMESPACES)[keyof typeof CHAIN_NAMESPACES];
-declare type CustomChainConfig = {
+export type ChainNamespaceType = (typeof CHAIN_NAMESPACES)[keyof typeof CHAIN_NAMESPACES];
+export type CustomChainConfig = {
   chainNamespace: ChainNamespaceType;
   /**
    * The chain id of the chain
@@ -54,27 +68,27 @@ declare type CustomChainConfig = {
   /**
    * Display Name for the chain
    */
-  displayName: string;
+  displayName?: string;
   /**
    * Url of the block explorer
    */
-  blockExplorerUrl: string;
+  blockExplorerUrl?: string;
   /**
    * Default currency ticker of the network (e.g: ETH)
    */
-  ticker: string;
+  ticker?: string;
   /**
    * Name for currency ticker (e.g: `Ethereum`)
    */
-  tickerName: string;
+  tickerName?: string;
   /**
    * Number of decimals for the currency ticker (e.g: 18)
    */
   decimals?: number;
   /**
-   * Logo for the chain
+   * Logo for the token
    */
-  logo: string;
+  logo?: string;
   /**
    * Whether the network is testnet or not
    */
@@ -85,3 +99,9 @@ declare type CustomChainConfig = {
 </TabItem>
 
 </Tabs>
+
+:::note
+
+It's mandatory to pass the `logo` parameter when using WalletServices.
+
+:::

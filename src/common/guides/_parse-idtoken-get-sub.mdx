@@ -1,14 +1,16 @@
 #### Parsing the token
 
-We need to parse the token to get the `sub` field from the token. This is the unique identifier for the user. This is dependent on the `verifierId`
-field you've set on the dashboard. In our case, it's `sub`. The code for parsing the `idToken` is as follows:
+We need to parse the token to get the `sub` field from the token. This is the unique identifier for
+the user. This is dependent on the `verifierId` field you've set on the dashboard. In our case, it's
+`sub`. The code for parsing the `idToken` is as follows:
 
 ```tsx
+import { safeatob } from "@toruslabs/openlogin-utils";
+
 const parseToken = (token: any) => {
   try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64 || ""));
+    const token = token.split(".")[1]; // payload
+    return JSON.parse(safeatob(token));
   } catch (err) {
     console.error(err);
     return null;

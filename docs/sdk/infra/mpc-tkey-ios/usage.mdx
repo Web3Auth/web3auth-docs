@@ -1,0 +1,537 @@
+---
+title: Using Core Kit tKey MPC Swift SDK
+sidebar_label: Usage
+
+description: "Web3Auth Core Kit tKey MPC Swift SDK - Usage | Documentation - Web3Auth"
+---
+
+Once you've installed and successfully instantiated tKey, you can use it to generate their tKey
+shares.
+
+## `ThresholdKey`
+
+The login with the tKey SDK is a two-step process. First, you need to trigger the login process by
+calling the `triggerLogin()` function of the CustomAuth SDK. Using the returned information, use the
+`initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
+
+However, before starting this process, you must set up Custom Authentication on your Web3Auth
+Dashboard. You must [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth**
+section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired
+configuration.
+
+:::tip
+
+For further information on how to set up and use a verifier, please visit the
+[**Custom Authentication Documentation**](/features/custom-authentication).
+
+:::
+
+### Triggering Login and Initializing Service Provider
+
+```swift
+import CustomAuth
+
+let sub = SubVerifierDetails(
+  loginType: .web, // default .web
+  loginProvider: "TYPE_OF_LOGIN", // .google, .facebook, .discord and other supported login providers
+  clientId: "CLIENT_ID",
+  verifierName: "VERIFIER_NAME",
+  redirectURL: "tdsdk://tdsdk/oauthCallback",
+  browserRedirectURL: "https://scripts.toruswallet.io/redirect.html")
+
+let tdsdk = CustomAuth(
+  aggregateVerifierType: "TYPE_OF_VERIFIER", // singleLogin, singleIdVerifier supported
+  aggregateVerifierName: "VERIFIER_NAME", // Web3Auth Custom verifier name
+  subVerifierDetails: [sub],
+  network: .SAPPHIRE_DEVNET,
+  enableOneKey: true)
+
+tdsdk.triggerLogin().done{ data in
+    print("user data", data)
+
+    let finalKeyData = data["finalKeyData"] as? [String: Any]
+    let verifier =  data["verifier"] as? String
+    let verifierId = data["verifierId"] as? String
+    let postboxkey = finalKeyData["privKey"] as? String
+
+
+    let fnd = NodeDetailManager(network: .sapphire(.SAPPHIRE_DEVNET))
+    let nodeDetails = try await fnd.getNodeDetails(verifier: verifier, verifierID: verifierId)
+
+    let service_provider = try? ServiceProvider(
+      enable_logging: true,
+      postbox_key: postboxkey,
+      useTss: true,
+      verifier: verifier,
+      verifierId: verifierId,
+      nodeDetails: nodeDetails )
+
+    }.catch{ err in
+        print(err)
+    }
+```
+
+### Instantiate tKey
+
+```swift
+let torusUtils = TorusUtils(
+  enableOneKey: true,
+  network: .sapphire(.SAPPHIRE_DEVNET) )
+
+let storage_layer = try? StorageLayer(
+  enable_logging: true,
+  host_url: "https://metadata.tor.us",
+  server_time_offset: 2)
+
+let rss_comm = try RssComm()
+
+let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false,
+  rss_comm: rss_comm)
+
+threshold_key = thresholdKey
+```
+
+#### Parameters
+
+| Parameter                    | Type                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Mandatory |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `local_matadata_transitions` | `Metadata`                 | Existing local metadata to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No        |
+| `last_fetch_cloud_metadata`  | `Metadata`                 | Existing cloud metadata to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No        |
+| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `manual_sync`                | `Bool`                     | manual sync provides atomicity to your tkey share. If manual_sync is true, you should sync your local metadata transitions manually to your storage_layer, which means your storage layer doesn’t know the local changes of your tkey unless you manually sync, gives atomicity. Otherwise, If manual_sync is false, then your local metadata changes will be synced automatically to your storage layer. If manual_sync = true and want to synchronize manually, you need to call sync_local_metadata_transitions() manually. | No        |
+| `rss_comm`                   | `RssComm`                  | RssComm object to be used. RSS client, required for TSS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+
+### Initialize tKey
+
+#### `threshold_key.initialize(params?)`
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a
+Threshold Key corresponding to your login provider.
+
+#### Parameters
+
+| Parameter                            | Type       | Description                                                             | Mandatory |
+| ------------------------------------ | ---------- | ----------------------------------------------------------------------- | --------- |
+| `import_share`                       | String     | An optional string representing the import share.                       | No        |
+| `input`                              | ShareStore | An optional ShareStore object representing the input.                   | No        |
+| `never_initialize_new_key`           | Bool       | Do not initialize a new tKey if an existing one is found.               | No        |
+| `include_local_metadata_transitions` | Bool       | Proritize existing metadata transitions over cloud fetched transitions. | No        |
+| `use_tss`                            | Bool       | Whether TSS is used or not.                                             | No        |
+| `device_tss_share`                   | String     | An optional string representing the device share.                       | No        |
+| `device_tss_index`                   | `Int32`    | An optional integer representing the device share index.                | No        |
+| `tss_factor_pub`                     | `KeyPoint` | An optional KeyPoint object representing the tss factor public key.     | No        |
+
+```swift title="Usage"
+guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false, include_local_metadata_transitions: false) else {
+  alertContent = "Failed to get key details"
+  return
+}
+totalShares = Int(key_details.total_shares)
+threshold = Int(key_details.threshold)
+```
+
+### `get_all_tss_tags()`
+
+This function returns all the tags of the tss shares.
+
+```swift title="Usage"
+let tags = try? await threshold_key.get_all_tss_tags()
+```
+
+## `TSS Module`
+
+### `get_tss_tag()`
+
+This function returns the tss tag.
+
+#### Function Definition
+
+```swift
+public static func get_tss_tag(threshold_key: ThresholdKey) throws -> String {
+  var errorCode: Int32 = -1
+  let result = withUnsafeMutablePointer(to: &errorCode, { error in
+      threshold_key_get_tss_tag(threshold_key.pointer, error) })
+  guard errorCode == 0 else {
+      throw RuntimeError("Error in get_tss_tag")
+  }
+  let string = String(cString: result!)
+  string_free(result)
+  return string
+}
+```
+
+#### Parameters
+
+| Parameter       | Type           | Description                     | Mandatory |
+| --------------- | -------------- | ------------------------------- | --------- |
+| `threshold_key` | `ThresholdKey` | ThresholdKey object to be used. |
+
+```swift title="Usage"
+let selected_tag = try TssModule.get_tss_tag(threshold_key: threshold_key)
+```
+
+### `get_tss_share()`
+
+This function returns the tss share.
+
+#### Function Definition
+
+```swift
+public static func get_tss_share(threshold_key: ThresholdKey, tss_tag: String, factorKey: String, threshold: Int32 = 0) async throws -> (String, String) {
+  if factorKey.count > 66 { throw RuntimeError("Invalid factor Key") }
+  try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+
+  var errorCode: Int32 = -1
+
+  let curvePointer = UnsafeMutablePointer<Int8>(mutating: (threshold_key.curveN as NSString).utf8String)
+  let factorKeyPointer = UnsafeMutablePointer<Int8>(mutating: (factorKey as NSString).utf8String)
+
+  let result = withUnsafeMutablePointer(to: &errorCode, { error in
+      threshold_key_get_tss_share(threshold_key.pointer, factorKeyPointer, threshold, curvePointer, error)
+  })
+  guard errorCode == 0 else {
+      throw RuntimeError("Error in ThresholdKey get_tss_share")
+  }
+  let string = String(cString: result!)
+  string_free(result)
+  let splitString = string.split(separator: ",", maxSplits: 2)
+  return (String(splitString[0]), String(splitString[1]))
+}
+```
+
+#### Parameters
+
+| Parameter       | Type         | Description                            | Mandatory |
+| --------------- | ------------ | -------------------------------------- | --------- |
+| `threshold_key` | ThresholdKey | ThresholdKey object to be used.        | Yes       |
+| `tss_tag`       | String       | A string representing the tss tag.     | Yes       |
+| `factorKey`     | String       | A string representing the factor key.  | Yes       |
+| `threshold`     | Int32        | An integer representing the threshold. | No        |
+
+```swift title="Usage"
+let (tssIndex, tssShare) = try await TssModule.get_tss_share(threshold_key: threshold_key, tss_tag: selected_tag, factorKey: factorKey)
+```
+
+### `get_tss_nonce()`
+
+#### Function Definition
+
+```swift
+public static func get_tss_nonce(threshold_key: ThresholdKey, tss_tag: String, prefetch: Bool = false) throws -> Int32 {
+    var errorCode: Int32 = -1
+    let tss_tag_pointer: UnsafeMutablePointer<Int8>? = UnsafeMutablePointer<Int8>(mutating: NSString(string: tss_tag).utf8String)
+    var nonce = withUnsafeMutablePointer(to: &errorCode, { error in
+        threshold_key_get_tss_nonce(threshold_key.pointer, tss_tag_pointer, error) })
+    guard errorCode == 0 else {
+        throw RuntimeError("Error in ThresholdKey get_tss_nonce")
+    }
+
+    if prefetch {
+        nonce += 1
+    }
+
+    return nonce
+}
+```
+
+#### Parameters
+
+| Parameter       | Type         | Description                                        | Mandatory |
+| --------------- | ------------ | -------------------------------------------------- | --------- |
+| `threshold_key` | ThresholdKey | ThresholdKey object to be used.                    | Yes       |
+| `tss_tag`       | String       | A string representing the tss tag.                 | Yes       |
+| `prefetch`      | Bool         | A boolean representing whether to prefetch or not. | No        |
+
+```swift title="Usage"
+let tssNonce = try TssModule.get_tss_nonce(threshold_key: threshold_key, tss_tag: selected_tag)
+```
+
+### `getTssPubAddress()`
+
+This function returns the tss pub address.
+
+#### Function Definition
+
+```swift
+public static func getTssPubAddress(threshold_key: ThresholdKey, tssTag: String, nonce: String, nodeDetails: AllNodeDetailsModel, torusUtils: TorusUtils) async throws -> GetTSSPubKeyResult {
+    let extendedVerifierId = try threshold_key.get_extended_verifier_id()
+    let split = extendedVerifierId.components(separatedBy: "\u{001c}")
+
+    let result = try await torusUtils.getPublicAddress(endpoints: nodeDetails.torusNodeEndpoints, torusNodePubs: nodeDetails.torusNodePub, verifier: split[0], verifierId: split[1], extendedVerifierId: "\(split[1])\u{0015}\(tssTag)\u{0016}\(nonce)")
+
+    print("result in service provider", result)
+    guard let x = result.finalKeyData?.X, let y = result.finalKeyData?.Y, let nodeIndexes = result.nodesData?.nodeIndexes else {
+        throw RuntimeError("conversion error")
+    }
+    let pubKey = GetTSSPubKeyResult.Point(x: x, y: y)
+    return GetTSSPubKeyResult(publicKey: pubKey, nodeIndexes: nodeIndexes)
+}
+```
+
+#### Parameters
+
+| Parameter       | Type                | Description                                                | Mandatory |
+| --------------- | ------------------- | ---------------------------------------------------------- | --------- |
+| `threshold_key` | ThresholdKey        | ThresholdKey object to be used.                            | Yes       |
+| `tss_tag`       | String              | A string representing the tss tag.                         | Yes       |
+| `nonce`         | String              | A string representing the nonce.                           | Yes       |
+| `nodeDetails`   | AllNodeDetailsModel | An AllNodeDetailsModel object containing the node details. | Yes       |
+| `torusUtils`    | TorusUtils          | A TorusUtils object containing the torus utils.            | Yes       |
+
+```swift title="Usage"
+let tssPublicAddressInfo = try await TssModule.getTssPubAddress(threshold_key: threshold_key, tssTag: selected_tag, nonce: String(tssNonce), nodeDetails: nodeDetails, torusUtils: torusUtils)
+```
+
+### `get_tss_pub_key()`
+
+This function returns the tss public key.
+
+#### Function Definition
+
+```swift
+public static func get_tss_pub_key(threshold_key: ThresholdKey, tss_tag: String) async throws -> String {
+    try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+
+    var errorCode: Int32 = -1
+
+    let result = withUnsafeMutablePointer(to: &errorCode, { error in
+        threshold_key_get_tss_public_key(threshold_key.pointer, error) })
+    guard errorCode == 0 else {
+        throw RuntimeError("Error in get_tss_tag")
+    }
+    let string = String(cString: result!)
+    string_free(result)
+    return string
+}
+```
+
+#### Parameters
+
+| Parameter       | Type         | Description                        | Mandatory |
+| --------------- | ------------ | ---------------------------------- | --------- |
+| `threshold_key` | ThresholdKey | ThresholdKey object to be used.    | Yes       |
+| `tss_tag`       | String       | A string representing the tss tag. | Yes       |
+
+```swift title="Usage"
+tss_pub_key = try await TssModule.get_tss_pub_key(threshold_key: threshold_key, tss_tag: "default")
+```
+
+### `create_tagged_tss_share()`
+
+This function creates a tagged tss share.
+
+#### Function Definition
+
+```swift
+public static func create_tagged_tss_share(threshold_key: ThresholdKey, tss_tag: String, deviceTssShare: String?, factorPub: String, deviceTssIndex: Int32, nodeDetails: AllNodeDetailsModel, torusUtils: TorusUtils) async throws {
+    try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+    try await TssModule.update_tss_pub_key(threshold_key: threshold_key, tss_tag: tss_tag, nodeDetails: nodeDetails, torusUtils: torusUtils)
+    return try await withCheckedThrowingContinuation {
+        continuation in
+        create_tagged_tss_share(threshold_key: threshold_key, deviceTssShare: deviceTssShare, factorPub: factorPub, deviceTssIndex: deviceTssIndex) {
+            result in
+            switch result {
+            case let .success(result):
+                continuation.resume(returning: result)
+            case let .failure(error):
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+}
+```
+
+#### Parameters
+
+| Parameter        | Type                | Description                                                  | Mandatory |
+| ---------------- | ------------------- | ------------------------------------------------------------ | --------- |
+| `threshold_key`  | ThresholdKey        | ThresholdKey object to be used.                              | Yes       |
+| `tss_tag`        | String              | A string representing the tss tag.                           | Yes       |
+| `deviceTssShare` | String              | A string representing the device tss share.                  | No        |
+| `factorPub`      | String              | A string representing the factor public key                  | Yes       |
+| `deviceTssIndex` | Int32               | An integer representing the device index.                    | Yes       |
+| `nodeDetails`    | AllNodeDetailsModel | An AllNodeDetailsModel object representing the node details. | Yes       |
+| `torusUtils`     | TorusUtils          | A TorusUtils object to be used.                              | Yes       |
+
+```swift title="Usage"
+// generate factor key
+let factorKey = try PrivateKey.generate()
+// derive factor pub
+let factorPub = try factorKey.toPublic()
+
+try await TssModule.create_tagged_tss_share(
+  threshold_key: self.threshold_key,
+  tss_tag: "default",
+  deviceTssShare: nil,
+  factorPub: factorPub,
+  deviceTssIndex: 2,
+  nodeDetails: self.nodeDetails!,
+  torusUtils: self.torusUtils!)
+```
+
+### `get_all_factor_pub()`
+
+This function returns the tss factor public key.
+
+#### Function Definition
+
+```swift
+public static func get_all_factor_pub(threshold_key: ThresholdKey, tss_tag: String) async throws -> [String] {
+    try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+
+    var errorCode: Int32 = -1
+
+    let result = withUnsafeMutablePointer(to: &errorCode, { error in
+        threshold_key_get_tss_tag_factor_pub(threshold_key.pointer, error) })
+    guard errorCode == 0 else {
+        throw RuntimeError("Error in get_all_factor_pub")
+    }
+    let string = String(cString: result!)
+    string_free(result)
+    guard let data = string.data(using: .utf8) else {
+        throw RuntimeError("Error in get_all_factor_pub : Invalid output ")
+    }
+    guard let result_vec = try JSONSerialization.jsonObject(with: data) as? [String] else {
+        throw RuntimeError("Error in get_all_factor_pub : Invalid output ")
+    }
+
+    return result_vec
+}
+```
+
+#### Parameters
+
+| Parameter       | Type         | Description                        | Mandatory |
+| --------------- | ------------ | ---------------------------------- | --------- |
+| `threshold_key` | ThresholdKey | ThresholdKey object to be used.    | Yes       |
+| `tss_tag`       | String       | A string representing the tss tag. | Yes       |
+
+```swift title="Usage"
+factor_pub = try await TssModule.get_all_factor_pub(threshold_key: threshold_key, tss_tag: "default")
+```
+
+### `add_factor_pub()`
+
+This function adds a factor public key.
+
+#### Function Definition
+
+```swift
+public static func add_factor_pub(threshold_key: ThresholdKey, tss_tag: String, factor_key: String, auth_signatures: [String], new_factor_pub: String, new_tss_index: Int32, selected_servers: [Int32]? = nil, nodeDetails: AllNodeDetailsModel, torusUtils: TorusUtils) async throws {
+    if factor_key.count > 66 { throw RuntimeError("Invalid factor Key") }
+    try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+
+    let (tss_index, tss_share) = try await get_tss_share(threshold_key: threshold_key, tss_tag: tss_tag, factorKey: factor_key)
+    try await TssModule.generate_tss_share(threshold_key: threshold_key, tss_tag: tss_tag, input_tss_share: tss_share, tss_input_index: Int32(tss_index)!, auth_signatures: auth_signatures, new_factor_pub: new_factor_pub, new_tss_index: new_tss_index, nodeDetails: nodeDetails, torusUtils: torusUtils, selected_servers: selected_servers)
+}
+```
+
+#### Parameters
+
+| Parameter          | Type                | Description                                                  | Mandatory |
+| ------------------ | ------------------- | ------------------------------------------------------------ | --------- |
+| `threshold_key`    | ThresholdKey        | ThresholdKey object to be used.                              | Yes       |
+| `tss_tag`          | String              | A string representing the tss tag.                           | Yes       |
+| `factor_key`       | String              | A string representing the factor key.                        | Yes       |
+| `auth_signatures`  | [String]            | An array of strings representing the auth signatures.        | Yes       |
+| `new_factor_pub`   | String              | A string representing the new factor public key.             | Yes       |
+| `new_tss_index`    | Int32               | An integer representing the new tss index.                   | Yes       |
+| `selected_servers` | [Int32]?            | An array of integers representing the selected servers.      | No        |
+| `nodeDetails`      | AllNodeDetailsModel | An AllNodeDetailsModel object representing the node details. | Yes       |
+| `torusUtils`       | TorusUtils          | A TorusUtils object to be used.                              | Yes       |
+
+```swift title="Usage"
+try await TssModule.add_factor_pub(threshold_key: threshold_key, tss_tag: selected_tag, factor_key: factorKey, auth_signatures: sigs, new_factor_pub: newFactorPub, new_tss_index: tssShareIndex, nodeDetails: nodeDetails!, torusUtils: torusUtils!)
+```
+
+### `copy_factor_pub()`
+
+This function copies a factor public key.
+
+#### Function Definition
+
+```swift
+public static func copy_factor_pub(threshold_key: ThresholdKey, tss_tag: String, factorKey: String, newFactorPub: String, tss_index: Int32, threshold: Int32 = 0) async throws {
+    if factorKey.count > 66 { throw RuntimeError("Invalid factor Key") }
+    try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+
+    return try await withCheckedThrowingContinuation {
+        continuation in
+        copy_factor_pub(threshold_key: threshold_key, factorKey: factorKey, newFactorPub: newFactorPub, tss_index: tss_index) {
+            result in
+            switch result {
+            case let .success(result):
+                continuation.resume(returning: result)
+            case let .failure(error):
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+}
+```
+
+#### Parameters
+
+| Parameter        | Type         | Description                                      | Mandatory |
+| ---------------- | ------------ | ------------------------------------------------ | --------- |
+| `threshold_key`  | ThresholdKey | ThresholdKey object to be used.                  | Yes       |
+| `tss_tag`        | String       | A string representing the tss tag.               | Yes       |
+| `factor_key`     | String       | A string representing the factor key.            | Yes       |
+| `new_factor_pub` | String       | A string representing the new factor public key. | Yes       |
+| `tss_index`      | Int32        | An integer representing the tss index.           | Yes       |
+| `threshold`      | Int32        | An integer representing the threshold.           | No        |
+
+```swift title="Usage"
+try await TssModule.copy_factor_pub(threshold_key: threshold_key, tss_tag: selected_tag, factorKey: factorKey, newFactorPub: newFactorPub, tss_index: tssShareIndex)
+```
+
+### `delete_factor_pub()`
+
+This function deletes a factor public key.
+
+#### Function Definition
+
+```swift
+public static func delete_factor_pub(threshold_key: ThresholdKey, tss_tag: String, factor_key: String, auth_signatures: [String], delete_factor_pub: String, nodeDetails: AllNodeDetailsModel, torusUtils: TorusUtils, selected_servers: [Int32]? = nil) async throws {
+    if factor_key.count > 66 { throw RuntimeError("Invalid factor Key") }
+    try await TssModule.set_tss_tag(threshold_key: threshold_key, tss_tag: tss_tag)
+
+    let (tss_index, tss_share) = try await get_tss_share(threshold_key: threshold_key, tss_tag: tss_tag, factorKey: factor_key)
+    try await TssModule.delete_tss_share(threshold_key: threshold_key, tss_tag: tss_tag, input_tss_share: tss_share, tss_input_index: Int32(tss_index)!, auth_signatures: auth_signatures, delete_factor_pub: delete_factor_pub, nodeDetails: nodeDetails, torusUtils: torusUtils, selected_servers: selected_servers)
+}
+```
+
+#### Parameters
+
+| Parameter           | Type                | Description                                                  | Mandatory |
+| ------------------- | ------------------- | ------------------------------------------------------------ | --------- |
+| `threshold_key`     | ThresholdKey        | ThresholdKey object to be used.                              | Yes       |
+| `tss_tag`           | String              | A string representing the tss tag.                           | Yes       |
+| `factor_key`        | String              | A string representing the factor key.                        | Yes       |
+| `auth_signatures`   | [String]            | An array of strings representing the auth signatures.        | Yes       |
+| `delete_factor_pub` | String              | A string representing the delete factor public key.          | Yes       |
+| `selected_servers`  | [Int32]?            | An array of integers representing the selected servers.      | No        |
+| `nodeDetails`       | AllNodeDetailsModel | An AllNodeDetailsModel object representing the node details. | Yes       |
+| `torusUtils`        | TorusUtils          | A TorusUtils object to be used.                              | Yes       |
+
+```swift title="Usage"
+try await TssModule.delete_factor_pub(threshold_key: threshold_key, tss_tag: selected_tag, factor_key: factorKey, auth_signatures: sigs, delete_factor_pub: deleteFactorPK.toPublic(), nodeDetails: nodeDetails!, torusUtils: torusUtils!)
+```
+
+### Example
+
+:::info example
+
+Explore our
+[**example application**](https://github.com/torusresearch/tkey-rust-ios-example/tree/alpha) and try
+the SDK yourself.
+
+:::

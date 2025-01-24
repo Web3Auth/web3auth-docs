@@ -1,0 +1,91 @@
+---
+title: Integrate Web3Auth MPC CoreKit SDK with the Solana Blockchain in Javascript
+sidebar_label: Web - MPC
+image: "banners/solana.png"
+keywords:
+  [
+    solana,
+    wallet,
+    integration,
+    web3auth,
+    API,
+    SDK,
+    authentication,
+    blockchain,
+    solution,
+    development,
+    MPC,
+    EdDSA,
+  ]
+description:
+  "Integrate Web3Auth MPC CoreKit SDK with the Solana Blockchain in Javascript | Documentation -
+  Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import Installation from "@site/src/common/sdk/mpc-core-kit/_solana-installation.mdx";
+import Initialization from "@site/src/common/sdk/mpc-core-kit/_ed25519-initialization.mdx";
+import SolanaAccount from "@site/src/common/sdk/mpc-core-kit/_solana-account.mdx";
+import SolanaSignMessage from "@site/src/common/sdk/mpc-core-kit/_solana-sign-message.mdx";
+import SolanaSignTransaction from "@site/src/common/sdk/mpc-core-kit/_solana-sign-transaction.mdx";
+
+To sign the transactions for Solana using MPC CoreKit JS SDK, you can utilize the
+@toruslabs/tss-frost-lib to instantiate `Web3AuthMPCCoreKit` with ed25519 KeyType. To support the
+ed25519 curve Web3Auth internally uses the FROST algorithm to provide the EdDSA sginature using
+threshold protocols.
+
+This EdDSA signature can be used to submit the transactions on Solana blockchain.
+
+## Installation
+
+To interact with the Solana blockchain, you can use
+[@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) package with Web3Auth CoreKit SDK
+along with [@toruslabs/tss-frost-lib](https://www.npmjs.com/package/@toruslabs/tss-frost-lib)
+package.
+
+<Installation />
+
+## Initializing and instantiating the Web3Auth MPC CoreKit JS SDK
+
+<Initialization />
+
+## Get User Info
+
+Gives you the user's information received from the ID Token.
+
+```tsx
+const userInfo = coreKitInstance?.getUserInfo();
+```
+
+## Get account
+
+<SolanaAccount />
+
+## Get account balance
+
+To get the user's balance, we can use the `Connection.getBalance` method, which takes `PublicKey` as
+an argument.
+
+```tsx
+import { Connection, LAMPORTS_PER_SOL, PublicKey, clusterApiUrl } from "@solana/web3.js";
+
+try {
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+
+  // Use the publicKey from above
+  let balanceResponse = await connection.getBalance(publicKey);
+  const balance = (balanceResponse / LAMPORTS_PER_SOL).toString();
+} catch (error) {
+  // Handle error
+}
+```
+
+## Sign a message
+
+<SolanaSignMessage />
+
+## Sign a transaction
+
+<SolanaSignTransaction />

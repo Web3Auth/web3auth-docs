@@ -1,0 +1,127 @@
+---
+title: Integrate Web3Auth with the Soneium Blockchain in React Native
+sidebar_label: React Native
+image: "banners/soneium.png"
+
+keywords: [react-native, soneium, web3auth, authentication, blockchain]
+description:
+  "Integrate Web3Auth with the Soneium Blockchain in React Native | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-installation.mdx";
+import GetAccountSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-get-account.mdx";
+import UserInfoSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-user-info.mdx";
+import GetBalanceSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-get-balance.mdx";
+import InitialisationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-initialisation.mdx";
+import SignMessageSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-sign-message.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-send-transaction.mdx";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Soneium Blockchain in React Native"
+  description="Integrate Web3Auth with the Soneium Blockchain in React Native | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/soneium.png"
+  slug="/connect-blockchain/evm/soneium/react-native"
+/>
+
+While using the Web3Auth React Native SDK, you get a
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
+[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be
+used with libraries like [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Soneium](https://soneium.org) blockchain calls like getting the user's `account`, fetching
+`balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
+etc. We have highlighted a few here to get you started quickly on that.
+
+## Installation
+
+<InstallationSnippet />
+
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
+
+### Getting the `chainConfig`
+
+:::note
+
+[Soneium](https://docs.soneium.org/docs/builders/overview) is currently available on the testnet.
+The mainnet is coming soon.
+
+:::
+
+<Tabs
+ defaultValue="testnet"
+  values={[
+    { label: "Testnet (Minato)", value: "testnet", }
+]}
+
+>
+
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x799", // hex of 1945
+  rpcTarget: "https://rpc.soneium.org",
+  displayName: "Soneium Mainnet Network",
+  blockExplorerUrl: "https://explorer.soneium.org",
+  ticker: "ETH",
+  tickerName: "ETH",
+  logo: "https://cryptologos.cc/logos/soneium-logo.png",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x79a", // hex of 1946
+  rpcTarget: "https://rpc.minato.soneium.org",
+  displayName: "Soneium Minato Testnet",
+  blockExplorerUrl: "https://explorer-testnet.soneium.org",
+  ticker: "ETH",
+  tickerName: "ETH",
+  logo: "https://cryptologos.cc/logos/soneium-logo.png",
+  // faucet- "https://bridge.soneium.org/en/testnet" bridge the sepolia ETH to Soneium
+};
+```
+
+</TabItem>
+</Tabs>
+
+## Initialize
+
+<InitialisationSnippet />
+
+## Get User Info
+
+<UserInfoSnippet />
+
+## Get Account
+
+<GetAccountSnippet />
+
+## Get Balance
+
+<GetBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign a message
+
+<SignMessageSnippet />

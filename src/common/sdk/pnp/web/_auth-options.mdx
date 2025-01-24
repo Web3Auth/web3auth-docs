@@ -1,0 +1,181 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declaration", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+##### `AuthOptions`
+
+| Variable               | Type                     | Description                                                                                                                                                                                                                                                                                                                                             | Mandatory | Default Value               |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | --------------------------- |
+| `clientId`             | string                   | You can get your clientId/projectId by registering your dapp on [developer dashboard](https://dashboard.web3auth.io)                                                                                                                                                                                                                                    | Yes       | -                           |
+| `network`              | WEB3AUTH_NETWORK_TYPE    | network specifies the web3auth network to be used.                                                                                                                                                                                                                                                                                                      | Yes       | -                           |
+| `buildEnv`             | BUILD_ENV_TYPE           | This parameter will be used to change the build environment of auth sdk.                                                                                                                                                                                                                                                                                | No        | production                  |
+| `redirectUrl`          | string                   | redirectUrl is the dapp's url where user will be redirected after login. Register this url at [developer dashboard](https://dashboard.web3auth.io) else initialization will give error.                                                                                                                                                                 | No        | -                           |
+| `uxMode`               | UX_MODE_TYPE             | two uxModes are supported:- - `'POPUP'`: In this uxMode, a popup will be shown to user for login. - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login. Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.                                                                            | No        | `'POPUP'`                   |
+| `replaceUrlOnRedirect` | boolean                  | replaceUrlOnRedirect removes the params from the redirected url after login                                                                                                                                                                                                                                                                             | No        | true                        |
+| `originData`           | OriginData               | originData is used to verify the origin of dapp by iframe. You don't have to pass originData explicitly if you have registered your dapp at [developer dashboard](https://dashboard.web3auth.io). originData contains a signature of dapp's origin url which is generated using project's secret.                                                       | No        | -                           |
+| `loginConfig`          | LoginConfig              | loginConfig enables you to pass your own login verifiers configuration for various loginProviders. loginConfig is key value map where each key should be a valid loginProvider and value should be custom configuration for that loginProvider You can deploy your own verifiers from [developer dashboard](https://dashboard.web3auth.io) to use here. | No        | -                           |
+| `webauthnTransports`   | AuthenticatorTransport[] | webauthnTransport enables you to configure the transport type user can use for saving their share. This is only available for v1 users.                                                                                                                                                                                                                 | No        | ["internal"]                |
+| `sdkUrl`               | string                   | sdkUrl is for internal development use only and is used to override the `network` parameter.                                                                                                                                                                                                                                                            | No        | -                           |
+| `dashboardUrl`         | string                   | dashboardUrl is for internal development use only and is used to override the `buildEnv` parameter.                                                                                                                                                                                                                                                     | No        | -                           |
+| `whiteLabel`           | WhiteLabelData           | options for whitelabling default auth modal.                                                                                                                                                                                                                                                                                                            | No        | -                           |
+| `storageServerUrl`     | string                   | Specify a custom storage server url                                                                                                                                                                                                                                                                                                                     | No        | https://session.web3auth.io |
+| `storageKey`           | "session" \| "local"     | setting to "local" will persist social login session across browser tabs.                                                                                                                                                                                                                                                                               | No        | "local"                     |
+| `sessionTime`          | number                   | How long should a login session last at a minimum in seconds                                                                                                                                                                                                                                                                                            | No        | 86400 seconds               |
+| `sessionNamespace`     | string                   | This option is for internal use only in torus wallet and has no effect on user's login on other dapps.                                                                                                                                                                                                                                                  | No        | -                           |
+| `mfaSettings`          | MfaSettings              | This parameter will be used to enable mfa factors and set priority on UI listing. List of factors available backUpShareFactor \| socialFactor \| passwordFactor \| authenticatorFactor                                                                                                                                                                  | No        | false                       |
+| `useMpc`               | boolean                  | This parameter will be used to use auth mpc                                                                                                                                                                                                                                                                                                             | No        | false                       |
+| `useCoreKitKey`        | boolean                  | This parameter will be used to select core kit key.                                                                                                                                                                                                                                                                                                     | No        | false                       |
+
+</TabItem>
+
+<TabItem value="type">
+
+```tsx
+export type AuthOptions = {
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   */
+  clientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  network: WEB3AUTH_NETWORK_TYPE;
+  /**
+   * This parameter will be used to change the build environment of auth sdk.
+   * @defaultValue production
+   */
+  buildEnv?: BUILD_ENV_TYPE;
+  /**
+   * redirectUrl is the dapp's url where user will be redirected after login.
+   *
+   * @remarks
+   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * else initialization will give error.
+   */
+  redirectUrl?: string;
+  /**
+   * two uxModes are supported:-
+   * - `'POPUP'`: In this uxMode, a popup will be shown to user for login.
+   * - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.
+   *
+   * @defaultValue `'POPUP'`
+   * @remarks
+   *
+   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
+   */
+  uxMode?: UX_MODE_TYPE;
+  /**
+   * replaceUrlOnRedirect removes the params from the redirected url after login
+   *
+   * @defaultValue true
+   */
+  replaceUrlOnRedirect?: boolean;
+  /**
+   * originData is used to verify the origin of dapp by iframe.
+   *
+   * @internal
+   * @remarks
+   * You don't have to pass originData explicitly if you have registered your dapp at
+   * {@link "https://dashboard.web3auth.io"| developer dashboard}.
+   *
+   * originData contains a signature of dapp's origin url which is generated using
+   * project's secret.
+   */
+  originData?: OriginData;
+  /**
+   * loginConfig enables you to pass your own login verifiers configuration for various
+   * loginProviders.
+   *
+   * loginConfig is key value map where each key should be a valid loginProvider and value
+   * should be custom configuration for that loginProvider
+   *
+   * @remarks
+   * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * to use here.
+   *
+   */
+  loginConfig?: LoginConfig;
+  /**
+   * webauthnTransport enables you to configure the transport type user can use
+   * for saving their share.
+   *
+   * @defaultValue ["internal"]
+   *
+   * @remarks
+   * This is only available for v1 users.
+   */
+  webauthnTransports?: AuthenticatorTransport[];
+  /**
+   * sdkUrl is for internal development use only and is used to override the
+   * `network` parameter.
+   * @internal
+   */
+  sdkUrl?: string;
+  /**
+   * dashboardUrl is for internal development use only and is used to override the
+   * `buildEnv` parameter.
+   * @internal
+   */
+  dashboardUrl?: string;
+  /**
+   * options for whitelabling default auth modal.
+   */
+  whiteLabel?: WhiteLabelData;
+  /**
+   * Specify a custom storage server url
+   * @defaultValue https://session.web3auth.io
+   * @internal
+   */
+  storageServerUrl?: string;
+  /**
+   * setting to "local" will persist social login session across browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local";
+  /**
+   * How long should a login session last at a minimum in seconds
+   *
+   * @defaultValue 86400 seconds
+   * @remarks Max value of sessionTime can be 7 * 86400 (30 days)
+   */
+  sessionTime?: number;
+  /**
+   * This option is for internal use only in torus wallet and has no effect
+   * on user's login on other dapps.
+   * @internal
+   */
+  sessionNamespace?: string;
+  /**
+   * This parameter will be used to enable mfa factors and set priority on UI listing.
+   * List of factors available
+   * backUpShareFactor | socialFactor | passwordFactor | authenticatorFactor
+   * @defaultValue false
+   */
+  mfaSettings?: MfaSettings;
+  /**
+   * This parameter will be used to use auth mpc
+   * @defaultValue false
+   */
+  useMpc?: boolean;
+  /**
+   * This parameter will be used to select core kit key.
+   * @defaultValue false
+   */
+  useCoreKitKey?: boolean;
+};
+```
+
+</TabItem>
+
+</Tabs>

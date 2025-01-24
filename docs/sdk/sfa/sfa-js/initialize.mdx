@@ -1,0 +1,96 @@
+---
+title: "Initializing Single Factor Auth JS SDK"
+sidebar_label: "Initialize"
+description: "Web3Auth Single Factor Auth JS SDK - Initialize | Documentation - Web3Auth"
+---
+
+import InstantiatingProvider from "@site/src/common/sdk/sfa/_instantiating_provider.mdx";
+import SFAInstanceExample from "@site/src/common/sdk/sfa/_sfa_instance_example.mdx";
+import SFAInstanceReactNativeExample from "@site/src/common/sdk/sfa/_sfa_instance_example-react-native.mdx";
+import SFAInstanceNodeExample from "@site/src/common/sdk/sfa/_sfa_instance_example-node.mdx";
+import Web3AuthOptions from "@site/src/common/sdk/sfa/_web3auth_sfa_options.mdx";
+import ExampleCards from "@theme/ExampleCards";
+import {
+  coreKitSfaWebExamples,
+  coreKitSfaReactNativeExamples,
+  coreKitSfaNodeExamples,
+  QUICK_START,
+} from "@site/src/common/maps";
+
+After Installation, the next step to use Web3Auth Single Factor Auth JS SDK is to Initialize the
+SDK.
+
+However, the Initialization is a two-step process, ie.
+
+- [Instantiation of Web3Auth](#instantiating-web3auth)
+- [Initialization of Web3Auth](#initializing-web3auth)
+
+## Instantiating Web3Auth
+
+#### Import the `Web3Auth` class from `@web3auth/single-factor-auth` package.
+
+```tsx
+import { Web3Auth } from "@web3auth/single-factor-auth";
+```
+
+#### Assign the `Web3Auth` class to a variable
+
+```javascript
+const web3auth = new Web3Auth(Web3AuthOptions);
+```
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+<Web3AuthOptions />
+
+### Instantiating Provider
+
+<InstantiatingProvider />
+
+## Initializing Web3Auth
+
+#### `init()`
+
+To complete the initialization process, we need to initialize the `Web3Auth` instance, which we
+named `web3auth`. This is achieved by calling the `init()` function of the previously created
+`web3auth` instance.
+
+```javascript
+await web3auth.init();
+```
+
+## Usage
+
+### Web
+
+For Web, you need to simply pass the basic `Web3AuthOptions`, and the private key provider, and the
+SDK will handle the rest.
+
+<SFAInstanceExample />
+
+### React Native
+
+While configuring the React Native Instance, you need to pass the `storage` option, and the `mode`
+of the SDK should be set to `react-native`.
+
+<SFAInstanceReactNativeExample />
+
+### Node JS
+
+<SFAInstanceNodeExample />
+
+For Node JS, you just need to set the `mode` of the SDK to `node`.
+
+## Quick Starts
+
+<ExampleCards
+  exampleMap={[
+    ...coreKitSfaWebExamples,
+    ...coreKitSfaReactNativeExamples,
+    ...coreKitSfaNodeExamples,
+  ].filter((obj) => obj.type === QUICK_START)}
+/>

@@ -1,0 +1,25 @@
+## How Authentication works
+
+The Single Factor Auth (SFA) SDK enables the creation of embedded wallets using your preferred
+authentication provider. Unlike the traditional auth service flow, where users are redirected to
+Web3Auth's user flow screens for verification, the SFA SDK facilitates seamless authentication
+without requiring a redirect. For a clearer understanding, please refer to the user flow screens
+below.
+
+![Web3Auth Auth Services Flow](/images/whitelabel/user-flow-screens.gif)
+
+Since SFA handles authentication without redirect, you'll need to create a verifier and manage the
+OAuth login yourself. After setting up the verifier and completing the OAuth login, pass the JWT
+token, verifier name, and JWT verifier ID. These details are sent to the Web3Auth network, where
+they are verified using the JWKS and authentication fields specified in your verifier.
+
+On the Web3Auth network, there are nine nodes that independently verify these details. Verification
+is considered successful when at least five out of the nine nodes confirm the details. Once
+authentication is successful, you can use the private key to derive the user's public key and
+perform on-chain transactions.
+
+## Create a verifier
+
+For Single Factor Auth(SFA) SDK you'll need to create your own verifier choosing your preferred
+provider, and appropriate details. To create a verifier,
+[please checkout our documentation on how to create a verifier](/docs/auth-provider-setup/verifiers).

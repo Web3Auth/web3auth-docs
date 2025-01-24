@@ -1,68 +1,73 @@
-We have used some util functions to convert the values to the required format.
+For signing and sending the transaction, we'll create helper methods to get the nonce, gas price,
+estimate the gas and send the transaction. The nonce is the number of transactions sent from the
+address. The gas price is the price of the gas in Wei. The gas limit is the maximum amount of gas
+that can be used to send the transaction. Apart form that, we'll also create a helper method to
+convert the amount to Wei.
+
+Once the transaction object is created, we'll estimate the gas and create a new transaction object
+with the gas limit. Finally, we'll send the transaction using
+`EthereumHttpClient.eth_sendRawTransaction` method and get the hash.
 
 ```swift
-let gasPrice = try await client.eth_gasPrice()
-let maxTipInGwie = BigUInt(TorusWeb3Utils.toEther(Gwie: BigUInt(amount)))
-let totalGas = gasPrice + maxTipInGwie
-let amtInGwie = TorusWeb3Utils.toWei(ether: amount)
-let nonce = try await client.eth_getTransactionCount(address: address, block: .Latest)
-let transaction = EthereumTransaction(from: address, to: EthereumAddress(sendTo), value: amtInGwie, data: Data(), nonce: nonce + 1, gasPrice: totalGas, gasLimit: gasLimit, chainId: chainID)
-let signed = try account.sign(transaction: transaction)
-let val = try await client.eth_sendRawTransaction(signed.transaction, withAccount: account)
-```
-
-The util functions are as follows
-
-```swift
-import BigInt
-import Foundation
 import web3
 
-public typealias Ether = Double
-public typealias Wei = BigUInt
+private let etherInWei = pow(Double(10), 18)
 
-public final class TorusWeb3Utils {
-    public static func timeMinToSec(val: Double) -> Double {
-        return val * 60
-    }
-
-    // NOTE: calculate wei by 10^18
-    private static let etherInWei = pow(Double(10), 18)
-    private static let etherInGwei = pow(Double(10), 9)
-
-    /// Convert Wei(BInt) unit to Ether(Decimal) unit
-    public static func toEther(wei: Wei) -> Ether {
-        guard let decimalWei = Double(wei.description) else {
-            return 0
-        }
-        return decimalWei / etherInWei
-    }
-
-    public static func toEther(Gwie: BigUInt) -> Ether {
-        guard let decimalWei = Double(Gwie.description) else {
-            return 0
-        }
-        return decimalWei / etherInGwei
-    }
-
-    /// Convert Ether(Decimal) unit to Wei(BInt) unit
-    public static func toWei(ether: Ether) -> Wei {
-        let wei = Wei(ether * etherInWei)
-        return wei
-    }
-
-    /// Convert Ether(String) unit to Wei(BInt) unit
-    public static func toWei(ether: String) -> Wei {
-        guard let decimalEther = Double(ether) else {
-            return 0
-        }
-        return toWei(ether: decimalEther)
-    }
-
-    // Only used for calcurating gas price and gas limit.
-    public static func toWei(GWei: Double) -> Wei {
-        return Wei(GWei * 1000000000)
-    }
+private func getNonce() async throws -> Int {
+    let nonce = try await client.eth_getTransactionCount(address: account.address, block: .Latest)
+    return nonce
 }
 
+private func getGasPrice() async throws -> BigUInt {
+    return try await client.eth_gasPrice()
+}
+
+private func estimateGas(ethereumTransaction: EthereumTransaction) async throws -> BigUInt {
+    return try await client.eth_estimateGas(ethereumTransaction)
+}
+
+public func toWei(ether: Ether) -> Wei {
+    let wei = Wei(ether * etherInWei)
+    return wei
+}
+
+let nonce = try await getNonce()
+let gasPrice = try await getGasPrice()
+
+// Convert the amount to Wei
+let value = toWei(ether: Ether(floatLiteral: 0.001))
+
+let ethereumTransaction = EthereumTransaction(
+    // Use the account from previous step
+    from: account.address,
+    to: EthereumAddress.init(stringLiteral: "RECIPIENT_ADDRESS_IN_HEX_FORMAT"),
+    value: value,
+    // Empty data, 0x
+    data: Data(),
+    nonce: nonce,
+    gasPrice: gasPrice,
+    gasLimit: nil,
+    // Use the chain id from previous step
+    chainId: CHAIN_ID_IN_INTEGER
+)
+
+// Estimate the gas
+let gasLimit = try await estimateGas(ethereumTransaction: ethereumTransaction)
+
+let transaction = EthereumTransaction(
+    // Use the account from previous step
+    from: account.address,
+    to: EthereumAddress.init(stringLiteral: "RECIPIENT_ADDRESS_IN_HEX_FORMAT"),
+    value: value,
+    // Empty data, 0x
+    data: Data(),
+    nonce: nonce,
+    gasPrice: gasPrice,
+    gasLimit: gasLimit,
+    // Use the chain id from previous step
+    chainId: CHAIN_ID_IN_INTEGER
+)
+
+// Use the account from previous step
+let hash = try await client.eth_sendRawTransaction(transaction, withAccount: account)
 ```

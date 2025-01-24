@@ -1,0 +1,123 @@
+---
+title: Integrate Web3Auth with the Saakuru Blockchain in JavaScript
+sidebar_label: Web
+image: "banners/saakuru.png"
+
+keywords: [saakuru, web3auth, authentication, blockchain]
+description:
+  "Integrate Web3Auth with the Saakuru Blockchain in Web Applications | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
+import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-get-account-n-balance.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
+import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
+import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
+import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
+import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Saakuru Blockchain in Web Applications"
+  description="Integrate Web3Auth with the Saakuru Blockchain in Web Applications | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/saakuru.png"
+  slug="/connect-blockchain/evm/saakuru/web"
+/>
+
+## Installation
+
+<InstallationSnippet />
+
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x6E23D6", // Hexadecimal for 7225878
+  rpcTarget: "https://rpc.saakuru.network",
+  displayName: "Saakuru Mainnet",
+  blockExplorerUrl: "https://explorer.saakuru.network/",
+  ticker: "OAS",
+  tickerName: "Saakuru",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
+
+<GetUserInfoSnippet />
+
+## Get Account and Balance
+
+<GetAccountAndBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign Transaction
+
+<SignTransactionSnippet />
+
+## Sign Message
+
+### Personal Sign
+
+<SignPersonalMessageSnippet />
+
+### Sign Typed Data v4
+
+<SignTypedDataV4Snippet />
+
+## Smart Contract
+
+<SmartContractSoliditySnippet />
+
+### Deploy Contract
+
+<DeployContractSolidityDeploySnippet />
+
+### Read From Contract
+
+<DeployContractSolidityReadSnippet />
+
+### Write to Contract
+
+<DeployContractSolidityWriteSnippet />
+
+## Fetch User's Private Key
+
+<FetchUserPrivateKeySnippet />

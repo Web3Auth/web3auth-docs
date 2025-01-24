@@ -1,0 +1,138 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="web"
+  values={[
+    { label: "Web", value: "web" },
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo React Native", value: "expo" },
+  ]}
+>
+
+<TabItem value="web">
+
+```tsx
+import { TKey } from "@tkey/core";
+import { SecurityQuestionsModule } from "@tkey/security-questions";
+import SFAServiceProvider from "@tkey/service-provider-sfa";
+import { TorusStorageLayer } from "@tkey/storage-layer-torus";
+import { ShareSerializationModule } from "@tkey/share-serialization";
+import { WebStorageModule } from "@tkey/web-storage";
+
+const web3AuthOptions: any = {
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  network: "sapphire_mainnet", // ["sapphire_mainnet", "testnet"]
+};
+
+const serviceProvider = new SFAServiceProvider({ web3AuthOptions });
+
+// Configuration of Storage Layer
+const storageLayer = new TorusStorageLayer({
+  hostUrl: "https://metadata.tor.us",
+});
+
+// Configuration of Modules
+const webStorageModule = new WebStorageModule();
+const shareSerializationModule = new ShareSerializationModule();
+const securityQuestionsModule = new SecurityQuestionsModule();
+
+// Instantiation of tKey
+export const tKeyInstance = new TKey({
+  serviceProvider,
+  storageLayer,
+  modules: {
+    securityQuestions: securityQuestionsModule,
+    shareSerialization: shareSerializationModule,
+    webStorage: webStorageModule,
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="bare">
+
+```tsx
+import { TKey } from "@tkey/core";
+import { SecurityQuestionsModule } from "@tkey/security-questions";
+import SFAServiceProvider from "@tkey/service-provider-sfa";
+import { TorusStorageLayer } from "@tkey/storage-layer-torus";
+import { ShareSerializationModule } from "@tkey/share-serialization";
+import { WebStorageModule } from "@tkey/web-storage";
+import { ReactNativeStorageModule } from "@tkey/react-native-storage";
+import EncryptedStorage from "react-native-encrypted-storage";
+
+const web3AuthOptions: any = {
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  network: "sapphire_mainnet", // ["sapphire_mainnet", "testnet"]
+};
+
+const serviceProvider = new SFAServiceProvider({ web3AuthOptions });
+
+// Configuration of Storage Layer
+const storageLayer = new TorusStorageLayer({
+  hostUrl: "https://metadata.tor.us",
+});
+
+// Configuration of Modules
+const reactNativeStorageModule = new ReactNativeStorageModule(EncryptedStorage);
+const shareSerializationModule = new ShareSerializationModule();
+const securityQuestionsModule = new SecurityQuestionsModule();
+
+// Instantiation of tKey
+export const tKeyInstance = new TKey({
+  serviceProvider,
+  storageLayer,
+  modules: {
+    securityQuestions: securityQuestionsModule,
+    shareSerialization: shareSerializationModule,
+    reactNativeStorage: reactNativeStorageModule,
+  },
+});
+```
+
+</TabItem>
+<TabItem value="expo">
+
+```tsx
+import { TKey } from "@tkey/core";
+import { SecurityQuestionsModule } from "@tkey/security-questions";
+import SFAServiceProvider from "@tkey/service-provider-sfa";
+import { TorusStorageLayer } from "@tkey/storage-layer-torus";
+import { ShareSerializationModule } from "@tkey/share-serialization";
+import { ReactNativeStorageModule } from "@tkey/react-native-storage";
+import * as SecureStore from "expo-secure-store";
+
+const web3AuthOptions: any = {
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  network: "testnet", // ["sapphire_mainnet", "testnet"]
+};
+
+const serviceProvider = new SFAServiceProvider({ web3AuthOptions });
+
+// Configuration of Storage Layer
+const storageLayer = new TorusStorageLayer({
+  hostUrl: "https://metadata.tor.us",
+});
+
+// Configuration of Modules
+const reactNativeStorageModule = new ReactNativeStorageModule(SecureStore);
+const shareSerializationModule = new ShareSerializationModule();
+const securityQuestionsModule = new SecurityQuestionsModule();
+
+// Instantiation of tKey
+export const tKeyInstance = new TKey({
+  serviceProvider,
+  storageLayer,
+  modules: {
+    securityQuestions: securityQuestionsModule,
+    shareSerialization: shareSerializationModule,
+    reactNativeStorage: reactNativeStorageModule,
+  },
+});
+```
+
+</TabItem>
+
+</Tabs>

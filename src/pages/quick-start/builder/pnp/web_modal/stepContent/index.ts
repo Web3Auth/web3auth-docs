@@ -6,6 +6,7 @@ import * as registerApp from "../../../../commonSteps/registerApp.mdx";
 import * as vueBundlerIssues from "../../../../commonSteps/vueBundlerIssues.mdx";
 import { toSteps } from "../../../../utils";
 import * as initialization from "./initializePnPModal.mdx";
+import * as chainConfig from "./chainConfigPnPModal.mdx";
 import * as installation from "./installationPnPModal.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
@@ -14,13 +15,20 @@ import * as htmlQuickStart from "./modalHTMLQuickStart.mdx";
 import * as nextQuickStart from "./modalNextQuickStart.mdx";
 import * as reactQuickStart from "./modalReactQuickStart.mdx";
 import * as vueQuickStart from "./modalVueQuickStart.mdx";
+import * as reactHooksQuickStart from "./modalReactHooksQuickStart.mdx";
+import * as vueComposablesQuickStart from "./modalVueComposablesQuickStart.mdx";
+import * as instantiate from "./instantiatePnPModal.mdx";
+import * as setupWeb3AuthProvider from "./setupWeb3AuthProvider.mdx";
+import * as configureExternalWallets from "./configureExternalWallets.mdx";
 
 const STEPS = toSteps({
   reactQuickStart,
+  reactHooksQuickStart,
   installation,
   reactBundlerIssues,
   registerApp,
   initialization,
+  chainConfig,
   login,
   getUserInfo,
   blockchainCalls,
@@ -28,9 +36,13 @@ const STEPS = toSteps({
   nextQuickStart,
   angularQuickStart,
   vueQuickStart,
+  vueComposablesQuickStart,
   htmlQuickStart,
   vueBundlerIssues,
+  instantiate,
   angularBundlerIssues,
+  setupWeb3AuthProvider,
+  configureExternalWallets,
 });
 
 export default STEPS;

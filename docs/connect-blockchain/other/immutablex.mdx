@@ -1,25 +1,32 @@
 ---
 title: Integrate Web3Auth with the ImmutableX Blockchain
 sidebar_label: ImmutableX
-image: "guides/banners/immutablex.png"
-displayed_sidebar: resources
+image: "banners/immutablex.png"
+
 keywords: [immutablex, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the ImmutableX Blockchain | Documentation - Web3Auth"
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
-import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa-tkey.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
-While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
-[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
-[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[ImmutableX](https://www.avalabs.org) blockchain calls. However, since this chain is not fully EVM-compatible, there are a few extra setup
-requirements. We have highlighted a few methods here to get you started quickly on that.
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[ImmutableX](https://www.avalabs.org) blockchain calls. However, since this chain is not fully
+EVM-compatible, there are a few extra setup requirements. We have highlighted a few methods here to
+get you started quickly on that.
 
 :::note
 
-This reference is for the `Web`, however, you can use ImmutableX on other Mobile and Gaming Platforms as well. Please follow our reference for
-[EVM Blockchains](/connect-blockchain/evm/), and similarly use ImmutableX libraries that support the platforms to use the private key and make
+This reference is for the `Web`, however, you can use ImmutableX on other Mobile and Gaming
+Platforms as well. Please follow our reference for [EVM Blockchains](/connect-blockchain/evm/), and
+similarly use ImmutableX libraries that support the platforms to use the private key and make
 blockchain calls accordingly.
 
 :::
@@ -47,7 +54,7 @@ npm install --save @imtbl/core-sdk
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1", //
   rpcTarget: "https://rpc.ankr.com/eth",
   // Avoid using public rpcTarget in production.
@@ -66,7 +73,7 @@ const chainConfig = {
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0xaa36a7", //
   rpcTarget: "https://rpc.ankr.com/eth_sepolia",
   // Avoid using public rpcTarget in production.
@@ -84,14 +91,17 @@ const chainConfig = {
 
 <InitializeWeb3Auth />
 
-## Get User Info
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
 
 <GetUserInfoSnippet />
 
 ## Creating Layer 1 and Layer 2 Signers
 
-Once a user logs in, the Web3Auth SDK returns a provider. ImmutableX is a layer 2 solution for Ethereum, thus we need to create a eth signer using the
-provider. We will use the ethers library to create the signer. Then we use the helper function `createStarkSigner` from the `@imtbl/core-sdk` to
+Once a user logs in, the Web3Auth SDK returns a provider. ImmutableX is a layer 2 solution for
+Ethereum, thus we need to create a eth signer using the provider. We will use the ethers library to
+create the signer. Then we use the helper function `createStarkSigner` from the `@imtbl/core-sdk` to
 create a stark signer from the private key.
 
 ```tsx
@@ -115,7 +125,8 @@ const starkKey = await web3authProvider.request({ method: "private_key" });
 const starkSigner = createStarkSigner(starkKey);
 ```
 
-After creating the signers, we need to register these signers with the ImmutableX SDK. We can do this by calling the `registerOffchain` method.
+After creating the signers, we need to register these signers with the ImmutableX SDK. We can do
+this by calling the `registerOffchain` method.
 
 ```tsx
 const config = Config.SANDBOX; // Or Config.PRODUCTION or Config.ROPSTEN

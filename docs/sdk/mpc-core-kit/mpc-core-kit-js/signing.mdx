@@ -1,0 +1,258 @@
+---
+title: "Signing in MPC Core Kit JS SDK"
+sidebar_label: "Signing"
+description: "Web3Auth MPC Core Kit JS SDK - Signing | Documentation - Web3Auth"
+---
+
+import Ed25519Installation from "@site/src/common/sdk/mpc-core-kit/_solana-installation.mdx";
+import Ed25519Initialization from "@site/src/common/sdk/mpc-core-kit/_ed25519-initialization.mdx";
+import SolanaAccount from "@site/src/common/sdk/mpc-core-kit/_solana-account.mdx";
+import SolanaSignMessage from "@site/src/common/sdk/mpc-core-kit/_solana-sign-message.mdx";
+import SolanaSignTransaction from "@site/src/common/sdk/mpc-core-kit/_solana-sign-transaction.mdx";
+
+Web3Auth's MPC Core Kit SDK supports both secp256k1 and ed25519 cryptographic curves. The secp256k1
+curve enables the retrieval of public keys and the signing of transactions on blockchains compatible
+with secp256k1, such as Bitcoin and Ethereum. Meanwhile, the ed25519 curve provides the same
+capabilities for blockchains that support ed25519, ensuring broad compatibility across different
+blockchain ecosystems.
+
+## ECDSA Signature
+
+To sign the transactions for secp256k1 curve, you can utilize the `@toruslabs/tss-dkls-lib` to
+instantiate Web3AuthMPCCoreKit with secp256k1 KeyType. To support the secp256k1 curve Web3Auth
+internally uses the DKLS algorithm to provide the ECDSA signature using threshold protocols.
+
+ECDSA signatures can be used for blockchain applications such as Bitcoin, Ethereum, etc. Let's have
+an overview of how you can generate ECDSA signature for Ethereum.
+
+### Ethereum
+
+As discussed earlier, to generate the ECDSA signature for Ethereum, we will utilize
+`@toruslabs/tss-dkls-lib` to instantiate Web3AuthMPCCoreKit with secp256k1 KeyType. This package
+contains all the necessary functionalities and logic required for TSS signing.
+
+Along with that, we'll also use `@web3auth/ethereum-mpc-provider` which is a helper package. This
+package will provide a wrapper to sign the message using the partial keys and generate a TSS
+signature.
+
+The package providers an EIP1193 compatible provider which can be used with web3.js, ethers, or viem
+package offering capabilities like account management, and TSS transaction signing, and blockchain
+interaction.
+
+#### Installation
+
+The first step would be to install the helper packages which are required to integrate
+Web3AuthMPCCoreKit with any EVM-compatible chain.
+
+```bash npm2yarn
+$ npm install @toruslabs/tss-dkls-lib
+$ npm install @web3auth/ethereum-mpc-provider
+```
+
+#### Create Web3AuthMPCCoreKit instance
+
+Considering you have already installed the `@toruslabs/tss-dkls-lib` package, let's use the `tssLib`
+to create Web3AuthMPCCoreKit instance.
+
+```tsx
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+// focus-next-line
+import { tssLib } from "@toruslabs/tss-dkls-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  // focus-next-line
+  tssLib: tssLib,
+  storage: window.storage,
+});
+```
+
+#### Create EthereumSigningProvider instance
+
+Once you have the `Web3AuthMPCCoreKit` instance, you can create the instance of
+`EthereumSigningProvider` which will help you to sign the transactions and interact with the
+blockchain.
+
+```tsx
+import { makeEthereumSigner } from "@web3auth/mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+const ethereumProvider = new EthereumSigningProvider({ config: { chainConfig } });
+ethereumProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+```
+
+#### Get a User Account
+
+Once you have an `EthereumSigningProvider` instance, it can be used as an EIP1193 provider with
+web3.js, ethers, or viem package. For this documentation, we'll be using web3.js.
+
+We'll first create the `Web3` instance using the `ethereumProvider`. The `Web3` instance can be used
+to get a user's account, perform transactions, sign a message, etc. Read more about
+[supported JSON RPC methods](https://ethereum.org/en/developers/docs/apis/json-rpc/#json-rpc-methods).
+
+```tsx
+import Web3 from "web3";
+
+const web3 = new Web3(ethereumProvider);
+
+// Get user's EOA address
+const address = (await web3.eth.getAccounts())[0];
+```
+
+#### Sign message
+
+To sign a message, you can use the RPC methods supported. For this documentation, we'll showcase how
+you can do a personal sign. To learn more about different RPC methods for signing, you can read our
+[EthereumSigningProvider documentation](/docs/sdk/mpc-core-kit/mpc-core-kit-js/providers/evm).
+
+```tsx
+const fromAddress = (await web3.eth.getAccounts())[0];
+const originalMessage = "YOUR_MESSAGE";
+
+const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
+```
+
+#### Send Transaction
+
+To send an Ethereum transaction, you can utilize the `sendTransaction` method. The method will sign
+the transaction, as well as broadcast the transaction once a valid signature is generated. If you
+only want to generate a signature, you can use the `signTransaction` method.
+
+```tsx
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+// Convert 0.0001 ether to wei
+const amount = web3.utils.toWei("0.0001");
+
+// This will perform self transfer of 0.0001 ETH.
+const receipt = await web3.eth.sendTransaction({
+  from: fromAddress,
+  to: fromAddress,
+  value: amount,
+});
+```
+
+### Others
+
+The secp256k1 support is not limited to only Ethereum-compatible chains. You can use the SDK with
+any blockchain ecosystem that supports the secp256k1 curve.
+
+#### Get PublicKey
+
+To retrieve the secp256k1 publicKey you can use the `getPubKey` method in `Web3AuthMPCCoreKit`. The
+`getPubKey` will return the compressed public key, you can further use the `Point.fromSEC1` to
+retrive the uncompressed public key.
+
+```tsx
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+import { tssLib } from "@toruslabs/tss-dkls-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  tssLib: tssLib,
+  storage: window.storage,
+});
+
+// Compressed pubKey
+const pubKey = coreKitInstance.getPubKey();
+
+// Uncompressed pubKey
+const pubKeyPoint = Point.fromSEC1(secp256k1, pubKey.toString("hex"));
+const uncompressedPubKey = pubKeyPoint.toSEC1(secp256k1).subarray(1);
+```
+
+#### Signing
+
+To sign the transaction for secp256k1 curve, you can use the `sign` method. The sign method supports
+both secp256k1 and ed25519 curve. Using the method dkls-lib this function will return ECDSA
+signature and using frost-lib, it will return EDDSA sginature.
+
+```tsx
+const msg = Buffer.from("Welcome to Web3Auth");
+
+// Returns the ECDSA signature bytes.
+const signature = await coreKitInstance.sign(msg);
+```
+
+## EdDSA Signature
+
+Along with ECDSA signature, Web3AuthMPCCoreKit also supports ed25519 curve to generate EdDSA
+signatures. To sign the transactions for ed25519 curve, you can utilize the
+`@toruslabs/tss-frost-lib` to instantiate Web3AuthMPCCoreKit with ed25519 KeyType. To support the
+ed25519 curve Web3Auth internally uses the FROST algorithm to provide the EdDSA sginature using
+threshold protocols.
+
+EdDSA signatures can be used for blockchain applications such as Solana, Aptos, etc. Let's have an
+overview of how you can generate EdDSA signature for Solana.
+
+### Solana
+
+As discussed earlier, to generate the EdDSA signature for Solana, we will utilize
+`@toruslabs/tss-frost-lib` to instantiate Web3AuthMPCCoreKit with ed25519 KeyType. This package
+contains all the necessary functionalities and logic required for TSS signing. Along with that,
+we'll also use `@solana/web3.js` package. This package will provide a wrapper to generate the
+transaction bytes, verify the message, and interact with Solana.
+
+#### Installation
+
+The first step would be to install the helper packages which are required to integrate
+Web3AuthMPCCoreKit with Solana chain.
+
+<Ed25519Installation />
+
+#### Create Web3AuthMPCCoreKit instance
+
+<Ed25519Initialization />
+
+#### Get a User Account
+
+<SolanaAccount />
+
+#### Sign a message
+
+<SolanaSignMessage />
+
+#### Sign a Transaction
+
+<SolanaSignTransaction />
+
+### Others
+
+The ed25519 support is not limited to only Solana chain. You can use the SDK with any blockchain
+ecosystem that supports the ed25519 curve.
+
+#### Get PublicKey
+
+To retrieve the ed25519 publicKey you can use the `getPubKeyEd25519` method in `Web3AuthMPCCoreKit`.
+
+```tsx
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+import { tssLib } from "@toruslabs/tss-frost-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  tssLib: tssLib,
+  storage: window.storage,
+});
+
+const pubKey = coreKitInstance.getPubKeyEd25519();
+```
+
+#### Signing
+
+To sign the transaction for ed25519 curve, you can use the `sign` method. The sign method supports
+both secp256k1 and ed25519 curve. Using the method dkls-lib this function will return ECDSA
+signature and using frost-lib, it will return EDDSA sginature.
+
+```tsx
+const msg = Buffer.from("Welcome to Web3Auth");
+
+// Returns the EdDSA signature bytes.
+const signature = await coreKitInstance.sign(msg);
+```

@@ -1,0 +1,69 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+After initializing Web3Auth, the next step is to initialize the provider and use it for your
+operations.
+
+<Tabs
+  defaultValue="modal"
+  values={[
+    { label: "PnP Modal SDK", value: "modal", },
+    { label: "PnP NoModal SDK", value: "no-modal", },
+    { label: "Single Factor Auth JS SDK", value: "sfa", },
+  ]}
+>
+<TabItem
+  value="modal"
+>
+
+```tsx
+// Initialize for PnP Modal SDK
+await web3auth.initModal();
+
+// Trigger the login
+await web3auth.connect();
+
+// Get the provider
+const provider = web3auth.provider;
+
+// Continue using the `provider`
+```
+
+</TabItem>
+<TabItem
+  value="no-modal"
+>
+
+```tsx
+// Initialize for PnP NoModal SDK
+await web3auth.init();
+
+// Trigger the login
+await web3auth.connectTo("auth");
+
+// Get the provider
+const provider = web3auth.provider;
+
+// Continue using the `provider`
+```
+
+</TabItem>
+<TabItem
+  value="sfa"
+>
+
+```tsx
+// Initialize for Single Factor Auth JS SDK
+await web3auth.init();
+
+// Trigger the login
+await web3auth.connect();
+
+// Get the provider
+const provider = web3auth.provider;
+
+// Continue using the `provider`
+```
+
+</TabItem>
+</Tabs>

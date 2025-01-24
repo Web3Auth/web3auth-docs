@@ -1,47 +1,30 @@
-#### `configureAdapter(ADAPTER)`
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
-To configure an adapter, create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in
+External Adapters helps you to connect with external wallets like Metamask, Coinbase, Phantom, and
+more. To configure an adapter, create the instance of the adapter and pass the instance in the
 `configureAdapter` function.
+
+#### Default EVM Adapter
+
+The [@web3auth/default-evm-adapter](https://npmjs.com/package/@web3auth/default-evm-adapter) package
+enables seamless detection of injected EVM wallets and WalletConnect-supported wallets, allowing
+interaction with just a single line of code. Learn more about
+[Default EVM Adapter](/docs/sdk/pnp/web/adapters/default-evm-adapter).
+
+#### Default Solana Adapter
+
+The
+[@web3auth/default-solana-adapter](https://www.npmjs.com/package/@web3auth/default-solana-adapter)
+enables seamless detection of injected Solana wallets, allowing interaction with just a single line
+of code. Learn more about
+[Default Solana Adapter](/docs/sdk/pnp/web/adapters/default-solana-adapter).
+
+####
 
 :::tip
 
-Refer to the [Adapters documentation](/sdk/pnp/web/adapters) to know more deeply about what adapters are available and how to configure them.
+Refer to the [Adapters documentation](/sdk/pnp/web/adapters) to know more deeply about what adapters
+are available and how to configure them.
 
 :::
-
-#### Example
-
-If you want to configure the Torus EVM Wallet Adapter
-
-- Import the `TorusWalletAdapter` from `@web3auth/torus-evm-adapter` package
-- Create an instance of the adapter along with the configuration
-- Pass the returned instance in to `web3auth.configureAdapter`
-
-```javascript
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
-
-const torusAdapter = new TorusWalletAdapter({
-  adapterSettings: {
-    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    buttonPosition: "bottom-left",
-  },
-  loginSettings: {
-    verifier: "google",
-  },
-  initParams: {
-    buildEnv: "testing",
-  },
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-    displayName: "Ethereum Mainnet",
-    blockExplorerUrl: "https://etherscan.io/",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-    logo: "https://images.toruswallet.io/eth.svg",
-  },
-});
-
-web3auth.configureAdapter(torusAdapter);
-```

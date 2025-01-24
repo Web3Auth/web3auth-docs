@@ -1,8 +1,8 @@
 ---
 title: Integrate Web3Auth with the Ethereum Blockchain in Javascript
 sidebar_label: Web
-image: "guides/banners/ethereum.png"
-displayed_sidebar: resources
+image: "banners/ethereum.png"
+
 keywords: [ethereum, web3auth, authentication, blockchain]
 description:
   "Integrate Web3Auth with the Ethereum Blockchain in JavaScript | Documentation - Web3Auth"
@@ -14,15 +14,14 @@ import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-block
 import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
 import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
 import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
-import SignTypedDataV1Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v1.mdx";
-import SignTypedDataV3Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v3.mdx";
 import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
 import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
 import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
 import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
 import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
-import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa-tkey.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -30,7 +29,7 @@ import SEO from "@site/src/components/SEO";
 <SEO
   title="Integrate Web3Auth with the Ethereum Blockchain in JavaScript"
   description="Integrate Web3Auth with the Ethereum Blockchain in JavaScript | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/guides/banners/ethereum.png"
+  image="https://web3auth.io/docs/banners/ethereum.png"
   slug="/connect-blockchain/evm/ethereum/web"
 />
 
@@ -70,7 +69,7 @@ after successful authentication.
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
   // Avoid using public rpcTarget in production.
@@ -91,7 +90,7 @@ const chainConfig = {
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0xaa36a7",
   rpcTarget: "https://rpc.ankr.com/eth_sepolia",
   // Avoid using public rpcTarget in production.
@@ -111,7 +110,9 @@ const chainConfig = {
 
 <InitializeWeb3Auth />
 
-## Get User Info
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
 
 <GetUserInfoSnippet />
 
@@ -132,14 +133,6 @@ const chainConfig = {
 ### Personal Sign
 
 <SignPersonalMessageSnippet />
-
-### Sign Typed Data v1
-
-<SignTypedDataV1Snippet />
-
-### Sign Typed Data v3
-
-<SignTypedDataV3Snippet />
 
 ### Sign Typed Data v4
 

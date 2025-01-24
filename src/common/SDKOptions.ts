@@ -2,65 +2,68 @@ export const reactJS = "React";
 export const angular = "Angular";
 export const vue = "Vue";
 export const nextjs = "Next JS";
+export const web = "Web";
 export const android = "Android";
 export const ios = "iOS";
+export const macOS = "macOS";
 export const reactnative = "React Native";
 export const rnbare = "React Native Bare";
 export const rnexpo = "React Native Expo";
 export const rnlist = [rnbare, rnexpo];
 export const flutter = "Flutter";
 export const unity = "Unity";
-export const unreal = "Unreal";
+export const unreal = "Unreal Engine";
 export const nodejs = "Node.js";
 export const weblist = [reactJS, angular, vue, nextjs];
 
 export const pnp = "Plug and Play";
-export const walletecosystems = "Wallet Ecosystems";
-export const helpersdks = "Helper SDKs";
-export const pnpwebmodal = "Plug and Play Web Modal SDK";
-export const pnpwebnomodal = "Plug and Play Web No Modal SDK";
-export const pnpandroid = "Plug and Play Android SDK";
-export const pnpios = "Plug and Play iOS SDK";
-export const pnprn = "Plug and Play React Native SDK";
-export const pnpflutter = "Plug and Play Flutter SDK";
-export const pnpunity = "Plug and Play Unity SDK";
-export const pnpunreal = "Plug and Play Unreal SDK";
+export const sfa = "Single Factor Auth";
+export const infra = "Infra SDKs";
+export const pnpwebmodal = "Plug and Play Web Modal";
+export const pnpwebnomodal = "Plug and Play Web No Modal";
+export const pnpandroid = "Plug and Play Android";
+export const pnpios = "Plug and Play iOS";
+export const pnprn = "Plug and Play React Native";
+export const pnpflutter = "Plug and Play Flutter";
+export const pnpunity = "Plug and Play Unity";
+export const pnpunreal = "Plug and Play Unreal";
 export const pnplist = [
-  { label: "Web - Modal SDK", value: pnpwebmodal, platforms: [...weblist] },
-  { label: "Web - No Modal SDK", value: pnpwebnomodal, platforms: [...weblist] },
-  { label: "Android SDK", value: pnpandroid, platforms: [android] },
-  { label: "iOS SDK", value: pnpios, platforms: [ios] },
-  { label: "React Native SDK", value: pnprn, platforms: [...rnlist] },
-  { label: "Flutter SDK", value: pnpflutter, platforms: [flutter] },
-  { label: "Unity SDK", value: pnpunity, platforms: [unity] },
-  { label: "Unreal SDK", value: pnpunreal, platforms: [unreal] },
+  { label: "Web - Modal", value: pnpwebmodal, platforms: [...weblist] },
+  { label: "Web - No Modal", value: pnpwebnomodal, platforms: [...weblist] },
+  { label: "Android", value: pnpandroid, platforms: [android] },
+  { label: "iOS", value: pnpios, platforms: [ios] },
+  { label: "React Native", value: pnprn, platforms: [...rnlist] },
+  { label: "Flutter", value: pnpflutter, platforms: [flutter] },
+  { label: "Unity", value: pnpunity, platforms: [unity] },
+  { label: "Unreal", value: pnpunreal, platforms: [unreal] },
 ];
 
-export const corekit = "Core Kit";
-export const corekitsfa = "Core Kit SFA";
-export const corekitmfa = "Core Kit MFA";
-export const tkeyjs = "tKey JS SDK";
-export const tkeyios = "tKey iOS SDK";
-export const tkeyandroid = "tKey Android SDK";
-export const singlefactorauth = "Single Factor Auth Web SDK";
-export const singlefactorauthandroid = "Single Factor Auth Android SDK";
-export const singlefactorauthios = "Single Factor Auth iOS SDK";
-export const singlefactorauthrn = "Single Factor Auth React Native SDK";
-export const singlefactorauthflutter = "Single Factor Auth Flutter SDK";
-export const corekitnodejs = "Node.js SDK";
 export const mpccorekit = "MPC Core Kit";
+export const tkeyjs = "tKey JS";
+export const tkeyios = "tKey iOS";
+export const tkeyandroid = "tKey Android";
+export const singlefactorauth = "Single Factor Auth";
+export const singlefactorauthjs = "SFA JS";
+export const singlefactorauthandroid = "SFA Android";
+export const singlefactorauthios = "SFA Swift";
+export const singlefactorauthflutter = "SFA Flutter";
+export const mpccorekitjs = "MPC Core Kit JS";
 
-export const corekitlist = [
-  { label: "tKey JS SDK", value: tkeyjs, platforms: [reactJS, reactnative] },
-  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
-  { label: "tKey Android SDK", value: tkeyandroid, platforms: [android] },
-  { label: "tKey iOS SDK", value: tkeyios, platforms: [ios] },
-  { label: "Single Factor Auth Web SDK", value: singlefactorauth, platforms: [...weblist] },
-  { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
-  { label: "SFA Android SDK", value: singlefactorauthandroid, platforms: [android] },
-  { label: "SFA iOS SDK", value: singlefactorauthios, platforms: [ios] },
-  { label: "SFA React Native SDK", value: singlefactorauthrn, platforms: [...rnlist] },
-  { label: "SFA Flutter SDK", value: singlefactorauthflutter, platforms: [flutter] },
+export const sfalist = [
+  { label: "SFA JS", value: singlefactorauthjs, platforms: [...weblist, reactnative, nodejs] },
+  { label: "SFA Android", value: singlefactorauthandroid, platforms: [android] },
+  { label: "SFA Swift", value: singlefactorauthios, platforms: [ios, macOS] },
+  { label: "SFA Flutter", value: singlefactorauthflutter, platforms: [flutter] },
+];
+
+export const mpccorekitlist = [
+  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist, reactnative, nodejs] },
+];
+
+export const infralist = [
+  { label: "tKey JS", value: tkeyjs, platforms: [reactJS, reactnative] },
+  { label: "tKey Android", value: tkeyandroid, platforms: [android] },
+  { label: "tKey iOS", value: tkeyios, platforms: [ios] },
 ];
 
 const getWindowLocation = () => {

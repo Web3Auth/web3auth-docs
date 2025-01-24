@@ -1,10 +1,12 @@
 ---
 title: Integrate Web3Auth with the Base Chain (Coinbase) Blockchain in JavaScript
 sidebar_label: Web
-image: "guides/banners/base.png"
-displayed_sidebar: resources
+image: "banners/base.png"
+
 keywords: [base, coinbase, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the Base Chain (Coinbase) Blockchain in JavaScript | Documentation - Web3Auth"
+description:
+  "Integrate Web3Auth with the Base Chain (Coinbase) Blockchain in JavaScript | Documentation -
+  Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
@@ -13,15 +15,14 @@ import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-block
 import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
 import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
 import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
-import SignTypedDataV1Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v1.mdx";
-import SignTypedDataV3Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v3.mdx";
 import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
 import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
 import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
 import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
 import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
-import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa-tkey.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -29,15 +30,18 @@ import SEO from "@site/src/components/SEO";
 <SEO
   title="Integrate Web3Auth with the Base Chain (Coinbase) Blockchain in JavaScript"
   description="Integrate Web3Auth with the Base Chain (Coinbase) Blockchain in JavaScript | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/guides/banners/base.png"
+  image="https://web3auth.io/docs/banners/base.png"
   slug="/connect-blockchain/evm/base/web"
 />
 
-While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
-[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
-[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Base Chain (Coinbase)](https://base.org/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`,
-`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Base Chain (Coinbase)](https://base.org/) blockchain calls like getting the user's `account`,
+fetching `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart
+contract, etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
@@ -47,8 +51,9 @@ To interact with the Base Chain (Coinbase) blockchain, you can use either librar
 
 ## Initializing Provider
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
-provider as **`web3auth.provider`** after successful authentication.
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
 
 ### Getting the `chainConfig`
 
@@ -65,7 +70,7 @@ provider as **`web3auth.provider`** after successful authentication.
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x2105", // hex of 8453
   rpcTarget: "`https://mainnet.base.org`",
   // Avoid using public rpcTarget in production.
@@ -86,7 +91,7 @@ const chainConfig = {
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x14A34", // hex of 84532
   rpcTarget: "https://sepolia.base.org",
   // Avoid using public rpcTarget in production.
@@ -106,7 +111,9 @@ const chainConfig = {
 
 <InitializeWeb3Auth />
 
-## Get User Info
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
 
 <GetUserInfoSnippet />
 
@@ -127,14 +134,6 @@ const chainConfig = {
 ### Personal Sign
 
 <SignPersonalMessageSnippet />
-
-### Sign Typed Data v1
-
-<SignTypedDataV1Snippet />
-
-### Sign Typed Data v3
-
-<SignTypedDataV3Snippet />
 
 ### Sign Typed Data v4
 

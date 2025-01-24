@@ -1,9 +1,9 @@
 ---
 title: Create a Chain Agnostic Web3 wallet in Flutter
-image: "guides/banners/flutter-wallet.png"
+image: "guides-banners/flutter-wallet.png"
 description: Empower your Flutter app with a Chain Agnostic Web3 wallet using the Web3Auth PnP SDK.
 type: guide
-tags: [mobile, flutter, ethereum, solana]
+tags: [plug and play, flutter, andriod, ios, evm, solana]
 date: April 22, 2024
 author: Web3Auth Team
 ---
@@ -13,10 +13,12 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import WalletPreview from "@site/static/guides/flutter-wallet-preview.png";
 
+import PubspecInstallation from "@site/src/common/sdk/pnp/flutter/_flutter-pubspec-installation.mdx";
+
 <SEO
   title="Build your own Chain Agnostic Web3 wallet in Flutter"
   description="Empower your Flutter app with a Chain Agnostic Web3 wallet using the Web3Auth PnP SDK."
-  image="https://web3auth.io/docs/guides/banners/flutter-wallet.png"
+  image="https://web3auth.io/docs/guides-banners/flutter-wallet.png"
   slug="/guides/flutter-wallet"
 />
 
@@ -26,9 +28,9 @@ Flutter. The wallet will support the Ethereum and Solana ecosystem.
 As an overview, the app is quite simple, with functionality to log in, display user details, and
 perform blockchain interactions. The signing of the blockchain transactions is done through the
 Web3Auth embedded wallet. You can check out the infrastructure docs,
-["Web3Auth Wallet Management Infrastructure"](/docs/infrastructure/infrastructure) for a high-level
-overview of the Web3Auth architecture and implementation. For those who want to skip straight to the
-code, you can find it on
+["Web3Auth Wallet Management Infrastructure"](/docs/infrastructure) for a high-level overview of the
+Web3Auth architecture and implementation. For those who want to skip straight to the code, you can
+find it on
 [GitHub](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-playground).
 
 Here are few screenshots of the application.
@@ -78,10 +80,7 @@ flutter pub add web3auth_flutter
 <TabItem value="pubspec">
 Add `web3auth_flutter` as a dependency to your `pubspec.yaml`.
 
-```yaml
-dependencies:
-  web3auth_flutter: ^3.1.7
-```
+<PubspecInstallation />
 
 </TabItem>
 </Tabs>
@@ -108,14 +107,9 @@ Future<void> main() async {
 
   await Web3AuthFlutter.init(
     Web3AuthOptions(
-      clientId:
-          "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+      clientId: "YOUR_WEB3AUTH_CLIENT_ID",
       network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
-      whiteLabel: WhiteLabelData(
-        appName: "Solana Web3Auth Flutter",
-        mode: ThemeModes.dark,
-      ),
     ),
   );
 
@@ -192,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(final AppLifecycleState state) {
     // This is important to trigger the user cancellation on Android.
     if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setResultUrl();
+      Web3AuthFlutter.setCustomTabsClosed();
     }
   }
 
@@ -290,7 +284,7 @@ and `SolanaProvider`. If you wish to support any additional ecosystem, you can e
 `ChainProvider` and implement the methods.
 
 If you want to learn, how you can integrate different blockchain with Web3Auth, you can checkout our
-[Connect Blockchain resources](docs/connect-blockchain).
+[Connect Blockchain resources](/docs/connect-blockchain/).
 
 ```dart
 abstract class ChainProvider {
@@ -560,7 +554,7 @@ final chainConfigs = [
     "rpcTarget": "https://rpc.ankr.com/polygon",
     "displayName": "Polygon Mainnet",
     "blockExplorerUrl": "https://polygonscan.com",
-    "ticker": "MATIC",
+    "ticker": "POL",
     "logo": "https://web3auth.io/images/web3authlog.png",
     "wss": '',
   },
@@ -570,7 +564,7 @@ final chainConfigs = [
     "rpcTarget": "https://rpc-amoy.polygon.technology",
     "displayName": "Polygon Amoy Testnet",
     "blockExplorerUrl": "https://www.oklink.com/amoy",
-    "ticker": "MATIC",
+    "ticker": "POL",
     "logo": "https://web3auth.io/images/web3authlog.png",
     "wss": '',
   },

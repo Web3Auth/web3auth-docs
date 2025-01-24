@@ -1,0 +1,206 @@
+---
+title: Integrate Firebase with Web3Auth Android SFA SDK
+image: "guides-banners/sfa-android-firebase.png"
+description:
+  Web3Auth Single Factor Auth(SFA) Android SDK with Firebase enables secure blockchain
+  authentication using Email and Password login. The process involves setting up Firebase and
+  Web3Auth, initializing the SDK, and interacting with the Ethereum blockchain.
+type: guide
+tags: [android, evm, single factor auth, firebase, custom authentication]
+date: May 19, 2024
+author: Web3Auth Team
+---
+
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import Install from "@site/src/common/sdk/sfa/android/_sfa-android-install.mdx";
+import Instantiation from "@site/src/common/sdk/sfa/android/_sfa-android-instantiation.mdx";
+import Initialization from "@site/src/common/sdk/sfa/android/_sfa-android-initialization.mdx";
+
+<SEO
+  title=" Integrate Firebase with Web3Auth Android SFA SDK"
+  description="Learn how to use Web3Auth Single Factor Auth with Firebase in your Android Application."
+  image="https://web3auth.io/docs/guides-banners/sfa-android-firebase.png"
+  slug="/guides/sfa-android-firebase"
+/>
+
+In this guide, we'll talk about how we can use Web3Auth Single Factor Auth with Firebase in your
+Android application.
+
+As an overview, the guide is quite simple, with functionality to log in, display user details, and
+perform blockchain interactions. The signing of the blockchain transactions is done through the
+Web3Auth embedded wallet. You can check out the infrastructure docs,
+["Web3Auth Wallet Management Infrastructure"](/docs/infrastructure) for a high-level overview of the
+Web3Auth architecture and implementation. For those who want to skip straight to the code, you can
+find it on
+[GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-android/sfa-android-quick-start).
+
+## How to set up Web3Auth Dashboard
+
+If you haven't already, sign up on the Web3Auth platform. It is free and gives you access to the
+Web3Auth's base plan. After the basic setup, explore other features and functionalities offered by
+the Web3Auth Dashboard. It includes custom verifiers, whitelabeling, analytics, and more. Head to
+[Web3Auth's documentation](/docs/dashboard-setup) page for detailed instructions on setting up the
+Web3Auth Dashboard.
+
+## How to set up Firebase for Android
+
+If you haven't already setup the Firebase for your Android app, please setup the Firebase, as it's
+the prerequisites for the guide. Head to the
+[Firebase's documentation](https://firebase.google.com/docs/android/setup) for the details
+instructions.
+
+## How to set up Custom verifier
+
+Once, you have set up the Web3Auth Dashboard, created a new project, and set up Firebase, it's time
+to create a Custom Verifier for your Firebase application. We already have detail instructions on
+how to create a Custom Verifier for Firebase, please head to our
+[documentation](https://web3auth.io/docs/auth-provider-setup/authentication-service-providers/firebase-service-provider).
+
+## Integrating Web3Auth SFA in Android
+
+Once, you have set up the Custom Verifier, it's time to integrate Web3Auth in your Android
+application. For the implementation, we'll use the "single-factor-auth-android". This SDK
+facilitates integration with Web3Auth. This way you can easily manage embedded wallet in your
+Android application.
+
+### Installation
+
+<Install />
+
+For the prerequisites, and other mandatory configuration of the SDK, please head to our
+[installation documentation](/docs/sdk/sfa/sfa-android/install).
+
+### Initialization
+
+After successfully installing the package, the next step is to instantiate `SingleFactorAuth` in
+your Android app. This sets up the necessary configurations using Web3Auth network and prepares the
+SDK. [Learn more about SingleFactorAuth Initialization](/docs/sdk/sfa/sfa-android/initialize).
+
+<Instantiation />
+
+Once you have successfully instantiated `SingleFactorAuth`, you can use the `initialize` method to
+initialize the SDK with existing valid session.
+
+<Initialization />
+
+### Authentication
+
+If the user is not authenticated, you should utilize the `connect` method. For the guide, we will
+add Email Password login using Firebase. The `connect` method is pretty straightforward in
+SingleFactorAuth and takes `LoginParams` as input. After successfully logging in, the method will
+return the `SessionData`.
+
+Learn more about [SingleFactorAuth LoginParams](/docs/sdk/sfa/sfa-android/usage#parameters). To more
+about Firebase login methods, please
+[checkout the Firebase documentation](https://firebase.google.com/docs/auth/android/start).
+
+```kotlin
+private var auth: FirebaseAuthauth = Firebase.auth
+
+// Take the input for email and password from user
+auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
+    .addOnCompleteListener(this) {
+        task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d(TAG, "signInWithEmail:success")
+            val user = auth.currentUser
+
+            // Try to get a fresh idToken
+            user!!.getIdToken(true).addOnSuccessListener {
+                result ->
+                val idToken = result.token
+
+                Log.d(TAG, "GetTokenResult result = $idToken")
+
+                if (idToken != null) {
+                   val sub = user!!.id
+
+                    // focus-start
+                   val loginParams = LoginParams(
+                        // Replace with your custom verifier name
+                        "web3auth-firebase-examples",
+                        sub,
+                        idToken
+                    )
+
+                    try {
+                        // Save the SessionData for future use to interact with Blockchain.
+                       sessionData = singleFactorAuth.connect(
+                            loginParams,
+                            this.applicationContext,
+                            86400
+                        ).get()
+                        // focus-end
+
+                    } catch (e: ExecutionException) {
+                        e.printStackTrace()
+                    } catch (e: InterruptedException) {
+                        e.printStackTrace()
+                    }
+
+                    publicAddress =sessionData?.publicAddress.toString()
+
+                    println("""Private Key: ${sfaKey?.privateKey?.toString(16)}""".trimIndent())
+                    println("""Public Address: $publicAddress""".trimIndent())
+
+                    // Additional code
+                };
+            }
+        } else {
+            // Upon failur, display a message to the user.
+            Log.w(TAG, "signInWithEmail:failure", task.exception)
+            Toast.makeText(
+                baseContext, "Authentication failed.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+```
+
+## Set up Blockchain Providers
+
+Once we have successfully authenticated the user, the next step would be to fetch the user details,
+retrieve wallet address and prepare blockchain providers for interactions. For this guide, we are
+supporting only Ethereum ecosystem, but the general idea can be used for any blockchain ecosystem.
+
+For interacting with ethereum chains, we'll use the [web3j](https://github.com/hyperledger/web3j)
+SDK. For installation, in your app-level build.gradle's dependencies section, add the web3j
+dependency.
+
+```groovy
+dependencies {
+  // ...
+  implementation 'org.web3j:core:4.8.7-android'
+}
+```
+
+After successfully installing SDK, it's time to create `Credentials` instance to retrive user's EOA
+address, and interact with blockchain. To retrive the user's private key, we'll use the `SFAkey`
+instance.
+
+```kotlin
+// focus-next-line
+val credentials: Credentials = Credentials.create(sfaKey!.privateKey!.toString(16))
+
+// User's EOA address
+Log.d(TAG, credentials.address)
+```
+
+To retrive user's balance, and interacting with Blockcahin, you can follow our detailed guide on how
+to [interact with EVM chain guides](/docs/connect-blockchain/evm/ethereum/android#get-balance).
+Since, you already have created `Credentials` instance, and retrived the user's EOA address, you can
+skip that part. To interact with Solana blockchain, you can checkout our
+[Solana blockchain guide](/docs/connect-blockchain/solana/android).
+
+## Conclusion
+
+Voila, you have learned how to use Web3Auth SFA SDK with Android application.
+
+If you are interested in learning more about SFA SDK, please checkout our
+[documentation for Android SFA SDK](/docs/sdk/sfa/sfa-android/). You can find the code used for the
+guide on our
+[examples repo](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-android/sfa-android-quick-start).

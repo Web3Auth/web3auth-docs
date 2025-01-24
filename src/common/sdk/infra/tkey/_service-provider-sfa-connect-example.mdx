@@ -1,0 +1,20 @@
+```tsx
+try {
+  // Login with Firebase
+  const loginRes = await signInWithGoogle();
+
+  // Get the id token from Firebase
+  const idToken = await loginRes.user.getIdToken(true);
+  const userInfo = parseToken(idToken);
+
+  await(tKey.serviceProvider as SfaServiceProvider).connect({
+    verifier,
+    verifierId: userInfo.sub,
+    idToken,
+  });
+
+  await tKey.initialize();
+} catch (error) {
+  // Handle error
+}
+```

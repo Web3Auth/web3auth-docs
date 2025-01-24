@@ -17,6 +17,7 @@ export interface Integration {
   steps: IntegrationStep[];
   stepIndex: number;
   embedLink: string;
+  sourceCodeLink: string;
 }
 
 export interface DisplayChoice {

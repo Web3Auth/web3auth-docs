@@ -1,9 +1,9 @@
 ---
-title: Using Auth0 with Web3Auth Flutter SDK
-image: "guides/banners/flutter-auth0.png"
+title: How to use Auth0 with Web3Auth Flutter SDK
+image: "guides-banners/flutter-auth0.png"
 description: Learn how to use Web3Auth Flutter SDK in your Flutter application with Auth0.
 type: guide
-tags: [mobile, flutter, auth0, whitelabel, custom authentication, dapp share, blockchain]
+tags: [plug and play, flutter, android, ios, auth0, custom authentication, evm]
 date: January 17, 2023
 author: Web3Auth Team
 order: 15
@@ -23,9 +23,9 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <SEO
-  title="Using Auth0 with Web3Auth Flutter SDK"
+  title="How to use Auth0 with Web3Auth Flutter SDK"
   description="Learn how to use Web3Auth Flutter SDK in your Flutter application with Auth0."
-  image="https://web3auth.io/docs/guides/banners/flutter-auth0.png"
+  image="https://web3auth.io/docs/guides-banners/flutter-auth0.png"
   slug="/guides/flutter-auth0"
 />
 
@@ -298,7 +298,7 @@ Future<void> initPlatformState() async {
   } else {
     throw UnKnownException('Unknown platform');
   }
-  // highlight-start
+  // focus-start
   final loginConfig = HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "VERIFIER-NAME", // get it from web3auth dashboard
@@ -313,7 +313,7 @@ Future<void> initPlatformState() async {
     redirectUri: redirectUrl,
     loginConfig: loginConfig
   ));
-  // highlight-end
+  // focus-end
 
   await Web3AuthFlutter.initialize();
 }
@@ -347,14 +347,14 @@ VoidCallback _login(Future<Web3AuthResponse> Function() method) {
 }
 
 Future<Web3AuthResponse> _withAuth0() {
-  // highlight-start
+  // focus-start
   return Web3AuthFlutter.login(LoginParams(
     loginProvider: Provider.jwt,
     mfaLevel: MFALevel.OPTIONAL,
     extraLoginOptions: ExtraLoginOptions(
       domain: 'YOUR_AUTH0_DOMAIN', // eg. https://torus.us.auth0.com
       verifierIdField: 'sub')));
-  // highlight-end
+  // focus-end
 }
 ```
 
@@ -376,13 +376,10 @@ Using the `web3AuthFlutter.login` function, you can get the details of the logge
 note that these details are not stored anywhere in Web3Auth network.
 
 If you wish you **[add Multi Factor Authentication](/sdk/pnp/flutter/mfa)**,
-**[use dApp Share](/sdk/pnp/flutter/dapp-share)** or
-**[select Curve](/sdk/pnp/flutter/usage#selecting-curve)** for your Android application, read the
-linked documentation.
+**[use dApp Share](/sdk/pnp/flutter/dapp-share)**
 
 - [Multi Factor Authentication](/sdk/pnp/flutter/mfa)
 - [Using dApp Share](/sdk/pnp/flutter/dapp-share)
-- [Selecting Curve](/sdk/pnp/flutter/usage#selecting-curve)
 
 ### Logout
 
@@ -390,7 +387,7 @@ linked documentation.
 VoidCallback _logout() {
   return () async {
     try {
-      // highlight-next-line
+      // focus-next-line
       await Web3AuthFlutter.logout();
       setState(() {
         _result = '<empty>';

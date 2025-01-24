@@ -1,0 +1,153 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+    { label: "Devnet", value: "devnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x1",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://ripple-node.tor.us",
+  wsTarget: "wss://s2.ripple.com",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl mainnet",
+  blockExplorerUrl: "https://livenet.xrpl.org",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x2",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://testnet-ripple-node.tor.us",
+  wsTarget: "wss://s.altnet.rippletest.net",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl testnet",
+  blockExplorerUrl: "https://testnet.xrpl.org",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="devnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x3",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://devnet-ripple-node.tor.us",
+  wsTarget: "wss://s.devnet.rippletest.net/",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl devnet",
+  blockExplorerUrl: "https://devnet.xrpl.org",
+};
+```
+
+</TabItem>
+</Tabs>
+
+## Initializing Provider
+
+<Tabs
+  defaultValue="modal"
+  values={[
+    { label: "PnP Modal SDK", value: "modal", },
+    { label: "PnP NoModal SDK", value: "no-modal", },
+    { label: "Single Factor Auth JS SDK", value: "sfa", },
+  ]}
+>
+<TabItem
+  value="modal"
+>
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { AuthAdapter } from "@web3auth/auth-adapter";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
+});
+
+const web3auth = new Web3Auth({
+  clientId, // get from https://dashboard.web3auth.io
+  privateKeyProvider,
+  web3AuthNetwork = "sapphire_mainnet", // testnet, mainnet, cyan, aqua
+});
+```
+
+</TabItem>
+<TabItem
+  value="no-modal"
+>
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { AuthAdapter } from "@web3auth/auth-adapter";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
+});
+
+const web3auth = new Web3AuthNoModal({
+  clientId, // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider,
+});
+
+const authAdapter = new AuthAdapter({ privateKeyProvider });
+web3auth.configureAdapter(authAdapter);
+```
+
+</TabItem>
+<TabItem
+  value="sfa"
+>
+
+```tsx
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
+});
+
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+</Tabs>

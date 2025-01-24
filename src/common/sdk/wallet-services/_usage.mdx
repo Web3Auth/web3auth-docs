@@ -1,0 +1,113 @@
+import ShowCheckout from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
+import ShowSwap from "@site/src/common/sdk/pnp/web/_plugin-show-swap.mdx";
+import ShowSwapParameters from "@site/src/common/sdk/pnp/web/_plugin-show-swap-parameters.mdx";
+import ShowCheckoutParameters from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup-parameters.mdx";
+import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
+import ShowWCScannerParameters from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner-parameters.mdx";
+import ShowWalletUi from "@site/src/common/sdk/pnp/web/_plugin-show-wallet-ui.mdx";
+import ShowWalletUIParameters from "@site/src/common/sdk/pnp/web/_plugin-show-wallet-ui-parameters.mdx";
+
+## Fiat on Ramp
+
+Displays the TopUp modal, allowing users to select their local currency and specify the token to top
+up their wallet
+
+### Parameters
+
+<ShowCheckoutParameters />
+
+### Usage
+
+<ShowCheckout />
+
+## Swap
+
+Displays the Swap modal, allowing users to swap between tokens.
+
+### Parameters
+
+<ShowSwapParameters />
+
+### Usage
+
+<ShowSwap />
+
+## Connect dApps with Wallet Connect
+
+Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is
+useful for interoperability with dApps having Wallet Connect login option.
+
+### Parameters
+
+<ShowWCScannerParameters />
+
+### Usage
+
+<ShowWCScanner />
+
+## Show Wallet Embedded UI
+
+Shows the modal, and allows you to use the templated wallet UI services.
+
+### Parameters
+
+<ShowWalletUIParameters />
+
+### Usage
+
+<ShowWalletUi />
+
+### Private Key export
+
+Go to `Privacy & Security` under `Settings` in the Wallet UI to export your private key. Available
+from version `8.7.0`.
+
+![Private Key export screen](/images/ws-pvt-key-export.png)
+
+### Toggle testnet visibility
+
+You can toggle the testnet visibility in the Wallet Services UI by going to `Settings`, then
+`General`. Available from version `8.7.0`.
+
+![Testnet visibility toggle](/images/ws-ui-toggle-testnet.png)
+
+:::info
+
+If you don't pass the `name` and `chainId` for a specific chain as listed in the dropdown below, the
+chain will appear twice in the wallet services UI dropdown: once by default and once with the name
+you provided.
+
+![Chain Config dropdown](/images/ws-ui-toggle-testnet.png)
+
+:::
+
+## Transaction Confirmation Screens
+
+You can use the wallet services proxy provider to integrate prebuilt transaction confirmation
+screens into your application. Upon successful completion, you can retrieve the signature for the
+request.
+
+Please check the list of
+[JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
+method currently supports only the signing methods.
+![UI Confirmation screen](/images/ws-ui-confirmation-screen.png)
+
+### Usage
+
+```ts
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const walletServicesPlugin = new WalletServicesPlugin();
+// Use the existing Web3Auth instance
+web3auth.addPlugin(walletServicesPlugin);
+
+const message = "Example `personal_sign` message";
+const accounts = await web3auth.provider.request<never, string[]>({ method: "eth_accounts" });
+const from = accounts[0];
+// focus-start
+const signedMessage = await walletServicesPlugin?.proxyProvider?.request<[string, string], string>({
+  method: "personal_sign",
+  params: [message, from],
+});
+// focus-end
+```

@@ -1,0 +1,58 @@
+---
+title: Create JWT using passport-jwt package
+sidebar_label: passport-jwt
+description: "Create JWT using passport-jwt pacakge | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+For your custom JWT provider, you can create JWT token using package of your choice, one of which is
+`passport-jwt` package. Learn more about
+[passport-jwt](https://www.passportjs.org/packages/passport-jwt/). To make the implementation
+easier, we'll also use [jwks-rsa](https://www.npmjs.com/package/jwks-rsa) package.
+
+## Installation
+
+```bash npm2yarn
+$ npm i passport-jwt
+$ npm i jwks-rsa
+```
+
+## Generate JWT
+
+Using `passportJwtSecret` you can generate a secret provider that will provide the right signing key
+to `passport-jwt` based on the kid in the JWT header.
+
+```tsx
+const Express = require('express');
+const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwksRsa = require('jwks-rsa');
+
+...
+// Initialize the app.
+const app = new Express();
+
+passport.use(
+  new JwtStrategy({
+    // Dynamically provide a signing key based on the kid in the header and the signing keys provided by the JWKS endpoint.
+    secretOrKeyProvider: jwksRsa.passportJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: `https://my-authz-server/.well-known/jwks.json`
+    }),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+
+    // Validate the audience and the issuer.
+    audience: 'urn:my-resource-server',
+    issuer: 'https://my-authz-server',
+    algorithms: ['RS256']
+  },
+  verify)
+);
+
+app.use(passport.initialize());
+```

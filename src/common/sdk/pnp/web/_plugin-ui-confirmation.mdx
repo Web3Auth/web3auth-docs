@@ -1,0 +1,33 @@
+With WalletServicesPlugin `v8.7.0`, you can now sign a message using the `personal_sign` method with
+a UI confirmation screen.
+
+![Confirmation screen](/images/ws-ui-confirmation-screen.png)
+
+```typescript
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const walletServicesPlugin = new WalletServicesPlugin({
+  walletInitOptions: {
+    confirmationStrategy: "modal",
+  },
+});
+web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
+
+const signMessageUi = async () => {
+  if (!web3auth.provider) {
+    console.log("provider not initialized yet");
+    return;
+  }
+  const message = "Example `personal_sign` message";
+  const accounts = await web3auth.provider.request<never, string[]>({ method: "eth_accounts" });
+  const from = accounts[0];
+  const signedMessage = await walletServicesPlugin?.proxyProvider?.request<
+    [string, string],
+    string
+  >({
+    method: "personal_sign",
+    params: [message, from],
+  });
+  console.log(signedMessage);
+};
+```

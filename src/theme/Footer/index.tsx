@@ -97,12 +97,12 @@ export default function FooterComponent(): JSX.Element {
               <strong>Product</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/pnp/introduction">
+              <a className="footer__link-item" href="/docs/product/pnp">
                 Plug & Play
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/core-kit/introduction">
+              <a className="footer__link-item" href="/docs/product/core-kit">
                 Core Kit
               </a>
             </div>

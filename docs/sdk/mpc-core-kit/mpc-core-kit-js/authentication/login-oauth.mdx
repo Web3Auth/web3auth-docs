@@ -1,0 +1,316 @@
+---
+title: "Log in with OAuth"
+
+sidebar_label: "Log in with OAuth"
+description: "Web3Auth MPC Core Kit JS SDK - Log in with OAuth | Documentation - Web3Auth"
+---
+
+import ServiceWorkerCode from "@site/src/common/sdk/infra/tkey/_sw-js.mdx";
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+To authenticate users using Single Page Application(SPA) flow, you can use the `loginWithOAuth`
+method. This methods takes the `OAuthLoginParams` as a parameter, which is an object that contains
+the details of the verifier, and additional authentication parameters.
+
+:::tip React Native
+
+While using the application in React Native, you can use the `ux_mode` as `react-native`, this helps
+you to use the SDK in a React Native environment. However, the implicit login flow doesn't work in
+React Native, you need to manually call the login with JWT function for it after getting the JWT
+token from the auth provider.
+
+:::
+
+## Parameters
+
+The OAuthLoginParams can be either a `SubVerifierDetailsParams` or an
+`AggregateVerifierLoginParams`. If you wish to use a aggereate verifier, you can use the
+`AggregateVerifierLoginParams`, and for single verifier, you can use the `SubVerifierDetailsParams`.
+
+An aggregate verifier helps to generate a same account across multiple verifiers based on the JWT
+verification field. For instance if you are using Google, and Email Passwordless, and want to
+genetate the same account across both authentication method, you need to use an aggregate verifier.
+
+The `OAuthLoginParams` has two additional properties which can be used to customize the login flow.
+Please check the table below for more details.
+
+| Parameter                 | Description                                                                                                                                                                                                                              |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `importTssKey?`           | The TSS key to import an existing account.                                                                                                                                                                                               |
+| `registerExistingSFAKey?` | Allows to import the [Single Factor Auth(SFA) SDK](/docs/sdk/sfa/sfa-js/) key into the MPC Core Kit SDK. Default value is `false`. Please note, once SFA Key is imported, users won't be able to access their account using the SFA SDK. |
+
+### SubVerifierDetailsParams
+
+Contains the details of the verifier the app needs to use for authentication. You need to use this
+in the case of a single verifier.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `typeOfLogin`       | Type of login of this verifier, this value will affect the login flow that is adapted. Available options are `LOGIN_TYPE.GOOGLE`, `LOGIN_TYPE.FACEBOOK`, `LOGIN_TYPE.REDDIT`, `LOGIN_TYPE.DISCORD`, `LOGIN_TYPE.TWITCH`, `LOGIN_TYPE.APPLE`, `LOGIN_TYPE.GITHUB`, `LOGIN_TYPE.LINKEDIN`, `LOGIN_TYPE.TWITTER`, `LOGIN_TYPE.WEIBO`, `LOGIN_TYPE.LINE`, and `LOGIN_TYPE.PASSWORDLESS`. |
+| `verifier`          | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to use for authentication.                                                                                                                                                                                                                                                        |
+| `clientId`          | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                                                                                                                                           |
+| `jwtParams?`        | Additional parameters for the Auth0 login provider.                                                                                                                                                                                                                                                                                                                                  |
+| `serverTimeOffset?` | The server time offset in seconds. Default value is 0.                                                                                                                                                                                                                                                                                                                               |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```javascript
+export interface SubVerifierDetailsParams extends BaseLoginParams {
+  subVerifierDetails: SubVerifierDetails;
+}
+
+export interface SubVerifierDetails {
+    typeOfLogin: LOGIN_TYPE;
+    verifier: string;
+    clientId: string;
+    jwtParams?: Auth0ClientOptions;
+    hash?: string;
+    queryParameters?: TorusGenericObject;
+    customState?: TorusGenericObject;
+}
+
+export type LOGIN_TYPE = (typeof LOGIN)[keyof typeof LOGIN];
+
+export declare const LOGIN: {
+    readonly GOOGLE: "google";
+    readonly FACEBOOK: "facebook";
+    readonly REDDIT: "reddit";
+    readonly DISCORD: "discord";
+    readonly TWITCH: "twitch";
+    readonly APPLE: "apple";
+    readonly GITHUB: "github";
+    readonly LINKEDIN: "linkedin";
+    readonly TWITTER: "twitter";
+    readonly WEIBO: "weibo";
+    readonly LINE: "line";
+    readonly EMAIL_PASSWORD: "email_password";
+    readonly PASSWORDLESS: "passwordless";
+    readonly JWT: "jwt";
+    readonly WEBAUTHN: "webauthn";
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### AggregateVerifierLoginParams
+
+Contains the details of an aggregate verifier the app needs to use for authentication. You need to
+use this in case of an aggregate verifier.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                     | Description                                                                                                                                                                                                                  |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aggregateVerifierIdentifier` | The name of your aggregate verifier. Get it from the [dashboard](https://dashboard.web3auth.io/).                                                                                                                            |
+| `subVerifierDetailsArray`     | An array containing the details of your sub verifiers.                                                                                                                                                                       |
+| `aggregateVerifierType?`      | Defines the type of aggregation required for your aggregate verifier. You need to use `single_id_verifier` by default in most cases. This parameter allows you define the number of verifier ids to be used for aggregation. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```javascript
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier: string;
+  subVerifierDetailsArray: SubVerifierDetails[];
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
+}
+
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
+```
+
+</TabItem>
+
+</Tabs>
+
+## Usage
+
+### Single Verifier
+
+To login with a single verifier, you will require to create a custom verifier in the Web3Auth
+dashboard. If you haven't already created one,
+[learn how to create a verifier](/docs/auth-provider-setup/verifiers).
+
+```tsx
+import { SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig: SubVerifierDetailsParams = {
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+  },
+};
+
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+### Aggregate Verifier
+
+To login with an aggregate verifier, you will require to create an aggregate verifier in the
+Web3Auth dashboard. If you haven't already created one,
+[learn how to create an aggregate verifier](/docs/auth-provider-setup/aggregate-verifier#set-up-an-aggregate-verifier).
+
+```tsx
+import { AggregateVerifierLoginParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig: AggregateVerifierLoginParams = {
+  aggregateVerifierIdentifier: "aggregate-sapphire",
+  subVerifierDetailsArray: [
+    {
+      typeOfLogin: "google",
+      verifier: "w3a-google",
+      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+    },
+  ],
+};
+
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+## Importing an existing account.
+
+During the first-time login with `Web3AuthMPCCoreKit`, you can import an existing account using the
+`importTssKey` parameter. To import a secp256k1 chain account, be sure to provide the private key in
+hex format. For an ed25519 chain account, you need to pass the seed.
+
+By default, the ed25519 key is formatted in base58 and is 64 bytes long. This consists of the first
+32 bytes as the seed (also known as the private key) and the last 32 bytes as the public key. Ensure
+that the first 32 bytes are provided in hexadecimal format when using the ed25519 seed.
+
+```tsx
+import { SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig: SubVerifierDetailsParams = {
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+  },
+  // focus-next-line
+  importTssKey: "SECP256K1_PRIVATE_KEY_OR_ED25519_SEED",
+};
+
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+## Importing an existing Single Factor Auth(SFA) Key.
+
+When logging in for the first time, you can import an existing [SFA SDK](/docs/sdk/sfa/sfa-js/) key
+using the `registerExistingSFAKey` parameter. By default, the value of this parameter is `false`.
+
+Additionally, this parameter allows you to leverage the
+[wallet pregeneration API](/docs/features/wallet-pregeneration) to pre-generate a wallet address.
+This approach enhances the user experience by enabling the creation of a wallet without requiring
+end users to initiate or complete an authentication flow.
+
+To use this feature, you need to make sure that you are using the same `verifier` for both the SFA
+SDK/ Wallet Pregeneration API and MPC Core Kit SDK.
+
+:::info
+
+Please note, once the SFA Key is imported, users will no longer be able to access their account
+through the SFA SDK.
+
+:::
+
+```tsx
+const verifierConfig: SubVerifierDetailsParams = {
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    // Please make sure to use the same verifier of the SFA/ Wallet Pregeneration API
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+  },
+  // focus-next-line
+  registerExistingSFAKey: true,
+};
+
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+## Popup Mode
+
+If you're using the popup mode (default) in your application, while logging in, you need to have a
+service worker running, which essentially catches the login redirect and sends it back to the main
+DOM with the parameters. These parameters are then used to log in the user with Web3Auth.
+
+### Service Worker
+
+A service worker is a script that is run by the browser. It does not have any direct relationship
+with the DOM and provides many out-of-the-box network-related features. Web3Auth Core Kit tKey SDK
+needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+path.
+
+For example, while using service worker if `baseUrl` is `https://your-domain.com/serviceworker` then
+the user will be redirected to the `https://your-domain.com/serviceworker/redirect` page after
+logging in where the service worker will capture the results and send it back to the original window
+where login was initiated.
+
+:::tip
+
+- Using a service worker is required only in the popup flow.
+
+- A service worker is needed if you are using `popup` uxMode within your MPC Core Kit Configuration.
+
+- For browsers where service workers are not supported, or in the case you wish to not use service
+  workers, create and serve redirect page (i.e. `redirect.html` file).
+
+:::
+
+### Service Worker Setup
+
+- If you're using React, to set up service worker, you need to create a `sw.js` file in your public
+  folder and register it in your `index.html` file. You can find more information about it in
+  [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful
+  in setting up the service worker.
+
+- For Vue,
+  [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html)
+  is a great way to get started with service workers.
+
+### Service Worker Code
+
+You can directly copy the service worker file code from here and paste it into your respective
+folder. You can also find the code in our
+[MPC Core Kit Example (Popup Flow)](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/implicit-flow-examples/mpc-core-kit-popup-flow-example).
+
+<details>
+  <summary>Service Worker Code</summary>
+  <ServiceWorkerCode />
+</details>
+
+## Redirect Mode
+
+If you are using the redirect mode, you don't have to use the service worker or `redirect.html`
+file. You can get login results by calling the `init()` function on the redirected page mount.
+
+For example, if `baseUrl` is `https://your-domain.com` and `redirectPathName` is `auth` then the
+user will be redirected to the `https://your-domain.com/auth` page after logging in where you can
+get login result by calling `init()` function on redirected page mount.

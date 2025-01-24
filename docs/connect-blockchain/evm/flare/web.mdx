@@ -1,8 +1,8 @@
 ---
 title: Integrate Web3Auth with the Flare Blockchain in JavaScript
 sidebar_label: Web
-image: "guides/banners/flare.png"
-displayed_sidebar: resources
+image: "banners/flare.png"
+
 keywords: [flare, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Flare Blockchain in JavaScript | Documentation - Web3Auth"
 ---
@@ -13,15 +13,14 @@ import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-block
 import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
 import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
 import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
-import SignTypedDataV1Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v1.mdx";
-import SignTypedDataV3Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v3.mdx";
 import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
 import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
 import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
 import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
 import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
-import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa-tkey.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -29,15 +28,18 @@ import SEO from "@site/src/components/SEO";
 <SEO
   title="Integrate Web3Auth with the Flare Blockchain in JavaScript"
   description="Integrate Web3Auth with the Flare Blockchain in JavaScript | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/guides/banners/flare.png"
+  image="https://web3auth.io/docs/banners/flare.png"
   slug="/connect-blockchain/evm/flare/web"
 />
 
-While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
-[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
-[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Flare](https://www.flare.network) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
-`read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Flare](https://www.flare.network) blockchain calls like getting the user's `account`, fetching
+`balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
+etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
@@ -47,8 +49,9 @@ To interact with the Flare blockchain, you can use either library with Web3Auth.
 
 ## Initializing Provider
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
-provider as **`web3auth.provider`** after successful authentication.
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
 
 ### Getting the `chainConfig`
 
@@ -65,7 +68,7 @@ provider as **`web3auth.provider`** after successful authentication.
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0xE", // hex of 14
   rpcTarget: "https://flare-api.flare.network/ext/C/rpc",
   // Avoid using public rpcTarget in production.
@@ -86,8 +89,10 @@ const chainConfig = {
 
 ```typescript
 // faucet link- "https://coston2-faucet.towolabs.com"
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
 const chainConfig = {
-  chainNamespace: "eip155",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x72", // hex of 114
   rpcTarget: "https://coston2-api.flare.network/ext/C/rpc",
   // Avoid using public rpcTarget in production.
@@ -107,7 +112,9 @@ const chainConfig = {
 
 <InitializeWeb3Auth />
 
-## Get User Info
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
 
 <GetUserInfoSnippet />
 
@@ -128,14 +135,6 @@ const chainConfig = {
 ### Personal Sign
 
 <SignPersonalMessageSnippet />
-
-### Sign Typed Data v1
-
-<SignTypedDataV1Snippet />
-
-### Sign Typed Data v3
-
-<SignTypedDataV3Snippet />
 
 ### Sign Typed Data v4
 
@@ -163,7 +162,8 @@ const chainConfig = {
 
 ## Read the current Bitcoin price from the FTSO system
 
-Flare provides a native decentralized oracle system called FTSO (Flare Time Series Oracle) to fetch the current price of an asset.
+Flare provides a native decentralized oracle system called FTSO (Flare Time Series Oracle) to fetch
+the current price of an asset.
 
 <Tabs
   defaultValue="web3"
@@ -187,7 +187,9 @@ const contractAddress = "0x13DC2b5053857AE17a4f95aFF55530b267F3E040";
 const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
 // Read current pricing data from FTSO system
-const [btcPriceInfo, flarePriceInfo] = await contract.methods.getCurrentPricesBySymbols(["BTC", "FLR"]).call();
+const [btcPriceInfo, flarePriceInfo] = await contract.methods
+  .getCurrentPricesBySymbols(["BTC", "FLR"])
+  .call();
 const btcPrice = btcPriceInfo.price;
 const flarePrice = flarePriceInfo.price;
 ```

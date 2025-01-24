@@ -28,11 +28,27 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MODAL_NEXT_PAGE_TSX],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MODAL_NEXT_PAGE_TSX,
         files[hostedFileLinks.MODAL_NEXT_PAGE_TSX],
         "SDK Initialization",
+      ),
+    },
+    {
+      ...STEPS.configureExternalWallets,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MODAL_NEXT_PAGE_TSX],
+        "Configuring External Wallets",
       ),
     },
     {

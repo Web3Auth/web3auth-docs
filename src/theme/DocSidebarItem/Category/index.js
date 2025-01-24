@@ -1,7 +1,18 @@
 import React, { useEffect, useMemo } from "react";
 import clsx from "clsx";
-import { ThemeClassNames, useThemeConfig, usePrevious, Collapsible, useCollapsible } from "@docusaurus/theme-common";
-import { isActiveSidebarItem, findFirstSidebarItemLink, useDocSidebarItemsExpandedState, isSamePath } from "@docusaurus/theme-common/internal";
+import {
+  ThemeClassNames,
+  useThemeConfig,
+  usePrevious,
+  Collapsible,
+  useCollapsible,
+} from "@docusaurus/theme-common";
+import { isSamePath } from "@docusaurus/theme-common/internal";
+import {
+  isActiveSidebarItem,
+  findFirstSidebarItemLink,
+  useDocSidebarItemsExpandedState,
+} from "@docusaurus/plugin-content-docs/client";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
 import useIsBrowser from "@docusaurus/useIsBrowser";
@@ -61,13 +72,21 @@ function CollapseButton({ collapsed, categoryLabel, onClick }) {
               { label: categoryLabel },
             )
       }
+      aria-expanded={!collapsed}
       type="button"
       className="clean-btn menu__caret"
       onClick={onClick}
     />
   );
 }
-export default function DocSidebarItemCategory({ item, onItemClick, activePath, level, index, ...props }) {
+export default function DocSidebarItemCategory({
+  item,
+  onItemClick,
+  activePath,
+  level,
+  index,
+  ...props
+}) {
   const { items, label, collapsible, className, href } = item;
   const {
     docs: {
@@ -138,7 +157,8 @@ export default function DocSidebarItemCategory({ item, onItemClick, activePath, 
                 }
           }
           aria-current={isCurrentPage ? "page" : undefined}
-          aria-expanded={collapsible ? !collapsed : undefined}
+          role={collapsible && !href ? "button" : undefined}
+          aria-expanded={collapsible && !href ? !collapsed : undefined}
           href={collapsible ? hrefWithSSRFallback ?? "#" : hrefWithSSRFallback}
           {...props}
         >
@@ -157,7 +177,13 @@ export default function DocSidebarItemCategory({ item, onItemClick, activePath, 
       </div>
 
       <Collapsible lazy as="ul" className="menu__list" collapsed={collapsed}>
-        <DocSidebarItems items={items} tabIndex={collapsed ? -1 : 0} onItemClick={onItemClick} activePath={activePath} level={level + 1} />
+        <DocSidebarItems
+          items={items}
+          tabIndex={collapsed ? -1 : 0}
+          onItemClick={onItemClick}
+          activePath={activePath}
+          level={level + 1}
+        />
       </Collapsible>
     </li>
   );

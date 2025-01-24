@@ -1,0 +1,144 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `whiteLabel?: WhiteLabelData;`
+
+The whitelabel parameter takes `WhitelabelData` as input. The `WhitelabelData` object takes the
+following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+`WhiteLabelData`
+
+| Parameter         | Description                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `appName`         | App name to display in the UI                                                                                                          |
+| `appUrl`          | App url                                                                                                                                |
+| `logoLight`       | App logo to use in light mode                                                                                                          |
+| `logoDark`        | App logo to use in dark mode                                                                                                           |
+| `defaultLanguage` | language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en" |
+| `mode`            | theme                                                                                                                                  |
+| `useLogoLoader`   | Use logo loader                                                                                                                        |
+| `theme`           | Used to customize your theme                                                                                                           |
+| `tncLink`         | Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure                                  |
+| `privacyPolicy`   | Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure                                        |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export type WhiteLabelData = {
+  /**
+   * App name to display in the UI
+   */
+  appName?: string;
+  /**
+   * App url
+   */
+  appUrl?: string;
+  /**
+   * App logo to use in light mode
+   */
+  logoLight?: string;
+  /**
+   * App logo to use in dark mode
+   */
+  logoDark?: string;
+  /**
+   * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
+   * en: english
+   * de: german
+   * ja: japanese
+   * ko: korean
+   * zh: mandarin
+   * es: spanish
+   * fr: french
+   * pt: portuguese
+   * nl: dutch
+   * tr: turkish
+   *
+   * @defaultValue en
+   */
+  defaultLanguage?: LANGUAGE_TYPE;
+  /**
+     theme
+     *
+     * @defaultValue light
+     */
+  mode?: THEME_MODE_TYPE;
+  /**
+   * Use logo loader
+   *
+   * @defaultValue false
+   */
+  useLogoLoader?: boolean;
+  /**
+   * Used to customize your theme
+   */
+  theme?: WHITE_LABEL_THEME;
+  /**
+   * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+   * e.g.
+   * tncLink: {
+   *  en: "http://example.com/tnc/en",
+   *  ja: "http://example.com/tnc/ja",
+   * }
+   */
+  tncLink?: Partial<Record<LANGUAGE_TYPE, string>>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   * e.g.
+   * privacyPolicy: {
+   *  en: "http://example.com/tnc/en",
+   *  ja: "http://example.com/tnc/ja",
+   * }
+   */
+  privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
+};
+
+export declare const LANGUAGES: {
+  readonly en: "en";
+  readonly ja: "ja";
+  readonly ko: "ko";
+  readonly de: "de";
+  readonly zh: "zh";
+  readonly es: "es";
+  readonly fr: "fr";
+  readonly pt: "pt";
+  readonly nl: "nl";
+  readonly tr: "tr";
+};
+export type LANGUAGE_TYPE = (typeof LANGUAGES)[keyof typeof LANGUAGES];
+
+export type WHITE_LABEL_THEME = {
+  /**
+   * `primary` color that represents your brand
+   * Will be applied to elements such as primary button, nav tab(selected), loader, input focus, etc.
+   */
+  primary?: string;
+  /**
+   * `onPrimary` color that is meant to contrast with the primary color
+   * Applies to elements such as the text in a primary button or nav tab(selected), blocks of text on top of a primary background, etc.
+   */
+  onPrimary?: string;
+};
+
+export declare const THEME_MODES: {
+  readonly light: "light";
+  readonly dark: "dark";
+  readonly auto: "auto";
+};
+export type THEME_MODE_TYPE = (typeof THEME_MODES)[keyof typeof THEME_MODES];
+```
+
+</TabItem>
+</Tabs>

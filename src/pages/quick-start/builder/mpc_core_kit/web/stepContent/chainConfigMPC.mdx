@@ -1,0 +1,91 @@
+---
+title: Preparing Chain Config
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+MPC Core Kit supports the `SECP256K1` and `ED25519` curves, and hence does work with the majority of
+blockchains out there. This example is focused towards EVM Blockchains, however using similar
+methods, you can configure the app for your chain and library of choice.
+
+While initializing MPC Core Kit, you will need to set up a basic chain config for the chain of your
+choice. A simple integration for some of the popular blockchains will look like this:
+
+<Tabs
+  values={[
+    { label: "Ethereum", value: "ether" },
+    { label: "Polygon", value: "polygon" },
+  ]}
+>
+
+<TabItem value="ether" default>
+
+```tsx
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { tssLib } from "@toruslabs/tss-dkls-lib";
+
+//focus-start
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+//focus-end
+
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+// Additionally, you need to use the "@toruslabs/tss-dkls-lib" package
+// for getting the tssLib for SECP curve in the MPC Core Kit Instance
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+// use this provider to interact with the blockchain
+```
+
+</TabItem>
+
+<TabItem value="polygon">
+
+```tsx
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { tssLib } from "@toruslabs/tss-dkls-lib";
+
+//focus-start
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x89", // hex of 137, polygon mainnet
+  rpcTarget: "https://rpc.ankr.com/polygon",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Polygon Mainnet",
+  blockExplorerUrl: "https://polygonscan.com",
+  ticker: "POL",
+  tickerName: "Polygon Ecosystem Token",
+  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+};
+//focus-end
+
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+// Additionally, you need to use the "@toruslabs/tss-dkls-lib" package
+// for getting the tssLib for SECP curve in the MPC Core Kit Instance
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+// use this provider to interact with the blockchain
+```
+
+</TabItem>
+
+</Tabs>
+
+:::tip ED25519 Chains
+
+Follow [this guide](/sdk/mpc-core-kit/mpc-core-kit-js/signing#solana) to connect to Solana and other
+chains following the Ed25519 curve.
+
+:::

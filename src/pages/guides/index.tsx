@@ -6,114 +6,100 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-// import { request } from "graphql-request";
-import { useState } from "react";
+import { GuidesInterface, platformMap, productMap } from "../../common/maps";
 
-import {
-  blockchainMap,
-  featuresMap,
-  languageMap,
-  platformMap,
-  Props,
-} from "../../components/GuidesMaps";
-import { Modal } from "../../components/Modal";
+import Select, { StylesConfig } from "react-select";
+import { useState, useEffect } from "react";
 import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
-export default function Guides({ content }: Props) {
-  const completeGuides = Object.entries(content).map(([key, value]) => {
-    if (value.type === "guide") return { ...value, link: `/guides/${key}` };
-    return {};
-  });
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [tags, setTags] = useState<string[]>([]);
-  const [sortedGuides, setSortedGuides] = useState<any>(
-    completeGuides.sort((a: any, b: any) => {
-      //if pinned == 1, the is the first
+export default function Guides({ content }: GuidesInterface) {
+  const completeGuides = Object.entries(content)
+    .map(([key, value]) => {
+      if (value.type === "guide") return { ...value, link: `/guides/${key}` };
+      return {};
+    })
+    .sort((a: any, b: any) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-      // Convert date strings to Date objects for comparison
       const aDate = new Date(a.date);
       const bDate = new Date(b.date);
-
-      // If dates are equal, or as a fallback, sort by 'order' if needed
       return +bDate - +aDate;
-    }),
-  );
+    });
 
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [productFilter, setProductFilter] = useState<string[]>([]);
+  const [platformFilter, setPlatformFilter] = useState<string[]>([]);
+  const [filteredGuides, setFilteredGuides] = useState(completeGuides);
   const { siteConfig } = useDocusaurusContext();
   const { baseUrl } = siteConfig;
 
-  function filterByTags() {
-    let guides;
-    if (tags.length === 0) {
-      guides = completeGuides.sort((a: any, b: any) => a.order - b.order);
-    } else {
-      guides = completeGuides.filter((item: any) => {
-        return tags.some((tag) => item.tags.includes(tag));
+  // Apply tag filters first
+  useEffect(() => {
+    let filtered = completeGuides;
+
+    if (productFilter.length > 0 || platformFilter.length > 0) {
+      filtered = completeGuides.filter((item) => {
+        const prodFil =
+          productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
+        const platFil =
+          platformFilter.length === 0 || platformFilter.some((tag) => item.tags.includes(tag));
+
+        return prodFil && platFil;
       });
     }
 
-    setSortedGuides(guides);
-  }
+    // Reset search when filters change
+    setSearchInput("");
+    setFilteredGuides(filtered);
+  }, [productFilter, platformFilter]);
 
-  function onChangeFilter(e) {
-    if (tags.includes(e)) {
-      setTags(tags.filter((tag) => tag !== e));
-    } else {
-      setTags([...tags, e]);
-    }
-  }
+  const onChangeProduct = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setProductFilter(filterValue);
+    setTags([...platformFilter, ...filterValue]);
+  };
+
+  const onChangePlatform = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setPlatformFilter(filterValue);
+    setTags([...productFilter, ...filterValue]);
+  };
 
   function highlightSearchText(text) {
-    if (searchInput === "") {
+    if (!searchInput.trim()) {
       return text;
     }
-    let inputKeywords = searchInput.split(" ");
-    inputKeywords = inputKeywords.filter((keyword) => keyword !== "");
-    const keywords = inputKeywords
-      .map((keyword) => {
-        return `(${keyword})`;
-      })
-      .join("|");
-    const regex = new RegExp(keywords, "gi");
-    const matches = text.match(regex);
+    const searchTerms = searchInput.trim().split(/\s+/);
+    const regex = new RegExp(`(${searchTerms.join("|")})`, "gi");
     const parts = text.split(regex);
-    if (matches) {
-      return (
-        <span>
-          {parts.filter(String).map((part, i) => {
-            return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
-          })}
-        </span>
-      );
-    }
-    return text;
+
+    return (
+      <span>
+        {parts.map((part, i) => {
+          return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
+        })}
+      </span>
+    );
   }
 
   function onChangeSearch(input) {
     setSearchInput(input);
-
-    const inputKeywords = input.trim().split(" ");
-
-    function searchFilter(item) {
-      return (
-        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) =>
-          item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true),
-        )
-      );
-    }
-    if (input === "") {
-      filterByTags();
-    } else {
-      const finalSortedGuide = completeGuides.filter((item) => searchFilter(item));
-
-      setSortedGuides(finalSortedGuide);
-    }
   }
+
+  // Filter the already filtered guides based on search
+  const displayedGuides = filteredGuides.filter((item) => {
+    if (!searchInput.trim()) return true;
+
+    const searchTerms = searchInput.toLowerCase().trim().split(/\s+/);
+    return searchTerms.every(
+      (term) =>
+        item.title.toLowerCase().includes(term) ||
+        item.description.toLowerCase().includes(term) ||
+        item.tags.some((tag) => tag.toLowerCase().includes(term)),
+    );
+  });
 
   function renderArticle(article) {
     return (
@@ -133,7 +119,7 @@ export default function Guides({ content }: Props) {
             article.tags.map((tag) => {
               if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
                 return (
-                  <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
+                  <div key={tag} className={styles.tagActive}>
                     {tag}
                   </div>
                 );
@@ -144,7 +130,7 @@ export default function Guides({ content }: Props) {
             article.tags.map((tag) => {
               if (!(tags.includes(tag) || searchInput.split(" ").includes(tag))) {
                 return (
-                  <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                  <div key={tag} className={styles.tag}>
                     {tag}
                   </div>
                 );
@@ -223,134 +209,27 @@ export default function Guides({ content }: Props) {
                 </button>
               )) || <div className={styles.searchClearButton} />}
             </div>
-            <button
-              className={styles.filterButton}
-              type="button"
-              onClick={() => setShowModal(true)}
-            >
-              Filter by Tags
-            </button>
+            <Select
+              options={productMap}
+              isMulti
+              styles={customSelectButtonStyles}
+              onChange={onChangeProduct}
+              placeholder="Select Product"
+            />
+            <Select
+              options={platformMap}
+              isMulti
+              styles={customSelectButtonStyles}
+              onChange={onChangePlatform}
+              placeholder="Select Platform"
+            />
           </div>
         </div>
       </header>
-      {showModal && (
-        <Modal close={() => setShowModal(false)}>
-          <div className={styles.modal}>
-            <div className={styles.modalHeader}>
-              <h2>Filter by Tags</h2>
-            </div>
-            <div className={styles.modalBody}>
-              <div className={styles.modalTagList}>
-                <h3>Web3Auth Features</h3>
-                {featuresMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-                <h3>Language</h3>
-                {languageMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-              </div>
-              <div className={styles.modalTagList}>
-                <h3>Platforms</h3>
-                {platformMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-                <h3>Blockchain</h3>
-                {blockchainMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className={styles.modalFooter}>
-              <button className={styles.modalClearButton} type="button" onClick={() => setTags([])}>
-                Clear All
-              </button>
-              <button
-                className={styles.modalSaveButton}
-                type="button"
-                onClick={() => {
-                  filterByTags();
-                  setShowModal(false);
-                }}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
 
       <div className={styles.container}>
-        {sortedGuides.map((item) => renderArticle(item))}
-        {sortedGuides.length === 0 && (
+        {displayedGuides.map((item) => renderArticle(item))}
+        {displayedGuides.length === 0 && (
           <div className={styles.noResults}>
             <p>No result</p>
           </div>
@@ -359,3 +238,70 @@ export default function Guides({ content }: Props) {
     </Layout>
   );
 }
+
+const customSelectButtonStyles: StylesConfig<true> = {
+  container: (provided) => ({
+    ...provided,
+    width: "max-content",
+    minHeight: "42px",
+    maxWidth: "275px",
+    fontWeight: "400",
+    fontSize: "14px",
+    lineHeight: "125%",
+  }),
+  control: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    color: "var(--w3a-color-icon-gray)",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+    minHeight: "42px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+  }),
+  option: (provided, { isDisabled, isFocused, isSelected }) => ({
+    ...provided,
+    backgroundColor: isDisabled
+      ? undefined
+      : isSelected
+        ? "var(--ifm-color-emphasis-300)"
+        : isFocused
+          ? "var(--ifm-color-primary-lightest)"
+          : undefined,
+    cursor: isDisabled ? "not-allowed" : "default",
+  }),
+  multiValue: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+};

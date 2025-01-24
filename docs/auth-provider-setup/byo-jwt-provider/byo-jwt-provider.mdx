@@ -1,0 +1,197 @@
+---
+title: Bring your own custom JWT Provider
+sidebar_label: Overview
+description: "Bring your own custom JWT Provider | Documentation - Web3Auth"
+image: "images/docs-meta-cards/documentation-card.png"
+---
+
+You can incorporate your login providers by utilizing one of the custom login schemes, including RSA
+or ECDSA signatures. By doing so, your users can continue using your current login providers or your
+custom authentication scheme.
+
+:::note
+
+Access to Custom Authentication with your own custom JWT Provider is gated. The minimum
+[pricing plan](https://web3auth.io/pricing.html) to create custom
+[verifiers](/auth-provider-setup/verifiers) is the **Growth Plan**. However, you can use this
+feature for projects on `sapphire_devnet` for free.
+
+:::
+
+:::warning
+
+Custom JWT authentication is not supported with
+[`Web3Auth Plug and Play Modal SDK`](/sdk/pnp/web/modal/) since the Web3Auth PnP Modal SDK will only
+help you configure the social logins within the Modal UI.
+
+:::
+
+For signing the JWT, your application must follow the JWT specification and use the private key
+corresponding to the JWKS. And the public keys of the JWT should be exposed through an endpoint,
+which is used by Web3Auth to verify the JWT.
+
+:::warning Facing issue with JWT?
+
+Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors)
+
+:::
+
+## Set up Custom JWT Verifier
+
+![Custom JWT Provider on Web3Auth Dashboard](/images/dashboard/create-verifier-custom-jwt.png)
+
+To create a custom verifier for your JWT Providers, you'll need
+
+1. **JWT Verifier ID**: JWT Verifier ID is the unique identifier to publicly represent a user on a
+   verifier. e.g: `sub`, `email`, or even a custom field of your JWT payload that is unique in your
+   system for each user.
+
+2. **JWK Endpoint**: An endpoint containing the JWKS used for signing the JWT.
+
+   Check [What are JWKS and How to create one from PEM](#what-are-jwks) to learn how to create JWKS.
+
+   ```json title="Your JWKS must have the following fields."
+   {
+     "keys": [
+       {
+         "kty": "RSA",
+         "kid": "{your_kid}",
+         "use": "sig",
+         "alg": "RS256",
+         "n": "{your_n}",
+         "e": "{your_e}"
+       }
+     ]
+   }
+   ```
+
+3. **JWT Validations**
+
+   :::warning
+
+   Your JWT header must contain the `kid` field and the payload data must contain the `iat` field.
+
+   :::
+
+   You can add up to 3 validation fields, including any claims like `aud`, `sub`, `iss`,
+   `email_verified` etc. These are the claims against which a JWT is validated.
+
+   Here are a couple of examples to be used in validation:
+
+   - Token Audience ( `aud` ): The "aud" (audience) claim identifies the recipients for which the
+     JWT is intended. Each principal intended to process the JWT MUST identify itself with a value
+     in the audience claim. If the principal processing the claim does not identify itself with a
+     value in the "aud" claim when this claim is present, then the JWT will be rejected. The `aud`
+     value is a case-sensitive string containing a StringOrURI value. The interpretation of audience
+     values is generally application-specific.
+
+   - Token Issuer ( `iss` ): The issuing authority of the token. The `iss` value is a case-sensitive
+     string containing a StringOrURI value. Use of this claim is OPTIONAL.
+
+   - Token Subject ( `sub` ): The subject of the token. The `sub` value is a case-sensitive string
+     containing a StringOrURI value. Use of this claim is OPTIONAL.
+
+   - Token Email Verified ( `email_verified` ): The email verified claim is a boolean value that
+     indicates whether the email address has been verified.
+
+### Generate JWT
+
+To generate the JWT, you can choose package of your choice. We have documented few of the well known
+packages.
+
+- [Generate JWT using jsonwebtoken](/docs/auth-provider-setup/byo-jwt-provider/jsonwebtoken)
+- [Generate JWT using jose](/docs/auth-provider-setup/byo-jwt-provider/jose)
+- [Generate JWT using passport-jwt](/docs/auth-provider-setup/byo-jwt-provider/passport-jwt)
+
+### Login with JWT
+
+Once you have setup JWKS, and created Custom JWT verifier in Web3Auth dashboard, you can follow the
+below example to use it with No Modal SDK.
+
+```tsx title="No Modal Example"
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    uxMode: "redirect", // redirect or popup
+    loginConfig: {
+      // focus-start
+      jwt: {
+        verifier: "verifier-name", // Name of the verifier created on Web3Auth Dashboard
+        typeOfLogin: "jwt",
+        clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Web3Auth Client ID
+      },
+      // focus-end
+    },
+  },
+});
+
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+  // focus-start
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_GENERATED_ID_TOKEN",
+    verifierIdField: "sub", // sub, email, or custom
+  },
+  // focus-end
+});
+```
+
+## What are JWKS?
+
+JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be used
+to verify any JSON Web Token (JWT) issued by the authorization server and signed using the RS256
+signing algorithm.
+
+### How to create JWKS?
+
+- Most of the login providers that support JWT-based login will provide you this URL, such as
+  Firebase, Google, Auth0, AWS Cognito etc.
+
+  - Firebase: `https://www.googleapis.com/service_accounts/v1/jwk/{your-project-id}`
+  - Auth0: `https://{your-domain}/.well-known/jwks.json`
+  - Google: `https://www.googleapis.com/oauth2/v3/certs`
+  - AWS Cognito: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`
+
+- If you are using your own custom JWT, you will need to convert your PEM file to JWKS.
+
+### How to convert PEM to JWKS?
+
+If you're using `jose` or `jsonwebtoken` library, you can use the following steps to convert your
+PEM file to JWKS.
+
+1. Create a Private Key using openssl.
+
+   ```bash
+   openssl genrsa -out privateKey.pem 2048
+   ```
+
+   This privateKey will be used to sign the token.
+
+2. Using the above privateKey.pem file, create a Public Key.
+
+   ```bash
+   openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+   ```
+
+   This publicKey.pem file will be converted to JWKS.
+
+3. Convert the publicKey.pem file to JWKS.
+
+   Now, look for a tool that converts `.pem` to `jwk(s)` format.
+
+   - One of the tools is https://pem2jwk.vercel.app/
+     - Select Signing Algorithm: `RS256`
+     - Select Public Key Use: `Signing`
+     - Key ID: `paste-yours` or leave it blank to generate a random one.
+     - PEM encoded key: `{paste-the-publicKey-pem-file-s-content-here}`
+   - Click on the `Convert to JWK` button.
+
+     ![JWKS Convert Tool](https://web3auth.io/community/uploads/default/optimized/2X/3/3e58a3b7378b9778b0b2d646ec2a3cf47c56ee5e_2_690x448.jpeg)
+
+4. To complete the process, you need to save the output as a `.json` file, host it on your server,
+   and make sure it's publicly accessible.
+
+   This will give you the `JWKS Endpoint`, which is required when setting up a `Custom JWT Verifier`
+   on the Web3Auth Dashboard.

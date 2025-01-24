@@ -1,0 +1,53 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `status`
+
+Returns the current status of the `web3auth` instance.
+
+```javascript
+const status = web3auth.status;
+```
+
+An adapter emits certain events like `CONNECTED`, `CONNECTING` and `DISCONNECTED` etc during login
+lifecycle of a user. Knowing to events help you trigger responses based on the status of the
+connection of the user. For example, you can use this to show an error message, if the user is not
+connected to the network.
+
+Web3Auth provides the following lifecycle event to check the login status:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Event        | Description                                                |
+| ------------ | ---------------------------------------------------------- |
+| `NOT_READY`  | Triggered when the adapter is not ready.                   |
+| `READY`      | Triggered when the adapter is ready.                       |
+| `CONNECTING` | Triggered when the user is connecting to the wallet.       |
+| `CONNECTED`  | Triggered when the user is connected to the wallet.        |
+| `ERRORED`    | Triggered when an error occurs during the login lifecycle. |
+
+</TabItem>
+
+<TabItem value="type">
+
+```tsx
+export declare const ADAPTER_STATUS: {
+  readonly NOT_READY: "not_ready";
+  readonly READY: "ready";
+  readonly CONNECTING: "connecting";
+  readonly CONNECTED: "connected";
+  readonly ERRORED: "errored";
+};
+```
+
+</TabItem>
+
+</Tabs>

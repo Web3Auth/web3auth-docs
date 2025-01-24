@@ -1,0 +1,87 @@
+---
+title: SFA Android SDK - v0.4.0 to v1
+description: "SFA Android SDK - v0.4.0 to v1 | Documentation - Web3Auth"
+sidebar_label: v0.4.0 to v1
+---
+
+This migration guide provides steps for upgrading from version v0.4.0 to v1 of the SFA Android SDK.
+The guide outlines significant changes and enhancements, including the support of Web3Auth's
+Sapphire network support.
+
+## Breaking Changes
+
+### Changes in SingleFactorAuth Constructor
+
+In v8, we try to improve the developer experience by renaming the parameter and
+`SingleFactorAuthArgs` class, and introducing a new parameter for session management.
+
+- `singleFactorAuthArgs` used to initialize the SingleFactorAuth SDK has been renamed to
+  `sfaParams`. It has been renamed to align the naming conventions across Web3Auth SDKs.
+- `context` was added to specific the application's context.
+
+### Changes in SingleFactorAuthArgs Changes
+
+- `SingleFactorAuthArgs` is now renamed to `SFAParams`. It has been renamed to align with naming
+  conventions across Web3Auth SDKs.
+- `sessionTime` was added to specify session duration in seconds. By default, the value is set to
+  86400 seconds (1 day), with a maximum session duration of up to 30 days.
+- `serverTimeOffset` was added to specify a custom server time offset. The default value is 0
+
+```kotlin
+// remove-next-line
+val params = SingleFactorAuthArgs(
+// add-next-line
+val params = SFAParams(
+  Web3AuthNetwork.SAPPHIRE_MAINNET,
+  "YOUR_WEB3AUTH_CLIENT_ID"
+)
+
+val singleFactorAuth = SingleFactorAuth(
+  singleFactorAuthArgs,
+  // add-next-line
+  this,
+)
+
+
+```
+
+### TorusKey is renamed to SFAKey
+
+In v1, the `TorusKey` is now removed. Developers can now use `SFAKey` to access the private key and
+address for the account. It was renamed to maintain consistency across SDKs.
+
+### Deprecation of authentication methods
+
+In v1, the `getKey` method is deprecated. Developers can now use `connect`, the common method for
+single verifier and aggregate verifier login. This change was done to improve the developer
+experience and align with other Web3Auth SFA SDKs.
+
+```kotlin
+val loginParams = LoginParams(
+  "YOUR_VERIFIER_NAME",
+  "YOUR_VERIFIER_ID_VALUE",
+  "YOUR_ID_TOKEN"
+);
+
+// remove-next-line
+val torusKey = singleFactorAuth.getKey(loginParams).get()
+// add-next-line
+val sfaKey = singleFactorAuth.connect(loginParams, this.applicationContext)
+```
+
+## New Addition: Sapphire Support
+
+We are happy to announce that with v1, SFA Android SDK now supports the Web3Auth Sapphire networks.
+Developers can now use the verifiers deployed on sapphire networks. Please check the supported
+networks by the SDK.
+
+```kotlin
+public enum Web3AuthNetwork {
+  MAINNET("mainnet"),
+  TESTNET("testnet"),
+  CYAN("cyan"),
+  AQUA("aqua"),
+  SAPPHIRE_DEVNET("sapphire_devnet"),
+  SAPPHIRE_MAINNET("sapphire_mainnet");
+}
+```

@@ -1,0 +1,94 @@
+---
+title: Web Storage Module - tKey JS SDK
+sidebar_label: Web Storage
+description: "Core Kit tKey SDK - Modules -  Web Storage | Documentation - Web3Auth"
+---
+
+#### [`@tkey/web-storage`](https://npmjs.com/package/@tkey/web-storage)
+
+The Web Storage Module helps you store and recall key shares in the from local and file storage.
+
+## Installation
+
+```bash npm2yarn
+npm install --save @tkey/web-storage
+```
+
+## Initialization
+
+### Parameters
+
+`params`
+
+- `canUseFileStorage?`: `boolean`
+
+```tsx
+import { WebStorageModule } from "@tkey/web-storage";
+const webStorageModule = new WebStorageModule();
+```
+
+## Usage
+
+With the `WebStorageModule`, you have access to the multiple functions as mentioned in the type
+reference, however, the most important ones are:
+
+### Get ShareStore from Storage
+
+`getDeviceShare(): Promise<ShareStore>;`
+
+#### Example
+
+```tsx
+const share = await(tKey.modules.webStorage as WebStorageModule).getDeviceShare();
+```
+
+### Store Device Share on Web Local Storage
+
+`storeDeviceShare(deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType)`
+
+- `deviceShareStore`: The `ShareStore` object to store.
+- `customDeviceInfo?`: Information about the device to store.
+
+#### Example
+
+```tsx
+const generateShareResult = await tKeyInstance.generateNewShare();
+const share = await tKeyInstance.outputShareStore(generateShareResult.newShareIndex);
+await(tKey.modules.webStorage as WebStorageModule).storeDeviceShare(share);
+```
+
+## Type Reference
+
+### `WebStorageModule`
+
+```tsx
+class WebStorageModule implements IModule {
+  moduleName: string;
+  tbSDK: ITKeyApi;
+  canUseFileStorage: boolean;
+  constructor(canUseFileStorage?: boolean);
+  setFileStorageAccess(): Promise<void>;
+  setModuleReferences(tbSDK: ITKeyApi): void;
+  initialize(): Promise<void>;
+  storeDeviceShare(deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType): Promise<void>;
+  storeDeviceShareOnFileStorage(shareIndex: BNString): Promise<void>;
+  getDeviceShare(): Promise<ShareStore>;
+  inputShareFromWebStorage(): Promise<void>;
+}
+```
+
+### `ShareStore`
+
+```tsx
+class ShareStore implements ISerializable {
+  share: Share;
+  polynomialID: PolynomialID;
+  constructor(share: Share, polynomialID: PolynomialID);
+  static fromJSON(value: StringifiedType): ShareStore;
+  toJSON(): StringifiedType;
+}
+
+interface ISerializable {
+  toJSON(): StringifiedType;
+}
+```

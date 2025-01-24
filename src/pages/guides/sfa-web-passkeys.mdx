@@ -1,0 +1,302 @@
+---
+title: How to implement Passkeys with Web3Auth SFA JS SDK
+image: "guides-banners/passkeys-sfa.png"
+description:
+  Web3Auth Single Factor Auth(SFA) Web SDK with Passkeys enables secure and easy authentication
+  using passkeys. The process involves setting up the Web3Auth SFA SDK, initializing the Passkeys
+  SFA Plugin, and managing passkey registration and login.
+type: guide
+tags: [single factor auth, web, passkeys]
+date: June 25, 2024
+author: Web3Auth Team
+---
+
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="How to implement Passkeys with Web3Auth SFA JS SDK"
+  description="Learn how to use Web3Auth Single Factor Auth with Passkeys in your web application."
+  image="https://web3auth.io/docs/guides-banners/passkeys-sfa.png"
+  slug="/guides/passkeys-sfa"
+/>
+
+Passkeys are an innovative feature that offers a convenient, secure, and passwordless authentication
+method, enhancing the user experience while maintaining robust security. Leveraging the WebAuthn
+standard, passkeys eliminate the need for traditional passwords, making the authentication process
+seamless and user-friendly. Web3Auth supports passkeys through its Single Factor Auth (SFA) Web SDK,
+providing a smooth integration for developers.
+
+## Key Benefits of Passkeys
+
+### Convenience
+
+- **Passwordless Login:** Users can authenticate without the need for passwords, reducing friction
+  and improving the overall user experience.
+- **Biometric Authentication:** Passkeys support biometric methods such as fingerprint or facial
+  recognition, offering a quick and secure way to log in.
+
+### Security
+
+- **Phishing Resistant:** Passkeys are inherently phishing-resistant, as they use public-key
+  cryptography and are bound to the origin they were created for, making it difficult for attackers
+  to intercept or misuse them.
+- **Strong Authentication:** Passkeys provide a strong form of authentication, leveraging the
+  security features of the user's device.
+
+## How Passkeys Work
+
+### Introduction
+
+Passkeys are a new way of authenticating applications and websites. Instead of having to remember a
+password, a third-party service provider (e.g., Google or Apple) generates and stores a
+cryptographic key pair that is bound to a website domain. Since you have access to the service
+provider, you have access to the keys, which you can then use to log in.
+
+### The Hype: Why It’s a Game-Changer
+
+- **Easy to Use:** Creating and using passkeys is as simple as consenting to save and use them. No
+  need to create a password.
+- **Enhanced Security:** Access to passkeys is gated with OS-level biometrics like faceID, touchID,
+  and lock screen patterns. Passkeys are bound to the web domain that creates them, preventing
+  phishing attacks. They rely on public key cryptography, where private keys are never disclosed to
+  websites or apps, making them harder to steal. Only public keys are sent, and to authenticate,
+  passkeys sign messages with their private keys, providing signatures as proofs.
+- **Automatically Unique Per-Service:** By design, passkeys are unique per-service, eliminating the
+  chance of reuse.
+
+### Phases in a Passkeys Flow
+
+- **Attestation:** The registration phase when first signing up for a service, generating a passkey
+  instead of an email and password.
+- **Assertion:** The login phase after registration, using the generated passkey to authenticate.
+
+### Types of Passkey Credentials
+
+- **Discoverable Credentials:** Self-contained key pairs stored on the end-user's device, easily
+  synced and used across devices independently.
+- **Non-Discoverable Credentials:** Partially stored on the end-user's device, requiring the
+  relaying party to store the generated credential ID.
+
+### OS and Device Support
+
+Almost every modern browser supports passkeys, except Firefox. Support varies by operating system.
+
+## Web3Auth SFA SDK Compatibility
+
+:::info Web3Auth SFA SDK Compatibility
+
+For now, passkeys support is available for the Web3Auth Single Factor Auth (SFA) Web SDK through the
+Passkeys SFA Plugin package. Support for additional SDKs is coming soon.
+
+:::
+
+## Installation
+
+To get started, install the Passkeys SFA Plugin using npm:
+
+```bash npm2yarn
+npm install --save @web3auth/passkeys-sfa-plugin
+```
+
+## Initialization
+
+Import the `PasskeysPlugin` class from `@web3auth/passkeys-sfa-plugin` and initialize it with the
+required options. After creating your Web3Auth SFA instance, you need to initialize the Passkeys
+Plugin and add it to the class for further usage.
+
+```javascript
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
+
+const passkeysPlugin = new PasskeysPlugin({
+  rpID: "your.app.xyz",
+  rpName: "Your App",
+});
+
+web3auth.addPlugin(passkeysPlugin);
+```
+
+## Using Passkeys SFA Plugin
+
+### Registering a New Passkey
+
+Registers a new passkey for the user. The passkey will be saved with the specified username.
+
+```javascript
+await passkeysPlugin.registerPasskey({
+  username: "user@example.com",
+});
+```
+
+### Logging in with an Existing Passkey
+
+Logs in the user with an existing passkey.
+
+```javascript
+await passkeysPlugin.loginWithPasskey({
+  authenticatorId: "authenticator_id",
+});
+```
+
+### Listing All Registered Passkeys
+
+Lists all passkeys registered for the user.
+
+```javascript
+const passkeys = await passkeysPlugin.listAllPasskeys();
+console.log(passkeys);
+```
+
+## Example Implementation with Web3Auth SFA SDK
+
+To illustrate how to use the Passkeys SFA Plugin with Web3Auth SFA JS SDK, here is a complete
+example.
+
+### Setup
+
+First, ensure you have installed the necessary packages:
+
+```bash
+npm install --save @web3auth/single-factor-auth @web3auth/passkeys-sfa-plugin
+```
+
+### Initialization
+
+Initialize the Web3Auth instance along with the Passkeys Plugin:
+
+```javascript
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
+
+const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: provider,
+});
+
+const passkeysPlugin = new PasskeysPlugin({
+  rpID: "your.app.xyz",
+  rpName: "Your App",
+});
+
+web3auth.addPlugin(passkeysPlugin);
+
+await web3auth.init();
+```
+
+### Register a Passkey
+
+Use the following function to register a new passkey for a user:
+
+```javascript
+async function registerPasskey(username) {
+  try {
+    await passkeysPlugin.registerPasskey({
+      username: username,
+    });
+    console.log("Passkey registered successfully");
+  } catch (error) {
+    console.error("Error registering passkey:", error);
+  }
+}
+```
+
+### Login with a Passkey
+
+Use the following function to log in a user with an existing passkey:
+
+```javascript
+async function loginWithPasskey(authenticatorId) {
+  try {
+    const user = await passkeysPlugin.loginWithPasskey({
+      authenticatorId: authenticatorId,
+    });
+    console.log("User logged in successfully:", user);
+  } catch (error) {
+    console.error("Error logging in with passkey:", error);
+  }
+}
+```
+
+### List All Passkeys
+
+Use the following function to list all registered passkeys for a user:
+
+```javascript
+async function listAllPasskeys() {
+  try {
+    const passkeys = await passkeysPlugin.listAllPasskeys();
+    console.log("Registered passkeys:", passkeys);
+  } catch (error) {
+    console.error("Error listing passkeys:", error);
+  }
+}
+```
+
+## UI and UX Considerations
+
+When integrating passkeys into your application, it's important to design a user-friendly flow for
+both registration and login processes. Here are some best practices:
+
+- **Clear Instructions:** Provide clear and concise instructions for users during the registration
+  and login processes. Explain the benefits of using passkeys and how they enhance security.
+
+- **Seamless Registration Flow:** Integrate the passkey registration process smoothly into your
+  existing signup flow. Ensure users understand that they are creating a secure, passwordless method
+  of authentication.
+
+  ```javascript
+  // Example registration flow
+  async function handleRegistration() {
+    // User signs up with traditional methods
+    await traditionalSignup();
+
+    // Register a passkey for the new user
+    await registerPasskey(user.email);
+  }
+  ```
+
+- **Intuitive Login Flow:** Make the login process with passkeys intuitive. Provide a clear option
+  for users to log in using their passkey.
+
+  ```javascript
+  // Example login flow
+  async function handleLogin() {
+    // User initiates login
+    const authenticatorId = await getAuthenticatorId();
+
+    // Log in with the passkey
+    await loginWithPasskey(authenticatorId);
+  }
+  ```
+
+- **Fallback Options:** Always provide alternative login options such as email OTP, SMS OTP, or
+  social logins. This ensures that users who cannot use passkeys still have a way to access their
+  accounts.
+
+  ```javascript
+  // Example fallback options
+  async function handleLogin() {
+    try {
+      const authenticatorId = await getAuthenticatorId();
+      await loginWithPasskey(authenticatorId);
+    } catch (error) {
+      console.error("Passkey login failed, falling back to alternative methods:", error);
+      // Provide alternative login methods here
+    }
+  }
+  ```
+
+- **User Feedback:** Provide real
+
+-time feedback to users during the registration and login processes. Confirm successful passkey
+creation or login and handle errors gracefully.
+
+## Learn More
+
+For detailed documentation and implementation guides, please refer to the
+[Passkeys SFA Plugin Documentation](/docs/sdk/sfa/sfa-js/passkeys-sfa).
