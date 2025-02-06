@@ -1,0 +1,152 @@
+---
+title: Ethereum Signing Provider
+
+description: "Ethereum Signing Provider for EVM Compatible Chains | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import SPMProvider from "@site/src/common/sdk/mpc-core-kit/swift/_spm-installation-provider.mdx";
+import CocoapodsProvider from "@site/src/common/sdk/mpc-core-kit/swift/_cocoapods-installation-provider.mdx";
+
+The [MpcProviderSwift](https://github.com/tkey/MpcProviderSwift) package provides an Ethereum
+compatible signing provider with TSS Signing capabilities. This comes in handy by providing you with
+a standard way of retriving user's address and interacting with blockchain.
+
+Please note, this package only supports Ethereum.
+
+## Installation
+
+<Tabs defaultValue="swift-package-manager"
+values={[
+  { label: "Swift Package Manager", value: "swift-package-manager" },
+  { label: "Cocoapods", value: "cocoapods" },
+]}>
+<TabItem value="swift-package-manager">
+
+<SPMProvider />
+</TabItem>
+
+<TabItem value="cocoapods">
+
+<CocoapodsProvider />
+</TabItem>
+</Tabs>
+
+## Set up the Extension
+
+The `MPCEthereumProvider` constructor accepts an `EVMSigner` object. The `EVMSigner` includes a
+`sign` method for signing raw messages and a `publicKey` property to retrieve the uncompressed
+public key.
+
+We will create an extension for `MPCCoreKit` that conforms to the `EVMSigner` protocol. Once the
+extension is implemented, an `MPCCoreKit` instance can be used to construct the
+`MPCEthereumProvider` instance.
+
+### Example
+
+```swift
+import Foundation
+import mpc_core_kit_swift
+import tkey
+import MpcProviderSwift
+import web3
+
+extension MpcCoreKit : EvmSigner {
+    public func sign(message: Data) throws -> Data {
+        // Sign the message using MPC TSS
+        let data =  try self.tssSignSync(message: message)
+        return data
+    }
+
+    public var publicKey: Data {
+        // Get the uncompressed public key
+        let fullAddress = try! KeyPoint(
+            address: self.getTssPubKey().hexString
+        ).getPublicKey(format: .FullAddress)
+
+
+        return Data(hex: fullAddress)?.suffix(64) ?? Data()
+    }
+
+}
+```
+
+## Initialisation
+
+Once the extension is implemented, we can initialize the `MPCEthereumProvider` by passing an
+instance of `MPCCoreKit` to the constructor.
+
+```swift
+import MpcProviderSwift
+
+// Use the existing MPC Core Kit instance to initialize the Ethereum Provider
+let mpcEthereumProvider = MPCEthereumProvider(evmSigner: mpcCoreKit)
+```
+
+## Get Account
+
+To retrieve the user's address, you can use the `address` property of the `MPCEthereumProvider`
+instance.
+
+### Example
+
+```swift
+import web3
+
+// Use the existing MPCEthereumProvider instance
+let address: EthereumAddress = mpcEthereumProvider.address
+```
+
+## Sign Personal Message
+
+To sign a personl message, you can use the `signMessage` method. The method takes message to be
+signed in `Data` format as an argument. Please note, that you don't need to add the prefix to the
+message. The method will add the prefix internally.
+
+### Example
+
+```swift
+do {
+    let signature = try mpcEthereumProvider.signMessage(
+        message: "Web3Auth is awesome!".data(using: .utf8)!
+    )
+} catch {
+   // Handle the error
+}
+```
+
+## Sign Transaction
+
+To sign a Ethereum transaction, you can use the `signTransaction` method. The methods takes
+`EthereumTransaction` object as an argument.
+
+### Example
+
+```swift
+do {
+    let address: EthereumAddress = mpcEthereumProvider.address
+
+    // Self Transfer 0.000001 ETH on Ethereum Mainnet
+    let transaction = EthereumTransaction(
+        from: address,
+        to: address,
+        // 0.000001 ETH in Wei format
+        value: 1000000000000,
+        data: Data.init(hex: "0x00")!,
+        nonce: "ADDRESS_NONCE",
+        gasPrice: gasPrice.multiplied(by: .init(stringLiteral: "2")),
+        gasLimit: gasLimit,
+        // Chain ID for Ethereum Mainnet
+        chainId: 1
+    )
+
+    // Sign the transaction
+    let signedTransaction = try mpcEthereumProvider.signTransaction(
+        transaction: transaction
+    )
+} catch {
+    // Handle the error
+}
+```

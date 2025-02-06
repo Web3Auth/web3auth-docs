@@ -1809,6 +1809,12 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {
+      type: "category",
+      label: "Providers",
+      items: ["sdk/mpc-core-kit/mpc-core-kit-ios/providers/evm"],
+    },
+    // "sdk/mpc-core-kit/mpc-core-kit-ios/usage",
+    {
       type: "link",
       label: "Support Forum",
       href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33",
