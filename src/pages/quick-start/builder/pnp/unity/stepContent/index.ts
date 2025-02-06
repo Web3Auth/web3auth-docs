@@ -1,4 +1,5 @@
 import * as getUserInfo from "../../../../commonSteps/getUserInfo.mdx";
+import * as enableMFA from "../../../../commonSteps/enableMFA.mdx";
 import * as registerApp from "../../../../commonSteps/registerApp.mdx";
 import { toSteps } from "../../../../utils";
 import * as blockchainCalls from "./blockchainCallsUnity.mdx";
@@ -14,6 +15,7 @@ const STEPS = toSteps({
   unityQuickStart,
   installation,
   registerApp,
+  enableMFA,
   initialization,
   login,
   getUserInfo,

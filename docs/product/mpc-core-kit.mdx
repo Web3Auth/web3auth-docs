@@ -1,0 +1,65 @@
+---
+title: MPC Core Kit
+description: "MPC Core Kit | Documentation - Web3Auth"
+---
+
+import KeyManagementDark from "@site/static/images/key-management-dark.png";
+import KeyManagementLight from "@site/static/images/key-management-light.png";
+
+The Web3Auth MPC Core Kit provides a powerful Multi-Party Computation (MPC) based authentication
+system using Threshold Signature Scheme (TSS). Unlike traditional key-based authentication systems
+that reconstruct private keys, MPC Core Kit never reconstructs the key, making it significantly more
+secure.
+
+:::note
+
+The MPC Core Kit is designed for applications that need advanced security and complete control over
+their authentication flows. It provides the necessary tools and flexibility to build sophisticated
+authentication systems while maintaining high security standards.
+
+:::
+
+## How MPC Core Kit Works
+
+Using the Web3Auth MPC Core Kit, you can authenticate users and generate signatures for blockchain
+transactions through distributed key shares, without ever reconstructing the private key. The SDK
+uses a 2-of-3 threshold signature scheme where the key shares are distributed across:
+
+- **Auth Network Share:** Managed by Web3Auth's decentralized Auth Network and accessible through
+  OAuth providers like Google, providing a familiar authentication experience.
+
+- **Device Share:** Securely stored on the user's device, leveraging platform-specific security
+  features like biometric authentication on mobile devices.
+
+- **Recovery Share:** A backup share that can be stored on a secondary device, downloaded for
+  offline storage, or derived from user input like passwords or security questions.
+
+To sign transactions, users need access to any two of these three shares. The shares independently
+create partial signatures which are then combined using TSS to create the final valid signature.
+
+<picture>
+  <source srcset={KeyManagementLight} media="(prefers-color-scheme: light)" />
+  <source srcset={KeyManagementDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={KeyManagementLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
+
+## Key Features
+
+- **Uncompromised Security:** Private keys are never reconstructed, eliminating key compromise risks
+  through distributed MPC architecture.
+
+- **Seamless Integration:** Build end-to-end authentication flows directly in your application with
+  complete UI/UX control.
+
+- **Enterprise-Grade Infrastructure:** Non-custodial MPC wallet infrastructure with automated
+  recovery mechanisms ensures maximum security and reliability.
+
+- **Flexible Authentication:** Support for social logins, passwordless methods, and existing auth
+  systems provides comprehensive authentication options.
+
+- **Developer-First Design:** Direct integration capabilities and customizable interfaces enable
+  building sophisticated authentication flows that match your brand.

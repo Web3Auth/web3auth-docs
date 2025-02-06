@@ -1,0 +1,517 @@
+---
+title: "Initializing MPC Core Kit React Native SDK"
+sidebar_label: "Initialize"
+description: "Web3Auth MPC Core Kit React Native SDK - Initialize | Documentation - Web3Auth"
+---
+
+import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
+import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After installation, the next step to use Web3Auth MPC Core Kit is to configure & initialize the SDK.
+
+1. [Configure React Native environment](#configure-react-native-environment)
+2. [Configure Web3AuthMPCCoreKit instance](#configure-instance)
+3. [Initialize Web3AuthMPCCoreKit](#initialize-web3authmpccorekit)
+
+:::note
+
+Ensure that you configure your authentication method and verifier prior to initializing the SDK in
+your codebase. This will streamline the implementation process.
+
+:::
+
+## Configure React Native Environment
+
+In order to make this SDK compatible with the React Native development environment, you need to
+additionally import the Bridge from the `@web3auth/react-native-mpc-core-kit` package.
+
+```tsx
+import { Bridge } from "@web3auth/react-native-mpc-core-kit"; // A bridge to be imported to the React Native environment
+```
+
+The `Bridge` is used to bridge the TSS library to the React Native environment, it has to be
+imported in the React Native environment, at the end of the page.
+
+```tsx title="App.tsx"
+import { Bridge } from "@web3auth/react-native-mpc-core-kit";
+
+export default function App() {
+  // Misc App related functions
+  return (
+    <View>
+      {/* <YOUR APP GOES HERE> */}
+      // focus-start
+      <Bridge
+        logLevel={"DEBUG"}
+        resolveReady={(ready) => {
+          setBridgeReady(ready);
+        }}
+      />
+      // focus-end
+    </View>
+  );
+}
+```
+
+## Configure Instance
+
+Please note that these are the most critical steps where you need to pass on different parameters
+according to the preference of your project.
+
+### Parameters
+
+The `mpclib.Web3AuthMPCCoreKitRN` constructor takes an object with `Web3AuthOptions` as input which
+helps you configure the SDK.
+
+:::note
+
+Please, note we for the simplicity, we use the `coreKitInstance` to refer to the instance of
+`mpclib.Web3AuthMPCCoreKitRN`.
+
+:::
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId`          | The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io                                                                                                                                                                                                                                                                                                                                                                    |
+| `manualSync?`               | Enables you to manually sync with the Web3Auth Metadata Server, helping you manage the API calls to the server. We recommend using this approach. Default value is false.                                                                                                                                                                                                                                                                                 |
+| `baseUrl?`                  | URL of the service worker handling the authentication in popup flow. For general usecases, you don't need to change this value. Default value is `${window.location.origin}/serviceworker`.                                                                                                                                                                                                                                                               |
+| `web3AuthNetwork?`          | Web3Auth Network used for MPC Wallet Management. Use `WEB3AUTH_NETWORK.DEVNET` in testing environment and `WEB3AUTH_NETWORK.Mainnet` in production environment. Default value is `WEB3AUTH_NETWORK.Mainnet`.                                                                                                                                                                                                                                              |
+| `sessionTime?`              | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 1 day.                                                                                                                                                                                                                                                                                                                                                         |
+| `uxMode?`                   | Four uxModes are supported: <ul><li>`'popup'`: In this uxMode, a popup will be shown to user for login.</li><li>`'redirect'`: In this uxMode, user will be redirected to a new window tab for login.</li><li>`'nodejs'`: Use this for Node.js projects.</li><li>`'react-native'`: Use this for React Native apps.</li></ul> Use of `'redirect'` mode is recommended in browsers where popups might get blocked.                                           |
+| `enableLogging?`            | Enables Logs for the SDK. Default value is false.                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `redirectPathName?`         | Specifies the url path where user will be redirected after login. Redirect Uri for OAuth is `baseUrl/redirectPathName`.                                                                                                                                                                                                                                                                                                                                   |
+| `disableHashedFactorKey?`   | Disables the Hashed Key, making the sure user logs in always in a non-custodial mode. Recommended only if you have proper MFA flow setup for the user while creating the account. Default value is false.                                                                                                                                                                                                                                                 |
+| `tssLib`                    | The threshold signing library to use: <ul><li>For secp256k1 keyType, you can use the `@toruslabs/tss-dkls-lib`</li><li> For ed25519 keyType you can use `@toruslabs/tss-frost-lib`</li></ul>                                                                                                                                                                                                                                                              |
+| `hashedFactorNonce?`        | Nonce for the hashed factor. Default value is `web3AuthClientId`. [Learn more about hashed factor](/docs/sdk/mpc-core-kit/mpc-core-kit-js/#hashed-cloud-factor).                                                                                                                                                                                                                                                                                          |
+| `storage`                   | Defines the storage for MPC Core Kit's state.                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `useDKG?`                   | Specifies whether to use DKG or not. If set to false, the key would be securely generated on the client side, and imported to Web3Auth network. If set to true, the key would be generated using a distributed network.Setting the flag to false, and generating a key on the client side significantly improves the speed of first-time login. The default value secp256k1 is `true`. Please note, it is not supported for ed25519, and is always false. |
+| `useClientGeneratedTSSKey?` | Specifies whether to use client generated TSS key or not. The default value is set to `false` for secp256k1 and `true` for ed25519. The default value is set to `true` for ed25519 as it allows users to export the ed25519 key.                                                                                                                                                                                                                          |
+| `disableSessionManager?`    | Specifies whether to disable the session manager or not. The default value is `false`. Please note, the session will still expire after the defined session time.                                                                                                                                                                                                                                                                                         |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface Web3AuthOptions {
+  /**
+   * The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io
+   */
+  web3AuthClientId: string;
+
+  /**
+   * The threshold signing library to use.
+   */
+  tssLib: TssLib;
+
+  /**
+   * @defaultValue `false`
+   */
+  manualSync?: boolean;
+
+  /**
+   * @defaultValue `${window.location.origin}/serviceworker`
+   */
+  baseUrl?: string;
+
+  /**
+   *
+   * @defaultValue `'sapphire_mainnet'`
+   */
+  web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
+
+  /**
+   *  storage for mpc-core-kit's local state.
+   *  storage replaces previous' storageKey and asyncStorage options.
+   *
+   *  Migration from storageKey and asyncStorage to storage guide.
+   *
+   *  For StorageKey, please replace
+   *  - undefined with localStorage
+   *  - "local" with localStorage
+   *  - "session" with sessionStorage
+   *  - "memory" with new MemoryStorage()
+   *
+   *  For asyncStorage, provide instance of IAsyncStorage.
+   *
+   */
+  storage: IAsyncStorage | IStorage;
+
+  /**
+   * @defaultValue 86400
+   */
+  sessionTime?: number;
+
+  /**
+   * @defaultValue `'POPUP'`
+   */
+  uxMode?: CoreKitMode;
+
+  /**
+   * @defaultValue `false`
+   * enables logging of the internal packages.
+   */
+  enableLogging?: boolean;
+
+  /**
+   * This option is used to specify the url path where user will be
+   * redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName.
+   *
+   *
+   * @defaultValue `"redirect"`
+   *
+   * @remarks
+   * At verifier's interface (where you obtain client id), please use baseUrl/redirectPathName
+   * as the redirect_uri
+   *
+   * Torus Direct SDK installs a service worker relative to baseUrl to capture
+   * the auth redirect at `redirectPathName` path.
+   *
+   * For ex: While using serviceworker if `baseUrl` is "http://localhost:3000/serviceworker" and
+   * `redirectPathName` is 'redirect' (which is default)
+   * then user will be redirected to http://localhost:3000/serviceworker/redirect page after login
+   * where service worker will capture the results and send it back to original window where login
+   * was initiated.
+   *
+   * For browsers where service workers are not supported or if you wish to not use
+   * service workers,create and serve redirect page (i.e redirect.html file which is
+   * available in serviceworker folder of this package)
+   *
+   * If you are using redirect uxMode, you can get the results directly on your `redirectPathName`
+   * path using `getRedirectResult` function.
+   *
+   * For ex: if baseUrl is "http://localhost:3000" and `redirectPathName` is 'auth'
+   * then user will be redirected to http://localhost:3000/auth page after login
+   * where you can get login result by calling `getRedirectResult` on redirected page mount.
+   *
+   * Please refer to examples https://github.com/torusresearch/customauth/tree/master/examples
+   * for more understanding.
+   *
+   */
+  redirectPathName?: string;
+
+  /**
+   * @defaultValue `false`
+   * Disables the cloud factor key, enabling the one key semi custodial flow.
+   * Recommended for Non Custodial Flow.
+   */
+  disableHashedFactorKey?: boolean;
+
+  /**
+   * @defaultValue `Web3AuthOptions.web3AuthClientId`
+   * Overwrites the default value ( clientId ) used as nonce for hashing the hash factor key.
+   *
+   * If you want to aggregate the mfa status of client id 1 and client id 2  apps
+   * set hashedFactorNonce to some common clientID, which can be either client id 1 or client id 2 or any other unique string
+   * #PR 72
+   * Do not use this unless you know what you are doing.
+   */
+  hashedFactorNonce?: string;
+
+  serverTimeOffset?: number;
+}
+
+export type WEB3AUTH_NETWORK_TYPE = (typeof WEB3AUTH_NETWORK)[keyof typeof WEB3AUTH_NETWORK];
+export declare const WEB3AUTH_NETWORK: {
+  readonly MAINNET: "sapphire_mainnet";
+  readonly DEVNET: "sapphire_devnet";
+};
+
+export type CoreKitMode = UX_MODE_TYPE | "nodejs" | "react-native";
+export type UX_MODE_TYPE = (typeof UX_MODE)[keyof typeof UX_MODE];
+export declare const UX_MODE: {
+  readonly POPUP: "popup";
+  readonly REDIRECT: "redirect";
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Usage
+
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo", value: "expo" },
+  ]}
+>
+
+<TabItem value="bare">
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "Secp256k1", value: "secp256k1" },
+    { label: "Ed25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```javascript
+import {
+  mpclib,
+  TssDklsLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return EncryptedStorage.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return EncryptedStorage.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  tssLib: TssDklsLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```javascript
+import {
+  mpclib,
+  TssFrostLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions
+} from "@web3auth/react-native-mpc-core-kit";
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return EncryptedStorage.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return EncryptedStorage.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  uxMode: "react-native",
+  tssLib: TssFrostLib, // tss lib bridge for EDDSA
+  manualSync: false, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+
+<TabItem value="expo">
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "Secp256k1", value: "secp256k1" },
+    { label: "Ed25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```javascript
+import {
+  mpclib,
+  TssDklsLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return SecureStore.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return SecureStore.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  tssLib: TssDklsLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```javascript
+import {
+  mpclib,
+  TssFrostLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions
+} from "@web3auth/react-native-mpc-core-kit";
+import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return SecureStore.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return SecureStore.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  uxMode: "react-native",
+  tssLib: TssFrostLib, // tss lib bridge for EDDSA
+  manualSync: false, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+
+</Tabs>
+
+## Additional Configuration for EVM Chains
+
+If you are using the SDK with EVM compatible chains, you can use the `EthereumSigningProvider` to
+setup the provider for the EVM chain. This provider is EIP1193 compatible and can be used with
+`web3.js`, `ethers.js`, or `viem` to make integration with EVM compatible chains easier.
+
+You need to pass in the `chainConfig` object to the provider. The `chainConfig` object contains the
+basic details of the chain you are using.
+
+```js
+import { makeEthereumSigner } from "@web3auth/react-native-mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io/",
+  blockExplorer: "https://sepolia.etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Setup provider for EVM Chain
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+```
+
+## Initialize Web3AuthMPCCoreKit
+
+To initialize the instance, you need to call the `init` method. The method also takes the
+`InitParams` as an input.
+
+### Parameters
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter   | Description                                                          |
+| ----------- | -------------------------------------------------------------------- |
+| `rehydrate` | Rehydrates the session during initialization. Default value is true. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```typescript
+export interface InitParams {
+  /**
+   * @defaultValue `true`
+   * rehydrate the session during init()
+   */
+  rehydrate?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Usage
+
+```ts
+// Web3AuthMPCCoreKit instance from previous steps
+await coreKitInstance.init();
+```
+
+### Check for the Bridge State before Initing
+
+The `Bridge` exposes a `resolveReady` callback that notifies when the SDK's bridge is ready to be
+used. Use this to init the SDK after the bridge has been configured.
+
+```js
+useEffect(() => {
+  if (bridgeReady) {
+    const init = async () => {
+      try {
+        await coreKitInstance.init();
+      } catch (error: any) {
+        uiConsole(error.message, "mounted caught");
+      }
+      setCoreKitStatus(coreKitInstance.status);
+    };
+    init();
+  }
+}, [bridgeReady]);
+```

@@ -12,16 +12,14 @@ import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
 ## Logging in a User
 
-### `login(LoginParams)`
+To login in a user, you can use the `login` method. It will trigger login flow will navigate the
+user to a browser model allowing the user to login into the service. You can pass in the supported
+providers to the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and
+do whitelabel login.
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the
-service. You can pass in the supported providers to the login method for specific social logins such
-as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
-`LoginParams` as a required input.
+### Parameters
 
-#### Arguments
-
-`LoginParams`
+The `login` method takes in `LoginParams` as a required input.
 
 <Tabs
   defaultValue="table"
@@ -100,23 +98,15 @@ enum Provider {
 </TabItem>
 </Tabs>
 
-### `getPrivkey()`
+### Usage
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
-key which can be used to sign transactions on EVM compatible chains.
+```dart
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  LoginParams(loginProvider: Provider.google)
+);
+```
 
-### `getEd25519PrivKey()`
-
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
-sign transactions on Solana.
-
-### `getUserInfo()`
-
-Use getUserInfo() to get the user info of the user.
-
-#### UserInfo Response
-
-<FlutterResponse />
+### Examples
 
 <Tabs
   defaultValue="google"
@@ -159,7 +149,7 @@ Future<void> initWeb3Auth() async {
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-next-line
+  // focus-next-line
   LoginParams(loginProvider: Provider.google)
 );
 ```
@@ -193,7 +183,7 @@ Future<void> initWeb3Auth() async {
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-next-line
+  // focus-next-line
   LoginParams(loginProvider: Provider.facebook)
 );
 ```
@@ -225,7 +215,7 @@ Future<void> initWeb3Auth() async {
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-next-line
+  // focus-next-line
   LoginParams(loginProvider: Provider.discord)
 );
 ```
@@ -259,7 +249,7 @@ Future<void> initWeb3Auth() async {
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-next-line
+  // focus-next-line
   LoginParams(loginProvider: Provider.twitch)
 );
 ```
@@ -342,13 +332,12 @@ Future<void> initWeb3Auth() async {
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-next-line
+  // focus-next-line
   LoginParams(loginProvider: Provider.farcaster)
 );
 ```
 
 </TabItem>
-
 <TabItem value="jwt">
 
 ```dart title="Usage"
@@ -380,7 +369,7 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,,
-    // highlight-next-line
+    // focus-next-line
     loginConfig: loginConfig
   ));
 
@@ -403,84 +392,90 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 </TabItem>
 </Tabs>
 
+## Retrieve Private Key
+
+Web3Auth supports two widely used cryptographic curves, Secp256k1 and Ed25519, making it
+chain-agnostic and compatible with multiple blockchain networks.
+[Learn more about how to connect different blockchains](/docs/connect-blockchain).
+
+### Secp256k1 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getPrivkey` method. The method returns an
+EVM compatible private key which can be used to sign transactions on EVM compatible chains.
+
+```dart
+final privateKey = await Web3AuthFlutter.getPrivKey();
+```
+
+### Ed25519 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getEd25519PrivKey` method. This private key
+can be used to sign transactions on Solana.
+
+```dart
+final privateKey = await Web3AuthFlutter.getEd25519PrivKey();
+```
+
+## Retrive User Information
+
+You can use the `getUserInfo` method to retrieve various details about the user, such as their login
+type, whether multi-factor authentication (MFA) is enabled, profile image, name, and other relevant
+information.
+
+### Usage
+
+```dart
+final userInfo = Web3AuthFlutter.getUserInfo();
+```
+
+### UserInfo Response
+
+<FlutterResponse />
+
+## Session Management
+
+The Session Management feature allows you to check the existing sessions with Web3Auth. The SDK will
+allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 30 days, or
+until the user logout or session data is cleared.
+
+The `Web3AuthOptions` initialization accepts a `sessionTime` parameter.
+
+### Usage
+
+```dart
+late final Uri redirectUrl;
+
+if (Platform.isAndroid) {
+  redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+  // w3a://com.example.w3aflutter/auth
+} else {
+  redirectUrl = Uri.parse('{bundleId}://auth');
+  // com.example.w3aflutter://auth
+}
+
+
+await Web3AuthFlutter.init(Web3AuthOptions(
+  clientId: "WEB3AUTH_CLIENT_ID",
+  network: Network.sapphire_mainnet,
+  redirectUrl: redirectUrl,
+  sessionTime: 172800 // 2 Days
+));
+```
+
 ## Logging out a user
 
-### `logout()`
+To logout the user and remove the session id from the device you can use the `logout` method. The
+user will need to login again to use the dApp next time the dApp is opened.
 
-This method will logout the user and remove the session id from the device. The user will need to
-login again to use the dApp next time the dApp is opened.
+### Usage
 
 ```dart
 await Web3AuthFlutter.logout();
 ```
 
-:::tip sample-app
-
-Get started with a sample app found
-[here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK).
-
-:::
-
 ## Enable MFA for a user
 
 <EnableMFAMethod />
-
-## Triggering Login exceptions
-
-The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. For iOS, you
-don't need this method to trigger the login exceptions. The Android SDK uses the custom tabs and
-from current implementation of chrome custom tab, it's not possible to add a listener directly to
-chrome custom tab close button and trigger login exceptions.
-
-Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
-exceptions.
-
-### Usage
-
-```dart
-class LoginScreen extends State<T> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    // highlight-next-line
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // highlight-next-line
-    WidgetsBinding.instance.removeObserver(this);
-  }
-
-  // focus-start
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    // This is important to trigger the user cancellation on Android.
-    if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setCustomTabsClosed();
-    }
-  }
-  // focus-end
-
-   @override
-  Widget build(BuildContext context) {
-    // Your UI code
-  }
-
-  Future<void> _login() async {
-    try {
-      await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
-    } on UserCancelledException {
-        log("User cancelled.");
-    } on UnKnownException {
-        log("Unknown exception occurred");
-    } catch (e) {
-        log(e.toString());
-    }
-  }
-}
-```
 
 ## Launch Wallet Services
 
@@ -490,15 +485,15 @@ available for EVM chains.
 
 :::note
 
-Access to Wallet Services is gated. You can use this feature in the development environment for
-free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
-production environment is the **Scale Plan**.
+Access to Wallet Services is gated. You can use this feature in `sapphire_devnet` for free. The
+minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a production
+environment is the **Scale Plan**.
 
 :::
 
-### Arguments
+![Wallet Services](/images/mobile-wallet-services.png)
 
-`ChainConfig`
+### Arguments
 
 <Tabs
   defaultValue="table"
@@ -598,6 +593,8 @@ Please check the list of
 [JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
 method currently supports only the signing methods.
 
+![Request Method](/images/mobile-request-method.png)
+
 ### Arguments
 
 | Arguments       | Description                                                                                                                                                                                            |
@@ -618,7 +615,7 @@ try {
   params.add("<User Address in Hex>");
 
   // focus-start
-  await Web3AuthFlutter.request(
+  final response = await Web3AuthFlutter.request(
     ChainConfig(
       chainId: "0x1",
       rpcTarget: "https://mainnet.infura.io/v3/$key",
@@ -626,14 +623,12 @@ try {
     "personal_sign",
     params,
   );
+
+  log(response.toString());
   // focus-end
 } on UserCancelledException {
   log("User cancelled.");
 } catch(e) {
   log("Unknown exception occurred");
 }
-
-// highlight-next-line
-final signResponse = await Web3AuthFlutter.getSignResponse();
-log(signResponse.toString())
 ```

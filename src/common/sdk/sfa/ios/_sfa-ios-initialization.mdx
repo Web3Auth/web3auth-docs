@@ -1,0 +1,22 @@
+The `initialize` method is responsible for authorizing the existing sessions, and initializing the
+SDK. If the existing session is not valid, it'll throw an error.
+
+```swift
+import SingleFactorAuth
+
+let options = Web3AuthOptions(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: .SAPPHIRE_MAINNET,
+  // Sets a session for 2 days, takes the input
+  // in seconds.
+  sessionTime: 172800
+)
+
+do {
+  let singleFactoreAuth = try SingleFactorAuth(params: options)
+
+  try await singleFactoreAuth.initialize()
+} catch {
+  // Handle error
+}
+```

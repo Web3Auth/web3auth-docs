@@ -43,7 +43,12 @@ export const tileGroupsData = [
         icon: "logo-binance.png",
         path: "./connect-blockchain/bnb",
       },
-
+      {
+        key: "bitkub",
+        title: "BitKub",
+        icon: "logo-bitkub.png",
+        path: "./connect-blockchain/bitkub",
+      },
       {
         key: "avalanche",
         title: "Avalanche",
@@ -146,6 +151,12 @@ export const tileGroupsData = [
         title: "Flare",
         icon: "logo-flare.png",
         path: "./connect-blockchain/flare",
+      },
+      {
+        key: "flow",
+        title: "Flow",
+        icon: "logo-flow.png",
+        path: "./connect-blockchain/flow",
       },
       {
         key: "songbird",

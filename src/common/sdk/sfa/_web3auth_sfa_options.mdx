@@ -1,0 +1,112 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                     | Description                                                                                                                                                    |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`                    | Client id for web3auth. You can obtain your client ID from the web3auth developer dashboard. You can set any random string for this on localhost.              |
+| `web3AuthNetwork`             | Web3Auth Network to use for login. The default value is `mainnet`.                                                                                             |
+| `privateKeyProvider`          | Private key provider for your chain namespace.                                                                                                                 |
+| `accountAbstractionProvider?` | Account abstraction provider for your preferred chain and provider.                                                                                            |
+| `enableLogging?`              | Setting to true will enable logs. The default value is `false`.                                                                                                |
+| `usePnPKey?`                  | Setting this to true returns the same key as web SDK (i.e., plug-n-play key). By default, this SDK returns CoreKitKey.                                         |
+| `sessionTime?`                | How long should a login session last at a minimum in seconds? The default value is `86400` seconds. The max value of sessionTime can be `7 * 86400` (30 days). |
+| `storageKey?`                 | Setting to "local" will persist the social login session across browser tabs. The default value is `local`.                                                    |
+| `storageServerUrl?`           | Specify a custom storage server URL. The default value is `https://session.web3auth.io`.                                                                       |
+| `serverTimeOffset?`           | Specify a custom server time offset. The default value is `0`.                                                                                                 |
+| `mode?`                       | Defines the mode of the SDK. The default value is `web`. You can use `react-native` or `node` for respective platforms.                                        |
+| `storage?`                    | Storage for SFA's local state. The default value is `localStorage`. You need to pass the storage instance for `react-native` mode.                             |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface Web3AuthOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client ID from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
+  /**
+   * Web3Auth Network to use for login
+   * @defaultValue mainnet
+   */
+  web3AuthNetwork?: TORUS_NETWORK_TYPE;
+  /**
+   * setting to true will enable logs
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+  /**
+   * setting this to true returns the same key as web SDK (i.e., plug-n-play key)
+   * By default, this SDK returns CoreKitKey
+   */
+  usePnPKey?: boolean;
+  /**
+   * How long should a login session last at a minimum in seconds
+   *
+   * @defaultValue 86400 seconds
+   * @remarks Max value of sessionTime can be 7 * 86400 (30 days)
+   */
+  sessionTime?: number;
+  /**
+   * setting to "local" will persist social login session across browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local";
+  /**
+   * Specify a custom storage server URL
+   * @defaultValue https://session.web3auth.io
+   */
+  storageServerUrl?: string;
+  /**
+   * Specify a custom server time offset.
+   *
+   * @defaultValue 0
+   */
+  serverTimeOffset?: number;
+
+  /**
+   * Private key provider for your chain namespace
+   */
+  privateKeyProvider: IBaseProvider<string>;
+  /**
+   * Account abstraction provider for your chain namespace
+   */
+  accountAbstractionProvider?: IBaseProvider<IProvider>;
+  /**
+   * Defines the mode of the SDK
+   *
+   * @defaultValue "web"
+   */
+  mode?: SDK_MODE_TYPE;
+  /**
+   *  storage for sfa's local state.
+   *
+   *  - undefined with localStorage
+   *  - "local" with localStorage
+   *  - "session" with sessionStorage
+   *
+   *  For asyncStorage, provide instance of IAsyncStorage.
+   *
+   */
+  storage?: IAsyncStorage | ISecureStore | "session" | "local";
+}
+```
+
+</TabItem>
+
+</Tabs>

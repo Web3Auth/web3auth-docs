@@ -1,0 +1,162 @@
+---
+title: SFA iOS SDK - v8 to v9
+description: "SFA iOS SDK - v8 to v9 | Documentation - Web3Auth"
+sidebar_label: v8 to v9
+---
+
+This migration guide provides steps for upgrading from version v8 to v9 of the SFA iOS SDK. The
+guide outlines significant changes and enhancements.
+
+## Breaking Changes
+
+### Web3AuthNetwork Changes
+
+In v9, we have removed the nested enum and refactored the Web3AuthNetwork. Please checkout the table
+below for the changes.
+
+| Old Value                    | New Value         |
+| ---------------------------- | ----------------- |
+| .sapphire(.SAPPHIRE_MAINNET) | .SAPPHIRE_MAINNET |
+| .sapphire(.SAPPHIRE_DEVNET)  | .SAPPHIRE_DEVNET  |
+| .legacy(.MAINNET)            | .MAINNET          |
+| .legacy(.TESTNET)            | .TESTNET          |
+| .legacy(.CYAN)               | .CYAN             |
+| .legacy(.AQUA)               | .AQUA             |
+
+### SFAParams Changes
+
+In v9, we try to improve the developer experience by renaming the `SFAParams` to `Web3AuthOptions`.
+It has been renamed to align with naming conventions across Web3Auth SDKs. Along with this, we have
+renamed couple of constructor parameters.
+
+- `web3AuthClientId` is renamed to `clientId`.
+- `network` is renamed to `web3AuthNetwork`.
+
+[Checkout Web3AuthOptions for available parameters](/docs/sdk/sfa/sfa-ios/initialize#parameters).
+
+```swift
+// remove-start
+let singleFactorAuthArgs = SFAParams(
+    web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    network: .sapphire(.SAPPHIRE_MAINNET)
+)
+// remove-end
+
+// add-start
+let web3AuthOptions = Web3AuthOptions(
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    web3AuthNetwork: .SAPPHIRE_MAINNET
+)
+// add-end
+
+let singleFactoreAuth = SingleFactorAuth(
+    // remove-next-line
+    params: SFAParams
+    // add-next-line
+    params: web3AuthOptions
+)
+```
+
+### SFAKey is replaced with SessionData
+
+In v9, we removed the `SFAKey` and added the `SessionData` object to return the relveant session
+information like private key, address, user information, and signatures.
+
+```swift
+// remove-next-line
+let sfaKey: SFAKey = try await singleFactoreAuth.connect(loginParams: loginParams)
+// add-next-line
+let sessionData: SessionData = try await singleFactoreAuth.connect(loginParams: loginParams)
+```
+
+### getTorusKey method is now private
+
+The `getTorusKey` method is now private and can no longer be accessible. You can use the `connect`
+method to login user.
+
+```swift
+let loginParams = LoginParams(
+    verifier: "YOUR_VERIFIER_NAME",
+    verifierId: "VERIFIER_ID",
+    idToken: "ID_TOKEN"
+)
+
+// focus-start
+// remove-next-line
+let torusKey: TorusSFAKey = try await singleFactoreAuth.getTorusKey(loginParams: loginParams)
+// add-next-line
+let sessionData: SessionData = try await singleFactoreAuth.connect(loginParams: loginParams)
+// focus-end
+```
+
+### initialize method changes
+
+Starting v9, the `initialize` method will not return any value. To check whether the user already
+has an existing session, please use the `getSessionData` method. The `getSessionData` method will
+return `nil` if the user does not have an existing session.
+
+```swift
+// remove-next-line
+let sfaKey: SFAKey = try await singleFactoreAuth.initialize()
+// add-next-line
+try await singleFactoreAuth.initialize()
+
+// add-start
+let sessionData = singleFactoreAuth.getSessionData()
+if sessionData == nil {
+    // User does not have an existing session
+}
+// add-end
+```
+
+## Additional Features
+
+Apart from the breaking changes, we have added couple of new functions in v9 to improve the
+developer experience.
+
+### logout Method
+
+The `logout` method is added to the SDK to log out the user and clear the session data. Please note,
+that this method only logout the user and invalides the Web3Auth session, and not the OAuth provider
+session.
+
+```swift
+try await singleFactoreAuth.logout()
+```
+
+### getSessionData Method
+
+The `getSessionData` method is added to the SDK to get the session data. You can use this method to
+retrive the session data for an existing session. The method will return `nil` if the user does not
+have an existing session.
+
+#### Usage
+
+```swift
+let sessionData = singleFactoreAuth.getSessionData()
+
+if sessionData == nil {
+    // User does not have an existing session
+}
+```
+
+#### SessionData
+
+The `SessionData` has the following four functions to retrive the relevant session information.
+
+| Function Name      | Description                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `getPrivateKey`    | Retrieves the user's private key.                                         |
+| `getPublicAddress` | Retrieves the user's public address.                                      |
+| `getUserInfo`      | Retrieves the user's information like email, name, verifier id, and more. |
+| `getSignatures`    | Retrieves the node's signatures that are returned for request.            |
+
+### connected Method
+
+The `connected` method can be used to check whether the user is logged in Web3Auth or not. Please
+note, you should call this method after the `initialize` method if you want to check the user's
+connection status for an existing session.
+
+```swift
+let isConnected = singleFactoreAuth.connected()
+```

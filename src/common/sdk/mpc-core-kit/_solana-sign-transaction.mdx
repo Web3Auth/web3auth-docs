@@ -1,0 +1,48 @@
+To sign a Solana transaction, you can use `Transaction` class to get a buffer of the transaction
+data to sign, and add geerated signature to the transaction. The public key must correspond to
+either the fee payer or a signer account in the transaction instructions.
+
+```tsx
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  clusterApiUrl,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
+
+const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+
+const lamportsToSend = 1_000_000;
+const getRecentBlockhash = await this.connection.getLatestBlockhash("confirmed");
+
+const transferTransaction = new Transaction().add(
+  // Self transfer tokens
+  SystemProgram.transfer({
+    fromPubkey: this.publicKey,
+    toPubkey: this.publicKey,
+    lamports: lamportsToSend,
+  }),
+);
+
+transferTransaction.recentBlockhash = getRecentBlockhash.blockhash;
+transferTransaction.feePayer = this.publicKey;
+
+// Sign the serialize message
+const sig = await this.coreKitInstance.sign(transferTransaction.serializeMessage());
+
+// Append the signature to the transaction
+transferTransaction.addSignature(this.publicKey, sig);
+
+// Signature of the transaction in wire format which can be broadcasted on Solana chain.
+const transferTransactionSignature = transferTransaction.serialize();
+```
+
+To broadcast the signed transaction, you can utilize the `Connection.sendRawTransaction` method.
+
+```tsx
+// Returns the hash, for connection and transferTransactionSignature, check above
+// code snippets
+let hash = await connection.sendRawTransaction(transferTransactionSignature);
+```

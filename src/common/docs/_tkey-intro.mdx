@@ -1,17 +1,31 @@
-import Image1 from "@site/static/images/tkey-flow.png";
+import TkeyFlowDark from "@site/static/images/tkey-flow-dark.png";
+import TkeyFlowLight from "@site/static/images/tkey-flow-light.png";
 
-'tKey' is an abbreviation for Threshold Key, which is responsible for the management of wallet shares produced using threshold cryptography. The tKey
-SDK manages wallets by generating shares via Shamir's Secret Sharing scheme.
+'tKey' is an abbreviation for Threshold Key, which is responsible for the management of wallet
+shares produced using threshold cryptography. The tKey SDK manages wallets by generating shares via
+Shamir's Secret Sharing scheme.
 
-In a typical 2 out of 3 (2/3) setup, the user is provided with three shares: ShareA, ShareB, and ShareC.
+In a typical 2 out of 3 (2/3) setup, the user is provided with three shares: ShareA, ShareB, and
+ShareC.
 
-- **ShareA** is managed and divided across Web3Auth's Auth Network and can be accessed through an OAuth login provider owned by the user, like their
-  Google account.
-- **ShareB** is stored on the user's device. The method of storage is specific to the device and system. For instance, on mobile devices, the share
-  could be stored in device storage that's secured with biometrics.
-- **ShareC** serves as a recovery share. It's an extra share that the user can keep on a separate device, download, or base on user input with
-  sufficient entropy. This could include a password, security questions, or a hardware device, among other options.
+- **ShareA** is managed and divided across Web3Auth's Auth Network and can be accessed through an
+  OAuth login provider owned by the user, like their Google account.
+- **ShareB** is stored on the user's device. The method of storage is specific to the device and
+  system. For instance, on mobile devices, the share could be stored in device storage that's
+  secured with biometrics.
+- **ShareC** serves as a recovery share. It's an extra share that the user can keep on a separate
+  device, download, or base on user input with sufficient entropy. This could include a password,
+  security questions, or a hardware device, among other options.
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} alt="Web3Auth's Private Key - Key Reconstruction" />
+<picture>
+  <source srcset={TkeyFlowLight} media="(prefers-color-scheme: light)" />
+  <source srcset={TkeyFlowDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={TkeyFlowLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
-Like existing 2FA systems, users must prove ownership of at least 2 out of 3 (2/3) shares to retrieve their private key.
+Like existing 2FA systems, users must prove ownership of at least 2 out of 3 (2/3) shares to
+retrieve their private key.

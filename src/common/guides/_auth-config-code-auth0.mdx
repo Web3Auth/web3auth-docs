@@ -1,0 +1,22 @@
+```tsx
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    clientId: "YOUR-WEB3AUTH-CLIENT-ID", //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    uxMode: "popup",
+    loginConfig: {
+      jwt: {
+        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
+        typeOfLogin: "jwt",
+        clientId: "YOUR-AUTH0-CLIENT-ID-FROM-AUTH0-DASHBOARD",
+      },
+    },
+  },
+  privateKeyProvider,
+});
+
+web3auth.configureAdapter(authAdapter);
+```

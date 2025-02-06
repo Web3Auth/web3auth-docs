@@ -1,41 +1,24 @@
-export const pnpWebVersion = `8.12.x`;
-export const pnpAndroidVersion = `8.0.1`;
-export const pnpIOSVersion = `9.0.0`;
+export const pnpWebVersion = `9.3.x`;
+export const pnpAndroidVersion = `9.0.4`;
+export const pnpIOSVersion = `11.0.4`;
 export const pnpRNVersion = `7.0.x`;
-export const pnpFlutterVersion = `5.0.3`;
-export const pnpUnityVersion = `2.1.x`;
+export const pnpFlutterVersion = `6.1.1`;
+export const pnpUnityVersion = `5.x.x`;
 export const pnpUnrealVersion = `4.1.x`;
 
-export const sfaWebVersion = `8.0.x`;
-export const sfaAndroidVersion = `0.0.6`;
-export const sfaIOSVersion = `6.0.0`;
+export const sfaWebVersion = `9.2.x`;
+export const sfaAndroidVersion = `3.0.1`;
+export const sfaIOSVersion = `9.0.4`;
 export const sfaRNVersion = `2.0.x`;
-export const sfaFlutterVersion = `4.1.0`;
+export const sfaFlutterVersion = `5.3.0`;
 export const sfaNodeJSVersion = `7.4.x`;
-export const tkeyJSVersion = `12.x.x`;
+export const tkeyJSVersion = `15.x.x`;
 export const tkeyAndroidVersion = `0.0.5`;
 export const tkeyIOSVersion = `0.0.4`;
-export const mpcCoreKitVersion = `3.1.1`;
+export const mpcCoreKitJSVersion = `3.4.x`;
+export const mpcCoreKitReactNativeVersion = `1.0.0`;
 
-import {
-  web,
-  android,
-  ios,
-  reactnative,
-  flutter,
-  unity,
-  unreal,
-  corekitnodejs,
-  mpccorekit,
-  singlefactorauth,
-  singlefactorauthandroid,
-  singlefactorauthflutter,
-  singlefactorauthios,
-  singlefactorauthrn,
-  tkeyandroid,
-  tkeyios,
-  tkeyjs,
-} from "./SDKOptions";
+import { web, android, ios, js, reactnative, flutter, unity, unreal } from "./SDKOptions";
 
 export function getPnPVersion(platform: string) {
   if (platform === web) {
@@ -61,35 +44,26 @@ export function getPnPVersion(platform: string) {
   }
 }
 
-export function getCoreKitVersion(sdk: string) {
-  if (sdk === tkeyjs) {
-    return tkeyJSVersion;
-  }
-  if (sdk === mpccorekit) {
-    return mpcCoreKitVersion;
-  }
-  if (sdk === tkeyandroid) {
-    return tkeyAndroidVersion;
-  }
-  if (sdk === tkeyios) {
-    return tkeyIOSVersion;
-  }
-  if (sdk === singlefactorauth) {
+export function getSFAVersion(platform: string) {
+  if (platform === js) {
     return sfaWebVersion;
   }
-  if (sdk === corekitnodejs) {
-    return sfaNodeJSVersion;
-  }
-  if (sdk === singlefactorauthandroid) {
+  if (platform === android) {
     return sfaAndroidVersion;
   }
-  if (sdk === singlefactorauthios) {
+  if (platform === ios) {
     return sfaIOSVersion;
   }
-  if (sdk === singlefactorauthrn) {
-    return sfaRNVersion;
-  }
-  if (sdk === singlefactorauthflutter) {
+  if (platform === flutter) {
     return sfaFlutterVersion;
+  }
+}
+
+export function getMPCCoreKitVersion(platform: string) {
+  if (platform === js) {
+    return mpcCoreKitJSVersion;
+  }
+  if (platform === reactnative) {
+    return mpcCoreKitReactNativeVersion;
   }
 }

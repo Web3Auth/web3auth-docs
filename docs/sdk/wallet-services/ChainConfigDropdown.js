@@ -20,8 +20,8 @@ const chainConfigs = {
     displayName: "Polygon",
     logo: "polygon.svg",
     rpcTarget: "ENTER YOUR RPC URL HERE",
-    ticker: "MATIC",
-    tickerName: "Matic Network Token",
+    ticker: "POL",
+    tickerName: "Polygon Ecosystem Token",
   },
   BinanceSmartChain: {
     chainNamespace: "EIP155",
@@ -120,8 +120,8 @@ const chainConfigs = {
     displayName: "Polygon Amoy",
     logo: "polygon.svg",
     rpcTarget: "ENTER YOUR RPC URL HERE",
-    ticker: "MATIC",
-    tickerName: "Matic Network Token",
+    ticker: "POL",
+    tickerName: "Polygon Ecosystem Token",
     isTestnet: true,
   },
   BinanceSmartChainTestnet: {

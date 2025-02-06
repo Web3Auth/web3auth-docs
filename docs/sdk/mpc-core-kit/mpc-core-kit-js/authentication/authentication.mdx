@@ -1,0 +1,114 @@
+---
+title: "Web3Auth MPC Core Kit JS SDK - Authentication"
+
+sidebar_label: "Overview"
+description: "Web3Auth MPC Core Kit JS SDK - Authentication | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+There are two ways to login your users, depending on the type of authentication method you've
+chosen. If you are looking for an Authentication Flow in your application like
+[Single Page Application(SPA)](https://www.oauth.com/oauth2-servers/single-page-apps/) flow, you can
+use the `loginWithOAuth` method.
+
+If you are looking to pass a JWT-based IdToken to the SDK from your application, like
+[Regular Web Application(RWA)](https://www.oauth.com/oauth2-servers/server-side-apps/) Flow or even
+using your own JWT provider, you can use the `loginWithJWT` method.
+
+As a prerequisite, before triggering the login function, you need to create a verifier for your
+login method on the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+## Creating a Verifier
+
+Since this is a Core Kit SDK, it does not provide any default authentication methods. You need to
+create a custom verifier to use this SDK. This means that you need to authenticate users with your
+own custom authentication service.
+
+For example, while authenticating with Google, you have to use your own Google Client ID setup to
+authenticate users directly or use auth provider services like Auth0, Firebase, AWS Cognito etc.
+Additionally, you can make your own JWT token authentication system and pass over the ID Token to
+Web3Auth.
+
+[Learn how to create a verifier](/auth-provider-setup/verifiers).
+
+![Create a Verifier](/images/dashboard/create-verifier.gif)
+
+## Login Methods
+
+As discussed earlier, there are two login methods available in the SDK tailored to your use case.
+
+- [Login with OAuth](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth): You can use this
+  method the implicit login flow, where you don't need to manually handle the authentication and get
+  the JWT token.
+
+- [Login with JWT](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt): You can use this
+  method to manually handle the authentication, and send the JWT token to Web3Auth. This method
+  allows you to bring your own authentication flow.
+
+:::tip Recommended
+
+For faster login speeds, we recommend using the
+[Login with JWT](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt) method.
+
+:::
+
+## Backend verification
+
+To verify the user in the backend, you can retrieve the user's signature from frontend, and validate
+it using the `SignatureValidator` from the
+[@toruslabs/signature-validator](https://www.npmjs.com/package/@toruslabs/signature-validator)
+package in the backend.
+
+### Retrieve user's signature
+
+To retrieve user's signature you can use the `signatures` getter from `Web3AuthMPCCoreKit`.
+
+```tsx
+const signatures = coreKitInstance.signatures;
+
+// Send these signatures to backend through an API
+```
+
+### Verify the signatures in backend
+
+For verification you'll need to install couple of packages,
+[@toruslabs/signature-validator](https://www.npmjs.com/package/@toruslabs/signature-validator) and
+[@toruslabs/fnd-base](https://www.npmjs.com/package/@toruslabs/fnd-base), and use
+`SignatureValidator` to validate the signatures.
+
+```js
+const { fetchLocalConfig } = require("@toruslabs/fnd-base");
+const { SignatureValidator } = require("@toruslabs/signature-validator");
+
+// Here network can be "sapphire_mainnet" or "sapphire_testnet", since MPC doesn't support
+// legacy networks.
+const network = "sapphire_mainnet";
+
+// Fetch the node details
+const nodeDetails = fetchLocalConfig(network, "secp256k1");
+
+const nodePubX = [];
+const nodePubY = [];
+
+nodeDetails.torusNodePub.forEach((key) => {
+  nodePubX.push(key.X);
+  nodePubY.push(key.Y);
+});
+
+// Create the SignatureValidator object
+const sigValidator = new SignatureValidator({
+  nodePubKeyX: nodePubX.join(","),
+  nodePubKeyY: nodePubY.join(","),
+});
+
+// Get the signatures from the frontend & validate the signatures
+const result = sigValidator.authenticate(signatures, { skipExpValidation: false });
+
+if (!result) {
+  // Handle invalid singature
+}
+
+// Handle the valid signature
+```

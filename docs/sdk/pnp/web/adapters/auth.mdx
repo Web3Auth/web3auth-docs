@@ -1,0 +1,631 @@
+---
+title: Auth Adapter for Social Logins
+sidebar_label: Auth (Social Logins)
+description:
+  "Web3Auth PnP Web Adapter SDKs - Auth Adapter for Social Logins | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
+import AuthOptions from "@site/src/common/sdk/pnp/web/_auth-options.mdx";
+import LoginSettings from "@site/src/common/sdk/pnp/web/_auth-login-params.mdx";
+import AuthWhiteLabelConfig from "@site/src/common/sdk/pnp/web/_auth-whitelabel-config.mdx";
+import AuthWhiteLabelExample from "@site/src/common/sdk/pnp/web/_auth-whitelabel-example.mdx";
+import LoginConfig from "@site/src/common/sdk/pnp/web/_login-config.mdx";
+import ConnectTo from "@site/src/common/sdk/pnp/web/_connect-to.mdx";
+import ExtraLoginOptions from "@site/src/common/sdk/pnp/web/_extra-login-options.mdx";
+import CustomAuthenticationCoreExample from "@site/src/common/sdk/pnp/web/_custom-authentication-core-example.mdx";
+import CustomAuthenticationWeb3AuthExample from "@site/src/common/sdk/pnp/web/_custom-authentication-web3auth-example.mdx";
+import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.mdx";
+import MFAMinimumPlan from "@site/src/common/docs/_mfa_minimum_plan.mdx";
+
+## [`@web3auth/auth-adapter`](https://npmjs.com/package/@web3auth/auth-adapter)
+
+The default adapter of Web3Auth is the `auth-adapter`. This adapter is a wrapper around the
+[`auth`](https://www.npmjs.com/package/@web3auth/auth) library from Web3Auth (previously Torus) and
+enables the main social login features of Web3Auth. By default, Web3Auth has certain configuration
+set to enable a quick integration, however, for customising features, like Whitelabel, Custom
+Authentication, etc. you need to customise the Auth Adapter. With the Auth Adapter package installed
+and instantiated, you can explore a number of options and can customise the login experience of the
+user as per your needs.
+
+## Basic Details
+
+#### Adapter Name: `auth`
+
+#### Package Name: [`@web3auth/auth-adapter`](https://npmjs.com/package/@web3auth/auth-adapter)
+
+#### Default: `YES`
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/auth-adapter
+```
+
+## Instantiation
+
+#### Import the `AuthAdapter` class from `@web3auth/auth-adapter`
+
+```tsx
+import { AuthAdapter } from "@web3auth/auth-adapter";
+```
+
+#### Assign the `AuthAdapter` class to a variable
+
+```tsx
+const authAdapter = new AuthAdapter(AuthAdapterOptions);
+```
+
+This AuthAdapter constructor takes an object with `AuthAdapterOptions` as input.
+
+## Arguments
+
+#### `AuthAdapterOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter             | type                                  |
+| --------------------- | ------------------------------------- |
+| `adapterSettings?`    | [authOptions](#auth-adapter-settings) |
+| `loginSettings?`      | [LoginSettings](#loginsettings)       |
+| `privateKeyProvider?` | [PrivateKeyProvider](#loginsettings)  |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface AuthAdapterOptions extends BaseAdapterSettings {
+  adapterSettings?: MakeOptional<AuthOptions, "clientId" | "network">;
+  loginSettings?: LoginSettings;
+  privateKeyProvider?: PrivateKeyProvider;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Auth Adapter Settings
+
+#### `adapterSettings`
+
+<AuthOptions />
+
+### Login Settings
+
+#### `loginSettings`
+
+:::warning
+
+While you can pass your `chainConfig` to `AuthAdapter`, it is not required for `web3auth/no-modal`
+ie. The Web3Auth Plug and Play No Modal package, since you can directly pass `loginParams` over to
+the `connectTo` function.
+
+Either way, both of these methods will work the same. Please note that the `connectTo` function
+params will override the `AuthAdapter` settings.
+
+Read more about how to pass `loginParams` to `connectTo` in its respective section:
+[`web3auth/no-modal`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
+
+:::
+
+<LoginSettings />
+
+## Multi-Factor Authentication
+
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an
+extra layer of protection that verifies your identity when accessing your account. To ensure
+ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your
+Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into
+three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can
+easily recover your account if you lose access to your original device or help log into a new
+device.
+
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the
+MFA screen by setting the `mfaLevel` argument. You can enable or disable a backup factor and change
+their order. Currently, there are four values for `mfaLevel`:
+
+- `default`: presents the MFA screen every third login
+- `optional`: presents the MFA screen on every login, but you can skip it
+- `mandatory`: make it mandatory to set up MFA after login
+- `none`: skips the MFA setup screen
+
+We offer the following backup factors under `mfaSettings`:
+
+<MFAMinimumPlan />
+
+- `deviceShareFactor`,
+- `backUpShareFactor`,
+- `socialBackupFactor`,
+- `passwordFactor`,
+- `authenticatorFactor`, and
+- `passkeysFactor`.
+
+### Example
+
+```tsx
+const authAdapter = new AuthAdapter({
+  loginSettings: {
+    mfaLevel: "optional", // default, optional, mandatory, none
+  },
+  adapterSettings: {
+    // SCALE and above plan only feature
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true,
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: false,
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
+      authenticatorFactor: {
+        enable: true,
+        priority: 5,
+        mandatory: false,
+      },
+      passkeysFactor: {
+        enable: true,
+        priority: 6,
+        mandatory: false,
+      },
+    },
+  },
+});
+```
+
+## Whitelabel
+
+Web3Auth's Social Logins and Email Login run using the Auth Flow. The whole Auth user experience can
+also be whitelabeled using Auth Adapter settings. For this, you need to pass on the `whiteLabel`
+configuration parameter to the `adapterSettings` property of the `auth-adapter`.
+
+<AuthWhiteLabelConfig />
+
+### Example
+
+<AuthWhiteLabelExample />
+
+## Custom Authentication
+
+While instantiating the Auth Adapter, you can pass some configuration objects to the constructor.
+One of these configurations is the `adapterSettings` configuration which enables you to make changes
+in the adapter, enabling you to do things like Whitelabeling and Custom Authentication among other
+things.
+
+#### `loginConfig`
+
+The `loginConfig` parameter of `adapterSettings` in `auth-adapter` contains the following
+properties:
+
+<LoginConfig />
+
+### Custom Authentication within Web3Auth Modal
+
+When we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should
+correspond to the socials mentioned in the modal. This means you can use your own authentication
+services for the following services:
+
+`google` | `facebook` | `twitter` | `reddit` | `discord` | `twitch` | `apple` | `line` | `github` |
+`kakao` | `linkedin` | `weibo` | `wechat` | `passwordless`
+
+:::info
+
+You can customize all or a few of the social logins and others will remain default. You can also
+remove the ones you don't want using the whitelabeling option.
+
+:::
+
+#### Example
+
+<CustomAuthenticationWeb3AuthExample />
+
+### Logging in through your Custom JWT Token
+
+When we are using `@web3auth/no-modal`, ie. Web3Auth Plug and Play No Modal SDK, we have the option
+to use the `connectTo` function, which enables you to customize the login process according to the
+parameters you have for your custom authentication service.
+
+<ConnectTo />
+
+:::tip
+
+Know more about the `connectTo` function in the
+[`Usage SDK Reference`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
+
+:::
+
+Further, to enable Custom Authentication, the `loginParams` parameter takes in another object called
+`extraLoginOptions` which contains the following properties:
+
+<ExtraLoginOptions />
+
+#### Example
+
+<CustomAuthenticationCoreExample />
+<ConnectToExample />
+
+## Initialization
+
+Finally, once all the configurations are set, you need to initialize the Auth Adapter.
+
+```tsx
+web3auth.configureAdapter(authAdapter);
+```
+
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter
+instance. This function takes the below-mentioned parameters as well as
+
+<b>[Auth Adapter Settings](#auth-adapter-settings)</b>.
+
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+`AuthOptions`
+
+| Parameter               | type                       | description                                                                                                                                                        |
+| ----------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `clientId`              | `string`                   | Your projectId/clientId from the [dashboard](https://dashboard.web3auth.io)                                                                                        |
+| `network`               | `WEB3AUTH_NETWORK_TYPE`    | Network specifies the web3auth network to be used.                                                                                                                 |
+| `buildEnv?`             | `BUILD_ENV_TYPE`           | This parameter will be used to change the build environment of auth sdk.                                                                                           |
+| `redirectUrl?`          | `string`                   | redirectUrl is the dapp's url where user will be redirected after login. Register this url at "https://dashboard.web3auth.io" else initialization will give error. |
+| `uxMode?`               | `UX_MODE_TYPE`             | Either of the two `uxMode` values: `popup` or `redirect`. Use of `REDIRECT` mode is recommended in browsers where popups might get blocked.                        |
+| `replaceUrlOnRedirect?` | `boolean`                  | `replaceUrlOnRedirect` removes the params from the redirected url after login                                                                                      |
+| `originData?`           | `OriginData`               | `originData` contains a signature of dapp's origin url which is generated using project's secret.                                                                  |
+| `loginConfig?`          | `LoginConfig`              | `loginConfig` is key value map where each key should be a valid loginProvider and value should be custom configuration for that loginProvider.                     |
+| `webauthnTransports?`   | `AuthenticatorTransport[]` | `webauthnTransports` enables you to configure the transport type user can use for saving their share.                                                              |
+| `whiteLabel?`           | `WhiteLabelData`           | `whiteLabel` is for whitelabling default auth modal.                                                                                                               |
+| `storageServerUrl?`     | `string`                   | `storageServerUrl` specifies a custom storage server url                                                                                                           |
+| `storageKey?`           | `"session" \| "local"`     | `storageKey` setting to `local` will persist social login session across browser tabs.                                                                             |
+| `sessionTime?`          | `number`                   | How long should a login session last at a minimum in seconds. Maximum value of sessionTime can be 7 \* 86400 (30 days)                                             |
+| `mfaSettings?`          | `MfaSettings`              | This parameter will be used to enable mfa factors and set priority on UI listing.                                                                                  |
+| `useMpc?`               | `boolean`                  | This parameter will be used to use auth mpc                                                                                                                        |
+| `useCoreKitKey?`        | `boolean`                  | This parameter will be used to select core kit key.                                                                                                                |
+
+`BaseAdapterSettings`
+
+| Parameter         | type                    |
+| ----------------- | ----------------------- |
+| `clientId`        | `string`                |
+| `sessionTime`     | `number`                |
+| `chainConfig`     | `CustomChainConfig`     |
+| `web3AuthNetwork` | `WEB3AUTH_NETWORK_TYPE` |
+| `useCoreKitKey`   | `boolean`               |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+setAdapterSettings(adapterSettings: Partial<AuthOptions & BaseAdapterSettings> & {
+        privateKeyProvider?: PrivateKeyProvider;
+}): void;
+
+export type PrivateKeyProvider = IBaseProvider<string>;
+
+export type AuthOptions = {
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   */
+  clientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  network: WEB3AUTH_NETWORK_TYPE;
+  /**
+   * This parameter will be used to change the build environment of auth sdk.
+   * @defaultValue production
+   */
+  buildEnv?: BUILD_ENV_TYPE;
+  /**
+   * redirectUrl is the dapp's url where user will be redirected after login.
+   *
+   * @remarks
+   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * else initialization will give error.
+   */
+  redirectUrl?: string;
+  /**
+   * two uxModes are supported:-
+   * - `'POPUP'`: In this uxMode, a popup will be shown to user for login.
+   * - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.
+   *
+   * @defaultValue `'POPUP'`
+   * @remarks
+   *
+   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
+   */
+  uxMode?: UX_MODE_TYPE;
+  /**
+   * replaceUrlOnRedirect removes the params from the redirected url after login
+   *
+   * @defaultValue true
+   */
+  replaceUrlOnRedirect?: boolean;
+  /**
+   * originData is used to verify the origin of dapp by iframe.
+   *
+   * @internal
+   * @remarks
+   * You don't have to pass originData explicitly if you have registered your dapp at
+   * {@link "https://dashboard.web3auth.io"| developer dashboard}.
+   *
+   * originData contains a signature of dapp's origin url which is generated using
+   * project's secret.
+   */
+  originData?: OriginData;
+  /**
+   * loginConfig enables you to pass your own login verifiers configuration for various
+   * loginProviders.
+   *
+   * loginConfig is key value map where each key should be a valid loginProvider and value
+   * should be custom configuration for that loginProvider
+   *
+   * @remarks
+   * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * to use here.
+   *
+   */
+  loginConfig?: LoginConfig;
+  /**
+   * webauthnTransport enables you to configure the transport type user can use
+   * for saving their share.
+   *
+   * @defaultValue ["internal"]
+   *
+   * @remarks
+   * This is only available for v1 users.
+   */
+  webauthnTransports?: AuthenticatorTransport[];
+  /**
+   * sdkUrl is for internal development use only and is used to override the
+   * `network` parameter.
+   * @internal
+   */
+  sdkUrl?: string;
+  /**
+   * dashboardUrl is for internal development use only and is used to override the
+   * `buildEnv` parameter.
+   * @internal
+   */
+  dashboardUrl?: string;
+  /**
+   * options for whitelabling default auth modal.
+   */
+  whiteLabel?: WhiteLabelData;
+  /**
+   * Specify a custom storage server url
+   * @defaultValue https://session.web3auth.io
+   * @internal
+   */
+  storageServerUrl?: string;
+  /**
+   * setting to "local" will persist social login session across browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local";
+  /**
+   * How long should a login session last at a minimum in seconds
+   *
+   * @defaultValue 86400 seconds
+   * @remarks Max value of sessionTime can be 7 * 86400 (30 days)
+   */
+  sessionTime?: number;
+  /**
+   * This option is for internal use only in torus wallet and has no effect
+   * on user's login on other dapps.
+   * @internal
+   */
+  sessionNamespace?: string;
+  /**
+   * This parameter will be used to enable mfa factors and set priority on UI listing.
+   * List of factors available
+   * backUpShareFactor | socialFactor | passwordFactor | authenticatorFactor
+   * @defaultValue false
+   */
+  mfaSettings?: MfaSettings;
+  /**
+   * This parameter will be used to use auth mpc
+   * @defaultValue false
+   */
+  useMpc?: boolean;
+  /**
+   * This parameter will be used to select core kit key.
+   * @defaultValue false
+   */
+  useCoreKitKey?: boolean;
+};
+
+export interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
+  useCoreKitKey?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Example
+
+### `@web3auth/modal`
+
+```tsx
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    uxMode: "redirect", // "redirect" | "popup"
+    whiteLabel: {
+      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
+      mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
+    },
+    // SCALE and above plan only feature
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true,
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: false,
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
+    },
+    loginConfig: {
+      // Add login configs corresponding to the providers on modal
+      // Google login
+      google: {
+        verifier: "YOUR_GOOGLE_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
+        clientId: "GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
+      },
+      // Facebook login
+      facebook: {
+        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
+        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
+      },
+      // Add other login providers here
+    },
+  },
+  loginSettings: {
+    mfaLevel: "mandatory",
+  },
+});
+web3auth.configureAdapter(authAdapter);
+
+// You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+authAdapter.setAdapterSettings({
+  web3AuthNetwork: "sapphire_mainnet",
+  sessionTime: 3600, // 1 hour in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  clientId,
+  redirectUrl: "http://localhost:3000",
+});
+```
+
+### `web3auth/no-modal`
+
+```tsx
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    network: "sapphire_mainnet",
+    uxMode: "popup",
+    whiteLabel: {
+      appName: "W3A Heroes",
+      appUrl: "https://web3auth.io",
+      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
+      mode: "auto", // whether to enable dark mode. defaultValue: false
+      theme: {
+        primary: "#768729",
+      },
+      useLogoLoader: true,
+    },
+    // SCALE and above plan only feature
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true,
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: false,
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
+    },
+    loginConfig: {
+      jwt: {
+        verifier: "web3auth-auth0-demo",
+        typeOfLogin: "jwt",
+        clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+      },
+    },
+  },
+});
+web3auth.configureAdapter(authAdapter);
+
+// You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+authAdapter.setAdapterSettings({
+  web3AuthNetwork: "sapphire_mainnet",
+  sessionTime: 3600, // 1 hour in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  clientId,
+  redirectUrl: "http://localhost:3000",
+});
+```

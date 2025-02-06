@@ -1,0 +1,65 @@
+---
+title: SFA iOS SDK - v7 to v8
+description: "SFA iOS SDK - v7 to v8 | Documentation - Web3Auth"
+sidebar_label: v7 to v8
+---
+
+This migration guide provides steps for upgrading from version v7 to v8 of the SFA iOS SDK. The
+guide outlines significant changes and enhancements.
+
+## Breaking Changes
+
+### Changes in SingleFactorAuth Constructor
+
+In v8, we try to improve the developer experience by renaming the parameter and
+`SingleFactorAuthArgs` class, and introducing a new parameter for session management.
+
+- `singleFactorAuthArgs` used to initialize the SingleFactorAuth SDK has been renamed to
+  `sfaParams`. It has been renamed to align the naming conventions across Web3Auth SDKs.
+
+#### SingleFactorAuthArgs Changes
+
+- `SingleFactorAuthArgs` is now renamed to `SFAParams`. It has been renamed to align with naming
+  conventions across Web3Auth SDKs.
+- `sessionTime` was added to specify session duration in seconds. By default, the value is set to
+  86400 seconds (1 day), with a maximum session duration of up to 30 days
+
+```swift
+// remove-next-line
+let arguments = SingleFactorAuthArgs(
+// add-next-line
+let singleFactorAuthArgs = SFAParams(
+    web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    network: .sapphire(.SAPPHIRE_MAINNET)
+)
+
+// remove-next-line
+let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+// add-next-line
+let singleFactoreAuth = SingleFactorAuth(params: SFAParams)
+```
+
+### TorusSFAKey is renamed to SFAKey
+
+In v8, the `TorusSFAKey` is now removed. Developers can now use `SFAKey` to access the private key
+and address for the account. It was renamed to maintain consistency across SDKs.
+
+### `getKey` method is renamed to `connect`
+
+In v8, the `getKey` method is renamed to `connect`. This change was done to improve the developer
+experience and align with other Web3Auth SFA SDKs.
+
+```swift
+let loginParams = LoginParams(
+    verifier: "YOUR_VERIFIER_NAME",
+    verifierId: "VERIFIER_ID",
+    idToken: "ID_TOKEN"
+)
+
+// focus-start
+// remove-next-line
+let torusKey: TorusSFAKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
+// add-next-line
+let sfaKey: SFAKey = try await singleFactoreAuth.connect(loginParams: loginParams)
+// focus-end
+```

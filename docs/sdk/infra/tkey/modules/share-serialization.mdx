@@ -1,0 +1,81 @@
+---
+title: Share Serialization Module - tKey JS SDK
+sidebar_label: Share Serialization
+description: "Core Kit tKey SDK - Modules -  Share Serialization | Documentation - Web3Auth"
+---
+
+#### [`@tkey/share-serialization`](https://npmjs.com/package/@tkey/share-serialization)
+
+The Share Serialization Module helps you serialize the share so you can import/ export a share from
+`tKey`.
+
+## Installation
+
+```bash npm2yarn
+npm install --save @tkey/share-serialization
+```
+
+## Initialization
+
+```tsx
+import { ShareSerializationModule } from "@tkey/share-serialization";
+const shareSerializationModule = new ShareSerializationModule();
+```
+
+## Usage
+
+With the `ShareSerializationModule`, you have access to the multiple functions as mentioned in the
+type reference, however, the most important ones are:
+
+### Serialize a Share
+
+`serialize(share: BN, type: string): Promise<unknown>;`
+
+#### Return
+
+- `Promise<unknown>`: The serialized share.
+
+#### Example
+
+```tsx
+const generateShareResult = await tKeyInstance.generateNewShare();
+const share = await tKeyInstance.outputShareStore(generateShareResult.newShareIndex).share.share;
+const mnemonic = await(
+  tKeyInstance.modules.shareSerialization as ShareSerializationModule,
+).serialize(share, "mnemonic");
+```
+
+### Deserialize a Share
+
+`deserialize(serializedShare: unknown, type: string): Promise<BN>;`
+
+#### Return
+
+- `Promise<BN>`: The deserialized share.
+
+#### Example
+
+```tsx
+const share = await(
+  tKeyInstance.modules.shareSerialization as ShareSerializationModule,
+).deserialize(mnemonic, "mnemonic");
+await tKeyInstance.inputShare(share);
+```
+
+## Type Reference
+
+### `ShareSerializationModule`
+
+```tsx
+declare class ShareSerializationModule implements IModule {
+  moduleName: string;
+  tbSDK: ITKeyApi;
+  constructor();
+  static serializeMnemonic(share: BN): string;
+  static deserializeMnemonic(share: string): BN;
+  setModuleReferences(tbSDK: ITKeyApi): void;
+  initialize(): Promise<void>;
+  serialize(share: BN, type: string): Promise<unknown>;
+  deserialize(serializedShare: unknown, type: string): Promise<BN>;
+}
+```

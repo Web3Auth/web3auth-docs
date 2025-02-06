@@ -1,0 +1,234 @@
+---
+title: Using tKey JS SDK
+sidebar_label: Usage
+description: "Web3Auth Core Kit tKey JS SDK - Usage | Documentation - Web3Auth"
+---
+
+import SFALoginParams from "@site/src/common/sdk/sfa/_sfa_login_params.mdx";
+import SFASPConnectExample from "@site/src/common/sdk/infra/tkey/_service-provider-sfa-connect-example.mdx";
+import ThresholdKey from "@site/src/common/sdk/infra/tkey/_threshold-key.mdx";
+import TkeyInitParams from "@site/src/common/sdk/infra/tkey/_tkey-init-params.mdx";
+import TkeyKeyDetailsReturn from "@site/src/common/sdk/infra/tkey/_tkey-key-details-return.mdx";
+
+Once you've installed all packages, and instantiated tKey instance in your constructor, you can use
+it to authenticate your users and generate their tKey shares. Further, you can use a variety of
+functions exposed by the tKey SDK and its modules to manage different aspects of your users'
+authentication needs.
+
+We'll be talking in-depth about the following operations:
+
+- [Logging in the User](#log-in)
+- [Getting tKey Details](#get-tkey-details)
+- [Reconstructing User's Private Key](#reconstruct-private-key)
+- [Generating a new Share](#generate-a-new-share)
+- [Deleting a Share](#delete-a-share)
+- [Using Modules for Further Operations](#using-modules)
+- [Making Blockchain Calls](#making-blockchain-calls)
+
+<ThresholdKey />
+
+## Log In
+
+The login with the tKey SDK is a 3-step process.
+
+1. Login using your desired login provider and get their OAuth Id Token
+2. Use the OAuth ID Token to connect to the Web3Auth Service Provider to generate the OAuth Key
+3. Once the OAuth Key is generated, initialize the tKey Instance
+
+However, before starting this process, you need to set up Custom Authentication on your Web3Auth
+Dashboard. For this, you need to [Create a Verifier](/auth-provider-setup/verifiers) within the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Auth Provider Setup Documentation](/auth-provider-setup).
+
+:::
+
+### Login using OAuth
+
+You can choose any OAuth Provider of your choice and login using their standard process. You can
+check out [our examples](https://github.com/tkey/tkey-examples/web) where we have used the most
+common OAuth providers like Google, Auth0, Firebase etc. Additionally, you can checkout our
+documentation around OAuth Provider setup [here](/auth-provider-setup).
+
+:::tip Implicit Auth Flow
+
+If you prefer using an implicit login method with your OAuth Provider, you can do so by using the
+`TorusServiceProvider`. You can check out the
+[additional reading section](/sdk/infra/tkey/implicit-flow) for more information. This provider
+doesn't work in a React Native environment.
+
+:::
+
+### Generating OAuth Key
+
+This setup helps you generate a private key which will be needed by the tKey Instance to generate
+the OAuth Share. This is done by calling the `connect()` function within the `tKey` instance's
+`serviceProvider`.
+
+```tsx
+tKeyInstance.serviceProvider.connect(params: LoginParams): Promise<BN>;
+```
+
+<SFALoginParams />
+
+#### Usage
+
+```tsx
+const OAuthShareKey = await(tKeyInstance.serviceProvider as SfaServiceProvider).connect({
+  verifier,
+  verifierId,
+  idToken,
+});
+```
+
+### Initializing tKey
+
+#### `initialize(params?: TKeyInitArgs)`
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a
+Threshold Key corresponding to your login provider.
+
+#### Parameters
+
+<TkeyInitParams />
+
+### Example
+
+<SFASPConnectExample />
+
+## Get tKey Details
+
+#### `tKey.getKeyDetails()`
+
+The function `getKeyDetails()` returns the details of the keys generated for the specific user. This
+includes the public key X & Y of the user, alongside the shares details and the threshold.
+
+### Sample Key Details Return
+
+<TkeyKeyDetailsReturn />
+
+From here, you can know whether the user key can be reconstructed or not.
+
+- If the `requiredShares` is greater than 0, then the key cannot be reconstructed, because this
+  means that the user has not yet generated enough shares to meet the threshold.
+- Once the `requiredShares` is 0 or less than that, then the key can be reconstructed, and the user
+  can use the shares to generate the private key and make further operations on the tKey and
+  manipulate their keys.
+
+```tsx title="Example"
+const { requiredShares } = tKey.getKeyDetails();
+if (requiredShares <= 0) {
+  console.log(
+    "All shares are present, you can reconstruct your private key and do operations on the tKey",
+  );
+} else {
+  console.log("You need to generate more shares to reconstruct your private key");
+}
+```
+
+## Reconstruct Private Key
+
+#### `tKey.reconstructKey()`
+
+The function `reconstructKey()` reconstructs the private key of the user from the shares generated.
+This function returns the private key of the user once the threshold has been met.
+
+```tsx
+reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
+
+export type ReconstructedKeyResult = {
+    secp256k1Key: BN;
+    ed25519Seed?: Buffer;
+    seedPhrase?: BN[];
+    allKeys?: BN[];
+};;
+```
+
+```tsx title="Example"
+const { requiredShares } = tKey.getKeyDetails();
+
+if (requiredShares <= 0) {
+  const reconstructedKeyResult = await tKey.reconstructKey();
+  const privateKey = reconstructedKeyResult?.secp256k1Key.toString("hex");
+  console.log("Private Key: ", privateKey);
+}
+```
+
+## Generate a New Share
+
+#### `tKey.generateNewShare()`
+
+The function `generateNewShare()` generates a new share on the same threshold set by the user. This
+function returns the new share generated.
+
+```tsx
+generateNewShare(): Promise<GenerateNewShareResult>;
+
+export type GenerateNewShareResult = {
+    newShareStores: ShareStoreMap;
+    newShareIndex: BN;
+};
+```
+
+```tsx title="Example"
+const generateShareResult = await tKey.generateNewShare();
+const share = await tKey.outputShareStore(generateShareResult.newShareIndex);
+
+await(tKey.modules.webStorage as WebStorageModule).storeDeviceShare(share);
+console.log("New Share Stored on the Browser Local Storage: ", share);
+```
+
+## Delete a Share
+
+#### `tKey.deleteShare(shareIndex: BNString)`
+
+The function `deleteShare()` deletes the user's given share. This function returns the updated
+shareStore after the share has been deleted.
+
+```tsx
+deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
+
+export type DeleteShareResult = {
+    newShareStores: ShareStoreMap;
+};
+```
+
+```tsx title="Example"
+const shareStore = await tKey.deleteShare(previousShareIndex);
+console.log("Share has been deleted", shareStore);
+```
+
+## Using Modules
+
+For making advanced operations on tKey and to manipulate the keys, you can use the modules provided
+by tKey. As mentioned in the [initialisation](/sdk/infra/tkey/initialize) section, you need to
+configure the modules beforehand to make it work with tKey. Once that is done, the instance of the
+respective module is available within your tKey instance and can be used for further operations.
+
+:::tip
+
+Checkout the [Modules](/sdk/infra/tkey/modules) section where we have listed all the available
+modules alongside the functions that can be used within them.
+
+:::
+
+## Making Blockchain Calls
+
+Once you have generated the private key, you can use it to make blockchain calls. The key generated
+by tKey is of type `secp256k1`, which is compatible with EVM-based blockchains like Ethereum,
+Polygon, and many others that use the same curve. From v13, tKey also generates a `ed25519` key
+which is compatible with blockchains like Solana, Aptos, and etc. However, you can also convert
+`secp256k1` key into other curves and utilize it.
+
+In addition to that, we have dedicated provider packages for EVM, Solana and XRPL libraries. You can
+check out their respective documentation in the [Providers Section](/sdk/pnp/web/providers/).
+
+:::tip
+
+You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed
+guide on how to connect to major blockchains out there.
+
+:::

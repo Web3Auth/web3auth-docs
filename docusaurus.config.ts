@@ -38,7 +38,7 @@ const config: Config = {
     announcementBar: {
       id: "sign_up_for_wallets_ux_unconference",
       content:
-        '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
+        '<a href="https://web3auth.io/community/t/web3auth-developer-office-hours/8777" target="_blank">Stuck somewhere in the integration? Join the biweekly Web3Auth Office Hours →</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -63,6 +63,16 @@ const config: Config = {
           className: "code-focus",
           line: "focus-next-line",
           block: { start: "focus-start", end: "focus-end" },
+        },
+        {
+          className: "git-diff-remove",
+          line: "remove-next-line",
+          block: { start: "remove-start", end: "remove-end" },
+        },
+        {
+          className: "git-diff-add",
+          line: "add-next-line",
+          block: { start: "add-start", end: "add-end" },
         },
       ],
     },
@@ -110,8 +120,8 @@ const config: Config = {
           position: "left",
         },
         {
-          label: "Blog",
-          to: "https://blog.web3auth.io",
+          label: "Examples",
+          to: "/examples",
           position: "left",
         },
         {
@@ -126,12 +136,12 @@ const config: Config = {
             },
           ],
         },
-        // {
-        //   position: "right",
-        //   href: githubOrgUrl,
-        //   className: "navbar-github-link",
-        //   "aria-label": "GitHub Organization",
-        // },
+        {
+          position: "right",
+          href: githubOrgUrl,
+          className: "navbar-github-link",
+          "aria-label": "GitHub Organization",
+        },
         {
           type: "search",
           position: "right",
@@ -154,6 +164,7 @@ const config: Config = {
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
       contextualSearch: true,
+      insights: true,
     },
     customFields: {
       baseUrl,
@@ -166,8 +177,13 @@ const config: Config = {
       defer: false,
     },
     {
-      src: baseUrl + "js/code-focus.js",
+      src: "https://polyfill.io/v3/polyfill.min.js?features=MutationObserver",
       async: true,
+    },
+    {
+      src: baseUrl + "js/code-focus.js",
+      async: false,
+      defer: true,
     },
   ],
   presets: [
@@ -342,11 +358,11 @@ const config: Config = {
           },
           {
             from: "/sdk/tkey/initialization",
-            to: "/sdk/core-kit/tkey/initialize",
+            to: "/sdk/infra/tkey/initialize",
           },
           {
             from: "/sdk/tkey/initialisation",
-            to: "/sdk/core-kit/tkey/initialize",
+            to: "/sdk/infra/tkey/initialize",
           },
           {
             from: "/troubleshooting/different-wallet-address-issue",
@@ -354,7 +370,7 @@ const config: Config = {
           },
           {
             from: "/sdk/tkey/installation",
-            to: "/sdk/core-kit/tkey/install",
+            to: "/sdk/infra/tkey/install",
           },
           {
             from: "/connect-blockchain/polygon/",
@@ -449,8 +465,8 @@ const config: Config = {
             to: "/connect-blockchain/other/cosmos",
           },
           {
-            from: "/connect-blockchain/near",
-            to: "/connect-blockchain/other/near",
+            from: "/connect-blockchain/other/near",
+            to: "/connect-blockchain/near/",
           },
           {
             from: "/connect-blockchain/polkadot",
@@ -497,12 +513,16 @@ const config: Config = {
             to: "/auth-provider-setup/byo-jwt-provider/",
           },
           {
-            from: "/product-fit",
-            to: "/product/product-fit",
+            from: "/product/product-fit",
+            to: "/product-fit",
+          },
+          {
+            from: "/product/core-kit",
+            to: "/product/mpc-core-kit",
           },
           {
             from: "/product-fit/pnp-vs-core-kit",
-            to: "/product/product-fit",
+            to: "/product-fit",
           },
           {
             from: "/product-fit/partner-products",
@@ -528,32 +548,51 @@ const config: Config = {
             from: "/pnp/features/mfa",
             to: "/features/mfa",
           },
+          {
+            from: "/sdk/infra/tkey/intrinsic-flow",
+            to: "/sdk/infra/tkey/implicit-flow",
+          },
         ],
         createRedirects(existingPath) {
-          return [
-            existingPath.replace("/sdk", "/api-reference"),
-            existingPath.replace("/sdk", "/sdk-reference"),
-            existingPath.replace("/guides/", "/content-hub/guides/"),
-            existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
-            existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
-            existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
-            existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
-            existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
-            existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
-            existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
-            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
-            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
-            existingPath.replace(
-              "/connect-blockchain/evm/astar-zkyoto/",
-              "/connect-blockchain/evm/zkyoto/",
-            ),
-            existingPath.replace(
-              "/connect-blockchain/evm/astar-zkevm/",
-              "/connect-blockchain/evm/zkevm/",
-            ),
-            existingPath.replace("/product/core-kit", "/core-kit/"),
-            existingPath.replace("/product/pnp", "/pnp/"),
-          ];
+          // Only create redirects if the path matches certain patterns
+          if (
+            existingPath.includes("/sdk/") ||
+            existingPath.includes("/sdk/sfa/sfa-js/") ||
+            existingPath.includes("/sdk/mpc-core-kit/mpc-core-kit-js/") ||
+            existingPath.includes("/guides/") ||
+            existingPath.includes("/features/") ||
+            existingPath.includes("/product/")
+          ) {
+            return [
+              existingPath.replace("/sdk", "/api-reference"),
+              existingPath.replace("/sdk", "/sdk-reference"),
+              existingPath.replace("/sdk/sfa/sfa-js/", "/sdk/sfa/sfa-web/"),
+              existingPath.replace(
+                "/sdk/mpc-core-kit/mpc-core-kit-js/",
+                "/sdk/core-kit/mpc-core-kit/",
+              ),
+              existingPath.replace("/guides/", "/content-hub/guides/"),
+              existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
+              existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
+              existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
+              existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
+              existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
+              existingPath.replace("/sdk/tkey", "/sdk/self-host"),
+              existingPath.replace("/product/core-kit", "/core-kit/"),
+              existingPath.replace("/product/pnp", "/pnp/"),
+              existingPath.replace(
+                "/connect-blockchain/evm/astar-zkyoto/",
+                "/connect-blockchain/evm/zkyoto/",
+              ),
+              existingPath.replace(
+                "/connect-blockchain/evm/astar-zkevm/",
+                "/connect-blockchain/evm/zkevm/",
+              ),
+            ].filter((redirect) => redirect !== existingPath); // Remove any redirects that point to the same path
+          }
+          return []; // Return empty array for paths that don't need redirects
         },
       },
     ],

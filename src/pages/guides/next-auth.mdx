@@ -1,0 +1,550 @@
+---
+title: How to use NextAuth with Web3Auth
+image: "guides-banners/next-auth.png"
+description:
+  Learn how to seamlessly integrate NextAuth's Login methods with Web3Auth to enhance your app's
+  authentication capabilities.
+type: guide
+tags: [next-auth, oauth, auth.js, authentication, web3 auth.js]
+date: August 29, 2024
+author: Web3Auth Team
+---
+
+import SEO from "@site/src/components/SEO";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<SEO
+  title="How to use NextAuth with Web3Auth"
+  description="Learn how to seamlessly integrate NextAuth's Login methods with Web3Auth to enhance your app's
+  authentication capabilities."
+  image="https://web3auth.io/docs/guides-banners/next-auth.png"
+  slug="/guides/next-auth"
+/>
+
+Auth.js (formerly known as NextAuth) is a runtime-agnostic library based on standard Web APIs. It
+deeply integrates with multiple modern JavaScript frameworks to provide a simple, extendable, and
+always private and secure authentication experience!
+
+This guide will explain the basic steps for integrating
+[Auth.js (formerly known as NextAuth)](https://authjs.dev/getting-started) with Web3Auth for
+authentication. In this guide, you will learn how to set up NextAuth (aka Auth.js), configure the
+OAuth provider for our use case, and use the OAuth provider to retrieve the id_token. Finally, we
+will demonstrate how to implement the Google OAuth flow for user authentication and generate an
+Ethereum key using the [Web3Auth SFA JS](https://web3auth.io/docs/sdk/sfa/sfa-js/install) SDK.
+
+:::info Important Links
+
+- NextAuth example with Web3Auth SFA JS SDK
+  - [GitHub Repository](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-nextauth-example)
+  - [Live Demo](https://sfa-web-nextauth-example.vercel.app)
+
+:::
+
+## Prerequisites
+
+- [Next.js App](https://nextjs.org/docs/getting-started/installation) with Tailwind CSS
+- [Web3Auth's Project Client ID](https://web3auth.io/docs/dashboard-setup)
+- [Google Application](https://web3auth.io/docs/auth-provider-setup/social-providers/google#create-a-google-app)
+- [Web3Auth Google Verifier](https://web3auth.io/docs/auth-provider-setup/social-providers/google#set-up-google)
+
+## Auth.js Setup
+
+Start by installing the `next-auth@beta` package using the following command:
+
+```bash
+npm install next-auth@beta
+```
+
+The only mandatory environment variable is the `AUTH_SECRET`, which is a random value used by the
+library to encrypt tokens and email verification hashes. You can generate one using the official
+Auth.js CLI by running the following command:
+
+```bash
+npx auth secret
+```
+
+Next, you need to create the Auth.js config file and object. This is where you can control the
+behavior of the library and specify custom authentication logic, adapters, etc. We recommend to
+create an `auth.ts` file in the project for all frameworks. In this file, you will pass in all the
+options to the framework-specific initialization function and then export the route handlers,
+sign-in and sign-out methods, and more.
+
+1.  To get started, create a new auth.ts file at the root of your app and add the following content
+    to it:
+
+         ```tsx title="./auth.ts"
+         import NextAuth from "next-auth";
+
+         export const { handlers, signIn, signOut, auth } = NextAuth({
+            providers: [],
+         });
+         ```
+
+2.  Then, add a Route Handler under `/app/api/auth/[...nextauth]/route.ts`:
+
+        ```tsx title="./app/api/auth/[...nextauth]/route.ts"
+        import { handlers } from "@/auth"; // Referring to the auth.ts we just created
+
+        export const { GET, POST } = handlers;
+        ```
+
+3.  Finally, add optional Middleware to keep the session alive, which will update the session expiry
+    every time it's called. This will also be useful to protect a route:
+
+        ```tsx title="./middleware.ts"
+        export { auth as middleware } from "@/auth";
+        ```
+
+## Adding OAuth to Auth.js
+
+Auth.js comes with over 80 preconfigured providers. You can select a provider of your choice. For
+the purpose of this guide, we will use Google as our OAuth provider, but feel free to use a
+different one or enable more OAuth providers.
+
+### Registering OAuth App
+
+First, you have to set up an OAuth application on the Google Developers Dashboard. When registering
+an OAuth application on Google, they will ask you to enter your application’s callback URL.
+
+**Callback URL**
+
+```bash
+[origin]/api/auth/callback/google
+```
+
+![Google OAuth Callback URL](/guides/google-oauth-app-redirect-origin.png)
+
+**Setting up Environment Variables**
+
+Once registered, you should receive a Client ID and Client Secret. Add these to your application's
+environment file:
+
+```txt
+AUTH_GOOGLE_ID={CLIENT_ID}
+AUTH_GOOGLE_SECRET={CLIENT_SECRET}
+```
+
+Auth.js will automatically pick these up if the formatting is similar to the example above. You can
+also use a different name for the environment variables if needed, but in that case, you'll need to
+pass them to the provider manually.
+
+### Setting up OAuth Provider
+
+To enable Google as a sign-in option in our Auth.js configuration, you need to import the Google
+provider from the package and add it to the providers array that we previously set up in the Auth.js
+config file.
+
+In Next.js, it's best to set up your configuration in a file at the root of your repository, like
+auth.ts.
+
+```tsx title="./auth.ts"
+import NextAuth from "next-auth";
+// focus-next-line
+import Google from "next-auth/providers/google";
+
+declare module "next-auth" {
+  // focus-start
+  interface User {
+    idToken?: string;
+  }
+  interface Session {
+    idToken?: string | undefined;
+  }
+  // focus-end
+}
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    // focus-start
+    Google({
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          scope: "openid profile email",
+          session: {
+            strategy: "jwt",
+          },
+        },
+      },
+    }),
+    // focus-end
+  ],
+  callbacks: {
+    // focus-start
+    async jwt({ token, account }) {
+      if (account) {
+        token.idToken = account.id_token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.idToken = token.idToken as string;
+      return session;
+    },
+    // focus-end
+  },
+});
+```
+
+#### Understanding the `{authorization: {...}}` configuration passed to the provider.
+
+The configuration block customizes the authorization process for the Google OAuth provider. Here are
+the key components:
+
+1. `prompt: "consent"`: This ensures the Google consent screen appears every time, even if the user
+   has previously granted permissions.
+
+2. `access_type: "offline"`: This requests a refresh token from Google, allowing your app to obtain
+   new access tokens even when the user is not actively using it.
+
+3. `scope: "openid profile email"`: Specifies the permissions your app is requesting from Google.
+
+4. `session: { strategy: "jwt" }`: This sets the session strategy to use JSON Web Tokens (JWT) for
+   managing sessions.
+
+These settings ensure your app gets the necessary permissions and tokens from Google to authenticate
+users and potentially access Google services on their behalf. These same JWTs will also be used to
+connect with Web3Auth for blockchain interactions.
+
+### Add the route handlers
+
+Add the handlers that NextAuth returns to your `api/auth/[...nextauth]/route.ts` file so that
+Auth.js can run on any incoming request.
+
+```tsx title="./app/api/auth/[...nextauth]/route.ts"
+import { handlers } from "@/auth";
+export const { GET, POST } = handlers;
+```
+
+## Adding Auth.js to Web3Auth
+
+Let's start by installing the `Web3Auth` package using the following command:
+
+```bash
+npm install @web3auth/single-factor-auth @web3auth/base @web3auth/ethereum-provider
+```
+
+Next, create a couple of components that we will use in our application.
+
+### Configuring Web3Auth
+
+Create a new file called `web3auth.tsx` in the `lib` directory and add the following content to it:
+
+This sets up and configures Web3Auth for authentication and interaction with the Ethereum Sepolia
+testnet, enabling web3 functionality in your application.
+
+```tsx title="./lib/web3auth.tsx"
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// focus-next-line
+import { Web3Auth, decodeToken } from "@web3auth/single-factor-auth";
+
+// Get this from .env file
+const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID ?? "";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+// focus-start
+export const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+
+export { decodeToken };
+// focus-end
+```
+
+### SignIn Button
+
+Create a new file called `signin-button.tsx` in the `components/auth` directory and add the
+following content to it:
+
+```tsx title="./components/auth/signin-button.tsx"
+import { handleSignIn } from "@/actions";
+
+export default function SignIn() {
+  return (
+    <form
+      action={async () => {
+        "use server";
+        await handleSignIn();
+      }}
+      className="flex justify-center items-center h-32 mt-16"
+    >
+      <button
+        type="submit"
+        className="bg-blue-500 text-white p-3 rounded-md text-lg hover:bg-blue-600 transition-colors"
+      >
+        Sign in with Google
+      </button>
+    </form>
+  );
+}
+```
+
+### SignOut Button
+
+Create a new file called `signout-button.tsx` in the `components/auth` directory and add the
+following content to it:
+
+```tsx title="./components/auth/signout-button.tsx"
+import { handleSignOut } from "@/actions";
+
+export default function SignOut() {
+  return (
+    <form
+      action={async () => {
+        await handleSignOut();
+      }}
+      className="w-full"
+    >
+      <button
+        type="submit"
+        className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-300"
+      >
+        Sign Out
+      </button>
+    </form>
+  );
+}
+```
+
+### Server Action
+
+Create a new file called `index.ts` in the `actions` directory and add the following content to it:
+
+The file contains server actions and functions for managing user authentication, including sign-in
+and sign-out processes. Placing these functions in a separate file centralizes authentication logic
+and simplifies maintenance. This file is essential for managing user sessions and authentication
+flows, particularly in web3-enabled apps with traditional authentication methods.
+
+```ts title="./actions/index.ts"
+"use server";
+
+import { signIn, signOut } from "@/auth";
+import { web3auth } from "@/lib/web3auth";
+
+export async function handleSignIn() {
+  await signIn("google");
+}
+
+export async function handleSignOut() {
+  await signOut();
+  await web3auth.logout();
+}
+```
+
+### Profile
+
+Create a new file called `profile.tsx` in the `components` directory and add the following content
+to it:
+
+```tsx title="./components/profile.tsx"
+"use client";
+
+import Image from "next/image";
+import { Session } from "next-auth";
+import { useEffect, useState } from "react";
+// focus-start
+import { web3auth, decodeToken } from "@/lib/web3auth";
+import SignOut from "@/components/auth/signout-button";
+// focus-end
+import Loading from "@/components/loading";
+
+type UserInfoProps = {
+  session: Session | null;
+};
+
+export default function UserInfo({ session }: UserInfoProps) {
+  const [provider, setProvider] = useState<any>(null);
+  const [publicAddress, setPublicAddress] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        // focus-start
+        if (web3auth.status === "not_ready") {
+          await web3auth.init();
+        }
+
+        if (web3auth.status === "connected") {
+          const provider = web3auth.provider;
+          setProvider(provider);
+          const accounts = await provider?.request({ method: "eth_accounts" });
+          if (accounts && (accounts as any).length > 0) {
+            setPublicAddress((accounts as any)[0]);
+          }
+        } else if (session?.idToken) {
+          const { payload } = decodeToken(session.idToken);
+          const provider = await web3auth.connect({
+            verifier: "next-auth-w3a", // Use your verifier name here
+            verifierId: (payload as any).email, // and based on it, the verifierId
+            idToken: session.idToken,
+          });
+          setProvider(provider);
+        }
+        // focus-end
+      } catch (error) {
+        console.error("Error initializing & connecting to web3auth:", error);
+        setProvider(null);
+        setPublicAddress(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (session) {
+      init();
+    }
+    // focus-next-line
+  }, [session, provider]);
+
+  if (!session) return null;
+
+  return (
+    // focus-start
+    <div className="bg-white dark:bg-zinc-800/30 shadow-lg rounded-lg p-8 max-w-md w-full mx-auto mt-10">
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <Loading />
+        </div>
+      ) : (
+        publicAddress && (
+          <div className="flex flex-col items-center space-y-4">
+            {session.user?.image && (
+              <Image
+                src={session.user.image}
+                alt="Profile picture"
+                width={140}
+                height={140}
+                className="rounded-full border-4 border-blue-500"
+                priority
+              />
+            )}
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+              {session.user?.name}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-center">{session.user?.email}</p>
+            <p className="text-gray-600 dark:text-gray-300 text-center">{publicAddress}</p>
+            <SignOut />
+          </div>
+        )
+      )}
+    </div>
+    // focus-end
+  );
+}
+```
+
+This file contains a React component that displays user profile information. It takes a `session`
+prop of type `Session` from NextAuth and uses state variables for `provider`, `publicAddress`, and
+`isLoading`. The `useEffect` hook initializes Web3Auth, fetches the user's Ethereum address, and
+manages the rendering based on loading and authentication state. Overall, the component integrates
+Web3Auth with NextAuth for seamless authentication.
+
+### Loading
+
+Optionally create a file called `loading.tsx` in the `components` directory and add the following
+content to it:
+
+```tsx title="./components/loading.tsx"
+import React from "react";
+
+const Loading: React.FC = () => {
+  return (
+    <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-blue-500"></div>
+  );
+};
+
+export default Loading;
+```
+
+### Update Home page
+
+Update the `page.tsx` file in the `app` directory with the following content:
+
+```tsx title="./app/page.tsx"
+import Image from "next/image";
+// focus-start
+import SignIn from "@/components/auth/signin-button";
+import Profile from "@/components/profile";
+import { auth } from "@/auth";
+// focus-end
+
+export default async function Home() {
+  // focus-next-line
+  const session = await auth();
+
+  return (
+    <main className="flex flex-col items-center justify-between p-24">
+      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+          Auth.js demo in&nbsp;
+          <code className="font-mono font-bold">Next.js</code>
+        </p>
+        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
+          <a
+            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
+            href="https://web3auth.io"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            By{" "}
+            <Image
+              src="https://web3auth.io/images/web3auth-logo---Dark.svg"
+              alt="Web3Auth Logo"
+              width={100}
+              height={24}
+              priority
+            />
+          </a>
+        </div>
+      </div>
+      // focus-next-line
+      {!session ? <SignIn /> : <Profile session={session} />}
+    </main>
+  );
+}
+```
+
+The `app/page.tsx` file is the main page component for a Next.js application. It includes imports
+for necessary components and functions, an async `Home` function as the default component,
+authentication using the `auth()` function, rendering of elements with specific styling, Tailwind
+CSS classes for styling, and responsive design using classes like `lg:`. This page serves as the
+entry point for the application, handling both authenticated and non-authenticated states and
+showcasing Web3Auth integration within a Next.js framework.
+
+### Final Steps
+
+After completing the setup, you can launch the application and observe the Google OAuth process in
+action. The user will be asked to sign in with Google, and once the authentication is successful,
+the user's profile information, along with their Ethereum public address, will be shown.
+
+![NuxtAuth Demo with Web3Auth](/guides/gifs/next-auth-demo.gif)
+
+Check out the
+[GitHub repository](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-nextauth-example)
+and the [live demo](https://sfa-web-nextauth-example.vercel.app)
+
+## What's Next?
+
+Congratulations! You have successfully integrated Auth.js with Web3Auth for seamless user
+authentication and Ethereum key generation. You can now explore more features and capabilities to
+enhance your app's authentication and
+[blockchain interactions](https://web3auth.io/docs/connect-blockchain).

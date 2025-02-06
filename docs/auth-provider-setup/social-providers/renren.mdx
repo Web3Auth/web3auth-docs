@@ -5,6 +5,8 @@ sidebar_label: RenRen
 description: "RenRen Login with Web3Auth | Documentation - Web3Auth"
 ---
 
+import CreateVerifierFirstStep from "@site/src/common/docs/_create-verifier-first-step.mdx";
+
 :::note
 
 RenRen login can be performed in various ways, depending on the use case. We have demonstrated this
@@ -12,7 +14,9 @@ with Auth0, but this can be done with any other Federated/JWT providers.
 
 :::
 
-## Set up [RenRen](https://marketplace.auth0.com/integrations/renren-social-connection) via Auth0
+## Create a RenRen verifier
+
+<CreateVerifierFirstStep />
 
 1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this
    modal.
@@ -30,34 +34,34 @@ with Auth0, but this can be done with any other Federated/JWT providers.
    to your Auth0 application.
 5. Click on the `Create` button to create `RenRen` Custom Authentication via Auth0 verifier.
 
-### Example
+## Example
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     loginConfig: {
-      // highlight-start
+      // focus-start
       jwt: {
         verifier: "w3a-auth0-uk-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
         clientId: "OfDAVldBEGslU9wjiWyQ1LPWOWNnnzim", // Pass on the Auth0 `Client ID` here
       },
-      // highlight-end
+      // focus-end
     },
   },
 });
 
-web3AuthNoModalInstance.configureAdapter(openloginAdapter);
+web3AuthNoModalInstance.configureAdapter(authAdapter);
 
 // Initialize
 await web3AuthNoModalInstance.init();
 
 // Login with RenRen
-// highlight-start
-await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+// focus-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.uk.auth0.com", // Pass on the Auth0 `Domain` here
@@ -65,5 +69,5 @@ await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     connection: "renren", // Use this to skip Auth0 Modal for RenRen login
   },
 });
-// highlight-end
+// focus-end
 ```

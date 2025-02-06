@@ -1,0 +1,201 @@
+---
+title: Integrate Web3Auth MPC CoreKit SDK with the Near Blockchain in Javascript
+sidebar_label: Web - MPC
+image: "banners/near.png"
+keywords:
+  [
+    near,
+    wallet,
+    integration,
+    web3auth,
+    API,
+    SDK,
+    authentication,
+    blockchain,
+    solution,
+    development,
+    MPC,
+    EdDSA,
+  ]
+description:
+  "Integrate Web3Auth MPC CoreKit SDK with the Near Blockchain in Javascript | Documentation -
+  Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import Initialization from "@site/src/common/sdk/mpc-core-kit/_ed25519-initialization.mdx";
+
+To sign the transactions for Near using MPC CoreKit JS SDK, you can utilize the
+@toruslabs/tss-frost-lib to instantiate `Web3AuthMPCCoreKit` with ed25519 KeyType. To support the
+ed25519 curve Web3Auth internally uses the FROST algorithm to provide the EdDSA sginature using
+threshold protocols.
+
+This EdDSA signature can be used to submit the transactions on Near blockchain.
+
+## Installation
+
+To interact with the Near blockchain, you can use
+[near-api-js](https://docs.near.org/tools/near-api-js/quick-reference) package with Web3Auth CoreKit
+SDK along with [@toruslabs/tss-frost-lib](https://www.npmjs.com/package/@toruslabs/tss-frost-lib)
+package.
+
+```bash npm2yarn
+$ npm install near-api-js
+$ npm install @toruslabs/tss-frost-lib
+```
+
+## Initializing and instantiating the Web3Auth MPC CoreKit JS SDK
+
+<Initialization />
+
+## Get User Info
+
+Gives you the user's information received from the ID Token.
+
+```tsx
+const userInfo = coreKitInstance?.getUserInfo();
+```
+
+## Get account
+
+Once you have an `Web3AuthMPCCoreKit` instance, it can be used as along with `near-api-js` package.
+
+To generate the Near implicit address, you can use the `getPubKeyEd25519` method to retrieve the
+ed25519 curve compatible pubKey. Once you have the pubkey, you can create `PublicKey` instance, and
+retrive the implicit address which is basically hex of `PublicKey`.
+
+```tsx
+import { PublicKey } from "near-api-js/lib/utils";
+import { KeyType } from "near-api-js/lib/utils/key_pair";
+
+const coreKitPubKey = coreKitInstance.getPubKeyEd25519();
+const publicKey = new PublicKey({ keyType: KeyType.ED25519, data: coreKitPubKey });
+
+const address = Buffer.from(this.publicKey.data).toString("hex");
+```
+
+## Get account balance
+
+To get the user's balance, we can use the `JsonRpcProvider.query` method, which takes `request_type`
+as an parameter. For `request_type` we gonna pass `view_account` as an argument. The `view_account`
+RPC method enables you to view details about account.
+
+```tsx
+import { JsonRpcProvider } from "near-api-js/lib/providers";
+import { AccountView } from "@near-js/types/lib/provider/response";
+
+try {
+  const state = await this.jsonRPCProvider.query<AccountView>({
+    request_type: "view_account",
+    account_id: this.getAccount(),
+    finality: "optimistic",
+  });
+
+  const balance = state.amount;
+} catch (error) {
+  if (error.type === "AccountDoesNotExist") {
+    // Account has no funds and it does not exist. Please add funds to the account
+  }
+
+  // Handle error
+}
+```
+
+## Sign a message
+
+Signing a message for Near is pretty straight forward. You can simply use the `sign` method to
+generate the EdDSA signature.
+
+```tsx
+const msg = Buffer.from("Welcome to Web3Auth");
+const sig = await this.coreKitInstance.sign(msg);
+```
+
+## Sign a transaction
+
+To sign a Near transaction, you can use `Transaction` class to get a buffer of the transaction data
+to sign, and use the generated signature to create `SignedTransaction`.
+
+Before we create a Near blockchain transaction, let's implement `getAccessKey`. We'll use the
+`JsonRpcProvider.query` method, and pass `view_access_key` as an argument for `request_type`. The
+`view_access_key` RPC method returns the information about an account's access key such as nonce,
+permission, along with block details which are used to create transaction.
+
+```tsx
+import { AccessKeyViewRaw } from "@near-js/types";
+
+async getAccessKey(): Promise<AccessKeyViewRaw> {
+    try {
+        // Use the jsonRPCProvider, address, and publicKey defined early.
+        const acessKey = await jsonRPCProvider.query<AccessKeyViewRaw>({
+            request_type: "view_access_key",
+            account_id: address,
+            finality: 'optimistic',
+            public_key: publicKey.toString(),
+        });
+
+        return acessKey;
+
+    } catch (e) {
+        throw e;
+    }
+}
+```
+
+Once we have implemented `getAccessKey`, we can create the transaction using `createTransaction`
+helper method.
+
+```tsx
+import {
+  Signature,
+  SignedTransaction,
+  createTransaction,
+  encodeTransaction,
+  transfer,
+} from "near-api-js/lib/transaction";
+import { AccessKeyViewRaw } from "@near-js/types";
+import { base_decode } from "near-api-js/lib/utils/serialize";
+import { sha256 } from "@noble/hashes/sha256";
+import { base64 } from "@scure/base";
+import { parseNearAmount } from "near-api-js/lib/utils/format";
+
+// Defined above
+const accessKey = await getAccessKey();
+const nonce = accessKey.nonce + 1;
+
+const block = await this.jsonRPCProvider.block({ finality: "final" });
+const blockHash = block.header.hash;
+
+const transaction = createTransaction(
+  address,
+  publicKey,
+  "blackjaguar7625.testnet",
+  nonce,
+  [transfer(BigInt(parseNearAmount("0.02")!))],
+  base_decode(blockHash),
+);
+
+const serializeTransaction = encodeTransaction(transaction);
+const tssSignature = await this.coreKitInstance.sign(Buffer.from(sha256(serializeTransaction)));
+
+const signature = new Signature({
+  keyType: KeyType.ED25519,
+  data: Uint8Array.from(tssSignature),
+});
+```
+
+To broadcast the signed transaction, you can utilize the `JsonRpcProvider.sendTransaction` method.
+
+```tsx
+// transaction and signature are defined above
+const executionDetails = await this.jsonRPCProvider.sendTransaction(
+  new SignedTransaction({
+    transaction,
+    signature,
+  }),
+);
+
+const hash = executionDetails.transaction.hash;
+```

@@ -1,16 +1,19 @@
-```dart
-final prefs = await SharedPreferences.getInstance();
-final privateKey = prefs.getString('privateKey') ?? '0';
-final client = Web3Client(rpcUrl, Client());
-final credential = EthPrivateKey.fromHex(privateKey);
+Since web3dart package doesn't support deploying contracts directly, we'll use the precompiled smart
+contract byteCode to deploy the contract using `sendTransaction` method.
 
-var list = utf8.encode(TestContract.byteCode);
-Uint8List payload = Uint8List.fromList(list);
-final Transaction transaction = Transaction(
+```dart
+// Use the client, address, and credentials from previous code snippets
+
+// Use the bytecode from the previous step
+final payload = Uint8List.fromList(utf8.encode(byteCode));
+
+final transaction = Transaction(
+  // Please make sure to keep the `to` field as `null`
+  // for deploying the contract
   to: null,
-  from: credential.address,
+  from: address,
   data: payload,
-  maxGas: 2000000);
-final String transactionId =
-  await client.sendTransaction(credential, transaction);
+);
+
+final receipt = await client.sendTransaction(credential, transaction);
 ```

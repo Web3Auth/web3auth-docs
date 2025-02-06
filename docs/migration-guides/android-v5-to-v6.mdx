@@ -33,6 +33,7 @@ users.
 >
 
 <TabItem value = "default-verifier">
+
 ```kotlin title="Usage"
 import android.widget.Button
 import com.web3auth.core.Web3Auth
@@ -41,7 +42,7 @@ import android.os.Bundle
 class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Auth
 
      private fun enableMFA() {
-       // highlight-next-line
+       // focus-next-line
        val completableFuture = web3Auth.enableMFA()
 
         completableFuture.whenComplete{_, error ->
@@ -66,10 +67,12 @@ class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Au
 
 }
 
-````
+```
+
 </TabItem>
 
 <TabItem value="custom-jwt-verifier">
+
 ```kotlin title="Usage"
 import android.widget.Button
 import com.web3auth.core.Web3Auth
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Au
             extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
         )
 
-        // highlight-next-line
+        // focus-next-line
         val completableFuture = web3Auth.enableMFA(loginParams)
 
         completableFuture.whenComplete{_, error ->
@@ -107,7 +110,7 @@ class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Au
     ...
 
 }
-````
+```
 
 </TabItem>
 </Tabs>
@@ -120,9 +123,9 @@ with a specific chain selected.
 
 :::note
 
-Access to Wallet Services is gated. You can use this feature in the development environment for
-free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
-production environment is the **Scale Plan**.
+Access to Wallet Services is gated. You can use this feature in `sapphire_devnet` for free. The
+minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a production
+environment is the **Scale Plan**.
 
 :::
 

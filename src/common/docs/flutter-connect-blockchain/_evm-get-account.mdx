@@ -1,25 +1,15 @@
+Once user has successfully logged in, you can retrieve the user's private key using the `getPrivKey`
+method from Web3AuthFlutter. We'll use this private key to generate the Credentials for the user.
+
+This Credentials object has the user's key pair of private key and public key, and can be used to
+sign the transactions. Please note, that this assumes that the user has already logged in and the
+private key is available.
+
 ```dart
-// Use codes from Initialization here,
-// and replace the `Widget build` from the below code:
+import 'package:web3dart/web3dart.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child:
-            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              // Get Account
-              ElevatedButton(
-                onPressed: () async {
-                  // focus-start
-                  final credentials = EthPrivateKey.fromHex(privateKey);
-                  final address = credentials.address;
-                  debugPrint("Account, ${address.hexEip55}");
-                  // focus-end
-                },
-                child: const Text('Get Address'),
-              ),
-            ])));
-  }
+final privateKey = await Web3AuthFlutter.getPrivKey();
 
+final credentials = EthPrivateKey.fromHex(privateKey);
+final address = credentials.address;
 ```

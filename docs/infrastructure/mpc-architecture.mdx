@@ -8,7 +8,8 @@ description: "MPC Architecture - Web3Auth Wallet Infrastructure | Documentation 
 import ExpandingSharesFlow from "@site/static/images/expanding-shares-tss-flow.png";
 import KeyInitialisationFlow from "@site/static/images/key-initialisation-tss-flow.png";
 import KeyUsageFlow from "@site/static/images/key-usage-tss-flow.png";
-import TKeyMPCFlow from "@site/static/images/tkey-mpc-flow.png";
+import TkeyMpcFlowDark from "@site/static/images/tkey-mpc-flow-dark.png";
+import TkeyMpcFlowLight from "@site/static/images/tkey-mpc-flow-light.png";
 
 This document provides an in-depth exploration of the technical architecture of the MPC-based SDKs,
 this includes the tKey MPC SDK and CoreKit MPC SDK (a rundown of our SDKs
@@ -71,11 +72,15 @@ transactions.
 
 ### TSS Key
 
-<img
-  style={{ display: "block", margin: "20px auto" }}
-  src={TKeyMPCFlow}
-  alt="Web3Auth Wallet Management"
-/>
+<picture>
+  <source srcset={TkeyMpcFlowLight} media="(prefers-color-scheme: light)" />
+  <source srcset={TkeyMpcFlowDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={TkeyMpcFlowLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 The user's setup starts by distributedly key generating (DKG) a 2 out of 3 (2/3) sharing,
 $f_0(x) = a_0 + a_1x$, with three shares: $f_0(1), f_0(z_1), f_0(z_2)$ where

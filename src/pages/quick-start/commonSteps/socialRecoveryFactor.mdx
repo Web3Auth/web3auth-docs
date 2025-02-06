@@ -1,0 +1,24 @@
+---
+title: Add a Social Recovery Factor [Optional]
+---
+
+Within the enable MFA function, we're adding a social recovery factor to the user's account. This is
+an optional step and can be skipped if you don't want to enable MFA for the user.
+
+To achieve this, we're just using Web3Auth's Single Factor Auth SDK to generate a private key for
+the user with an OAuth of choice. This private key is then used as a factor key to be associated
+with the TSS Share of the user for recovery.
+
+:::tip
+
+You can also associate this factor key with any other MFA setups like SMS OTP, Passkeys etc. by
+encrypting the factor key with the user's unique identity from these recovery methods. This gives
+you access to traditional MFA methods while still keeping the keys self-custodial for the user.
+
+:::
+
+:::note SDK Reference
+
+- [Enabling MFA](/sdk/mpc-core-kit/mpc-core-kit-js/usage#enable-mfa).
+
+:::

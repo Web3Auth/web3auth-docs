@@ -1,0 +1,168 @@
+---
+title: Integrate Web3Auth with the Ancient8 Blockchain in JavaScript
+sidebar_label: Web
+image: "banners/ancient8.png"
+keywords:
+  [
+    ancient8,
+    wallet,
+    integration,
+    API,
+    SDK,
+    web3auth,
+    authentication,
+    blockchain,
+    solution,
+    development,
+  ]
+description:
+  "Integrate Web3Auth with the Ancient8 Blockchain in JavaScript | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
+import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-get-account-n-balance.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
+import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
+import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
+import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
+
+import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Ancient8 Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Ancient8 Blockchain in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/ancient8.png"
+  slug="/connect-blockchain/evm/ancient8/web"
+/>
+
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Ancient8 Blockchain](https://ancient8.gg) calls like getting the user's `account`, fetching
+`balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
+etc. We have highlighted a few examples to get you started.
+
+## Installation
+
+To interact with the Ancient8 blockchain, you can use either library with Web3Auth.
+
+<InstallationSnippet />
+
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x34BC6B8", // hex of 888888888, Ancient8 Mainnet
+  rpcTarget: "https://rpc.ancient8.gg",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ancient8 Mainnet",
+  blockExplorerUrl: "https://scan.ancient8.gg",
+  ticker: "ETH",
+  tickerName: "ETH",
+  logo: "https://blog.ancient8.gg/content/images/2023/09/A8_PFP.png",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1AD4150", // hex of 28122024, Ancient8 Testnet V2
+  rpcTarget: "https://rpcv2-testnet.ancient8.gg",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ancient8 Testnet V2",
+  blockExplorerUrl: "https://scanv2-testnet.ancient8.gg",
+  ticker: "ETH",
+  tickerName: "ETH",
+  logo: "https://blog.ancient8.gg/content/images/2023/09/A8_PFP.png",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and Instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
+## Get User Info
+
+<GetUserInfoSnippet />
+
+## Get Account and Balance
+
+<GetAccountAndBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign Transaction
+
+<SignTransactionSnippet />
+
+## Sign Message
+
+### Personal Sign
+
+<SignPersonalMessageSnippet />
+
+### Sign Typed Data v4
+
+<SignTypedDataV4Snippet />
+
+## Smart Contract
+
+<SmartContractSoliditySnippet />
+
+### Deploy Contract
+
+<DeployContractSolidityDeploySnippet />
+
+### Read From Contract
+
+<DeployContractSolidityReadSnippet />
+
+### Write to Contract
+
+<DeployContractSolidityWriteSnippet />
+
+## Fetch User's Private Key
+
+<FetchUserPrivateKeySnippet />

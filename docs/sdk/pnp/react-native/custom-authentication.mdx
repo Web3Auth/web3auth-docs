@@ -50,14 +50,14 @@ should be a `LoginConfig` object.
 ```javascript
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import Web3Auth, {
-  OPENLOGIN_NETWORK,
+  WEB3AUTH_NETWORK,
   LOGIN_PROVIDER,
   TypeOfLogin,
 } from "@web3auth/react-native-sdk";
 
 const web3auth = new Web3Auth(WebBrowser, {
   clientId: "YOUR_CLIENT_ID", // web3auth's client id
-  network: OPENLOGIN_NETWORK.MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.MAINNET, // or other networks
   loginConfig: {
     google: {
       verifier: "google-verifier", // Get this from the Web3Auth Dashboard
@@ -141,7 +141,7 @@ export const LOGIN_PROVIDER = {
 ```javascript
 web3auth.login({
   loginProvider: LOGIN_PROVIDER.GOOGLE,
-  redirectUrl: `${scheme}://openlogin`,
+  redirectUrl: `${scheme}://auth`,
   extraLoginOptions: {
     login_hint: "user@example.com", // Optional: pre-fill the email field
   },
@@ -153,7 +153,7 @@ web3auth.login({
 ```javascript
 web3auth.login({
   loginProvider: LOGIN_PROVIDER.JWT,
-  redirectUrl: `${scheme}://openlogin`,
+  redirectUrl: `${scheme}://auth`,
   extraLoginOptions: {
     id_token: "YOUR_JWT_ID_TOKEN", // JWT ID token
     domain: "https://example.auth0.com", // Auth0 domain
@@ -175,7 +175,7 @@ verifier.
 ```javascript
 const web3auth = new Web3Auth(WebBrowser, {
   clientId: "YOUR_CLIENT_ID", // Web3Auth's client id
-  network: OPENLOGIN_NETWORK.MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.MAINNET, // or other networks
   loginConfig: {
     google: {
       verifier: "aggregate-verifier",
@@ -205,7 +205,7 @@ const web3auth = new Web3Auth(WebBrowser, {
 ```javascript
 web3auth.login({
   loginProvider: LOGIN_PROVIDER.GOOGLE, // or LOGIN_PROVIDER.JWT
-  redirectUrl: `${scheme}://openlogin`,
+  redirectUrl: `${scheme}://auth`,
 });
 ```
 

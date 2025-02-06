@@ -1,0 +1,98 @@
+---
+title: Account Abstraction
+sidebar_label: Account Abstraction
+description: "@web3auth/modal Native Account Abstraction | Documentation - Web3Auth"
+---
+
+import AccountAbstractionDescription from "@site/src/common/sdk/pnp/web/_account-abstraction-description.mdx";
+import AccountAbstractionProviderInstallation from "@site/src/common/sdk/pnp/web/_aa-provider-installation.mdx";
+import AAProviderConfiguration from "@site/src/common/sdk/pnp/web/_aa-provider-configuration.mdx";
+import ConfigureSmartAccountProvider from "@site/src/common/sdk/pnp/web/_smart-account-provider-configuration.mdx";
+import ConfigureBundler from "@site/src/common/sdk/pnp/web/_bundler-configuration.mdx";
+import ConfigureSponsoredPaymaster from "@site/src/common/sdk/pnp/web/_sponsored-paymaster-configuration.mdx";
+import ConfigureERC20Paymaster from "@site/src/common/sdk/pnp/web/_erc20-paymaster-configuration.mdx";
+import ConfigurePaymasterContext from "@site/src/common/sdk/pnp/web/_paymaster-context.mdx";
+import AAModalSetup from "@site/src/common/sdk/pnp/web/_aa-modal-setup.mdx";
+import ConfigureSigners from "@site/src/common/sdk/pnp/web/_configure-aa-signers.mdx";
+import SmartAccountAddress from "@site/src/common/sdk/pnp/web/_aa-address.mdx";
+import SmartAccountSendTransaction from "@site/src/common/sdk/pnp/web/_aa-send-transaction.mdx";
+
+import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
+
+<AccountAbstractionDescription />
+<GrowthPlanNote />
+
+## Installation
+
+<AccountAbstractionProviderInstallation />
+
+## Configure
+
+<AAProviderConfiguration />
+
+Please note this is the important step for setting the Web3Auth account abstraction provider.
+
+- [Configure Smart Account provider](#configure-smart-account-provider)
+- [Configure Bundler](#configure-bundler)
+- [Configure Sponsored Paymaster](#sponsored-paymaster)
+- [Configure ERC-20 Paymaster](#erc-20-paymaster)
+
+## Configure Smart Account Provider
+
+<ConfigureSmartAccountProvider />
+
+## Configure Bundler
+
+<ConfigureBundler />
+
+## Configure Paymaster
+
+You can configure the paymaster of your choice to sponsor gas fees for your users, along with the
+paymaster context. The paymaster context lets you set additional parameters, such as choosing the
+token for ERC-20 paymasters, defining gas policies, and more.
+
+### Configure Paymaster Context
+
+<ConfigurePaymasterContext />
+
+### Sponsored Paymaster
+
+<ConfigureSponsoredPaymaster />
+
+### ERC-20 Paymaster
+
+<ConfigureERC20Paymaster />
+
+## Set up
+
+Once you have configured your AccountAbstractionProvider, you can now plug it in your Web3Auth Modal
+instance. If you are using the external wallets like MetaMask, Coinbase, etc, you can define whether
+you want to use the AccountAbstractionProvider, or EthereumPrivateKeyProvider by setting the
+`useAAWithExternalWallet` in `Web3AuthOptions`.
+
+If you are setting `useAAWithExternalWallet` to `true`, it'll create a new Smart Account for your
+user, where the signer/creator of the Smart Account would be the external wallet.
+
+If you are setting `useAAWithExternalWallet` to `false`, it'll skip creating a new Smart Account,
+and directly use the external wallet to sign the transactions.
+
+### Configure Web3Auth Instance
+
+<AAModalSetup />
+
+### Configure Signer
+
+<ConfigureSigners />
+
+## Smart Account Address
+
+<SmartAccountAddress />
+
+## Send Transaction
+
+<SmartAccountSendTransaction />
+
+## Advanced Smart Account Operations
+
+To learn more about supported transaction methods, and how to perform batch transactions,
+[checkout our detailed documentation of AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider/#send-batch-transaction).

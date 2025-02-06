@@ -1,0 +1,81 @@
+---
+title: Initializing Single Factor Auth Flutter SDK
+sidebar_label: Initialize
+description: "Web3Auth Single Factor Auth Flutter SDK - Initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import Initialization from "@site/src/common/sdk/sfa/flutter/_sfa-flutter-initialization.mdx";
+
+After installation, the next step to use Web3Auth SFA Flutter is to initialize the SDK and is
+achieved by `init` method. This step requires passing various parameters that align with your
+project preferences. It's important to note that the initialization process is critical to the
+successful use of Web3Auth SFA Flutter.
+
+## Parameters
+
+Construct and configure the `init` method with the `SFAParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter     | Description                                                                                                                                                                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `network`     | The Web3auth network to be used by the SDK. Supported values are `Web3AuthNetwork.sapphire_mainnet`, `Web3AuthNetwork.sapphire_devnet`,`Web3AuthNetwork.mainnet`, `Web3AuthNetwork.testnet`, `Web3AuthNetwork.cyan`, and `Web3AuthNetwork.aqua` |
+| `clientId`    | The client id for your Web3Auth project. You can get it from [Web3Auth dashboard](https://dashboard.web3auth.io/).                                                                                                                              |
+| `sessionTime` | Specifies the session duration in seconds. By default, the value is set to 86400 seconds (1 day), with a maximum session duration of up to 30 days.                                                                                             |
+
+</TabItem>
+
+<TabItem value="class">
+
+```dart
+class SFAParams {
+  final Web3AuthNetwork network;
+  final String clientId;
+  final int sessionTime;
+
+  SFAParams(
+      {required this.network,
+      required this.clientId,
+      this.sessionTime = 86400});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'network': network.name,
+      'clientId': clientId,
+      'sessionTime': sessionTime,
+    };
+  }
+}
+
+enum Web3AuthNetwork {
+  mainnet,
+  testnet,
+  cyan,
+  aqua,
+  celeste,
+  sapphire_testnet,
+  sapphire_mainnet
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Initialize Web3AuthFlutter
+
+Initialize the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState`
+function.
+
+<Initialization />

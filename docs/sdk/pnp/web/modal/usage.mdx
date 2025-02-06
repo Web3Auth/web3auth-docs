@@ -11,14 +11,13 @@ import ConnectBlockchain from "@site/src/common/sdk/pnp/web/_connect-blockchain.
 import GetIdTokenInfo from "@site/src/common/sdk/pnp/web/_get-idtoken-info.mdx";
 import GetUserInfo from "@site/src/common/sdk/pnp/web/_get-user-info.mdx";
 import EnableMFA from "@site/src/common/sdk/pnp/web/_enable-mfa.mdx";
+import ManageMFA from "@site/src/common/sdk/pnp/web/_manage-mfa.mdx";
 import LogOut from "@site/src/common/sdk/pnp/web/_logout.mdx";
 import SwitchChain from "@site/src/common/sdk/pnp/web/_switch-chain.mdx";
 import Status from "@site/src/common/sdk/pnp/web/_status-method.mdx";
 import Provider from "@site/src/common/sdk/pnp/web/_provider-method.mdx";
 import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connected-adapter-name-method.mdx";
 import Connected from "@site/src/common/sdk/pnp/web/_connected-method.mdx";
-import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
-import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
 users. Further, you can use the native provider given by Web3Auth to connect the users to the
@@ -30,6 +29,7 @@ following functions:
 - `connect()` - Showing the Modal and Logging in the User
 - `getUserInfo()` - Getting the User's Information
 - `enableMFA()` - Enable Multi Factor Authentication for the user
+- `manageMFA()` - Redirect the user to manage their MFA settings in the Web3Auth Account Dashboard
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
 - `switchChain()` - Switch chain as per chainId already added to chain config.
@@ -45,12 +45,13 @@ instance:
 
 Finally, with the Wallet Services Plugin, you can enable additional functionalities like:
 
-- `initiateTopup()` - Initiate Topup for the user.
+- `showCheckout()` - Initiate Topup for the user.
 - `showWalletConnectScanner()` - Show WalletConnect QR Code Scanner.
+- `showWalletUI()` - Show Embedded Wallet UI.
+- `showSwap()` - Show Swap UI.
+- `showTransactionConfirmation()` - Show Transaction Confirmation UI.
 
 ## Logging in the User
-
-#### `connect()`
 
 You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your
 user can choose their preferred login method and access your application.
@@ -101,6 +102,10 @@ Read more about connecting your users with the selected blockchain in the
 
 <EnableMFA />
 
+## Manage Multi Factor Authentication (MFA)
+
+<ManageMFA />
+
 ## Get idToken for Backend Verification
 
 <GetIdTokenInfo />
@@ -135,12 +140,29 @@ Learn more about the Wallet Services Plugin in the
 
 ### Show WalletConnect Scanner
 
-#### `showWalletConnectScanner()`
-
-<ShowWCScanner />
+You can use the `showWalletConnectScanner` function to show the Wallet Connect Scanner, and connect
+with dApps having Wallet Connect login option. This is useful for interoperability with dApps having
+Wallet Connect login option.
+[Learn more about `showWalletConnectScanner`](/docs/sdk/pnp/web/wallet-services/usage#connect-dapps-with-wallet-connect).
 
 ### Fiat On Ramp
 
-#### `initiateTopup()`
+You can use the `showCheckout` function to show the TopUp modal, allowing users to select their
+local currency and specify the token to top up their wallet.
+[Learn more about `showCheckout`](/docs/sdk/pnp/web/wallet-services/usage#fiat-on-ramp).
 
-<InitiateTopUp />
+### Embedded Wallet UI
+
+You can use the `showWalletUI` function to show the templated wallet UI services.
+[Learn more about `showWalletUI`](/docs/sdk/pnp/web/wallet-services/usage#show-wallet-embedded-ui).
+
+### Swap Screen
+
+You can use the `showSwap` function to show the Swap UI.
+[Learn more about `showSwap`](/docs/sdk/pnp/web/wallet-services/usage#swap).
+
+### Transaction Confirmation Screen
+
+You can use the wallet services provider to integrate prebuilt transaction confirmation screens into
+your application. Upon successful completion, you can retrieve the signature for the request.
+[Learn more about transaction confirmation screens](/docs/sdk/pnp/web/wallet-services/usage#transaction-confirmation-screens).

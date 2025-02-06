@@ -1,0 +1,165 @@
+---
+title: Integrate Web3Auth with the Manta Blockchain in JavaScript
+sidebar_label: Web
+image: "banners/manta.png"
+keywords:
+  [
+    manta,
+    wallet,
+    integration,
+    API,
+    SDK,
+    web3auth,
+    authentication,
+    blockchain,
+    solution,
+    development,
+  ]
+description: "Integrate Web3Auth with the Manta Blockchain in JavaScript | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
+import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-get-account-n-balance.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
+import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
+import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
+import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
+import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Manta Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Manta Blockchain in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/manta.png"
+  slug="/connect-blockchain/evm/manta/web"
+/>
+
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Manta Blockchain](https://manta.network/) calls like getting the user's `account`, fetching
+`balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
+etc. We have highlighted a few examples to get you started.
+
+## Installation
+
+To interact with the Manta blockchain, you can use either library with Web3Auth.
+
+<InstallationSnippet />
+
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xA9", // hex of 169, Manta Pacific Mainnet
+  rpcTarget: "https://pacific-rpc.manta.network/http",
+  displayName: "Manta Pacific Mainnet",
+  blockExplorerUrl: "https://pacific-explorer.manta.network",
+  ticker: "ETH",
+  tickerName: "ETH",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x34816E", // hex of 3441006, Manta Pacific Sepolia Testnet
+  rpcTarget: "https://pacific-rpc.sepolia-testnet.manta.network/http",
+  displayName: "Manta Pacific Sepolia Testnet",
+  blockExplorerUrl: "https://pacific-explorer.sepolia-testnet.manta.network",
+  ticker: "ETH",
+  tickerName: "ETH",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
+
+<GetUserInfoSnippet />
+
+## Get Account and Balance
+
+<GetAccountAndBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign Transaction
+
+<SignTransactionSnippet />
+
+## Sign Message
+
+### Personal Sign
+
+<SignPersonalMessageSnippet />
+
+### Sign Typed Data v4
+
+<SignTypedDataV4Snippet />
+
+## Smart Contract
+
+<SmartContractSoliditySnippet />
+
+### Deploy Contract
+
+<DeployContractSolidityDeploySnippet />
+
+### Read From Contract
+
+<DeployContractSolidityReadSnippet />
+
+### Write to Contract
+
+<DeployContractSolidityWriteSnippet />
+
+## Fetch User's Private Key
+
+<FetchUserPrivateKeySnippet />

@@ -1,0 +1,145 @@
+---
+title: SFA Android SDK - v1.x.x to v2.0.0
+description: "SFA Android SDK - v1.x.x to v2.0.0 | Documentation - Web3Auth"
+sidebar_label: v1.x.x to v2.0.0
+---
+
+This migration guide provides steps for upgrading from version v1.x.x to v2.0.0 of the SFA Android
+SDK. The guide outlines significant changes and enhancements.
+
+## Breaking Changes
+
+### SFAParams Changes
+
+In v2, we try to improve the developer experience by renaming the `SFAParams` to `Web3AuthOptions`.
+It has been renamed to align with naming conventions across Web3Auth SDKs. Along with this, there
+has been change in the positional parameter.
+
+[Checkout Web3AuthOptions for available parameters](/docs/sdk/sfa/sfa-android/initialize#parameters).
+
+```kotlin
+// remove-start
+val singleFactorAuthArgs = SFAParams(
+    Web3AuthNetwork.MAINNET,
+    "YOUR_WEB3AUTH_CLIENT_ID"
+)
+// remove-end
+
+// add-start
+val web3AuthOptions = Web3AuthOptions(
+    "YOUR_WEB3AUTH_CLIENT_ID",
+    Web3AuthNetwork.MAINNET
+)
+// add-end
+
+val singleFactoreAuth = SingleFactorAuth(
+    // remove-next-line
+    singleFactorAuthArgs,
+    // add-next-line
+    web3AuthOptions,
+    this.applicationContext
+)
+```
+
+### SFAKey is replaced with SessionData
+
+In v2, we removed the `SFAKey` and added the `SessionData` object to return the relveant session
+information like private key, address, user information, and signatures.
+
+```kotlin
+// remove-next-line
+val sfaKey: SFAKey = singleFactoreAuth.connect(loginParams: loginParams)
+// add-next-line
+val sessionData: SessionData = singleFactoreAuth.connect(loginParams: loginParams)
+```
+
+### initialize method changes
+
+Starting v2, the `initialize` method will return `SessionData` instead of `SFAKey`. The method will
+return `null` if the user does not have an existing session, and in case of an invalid existing
+session, it will throw an error.
+
+```kotlin
+// remove-start
+val keyCF = singleFactorAuth.initialize(this.applicationContext)
+keyCF.whenComplete { key, error ->
+    if (error != null) {
+        // No existing session
+    } else {
+        // Existing session
+    }
+}
+// remove-end
+
+// add-start
+val sessionDataCF = singleFactorAuth.initialize(this.applicationContext)
+
+sessionDataCF.whenComplete {sessionData, error ->
+    if(error != null) {
+        // Session is no longer valid, or something went wrong
+        // Initiate the login flow again
+    } else if(sessionData == null) {
+        // No active session found
+    } else {
+        // Session is present
+        // You can use the sessionData to get the public address, private key,
+        // userInfo, and signatures.
+        Log.i("Public address", sessionData.publicAddress)
+    }
+}
+// add-end
+```
+
+### isSessionIdExists is replaced with isConnected
+
+The `isSessionIdExists` method is replaced with the `isConnected` method to check whether the user
+is logged in Web3Auth or not.
+
+```kotlin
+// remove-next-line
+val isSessionIdExists = singleFactoreAuth.isSessionIdExists()
+// add-next-line
+val isConnected = singleFactoreAuth.isConnected()
+```
+
+## Additional Features
+
+Apart from the breaking changes, we have added couple of new functions in v2 to improve the
+developer experience.
+
+### logout Method
+
+The `logout` method is added to the SDK to log out the user and clear the session data. Please note,
+that this method only logout the user and invalides the Web3Auth session, and not the OAuth provider
+session.
+
+```kotlin
+singleFactoreAuth.logout()
+```
+
+### getSessionData Method
+
+The `getSessionData` method is added to the SDK to get the session data. You can use this method to
+retrive the session data for an existing session. The method will return `null` if the user does not
+have an existing session.
+
+#### Usage
+
+```kotlin
+val sessionData: SessionData = singleFactoreAuth.getSessionData()
+
+if (sessionData == null) {
+    // User does not have an existing session
+}
+```
+
+#### SessionData
+
+The `SessionData` has the following properties to retrive the relevant session information.
+
+| Name            | Description                                                               |
+| --------------- | ------------------------------------------------------------------------- |
+| `privateKey`    | Retrieves the user's private key.                                         |
+| `publicAddress` | Retrieves the user's public address.                                      |
+| `userInfo?`     | Retrieves the user's information like email, name, verifier id, and more. |
+| `signatures?`   | Retrieves the node's signatures that are returned for request.            |

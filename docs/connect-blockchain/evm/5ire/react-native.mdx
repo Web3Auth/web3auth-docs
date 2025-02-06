@@ -1,0 +1,120 @@
+---
+title: Integrate Web3Auth with the 5ire Blockchain in React Native
+sidebar_label: React Native
+image: "banners/5ire.png"
+
+keywords: [react-native, 5ire, web3auth, authentication, blockchain]
+description:
+  "Integrate Web3Auth with the 5ire Blockchain in React Native | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-installation.mdx";
+import GetAccountSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-get-account.mdx";
+import UserInfoSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-user-info.mdx";
+import GetBalanceSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-get-balance.mdx";
+import InitialisationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-initialisation.mdx";
+import SignMessageSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-sign-message.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-send-transaction.mdx";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the 5ire Blockchain in React Native"
+  description="Integrate Web3Auth with the 5ire Blockchain in React Native | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/5ire.png"
+  slug="/connect-blockchain/evm/5ire/react-native"
+/>
+
+While using the Web3Auth React Native SDK, you get a
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
+[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be
+used with libraries like [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[5ire Blockchain](https://5ire.org) blockchain calls like getting the user's `account`, fetching
+`balance`, signing transactions, sending transactions, and interacting with smart contracts. We have
+highlighted a few key examples to get you started quickly on that.
+
+## Installation
+
+<InstallationSnippet />
+
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: "0x3E3", // hex of 995, 5ireChain Mainnet
+  rpcTarget: "https://rpc.5ire.network",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "5ireChain Mainnet",
+  blockExplorer: "https://5irescan.io",
+  ticker: "5ire",
+  tickerName: "5ire",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: "0x3E5", // hex of 997, 5ireChain Testnet
+  rpcTarget: "https://rpc.testnet.5ire.network",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "5ireChain Testnet",
+  blockExplorer: "https://testnet.5irescan.io",
+  ticker: "5ire",
+  tickerName: "5ire",
+};
+```
+
+</TabItem>
+</Tabs>
+
+## Initialize
+
+<InitialisationSnippet />
+
+## Get User Info
+
+<UserInfoSnippet />
+
+## Get Account
+
+<GetAccountSnippet />
+
+## Get Balance
+
+<GetBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign a message
+
+<SignMessageSnippet />

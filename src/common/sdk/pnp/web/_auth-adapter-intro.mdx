@@ -1,0 +1,139 @@
+import AuthWhiteLabelExample from "./_auth-whitelabel-example.mdx";
+
+The default adapter of Web3Auth is the [`auth-adapter`](/sdk/pnp/web/adapters/auth). This adapter is
+a wrapper around the [`auth`](/sdk/pnp/web/adapters/auth) library from Web3Auth and enables the
+social login features. For customising features of the main Web3Auth flow, like
+[Whitelabel](/features/whitelabel), [Custom Authentication](/features/custom-authentication), etc.
+you need to customise the Auth Adapter.
+
+:::tip
+
+Checkout the [`auth-adapter`](/sdk/pnp/web/adapters/auth) SDK Reference for more details on
+different configurations you can pass for customisations.
+
+:::
+
+#### Whitelabeling
+
+##### `whiteLabel`
+
+For customising the redirect screens while logging in and constructing the key, you need to pass on
+`whiteLabel` configurations to the `adapterSettings` property of the
+[`auth-adapter`](/sdk/pnp/web/adapters/auth).
+
+:::tip
+
+This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more in
+depth about how you can Whitelabel your application with Web3Auth, have a look at our
+[Whitelabeling SDK Reference](/features/whitelabel).
+
+:::
+
+<AuthWhiteLabelExample />
+
+#### Multi Factor Authentication
+
+##### `mfaLevel`
+
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the
+MFA screen by setting the `mfaLevel` argument. You can enable or disable a backup factor and change
+their order. Currently, there are four values for `mfaLevel`:
+
+- `default`: presents the MFA screen every third login
+- `optional`: presents the MFA screen on every login, but you can skip it
+- `mandatory`: make it mandatory to set up MFA after login
+- `none`: skips the MFA setup screen
+
+```tsx
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+const authAdapter = new AuthAdapter({
+  loginSettings: {
+    //focus-start
+    mfaLevel: "mandatory", // default, optional, mandatory, none
+    //focus-end
+  },
+});
+```
+
+:::caution Note
+
+Users of default Web3Auth verifiers may see MFA prompts across all dApps using these verifiers if
+they've enabled MFA on any one of them. This MFA can't be turned off once activated.
+
+:::
+
+##### `mfaSettings`
+
+For customising the MFA settings, you need to pass on `mfaSettings` configurations to the
+`adapterSettings` property of the `AuthAdapter`.
+
+:::tip
+
+Read more about `mfaSettings` in the [Multi Factor Authentication Section](./mfa) SDK Reference.
+
+**Note: `mfaSettings` is available for SCALE and above plan users.**
+
+:::
+
+```tsx
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+const authAdapter = new AuthAdapter({
+  adapterSettings: {
+    //focus-start
+    // SCALE and above plan only feature
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true, // at least two factors are mandatory
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: true, // at least two factors are mandatory
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
+      passkeysFactor: {
+        enable: true,
+        priority: 5,
+        mandatory: false,
+      },
+      authenticatorFactor: {
+        enable: true,
+        priority: 6,
+        mandatory: false,
+      },
+    },
+    //focus-end
+  },
+});
+```
+
+#### Custom Authentication
+
+##### `loginConfig`
+
+With Web3Auth, you have the option to configure logins using your own authentication services. For
+adding your own authentication, you have to first configure your verifiers in the Web3Auth
+Dashboard.
+
+Custom Authentication in Web3Auth is supported by the Auth Adapter, which is the default adapter for
+the Web3Auth SDK. For this, you need to configure the `loginConfig` parameter in the
+`adapterSettings` of the `auth-adapter` package.
+
+:::tip
+
+Refer to the [Custom Authentication Documentation](./custom-authentication) for more information.
+
+:::

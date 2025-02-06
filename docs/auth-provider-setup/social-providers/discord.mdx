@@ -8,6 +8,7 @@ description: "Discord Social Login with Web3Auth | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import DiscordSetup from "@site/src/common/guides/_discord-setup.mdx";
+import CreateVerifierFirstStep from "@site/src/common/docs/_create-verifier-first-step.mdx";
 
 :::info
 
@@ -19,7 +20,9 @@ import DiscordSetup from "@site/src/common/guides/_discord-setup.mdx";
 
 <DiscordSetup />
 
-## Set up Discord
+## Create a Discord verifier
+
+<CreateVerifierFirstStep />
 
 1. Create a verifier for your Discord application by selecting `Discord` as the Login provider from
    this modal.
@@ -27,7 +30,7 @@ import DiscordSetup from "@site/src/common/guides/_discord-setup.mdx";
 2. Paste the **Client ID** from the Discord App(above) to the `Client ID` field and click on Create.
    ![Discord Client ID on Web3Auth Dashboard](/images/dashboard/create-verifier-discord.png)
 
-### Example
+## Example
 
 <Tabs
 defaultValue="modal"
@@ -39,26 +42,26 @@ values={[
 <TabItem value="modal">
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-// Create OpenloginAdapter instance once you have created Web3Auth instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3Auth instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     loginConfig: {
       // Discord login
-      // highlight-start
+      // focus-start
       discord: {
         verifier: "w3a-discord-demo", // Pass the Verifier name here
         typeOfLogin: "discord", // Pass on the login provider of the verifier you've created
         clientId: "1151006428610433095", // Pass on the Discord `Client ID` here
       },
-      // highlight-end
+      // focus-end
     },
   },
 });
 
-web3AuthInstance.configureAdapter(openloginAdapter);
+web3AuthInstance.configureAdapter(authAdapter);
 
 // Initialize Modal
 await web3AuthInstance.initModal();
@@ -72,34 +75,34 @@ await web3AuthInstance.connect();
 <TabItem value="nomodal">
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     loginConfig: {
-      // highlight-start
+      // focus-start
       discord: {
         verifier: "w3a-discord-demo", // Pass the Verifier name here
         typeOfLogin: "discord", // Pass on the login provider of the verifier you've created
         clientId: "1151006428610433095", // Pass on the Discord `Client ID` here
       },
-      // highlight-end
+      // focus-end
     },
   },
 });
 
-web3AuthNoModalInstance.configureAdapter(openloginAdapter);
+web3AuthNoModalInstance.configureAdapter(authAdapter);
 
 // Initialize
 await web3AuthNoModalInstance.init();
 
 // Login with Discord
-// highlight-start
-await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+// focus-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "discord",
 });
-// highlight-end
+// focus-end
 ```
 
 </TabItem>

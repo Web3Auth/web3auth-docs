@@ -8,19 +8,10 @@ import {
   flutter,
   unity,
   unreal,
-  corekitnodejs,
-  mpccorekit,
-  singlefactorauth,
-  singlefactorauthandroid,
-  singlefactorauthflutter,
-  singlefactorauthios,
-  singlefactorauthrn,
-  tkeyandroid,
-  tkeyios,
-  tkeyjs,
+  js,
 } from "./src/common/SDKOptions";
 
-import { getPnPVersion, getCoreKitVersion } from "./src/common/versions";
+import { getPnPVersion, getSFAVersion, getMPCCoreKitVersion } from "./src/common/versions";
 
 function pnpTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
@@ -58,59 +49,91 @@ function pnpTopNavButton(selectedSDK: string): string {
           v${sdkVersion}
         </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/core-kit/sfa-web">
-        Core Kit SDKs
-        <span class="sdk-sidebar-description">Low Level SDKs where Web3Auth is Completely Hidden</span>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
+        Single Factor Auth SDKs
+        <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
+      </a>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
+        MPC Core Kit SDK
+        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </a>
     </div>`;
 }
 
-function coreKitTopNavButton(selectedSDK: string): string {
+function sfaTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-  var coreKitSDKs = {
-    [singlefactorauth]: `${baseUrl}sdk/core-kit/sfa-web`,
-    [singlefactorauthandroid]: `${baseUrl}sdk/core-kit/sfa-android`,
-    [singlefactorauthios]: `${baseUrl}sdk/core-kit/sfa-ios`,
-    [singlefactorauthrn]: `${baseUrl}sdk/core-kit/sfa-react-native`,
-    [singlefactorauthflutter]: `${baseUrl}sdk/core-kit/sfa-flutter`,
-    [corekitnodejs]: `${baseUrl}sdk/core-kit/sfa-node`,
-    [mpccorekit]: `${baseUrl}sdk/core-kit/mpc-core-kit`,
-    [tkeyjs]: `${baseUrl}sdk/core-kit/tkey`,
-    [tkeyandroid]: `${baseUrl}sdk/core-kit/tkey-android`,
-    [tkeyios]: `${baseUrl}sdk/core-kit/tkey-ios`,
-    // "tKey iOS MPC": `${baseUrl}sdk/core-kit/mpc-tkey-ios`,
+  var sfaSDKs = {
+    [js]: `${baseUrl}sdk/sfa/sfa-js`,
+    [android]: `${baseUrl}sdk/sfa/sfa-android`,
+    [ios]: `${baseUrl}sdk/sfa/sfa-ios`,
+    [flutter]: `${baseUrl}sdk/sfa/sfa-flutter`,
   };
-  if (coreKitSDKs.hasOwnProperty(selectedSDK)) {
-    delete coreKitSDKs[selectedSDK];
+  if (sfaSDKs.hasOwnProperty(selectedSDK)) {
+    delete sfaSDKs[selectedSDK];
   }
-  var sdkNames = Object.keys(coreKitSDKs);
-  var sdkLinks = Object.values(coreKitSDKs);
-  var sdkVersion = getCoreKitVersion(selectedSDK);
+  var sdkNames = Object.keys(sfaSDKs);
+  var sdkLinks = Object.values(sfaSDKs);
+  var sdkVersion = getSFAVersion(selectedSDK);
 
   return `
     <div class="sdk-sidebar-container">
       <a class="sdk-sidebar-option" href="${baseUrl}sdk/pnp/web">
         Plug and Play SDKs
-        <span class="sdk-sidebar-description">Embedded Wallets with Prebuilt UI Components</span>
+        <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
       </a>
       <div class="sdk-sidebar-option-selected">
-        Core Kit SDKs
+        Single Factor Auth SDKs
                 <div class="sdk-sidebar-dropdown-container">
         <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
             <option value="">${selectedSDK}</option>
             <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
             <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
             <option value="${sdkLinks[2]}">${sdkNames[2]}</option>
-            <option value="${sdkLinks[3]}">${sdkNames[3]}</option>
-            <option value="${sdkLinks[4]}">${sdkNames[4]}</option>
-            <option value="${sdkLinks[5]}">${sdkNames[5]}</option>
-            <option value="${sdkLinks[6]}">${sdkNames[6]}</option>
-            <option value="${sdkLinks[7]}">${sdkNames[7]}</option>
-            <option value="${sdkLinks[8]}">${sdkNames[8]}</option>
         </select>
                   v${sdkVersion}
                   </div>
+      </div>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
+        MPC Core Kit SDK
+        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
+      </a>
+    </div>`;
+}
+
+function mpcckTopNavButton(selectedSDK: string): string {
+  const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
+
+  var mpcCoreKitSDKs = {
+    [js]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js`,
+    [reactnative]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-react-native`,
+  };
+  if (mpcCoreKitSDKs.hasOwnProperty(selectedSDK)) {
+    delete mpcCoreKitSDKs[selectedSDK];
+  }
+  var sdkNames = Object.keys(mpcCoreKitSDKs);
+  var sdkLinks = Object.values(mpcCoreKitSDKs);
+  var sdkVersion = getMPCCoreKitVersion(selectedSDK);
+
+  return `
+    <div class="sdk-sidebar-container">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/pnp/web">
+        Plug and Play SDKs
+        <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
+      </a>
+       <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
+        Single Factor Auth SDKs
+        <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
+      </a>
+      <div class="sdk-sidebar-option-selected">
+        MPC Core Kit SDKs
+        <div class="sdk-sidebar-dropdown-container">
+          <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
+              <option value="">${selectedSDK}</option>
+              <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
+          </select>
+          v${sdkVersion}
+        </div>
       </div>
     </div>`;
 }
@@ -246,18 +269,20 @@ const sidebars: SidebarsConfig = {
           id: "product/product",
         },
         "product/pnp",
-        "product/core-kit",
+        "product/sfa",
+        "product/mpc-core-kit",
         "product/wallet-services",
         "product/wallet-ecosystems",
-        "product/product-fit",
       ],
     },
+    "product-fit",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Features</span>",
       defaultStyle: true,
     },
     "features/account-abstraction",
+    "features/account-dashboard",
     "features/blockchain-agnostic",
     "features/custom-authentication",
     "features/wallet-ui",
@@ -271,6 +296,7 @@ const sidebars: SidebarsConfig = {
     "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
+    "features/smart-accounts",
     "features/user-management",
     "features/wallet-pregeneration",
     "features/mipd",
@@ -393,6 +419,8 @@ const sidebars: SidebarsConfig = {
           label: "Social Connections",
           items: [
             "auth-provider-setup/social-providers/social-providers",
+            "auth-provider-setup/social-providers/email-passwordless",
+            "auth-provider-setup/social-providers/sms-passwordless",
             "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
             "auth-provider-setup/social-providers/telegram",
@@ -468,6 +496,45 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "5ire",
+              items: [
+                "connect-blockchain/evm/5ire/5ire",
+                "connect-blockchain/evm/5ire/web",
+                "connect-blockchain/evm/5ire/android",
+                "connect-blockchain/evm/5ire/ios",
+                "connect-blockchain/evm/5ire/react-native",
+                "connect-blockchain/evm/5ire/flutter",
+                "connect-blockchain/evm/5ire/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Aleph Zero",
+              items: [
+                "connect-blockchain/evm/aleph-zero/aleph-zero",
+                "connect-blockchain/evm/aleph-zero/web",
+                "connect-blockchain/evm/aleph-zero/android",
+                "connect-blockchain/evm/aleph-zero/ios",
+                "connect-blockchain/evm/aleph-zero/react-native",
+                "connect-blockchain/evm/aleph-zero/flutter",
+                "connect-blockchain/evm/aleph-zero/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Ancient8",
+              items: [
+                "connect-blockchain/evm/ancient8/ancient8",
+                "connect-blockchain/evm/ancient8/web",
+                "connect-blockchain/evm/ancient8/android",
+                "connect-blockchain/evm/ancient8/ios",
+                "connect-blockchain/evm/ancient8/react-native",
+                "connect-blockchain/evm/ancient8/flutter",
+                "connect-blockchain/evm/ancient8/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Arbitrum",
               items: [
                 "connect-blockchain/evm/arbitrum/arbitrum",
@@ -533,6 +600,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "BitKub",
+              items: [
+                "connect-blockchain/evm/bitkub/bitkub",
+                "connect-blockchain/evm/bitkub/web",
+                "connect-blockchain/evm/bitkub/android",
+                "connect-blockchain/evm/bitkub/ios",
+                "connect-blockchain/evm/bitkub/react-native",
+                "connect-blockchain/evm/bitkub/flutter",
+                "connect-blockchain/evm/bitkub/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "BNB Chain",
               items: [
                 "connect-blockchain/evm/bnb/bnb",
@@ -572,6 +652,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Chiliz",
+              items: [
+                "connect-blockchain/evm/chiliz/chiliz",
+                "connect-blockchain/evm/chiliz/web",
+                "connect-blockchain/evm/chiliz/android",
+                "connect-blockchain/evm/chiliz/ios",
+                "connect-blockchain/evm/chiliz/react-native",
+                "connect-blockchain/evm/chiliz/flutter",
+                "connect-blockchain/evm/chiliz/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Cronos",
               items: [
                 "connect-blockchain/evm/cronos/cronos",
@@ -594,6 +687,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/flare/react-native",
                 "connect-blockchain/evm/flare/flutter",
                 "connect-blockchain/evm/flare/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Flow",
+              items: [
+                "connect-blockchain/evm/flow/flow",
+                "connect-blockchain/evm/flow/web",
+                "connect-blockchain/evm/flow/android",
+                "connect-blockchain/evm/flow/ios",
+                "connect-blockchain/evm/flow/react-native",
+                "connect-blockchain/evm/flow/flutter",
+                "connect-blockchain/evm/flow/unity",
               ],
             },
             {
@@ -672,6 +778,45 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/linea/react-native",
                 "connect-blockchain/evm/linea/flutter",
                 "connect-blockchain/evm/linea/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Manta",
+              items: [
+                "connect-blockchain/evm/manta/manta",
+                "connect-blockchain/evm/manta/web",
+                "connect-blockchain/evm/manta/android",
+                "connect-blockchain/evm/manta/ios",
+                "connect-blockchain/evm/manta/react-native",
+                "connect-blockchain/evm/manta/flutter",
+                "connect-blockchain/evm/manta/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Metis",
+              items: [
+                "connect-blockchain/evm/metis/metis",
+                "connect-blockchain/evm/metis/web",
+                "connect-blockchain/evm/metis/android",
+                "connect-blockchain/evm/metis/ios",
+                "connect-blockchain/evm/metis/react-native",
+                "connect-blockchain/evm/metis/flutter",
+                "connect-blockchain/evm/metis/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Mint",
+              items: [
+                "connect-blockchain/evm/mint/mint",
+                "connect-blockchain/evm/mint/web",
+                "connect-blockchain/evm/mint/android",
+                "connect-blockchain/evm/mint/ios",
+                "connect-blockchain/evm/mint/react-native",
+                "connect-blockchain/evm/mint/flutter",
+                "connect-blockchain/evm/mint/unity",
               ],
             },
             {
@@ -819,6 +964,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Soneium",
+              items: [
+                "connect-blockchain/evm/soneium/soneium",
+                "connect-blockchain/evm/soneium/web",
+                "connect-blockchain/evm/soneium/android",
+                "connect-blockchain/evm/soneium/ios",
+                "connect-blockchain/evm/soneium/react-native",
+                "connect-blockchain/evm/soneium/flutter",
+                "connect-blockchain/evm/soneium/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Songbird",
               items: [
                 "connect-blockchain/evm/songbird/songbird",
@@ -837,6 +995,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "XDC Network",
+              items: [
+                "connect-blockchain/evm/xdc/xdc",
+                "connect-blockchain/evm/xdc/web",
+                "connect-blockchain/evm/xdc/android",
+                "connect-blockchain/evm/xdc/ios",
+                "connect-blockchain/evm/xdc/react-native",
+                "connect-blockchain/evm/xdc/flutter",
+                "connect-blockchain/evm/xdc/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Zetachain",
               items: [
                 "connect-blockchain/evm/zetachain/zetachain",
@@ -848,6 +1019,32 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/zetachain/unity",
               ],
             },
+            {
+              type: "category",
+              label: "Zilliqa",
+              items: [
+                "connect-blockchain/evm/zilliqa/zilliqa",
+                "connect-blockchain/evm/zilliqa/web",
+                "connect-blockchain/evm/zilliqa/android",
+                "connect-blockchain/evm/zilliqa/ios",
+                "connect-blockchain/evm/zilliqa/react-native",
+                "connect-blockchain/evm/zilliqa/flutter",
+                "connect-blockchain/evm/zilliqa/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Zircuit",
+              items: [
+                "connect-blockchain/evm/zircuit/zircuit",
+                "connect-blockchain/evm/zircuit/web",
+                "connect-blockchain/evm/zircuit/android",
+                "connect-blockchain/evm/zircuit/ios",
+                "connect-blockchain/evm/zircuit/react-native",
+                "connect-blockchain/evm/zircuit/flutter",
+                "connect-blockchain/evm/zircuit/unity",
+              ],
+            },
           ],
         },
         {
@@ -856,12 +1053,21 @@ const sidebars: SidebarsConfig = {
           items: [
             "connect-blockchain/solana/solana",
             "connect-blockchain/solana/web",
+            "connect-blockchain/solana/web-mpc",
             "connect-blockchain/solana/flutter",
             "connect-blockchain/solana/android",
             "connect-blockchain/solana/ios",
           ],
         },
-
+        {
+          type: "category",
+          label: "Near",
+          items: [
+            "connect-blockchain/near/near",
+            "connect-blockchain/near/web",
+            "connect-blockchain/near/web-mpc",
+          ],
+        },
         "connect-blockchain/xrpl",
         {
           type: "category",
@@ -873,7 +1079,6 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/bitcoin",
             "connect-blockchain/other/cosmos",
             "connect-blockchain/other/immutablex",
-            "connect-blockchain/other/near",
             "connect-blockchain/other/polkadot",
             "connect-blockchain/other/polymesh",
             "connect-blockchain/other/starkex",
@@ -961,6 +1166,7 @@ const sidebars: SidebarsConfig = {
           collapsed: false,
           label: "Additional Settings",
           items: [
+            "sdk/pnp/web/modal/account-abstraction",
             "sdk/pnp/web/modal/whitelabel",
             "sdk/pnp/web/modal/custom-authentication",
             "sdk/pnp/web/modal/mfa",
@@ -986,6 +1192,7 @@ const sidebars: SidebarsConfig = {
           collapsed: false,
           label: "Additional Settings",
           items: [
+            "sdk/pnp/web/no-modal/account-abstraction",
             "sdk/pnp/web/no-modal/whitelabel",
             "sdk/pnp/web/no-modal/custom-authentication",
             "sdk/pnp/web/no-modal/mfa",
@@ -1002,15 +1209,11 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/adapters",
         "sdk/pnp/web/adapters/default-evm-adapter",
         "sdk/pnp/web/adapters/default-solana-adapter",
-        "sdk/pnp/web/adapters/openlogin",
+        "sdk/pnp/web/adapters/auth",
         "sdk/pnp/web/adapters/torus-evm",
         "sdk/pnp/web/adapters/torus-solana",
-        "sdk/pnp/web/adapters/metamask",
-        "sdk/pnp/web/adapters/phantom",
-        "sdk/pnp/web/adapters/wallet-connect-v1",
         "sdk/pnp/web/adapters/wallet-connect-v2",
         "sdk/pnp/web/adapters/coinbase",
-        "sdk/pnp/web/adapters/solflare",
       ],
     },
     {
@@ -1028,6 +1231,7 @@ const sidebars: SidebarsConfig = {
       items: [
         "sdk/pnp/web/providers/providers",
         "sdk/pnp/web/providers/evm",
+        "sdk/pnp/web/providers/aa-provider",
         "sdk/pnp/web/providers/solana",
         "sdk/pnp/web/providers/xrpl",
         "sdk/pnp/web/providers/common",
@@ -1058,6 +1262,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Plug and Play Modal SDK",
           items: [
+            "migration-guides/modal-v8-to-v9",
             "migration-guides/modal-v7-to-v8",
             "migration-guides/modal-v6-to-v7",
             "migration-guides/modal-v5-to-v6",
@@ -1067,6 +1272,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Plug and Play No Modal SDK",
           items: [
+            "migration-guides/no-modal-v8-to-v9",
             "migration-guides/no-modal-v7-to-v8",
             "migration-guides/no-modal-v6-to-v7",
             "migration-guides/no-modal-v5-to-v6",
@@ -1118,12 +1324,13 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
-        "migration-guides/android-v4-to-v5",
-        "migration-guides/android-v5-to-v6",
-        "migration-guides/android-v6-to-v6.1",
-        "migration-guides/android-v7.1.1-to-v7.1.2",
-        "migration-guides/android-v7.1.2-to-v7.2",
+        "migration-guides/android-v8-to-v9",
         "migration-guides/android-v7.2-to-v7.3",
+        "migration-guides/android-v7.1.2-to-v7.2",
+        "migration-guides/android-v7.1.1-to-v7.1.2",
+        "migration-guides/android-v6-to-v6.1",
+        "migration-guides/android-v5-to-v6",
+        "migration-guides/android-v4-to-v5",
       ],
     },
     ...sdkQuickLinks,
@@ -1170,11 +1377,12 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
-        "migration-guides/ios-v6-to-v7",
-        "migration-guides/ios-v7-to-v8",
-        "migration-guides/ios-v8-to-v8.1",
-        "migration-guides/ios-v8.1-to-v8.2",
+        "migration-guides/ios-v9-to-v10",
         "migration-guides/ios-v8.2-to-v8.3",
+        "migration-guides/ios-v8.1-to-v8.2",
+        "migration-guides/ios-v8-to-v8.1",
+        "migration-guides/ios-v7-to-v8",
+        "migration-guides/ios-v6-to-v7",
       ],
     },
     ...sdkQuickLinks,
@@ -1196,6 +1404,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       label: "Additional Settings",
       items: [
+        "sdk/pnp/react-native/account-abstraction",
         "sdk/pnp/react-native/whitelabel",
         "sdk/pnp/react-native/custom-authentication",
         "sdk/pnp/react-native/mfa",
@@ -1208,6 +1417,7 @@ const sidebars: SidebarsConfig = {
       items: [
         "sdk/pnp/react-native/providers/providers",
         "sdk/pnp/react-native/providers/evm",
+        "sdk/pnp/react-native/providers/aa-provider",
         "sdk/pnp/react-native/providers/solana",
         "sdk/pnp/react-native/providers/xrpl",
         "sdk/pnp/react-native/providers/common",
@@ -1237,6 +1447,7 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
+        "migration-guides/rn-v7-to-v8",
         "migration-guides/rn-v5-to-v6",
         "migration-guides/rn-v4-to-v5",
         "migration-guides/rn-v3-to-v4",
@@ -1290,7 +1501,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/flutter-v3-to-v4"],
+      items: ["migration-guides/flutter-v5-to-v6", "migration-guides/flutter-v3-to-v4"],
     },
     ...sdkQuickLinks,
   ],
@@ -1366,34 +1577,46 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_web: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauth),
+      value: sfaTopNavButton(js),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-web/sfa-web",
-    "sdk/core-kit/sfa-web/install",
-    "sdk/core-kit/sfa-web/initialize",
-    "sdk/core-kit/sfa-web/authentication",
-    "sdk/core-kit/sfa-web/usage",
-    "sdk/core-kit/sfa-web/examples",
-    "sdk/core-kit/sfa-web/passkeys-sfa",
+    "sdk/sfa/sfa-js/sfa-js",
+    "sdk/sfa/sfa-js/install",
+    "sdk/sfa/sfa-js/initialize",
+    "sdk/sfa/sfa-js/authentication",
+    "sdk/sfa/sfa-js/usage",
+    "sdk/sfa/sfa-js/examples",
     {
       type: "category",
-      label: "Providers",
+      collapsible: true,
+      collapsed: false,
+      label: "Additional Settings",
       items: [
-        "sdk/core-kit/sfa-web/providers/providers",
-        "sdk/core-kit/sfa-web/providers/evm",
-        "sdk/core-kit/sfa-web/providers/solana",
-        "sdk/core-kit/sfa-web/providers/xrpl",
-        "sdk/core-kit/sfa-web/providers/common",
+        "sdk/sfa/sfa-js/passkeys-sfa",
+        "sdk/sfa/sfa-js/account-abstraction",
+        "sdk/sfa/sfa-js/initiate-topup",
+        "sdk/sfa/sfa-js/show-wallet-connect",
       ],
     },
     {
       type: "category",
-      label: "Plugins",
+      label: "Providers",
       items: [
-        "sdk/core-kit/sfa-web/wallet-services/wallet-services",
-        "sdk/core-kit/sfa-web/wallet-services/usage",
-        "sdk/core-kit/sfa-web/wallet-services/wallet-services-hooks",
+        "sdk/sfa/sfa-js/providers/providers",
+        "sdk/sfa/sfa-js/providers/evm",
+        "sdk/sfa/sfa-js/providers/aa-provider",
+        "sdk/sfa/sfa-js/providers/solana",
+        "sdk/sfa/sfa-js/providers/xrpl",
+        "sdk/sfa/sfa-js/providers/common",
+      ],
+    },
+    {
+      type: "category",
+      label: "Wallet Services Plugin",
+      items: [
+        "sdk/sfa/sfa-js/wallet-services/wallet-services",
+        "sdk/sfa/sfa-js/wallet-services/usage",
+        "sdk/sfa/sfa-js/wallet-services/wallet-services-hooks",
       ],
     },
     {
@@ -1402,9 +1625,14 @@ const sidebars: SidebarsConfig = {
       href: "https://demo-sfa.web3auth.io",
     },
     {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/sfa-rn-to-sfa-js", "migration-guides/sfa-node-to-sfa-js"],
+    },
+    {
       type: "link",
       label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22",
+      href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa/22",
     },
     {
       type: "link",
@@ -1416,15 +1644,15 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_android: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauthandroid),
+      value: sfaTopNavButton(android),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-android/sfa-android",
-    "sdk/core-kit/sfa-android/install",
-    "sdk/core-kit/sfa-android/initialize",
-    "sdk/core-kit/sfa-android/authentication",
-    "sdk/core-kit/sfa-android/usage",
-    "sdk/core-kit/sfa-android/examples",
+    "sdk/sfa/sfa-android/sfa-android",
+    "sdk/sfa/sfa-android/install",
+    "sdk/sfa/sfa-android/initialize",
+    "sdk/sfa/sfa-android/authentication",
+    "sdk/sfa/sfa-android/usage",
+    "sdk/sfa/sfa-android/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1438,22 +1666,27 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-android-v0.1.0-to-v0.3.0"],
+      items: [
+        "migration-guides/sfa-android-v2-to-v3",
+        "migration-guides/sfa-android-v1.2.0-to-v2.0.0",
+        "migration-guides/sfa-android-v0.4.0-to-v1",
+        "migration-guides/sfa-android-v0.1.0-to-v0.3.0",
+      ],
     },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_ios: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauthios),
+      value: sfaTopNavButton(ios),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-ios/sfa-ios",
-    "sdk/core-kit/sfa-ios/install",
-    "sdk/core-kit/sfa-ios/initialize",
-    "sdk/core-kit/sfa-ios/authentication",
-    "sdk/core-kit/sfa-ios/usage",
-    "sdk/core-kit/sfa-ios/examples",
+    "sdk/sfa/sfa-ios/sfa-ios",
+    "sdk/sfa/sfa-ios/install",
+    "sdk/sfa/sfa-ios/initialize",
+    "sdk/sfa/sfa-ios/authentication",
+    "sdk/sfa/sfa-ios/usage",
+    "sdk/sfa/sfa-ios/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1467,57 +1700,26 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-ios-v2-to-v4"],
-    },
-    ...sdkQuickLinks,
-  ],
-  sdk_core_kit_sfa_react_native: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(singlefactorauthrn),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/sfa-react-native/sfa-react-native",
-    "sdk/core-kit/sfa-react-native/install",
-    "sdk/core-kit/sfa-react-native/initialize",
-    "sdk/core-kit/sfa-react-native/authentication",
-    "sdk/core-kit/sfa-react-native/usage",
-    "sdk/core-kit/sfa-react-native/examples",
-    {
-      type: "category",
-      label: "Providers",
       items: [
-        "sdk/core-kit/sfa-react-native/providers/providers",
-        "sdk/core-kit/sfa-react-native/providers/evm",
-        "sdk/core-kit/sfa-react-native/providers/solana",
-        "sdk/core-kit/sfa-react-native/providers/xrpl",
-        "sdk/core-kit/sfa-react-native/providers/common",
+        "migration-guides/sfa-ios-v8-to-v9",
+        "migration-guides/sfa-ios-v7-to-v8",
+        "migration-guides/sfa-ios-v2-to-v4",
       ],
-    },
-    {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/Web3Auth/single-factor-auth-react-native/releases",
     },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_flutter: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauthflutter),
+      value: sfaTopNavButton(flutter),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-flutter/sfa-flutter",
-    "sdk/core-kit/sfa-flutter/install",
-    "sdk/core-kit/sfa-flutter/initialize",
-    "sdk/core-kit/sfa-flutter/authentication",
-    "sdk/core-kit/sfa-flutter/usage",
-    "sdk/core-kit/sfa-flutter/examples",
+    "sdk/sfa/sfa-flutter/sfa-flutter",
+    "sdk/sfa/sfa-flutter/install",
+    "sdk/sfa/sfa-flutter/initialize",
+    "sdk/sfa/sfa-flutter/authentication",
+    "sdk/sfa/sfa-flutter/usage",
+    "sdk/sfa/sfa-flutter/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1531,53 +1733,41 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-flutter-v1-to-v2", "migration-guides/sfa-flutter-v2-to-v4"],
-    },
-    ...sdkQuickLinks,
-  ],
-  sdk_core_kit_sfa_node: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(corekitnodejs),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/sfa-node/sfa-node",
-    "sdk/core-kit/sfa-node/install",
-    "sdk/core-kit/sfa-node/initialize",
-    "sdk/core-kit/sfa-node/authentication",
-    "sdk/core-kit/sfa-node/usage",
-    "sdk/core-kit/sfa-node/examples",
-    {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-node/23",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/web3auth/web3auth-backend/releases",
+      items: [
+        "migration-guides/sfa-flutter-v4-to-v5",
+        "migration-guides/sfa-flutter-v2-to-v4",
+        "migration-guides/sfa-flutter-v1-to-v2",
+      ],
     },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_mpc_js: [
     {
       type: "html",
-      value: coreKitTopNavButton(mpccorekit),
+      value: mpcckTopNavButton(js),
       defaultStyle: true,
     },
-    "sdk/core-kit/mpc-core-kit/mpc-core-kit",
-    "sdk/core-kit/mpc-core-kit/install",
-    "sdk/core-kit/mpc-core-kit/initialize",
-    "sdk/core-kit/mpc-core-kit/authentication",
-    "sdk/core-kit/mpc-core-kit/signing",
-    "sdk/core-kit/mpc-core-kit/usage",
-    "sdk/core-kit/mpc-core-kit/examples",
+    "sdk/mpc-core-kit/mpc-core-kit-js/mpc-core-kit-js",
+    "sdk/mpc-core-kit/mpc-core-kit-js/install",
+    "sdk/mpc-core-kit/mpc-core-kit-js/initialize",
+    {
+      type: "category",
+      label: "Authentication",
+      items: [
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/authentication",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth",
+      ],
+    },
+    "sdk/mpc-core-kit/mpc-core-kit-js/signing",
+    "sdk/mpc-core-kit/mpc-core-kit-js/usage",
+    "sdk/mpc-core-kit/mpc-core-kit-js/examples",
     {
       type: "category",
       label: "Providers",
       items: [
-        "sdk/core-kit/mpc-core-kit/providers/providers",
-        "sdk/core-kit/mpc-core-kit/providers/evm",
+        "sdk/mpc-core-kit/mpc-core-kit-js/providers/providers",
+        "sdk/mpc-core-kit/mpc-core-kit-js/providers/evm",
       ],
     },
     {
@@ -1597,123 +1787,164 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_tkey_js: [
+  sdk_core_kit_mpc_react_native: [
     {
       type: "html",
-      value: coreKitTopNavButton(tkeyjs),
+      value: mpcckTopNavButton(reactnative),
       defaultStyle: true,
     },
-    "sdk/core-kit/tkey/tkey",
-    "sdk/core-kit/tkey/install",
-    "sdk/core-kit/tkey/initialize",
-    "sdk/core-kit/tkey/usage",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/mpc-core-kit-react-native",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/install",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/initialize",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/authentication",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/signing",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/usage",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/examples",
     {
       type: "category",
-      label: "Modules",
-      collapsible: true,
-      collapsed: false,
+      label: "Providers",
       items: [
-        "sdk/core-kit/tkey/modules/modules",
-        "sdk/core-kit/tkey/modules/web-storage",
-        "sdk/core-kit/tkey/modules/react-native-storage",
-        "sdk/core-kit/tkey/modules/chrome-storage",
-        "sdk/core-kit/tkey/modules/security-questions",
-        "sdk/core-kit/tkey/modules/share-transfer",
-        "sdk/core-kit/tkey/modules/share-serialization",
-        "sdk/core-kit/tkey/modules/seed-phrase",
-        "sdk/core-kit/tkey/modules/private-keys",
-      ],
-    },
-    {
-      type: "category",
-      label: "Additional Reading",
-      collapsible: true,
-      collapsed: false,
-      items: ["sdk/core-kit/tkey/intrinsic-flow"],
-    },
-    {
-      type: "link",
-      label: "Support Forum Web",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8",
-    },
-    {
-      type: "link",
-      label: "Support Forum React Native",
-      href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/tkey/tkey/releases",
-    },
-    ...sdkQuickLinks,
-  ],
-  sdk_core_kit_tkey_ios: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(tkeyios),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/tkey-ios/tkey-ios",
-    "sdk/core-kit/tkey-ios/install",
-    "sdk/core-kit/tkey-ios/initialize",
-    "sdk/core-kit/tkey-ios/usage",
-    {
-      type: "category",
-      label: "Modules",
-      items: [
-        "sdk/core-kit/tkey-ios/modules/modules",
-        "sdk/core-kit/tkey-ios/modules/private-keys",
-        "sdk/core-kit/tkey-ios/modules/security-questions",
-        "sdk/core-kit/tkey-ios/modules/seed-phrase",
-        "sdk/core-kit/tkey-ios/modules/share-serialization",
-        "sdk/core-kit/tkey-ios/modules/share-transfer",
+        "sdk/mpc-core-kit/mpc-core-kit-react-native/providers/providers",
+        "sdk/mpc-core-kit/mpc-core-kit-react-native/providers/evm",
       ],
     },
     {
       type: "link",
       label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27",
+      href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33",
     },
     {
       type: "link",
       label: "Release Notes",
-      href: "https://github.com/tkey/tkey-ios/releases",
+      href: "https://github.com/Web3Auth/react-nativempc-core-kit/releases",
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/mpc-core-kit-react-native-migration"],
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_tkey_android: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(tkeyandroid),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/tkey-android/tkey-android",
-    "sdk/core-kit/tkey-android/install",
-    "sdk/core-kit/tkey-android/initialize",
-    "sdk/core-kit/tkey-android/usage",
+  sdk_infra: [
     {
       type: "category",
-      label: "Modules",
+      label: "tKey JS SDK",
       items: [
-        "sdk/core-kit/tkey-android/modules/modules",
-        "sdk/core-kit/tkey-android/modules/private-keys",
-        "sdk/core-kit/tkey-android/modules/security-questions",
-        "sdk/core-kit/tkey-android/modules/seed-phrase",
-        "sdk/core-kit/tkey-android/modules/share-serialization",
-        "sdk/core-kit/tkey-android/modules/share-transfer",
+        "sdk/infra/tkey/tkey",
+        "sdk/infra/tkey/install",
+        "sdk/infra/tkey/initialize",
+        "sdk/infra/tkey/usage",
+        {
+          type: "category",
+          label: "Modules",
+          collapsible: true,
+          collapsed: false,
+          items: [
+            "sdk/infra/tkey/modules/modules",
+            "sdk/infra/tkey/modules/web-storage",
+            "sdk/infra/tkey/modules/react-native-storage",
+            "sdk/infra/tkey/modules/chrome-storage",
+            "sdk/infra/tkey/modules/security-questions",
+            "sdk/infra/tkey/modules/share-transfer",
+            "sdk/infra/tkey/modules/share-serialization",
+            "sdk/infra/tkey/modules/seed-phrase",
+            "sdk/infra/tkey/modules/private-keys",
+          ],
+        },
+        {
+          type: "category",
+          label: "Additional Reading",
+          collapsible: true,
+          collapsed: false,
+          items: ["sdk/infra/tkey/implicit-flow"],
+        },
+        {
+          type: "link",
+          label: "Support Forum Web",
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8",
+        },
+        {
+          type: "link",
+          label: "Support Forum React Native",
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey/releases",
+        },
+        {
+          type: "category",
+          label: "Migration Guides",
+          items: ["migration-guides/tkey-v11-to-v15"],
+        },
       ],
     },
     {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28",
+      type: "category",
+      label: "tKey iOS SDK",
+      items: [
+        "sdk/infra/tkey-ios/tkey-ios",
+        "sdk/infra/tkey-ios/install",
+        "sdk/infra/tkey-ios/initialize",
+        "sdk/infra/tkey-ios/usage",
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            "sdk/infra/tkey-ios/modules/modules",
+            "sdk/infra/tkey-ios/modules/private-keys",
+            "sdk/infra/tkey-ios/modules/security-questions",
+            "sdk/infra/tkey-ios/modules/seed-phrase",
+            "sdk/infra/tkey-ios/modules/share-serialization",
+            "sdk/infra/tkey-ios/modules/share-transfer",
+          ],
+        },
+        {
+          type: "link",
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey-ios/releases",
+        },
+      ],
     },
     {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/tkey/tkey-android/releases",
+      type: "category",
+      label: "tKey Android SDK",
+      items: [
+        "sdk/infra/tkey-android/tkey-android",
+        "sdk/infra/tkey-android/install",
+        "sdk/infra/tkey-android/initialize",
+        "sdk/infra/tkey-android/usage",
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            "sdk/infra/tkey-android/modules/modules",
+            "sdk/infra/tkey-android/modules/private-keys",
+            "sdk/infra/tkey-android/modules/security-questions",
+            "sdk/infra/tkey-android/modules/seed-phrase",
+            "sdk/infra/tkey-android/modules/share-serialization",
+            "sdk/infra/tkey-android/modules/share-transfer",
+          ],
+        },
+        {
+          type: "link",
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey-android/releases",
+        },
+      ],
     },
+    "sdk/infra/tkey-ios-mpc",
     ...sdkQuickLinks,
   ],
 

@@ -126,7 +126,7 @@ export type LoginParams = BaseRedirectParams & {
    * How long should a login session last at a minimum in seconds
    *
    * @defaultValue 86400 seconds
-   * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
+   * @remarks Max value of sessionTime can be 7 * 86400 (30 days)
    */
   sessionTime?: number;
 
@@ -138,9 +138,9 @@ export type LoginParams = BaseRedirectParams & {
    * - `'secp256k1'`: secp256k1 based pub key is added as a wallet public key in jwt token to use.
    * - `'ed25519'`: ed25519 based pub key is added as a wallet public key in jwt token to use.
    *
-   * Note: This parameter won't change format of private key returned by openlogin. Private key returned
-   * by openlogin is always `secp256k1`. As of now you have to convert it to `'ed25519'` if you want.
-   * You can use `@toruslabs/openlogin-ed25519` npm package for this purpose.
+   * Note: This parameter won't change format of private key returned by auth service. Private key returned
+   * by auth service is always `secp256k1`. As of now you have to convert it to `'ed25519'` if you want.
+   * You can use `@web3auth/base-provider` npm package for this purpose.
    *
    *
    * @defaultValue secp256k1
@@ -173,7 +173,7 @@ Server Side Verification.
 await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
-  // highlight-next-line
+  // focus-next-line
   curve: "secp256k1", // `secp256k1` and `ed25519` are supported
 });
 ```
@@ -194,7 +194,7 @@ await web3auth.login({
 await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
-  // highlight-next-line
+  // focus-next-line
   curve: "secp256k1",
 });
 ```
@@ -207,7 +207,7 @@ await web3auth.login({
 await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
-  // highlight-next-line
+  // focus-next-line
   curve: "ed25519",
 });
 ```
@@ -298,9 +298,9 @@ is currently only available for EVM chains.
 
 :::note
 
-Access to Wallet Services is gated. You can use this feature in the development environment for
-free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
-production environment is the **Scale Plan**.
+Access to Wallet Services is gated. You can use this feature in `sapphire_devnet` for free. The
+minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a production
+environment is the **Scale Plan**.
 
 :::
 
