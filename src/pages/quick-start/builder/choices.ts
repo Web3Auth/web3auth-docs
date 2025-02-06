@@ -67,7 +67,7 @@ export const SDKS_SFA: DisplayChoice[] = [
 
 export const SDKS_MPC_CORE_KIT: DisplayChoice[] = [
   { key: MPC_CORE_KIT_WEB, displayName: "MPC Core Kit JS SDK for Web" },
-  { key: MPC_CORE_KIT_REACT_NATIVE, displayName: "MPC Core Kit JS SDK for React Native" },
+  { key: MPC_CORE_KIT_REACT_NATIVE, displayName: "MPC Core Kit React Native SDK" },
   { key: MPC_CORE_KIT_NODE, displayName: "MPC Core Kit JS SDK for NodeJS" },
 ];
 

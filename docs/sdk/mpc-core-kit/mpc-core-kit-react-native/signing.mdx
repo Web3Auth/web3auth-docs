@@ -1,7 +1,7 @@
 ---
-title: "Signing in MPC Core Kit JS SDK"
+title: "Signing in MPC Core Kit React Native SDK"
 sidebar_label: "Signing"
-description: "Web3Auth MPC Core Kit JS SDK - Signing | Documentation - Web3Auth"
+description: "Web3Auth MPC Core Kit React Native SDK - Signing | Documentation - Web3Auth"
 ---
 
 import Ed25519Installation from "@site/src/common/sdk/mpc-core-kit/_solana-installation.mdx";
@@ -18,18 +18,17 @@ blockchain ecosystems.
 
 ## ECDSA Signature
 
-To sign the transactions for secp256k1 curve, you can utilize the `@toruslabs/tss-dkls-lib` to
-instantiate Web3AuthMPCCoreKit with secp256k1 KeyType. To support the secp256k1 curve Web3Auth
-internally uses the DKLS algorithm to provide the ECDSA signature using threshold protocols.
+To sign the transactions for secp256k1 curve, you can utilize the `TssDklsLib` to instantiate
+Web3AuthMPCCoreKit with secp256k1 KeyType. To support the secp256k1 curve Web3Auth internally uses
+the DKLS algorithm to provide the ECDSA signature using threshold protocols.
 
 ECDSA signatures can be used for blockchain applications such as Bitcoin, Ethereum, etc. Let's have
 an overview of how you can generate ECDSA signature for Ethereum.
 
 ### Ethereum
 
-As discussed earlier, to generate the ECDSA signature for Ethereum, we will utilize
-`@toruslabs/tss-dkls-lib` to instantiate Web3AuthMPCCoreKit with secp256k1 KeyType. This package
-contains all the necessary functionalities and logic required for TSS signing.
+As discussed earlier, to generate the ECDSA signature for Ethereum, we will utilize `TssDklsLib` to
+instantiate Web3AuthMPCCoreKit with secp256k1 KeyType.
 
 Along with that, we'll also use `@web3auth/ethereum-mpc-provider` which is a helper package. This
 package will provide a wrapper to sign the message using the partial keys and generate a TSS
@@ -45,29 +44,91 @@ The first step would be to install the helper packages which are required to int
 Web3AuthMPCCoreKit with any EVM-compatible chain.
 
 ```bash npm2yarn
-$ npm install @toruslabs/tss-dkls-lib
 $ npm install @web3auth/ethereum-mpc-provider
 ```
 
 #### Create Web3AuthMPCCoreKit instance
 
-Considering you have already installed the `@toruslabs/tss-dkls-lib` package, let's use the `tssLib`
-to create Web3AuthMPCCoreKit instance.
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo", value: "expo" },
+  ]}
+>
+
+<TabItem value="bare">
 
 ```tsx
-import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
-// focus-next-line
-import { tssLib } from "@toruslabs/tss-dkls-lib";
-
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  manualSync: true, // This is the recommended approach
+import {
+  mpclib,
   // focus-next-line
-  tssLib: tssLib,
-  storage: window.storage,
-});
+  TssDklsLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return EncryptedStorage.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return EncryptedStorage.setItem(key, value);
+  },
+};
+
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  // focus-next-line
+  tssLib: TssDklsLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
 ```
+
+</TabItem>
+
+<TabItem value="expo">
+
+```tsx
+import {
+  mpclib,
+  // focus-next-line
+  TssDklsLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return SecureStore.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return SecureStore.setItem(key, value);
+  },
+};
+
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  // focus-next-line
+  tssLib: TssDklsLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+```
+
+</TabItem>
+</Tabs>
 
 #### Create EthereumSigningProvider instance
 
@@ -76,8 +137,21 @@ Once you have the `Web3AuthMPCCoreKit` instance, you can create the instance of
 blockchain.
 
 ```tsx
-import { makeEthereumSigner } from "@web3auth/mpc-core-kit";
+import { makeEthereumSigner } from "@web3auth/react-native-mpc-core-kit";
 import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+// unfocus-start
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io/",
+  blockExplorer: "https://sepolia.etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+// unfocus-end
 
 const ethereumProvider = new EthereumSigningProvider({ config: { chainConfig } });
 ethereumProvider.setupProvider(makeEthereumSigner(coreKitInstance));
@@ -146,19 +220,8 @@ To retrieve the secp256k1 publicKey you can use the `getPubKey` method in `Web3A
 retrive the uncompressed public key.
 
 ```tsx
-import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
-import { tssLib } from "@toruslabs/tss-dkls-lib";
-
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  manualSync: true, // This is the recommended approach
-  tssLib: tssLib,
-  storage: window.storage,
-});
-
 // Compressed pubKey
-const pubKey = coreKitInstance.getPubKey();
+const pubKey = coreKitInstance.getPubKey(); // Using the instance of MPC Core Kit
 
 // Uncompressed pubKey
 const pubKeyPoint = Point.fromSEC1(secp256k1, pubKey.toString("hex"));
@@ -181,32 +244,111 @@ const signature = await coreKitInstance.sign(msg);
 ## EdDSA Signature
 
 Along with ECDSA signature, Web3AuthMPCCoreKit also supports ed25519 curve to generate EdDSA
-signatures. To sign the transactions for ed25519 curve, you can utilize the
-`@toruslabs/tss-frost-lib` to instantiate Web3AuthMPCCoreKit with ed25519 KeyType. To support the
-ed25519 curve Web3Auth internally uses the FROST algorithm to provide the EdDSA sginature using
-threshold protocols.
+signatures. To sign the transactions for ed25519 curve, you can utilize the `TssFrostLib` to
+instantiate Web3AuthMPCCoreKit with ed25519 KeyType. To support the ed25519 curve Web3Auth
+internally uses the FROST algorithm to provide the EdDSA sginature using threshold protocols.
 
 EdDSA signatures can be used for blockchain applications such as Solana, Aptos, etc. Let's have an
 overview of how you can generate EdDSA signature for Solana.
 
 ### Solana
 
-As discussed earlier, to generate the EdDSA signature for Solana, we will utilize
-`@toruslabs/tss-frost-lib` to instantiate Web3AuthMPCCoreKit with ed25519 KeyType. This package
-contains all the necessary functionalities and logic required for TSS signing. Along with that,
-we'll also use `@solana/web3.js` package. This package will provide a wrapper to generate the
-transaction bytes, verify the message, and interact with Solana.
+As discussed earlier, to generate the EdDSA signature for Solana, we will utilize `TssFrostLib` to
+instantiate Web3AuthMPCCoreKit with ed25519 KeyType. Along with that, we'll also use
+`@solana/web3.js` package. This package will provide a wrapper to generate the transaction bytes,
+verify the message, and interact with Solana.
 
 #### Installation
 
 The first step would be to install the helper packages which are required to integrate
 Web3AuthMPCCoreKit with Solana chain.
 
-<Ed25519Installation />
+```bash npm2yarn
+$ npm install @solana/web3.js@1
+```
 
 #### Create Web3AuthMPCCoreKit instance
 
-<Ed25519Initialization />
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo", value: "expo" },
+  ]}
+>
+
+<TabItem value="bare">
+
+```tsx
+import {
+  mpclib,
+  // focus-next-line
+  TssFrostLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return EncryptedStorage.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return EncryptedStorage.setItem(key, value);
+  },
+};
+
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  // focus-next-line
+  tssLib: TssFrostLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+```
+
+</TabItem>
+
+<TabItem value="expo">
+
+```tsx
+import {
+  mpclib,
+  // focus-next-line
+  TssFrostLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return SecureStore.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return SecureStore.setItem(key, value);
+  },
+};
+
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  // focus-next-line
+  tssLib: TssFrostLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+```
+
+</TabItem>
+</Tabs>
 
 #### Get a User Account
 

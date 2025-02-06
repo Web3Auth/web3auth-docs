@@ -52,8 +52,8 @@ export const quickStartHostedLinks = {
   MPC_CORE_KIT_WEB_NEXTJS: "https://w3a.link/mpc-core-kit-nextjs-quick-start",
   MPC_CORE_KIT_WEB_REACT: "https://w3a.link/mpc-core-kit-react-quick-start",
   MPC_CORE_KIT_WEB_VUE: "https://w3a.link/mpc-core-kit-vue-quick-start",
-  MPC_CORE_KIT_REACT_NATIVE_IOS: "https://w3a.link/mpc-core-kit-rn-quick-start",
-  MPC_CORE_KIT_REACT_NATIVE_ANDROID: "",
+  MPC_CORE_KIT_REACT_NATIVE_IOS: "",
+  MPC_CORE_KIT_REACT_NATIVE_ANDROID: "https://w3a.link/mpc-core-kit-rn-quick-start",
   MPC_CORE_KIT_NODE_NODE: "",
 };
 
@@ -2013,7 +2013,7 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
       tags.ios,
       tags.reactNative,
     ],
-    link: quickStartHostedLinks.MPC_CORE_KIT_REACT_NATIVE,
+    link: quickStartHostedLinks.MPC_CORE_KIT_REACT_NATIVE_ANDROID,
     githubLink: quickStartSourceCode.MPC_CORE_KIT_REACT_NATIVE,
   },
   {
@@ -2037,6 +2037,49 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
     link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-auth0",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-auth0",
+  },
+  {
+    id: "mpc-core-kit-rn-solana",
+    title: "Using Solana MPC Core Kit SDK React Native",
+    description: "Integrate Solana with Web3Auth MPC Core Kit in React Native for Android and iOS",
+    image: "banners/solana.png",
+    type: SAMPLE_APP,
+    tags: [
+      tags.mpcCoreKit,
+      "mpc",
+      "javascript",
+      tags.android,
+      tags.ios,
+      tags.reactNative,
+      tags.evm,
+      "auth0",
+      "id token login",
+    ],
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-solana",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-solana",
+  },
+  {
+    id: "mpc-core-kit-rn-expo-auth0",
+    title: "Using MPC Core Kit SDK in Expo",
+    description:
+      "Integrate Auth0 with Web3Auth MPC Core Kit in React Native Expo for Android and iOS",
+    image: "banners/expo.png",
+    type: SAMPLE_APP,
+    tags: [
+      tags.mpcCoreKit,
+      "mpc",
+      "javascript",
+      tags.android,
+      tags.ios,
+      tags.reactNative,
+      tags.evm,
+      "auth0",
+      "id token login",
+    ],
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-expo-auth0",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-expo-auth0",
   },
 ];
 
