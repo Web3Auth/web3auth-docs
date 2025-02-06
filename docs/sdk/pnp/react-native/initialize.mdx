@@ -134,20 +134,20 @@ an argument. The fields of such objects are listed below.
 
 <TabItem value="table">
 
-| Parameter                     | Description                                                                                                                                                         |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`                    | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`    |
-| `network`                     | Defines the Web3Auth network. It's a mandatory field of type `WEB3AUTH_NETWORK_TYPE`.                                                                               |
-| `redirectUrl`                 | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `string`.                                 |
-| `privateKeyProvider`          | Private key provider for your chain namespace.                                                                                                                      |
-| `accountAbstractionProvider?` | Account abstraction provider for your preferred chain and provider.                                                                                                 |
-| `whiteLabel?`                 | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                |
-| `loginConfig?`                | Login config for the custom verifiers. It takes `LoginConfig` as a value.                                                                                           |
-| `useCoreKitKey?`              | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
-| `mfaSettings?`                | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
-| `sessionTime?`                | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
-| `storageServerUrl?`           | Specify a custom storage url. Default value is `https://broadcast-server.tor.us`.                                                                                   |
-| `storageKey?`                 | Specify the storage key. Setting to "local" will persist social login session accross browser tabs. Available options are "local" and "session".                    |
+| Parameter                     | Description                                                                                                                                                          |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`                    | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`     |
+| `network`                     | Defines the Web3Auth network. It's a mandatory field of type `WEB3AUTH_NETWORK_TYPE`.                                                                                |
+| `redirectUrl`                 | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `string`.                                  |
+| `privateKeyProvider`          | Private key provider for your chain namespace.                                                                                                                       |
+| `accountAbstractionProvider?` | Account abstraction provider for your preferred chain and provider.                                                                                                  |
+| `whiteLabel?`                 | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                 |
+| `loginConfig?`                | Login config for the custom verifiers. It takes `LoginConfig` as a value.                                                                                            |
+| `useCoreKitKey?`              | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                           |
+| `mfaSettings?`                | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                               |
+| `sessionTime?`                | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 30 days |
+| `storageServerUrl?`           | Specify a custom storage url. Default value is `https://broadcast-server.tor.us`.                                                                                    |
+| `storageKey?`                 | Specify the storage key. Setting to "local" will persist social login session accross browser tabs. Available options are "local" and "session".                     |
 
 </TabItem>
 
@@ -207,7 +207,7 @@ export type SdkInitParams = {
    * How long should a login session last at a minimum in seconds
    *
    * @defaultValue 86400 seconds
-   * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
+   * @remarks Max value of sessionTime can be 7 * 86400 (30 days)
    */
   sessionTime?: number;
   /**

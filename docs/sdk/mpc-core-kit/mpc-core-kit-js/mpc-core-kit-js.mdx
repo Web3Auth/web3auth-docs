@@ -11,9 +11,11 @@ Web3Auth's [`@web3auth/mpc-core-kit`](https://github.com/Web3Auth/mpc-core-kit) 
 easy-to-use SDK, that helps you implement Web3Auth's MPC Threshold Signature Scheme (TSS) features
 in which the private key is never reconstructed.
 
-Compared to other Web3Auth SDKs, such as Plug and Play(PnP), and Single Factor Auth(SFA) SDKs where
-the private key is securely reconstructed on user's device, and is used to sign transactions. In the
-MPC TSS architecture, the private key is never reconstructed.
+Compared to other Web3Auth SDKs, such as Plug and Play (PnP) and Single Factor Auth (SFA) SDKs,
+where the private key is securely reconstructed on the user's device and used to sign transactions,
+the MPC TSS architecture ensures that the private key is never reconstructed for signing. However,
+the SDK provides options to export the private key if the user wants to use their account in other
+wallets. This approach eliminates vendor lock-in, unlike other MPC solutions.
 
 Instead, the partial key shares are stored at different locations which are used to generate the
 partial signatures. The final signature is generated combining the partial signatures using the TSS.
@@ -33,8 +35,8 @@ in a single location, the key is divided into multiple parts and distributed acr
 devices and our Auth Network. This means that the key is always available and never in danger of
 being compromised.
 
-The traditional Web3Auth SDK uses threshold signatures to dynamically reconstruct the key in the
-frontend. However, with the new Web3Auth MPC (Multi Party Computation) architecture, this is no
+The traditional Web3Auth SDK uses Shamir Secret Sharing (SSS) to dynamically reconstruct the key in
+the frontend. However, with the new Web3Auth MPC (Multi Party Computation) architecture, this is no
 longer necessary. Instead, partial keys are stored in different locations, and the user's device is
 used to make partial signatures for messages and transactions.
 
@@ -64,16 +66,6 @@ transactions on the blockchain. Let's understand each of these stages in detail.
 
 ## Types of Factors
 
-### Hashed Cloud Factor
-
-The MPC Core Kit SDK starts in a 2/2 flow by default. This means when user's logs in, a social login
-factor is generated and at the same time SDK will generate a hashed cloud factor. This hashed cloud
-factor is derived on the front end and stored in the encrypted metadata server. Please refer to the
-above architecture to understand more about factors.
-
-This is done to make sure the user can access their account from any device without having to
-generate a new factor. The hashed cloud factor is deleted when the user enables the MFA.
-
 ### Social Login Factor
 
 This is the primary way for a user to access their account. This step involves authentication of
@@ -84,6 +76,16 @@ By default, these nodes have a threshold of 3/5 that can be customized according
 When a user logs in, the Auth Network generates signatures corresponding to the TSS Shares in the
 nodes and returns them to the user's end. These signatures are then used alongside other shares to
 generate the final TSS Account signatures.
+
+### Hashed Cloud Factor
+
+The MPC Core Kit SDK starts in a 2/2 flow by default. This means when user's logs in, a social login
+factor is generated and at the same time SDK will generate a hashed cloud factor. This hashed cloud
+factor is derived on the front end and stored in the encrypted metadata server. Please refer to the
+above architecture to understand more about factors.
+
+This is done to make sure the user can access their account from any device without having to
+generate a new factor. The hashed cloud factor is deleted when the user enables the MFA.
 
 ### Device Factor (Factor Index: 2)
 
@@ -106,12 +108,23 @@ backup factor of your choice like social recovery, Email OTP, SMS OTP, Authentic
 ## Threshold
 
 The threshold is the minimum number of shares required to generate a final signature for the TSS
-Account. This threshold, by default, is set to 3/5 on the Auth Network and 2/3 for the user's device
-front. This ensures high availability and ease of access on both ends alongside optimum security.
-Both these thresholds can be customized according to the requirements.
+Account. By default, the Auth Network requires 3 out of 5 shares (3/5) to generate a signature. This
+means that out of the 5 shares distributed across different nodes, any 3 shares can be combined to
+create the final signature. This setup ensures high availability and security, as it allows for some
+shares to be unavailable or compromised without affecting the overall system.
 
-Please note that when user logs in for the first time, the threshold is set to 2/2. The threshold is
-set to 2/3 after the user enables the MFA flow.
+On the user's device front, the default threshold is set to 2 out of 3 shares (2/3). This means that
+out of the 3 shares available on the user's device, any 2 shares can be used to generate the final
+signature. This setup provides a balance between security and ease of access, ensuring that the user
+can still access their account even if one share is unavailable.
+
+Only the user level threshold can can be customized according to the requirements. The Auth Network
+threshold is fixed at 3/5.
+
+Please note that when a user logs in for the first time, the threshold is set to 2 out of 2 shares
+(2/2). This means that both shares are required to generate the final signature. After the user
+enables the MFA flow, the threshold is set to 2 out of 3 shares (2/3), providing an additional layer
+of security.
 
 ## Components of a Factor
 
@@ -122,9 +135,10 @@ the user. These shares are generated using distributed key generation(DKG) and a
 Auth Network and the user's device. Since these shares are generated using MPC, they are **never
 reconstructed** and always stay decentralized and secure.
 
-However, we have exposed a function to reconstruct the TSS Key from the shares in the SDK. This
-function has been marked unsafe since there is no direct use case for it other than key exports in
-the case the user wants to own it completely.
+We've included a function in the SDK that lets you reconstruct the TSS Key from the shares. Just a
+heads-up, this function is marked as unsafe, so it's best to use it with extra layers of security.
+For example, only make this function available when MFA is enabled and ask the user to input their
+MFA share while exporting.
 
 ### Metadata Key & Shares
 
@@ -163,11 +177,11 @@ device seamlessly without having to generate a new factor.
 
 ## Resources
 
-- [Quick Start](/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT&stepIndex=0): Get
-  Started with an easy to follow integration of Web3Auth
+- [Quick Start](/quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=REACT&stepIndex=0&stepIndex=0):
+  Get Started with an easy to follow integration of Web3Auth
 
-- [Example Applications](/examples?product=Core+Kit&sdk=MPC+Core+Kit): Explore our example
-  applications and try the SDK yourself.
+- [Example Applications](./mpc-core-kit-js/examples): Explore our example applications and try the
+  SDK yourself.
 
 - [Troubleshooting](/troubleshooting): Find quick solutions to common issues faced by developers.
 

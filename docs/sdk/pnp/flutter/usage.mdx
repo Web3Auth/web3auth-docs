@@ -435,7 +435,7 @@ final userInfo = Web3AuthFlutter.getUserInfo();
 ## Session Management
 
 The Session Management feature allows you to check the existing sessions with Web3Auth. The SDK will
-allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 7 days, or
+allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 30 days, or
 until the user logout or session data is cleared.
 
 The `Web3AuthOptions` initialization accepts a `sessionTime` parameter.
@@ -615,7 +615,7 @@ try {
   params.add("<User Address in Hex>");
 
   // focus-start
-  await Web3AuthFlutter.request(
+  final response = await Web3AuthFlutter.request(
     ChainConfig(
       chainId: "0x1",
       rpcTarget: "https://mainnet.infura.io/v3/$key",
@@ -623,14 +623,12 @@ try {
     "personal_sign",
     params,
   );
+
+  log(response.toString());
   // focus-end
 } on UserCancelledException {
   log("User cancelled.");
 } catch(e) {
   log("Unknown exception occurred");
 }
-
-// focus-next-line
-final signResponse = await Web3AuthFlutter.getSignResponse();
-log(signResponse.toString())
 ```

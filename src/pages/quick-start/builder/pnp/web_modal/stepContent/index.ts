@@ -15,9 +15,15 @@ import * as htmlQuickStart from "./modalHTMLQuickStart.mdx";
 import * as nextQuickStart from "./modalNextQuickStart.mdx";
 import * as reactQuickStart from "./modalReactQuickStart.mdx";
 import * as vueQuickStart from "./modalVueQuickStart.mdx";
+import * as reactHooksQuickStart from "./modalReactHooksQuickStart.mdx";
+import * as vueComposablesQuickStart from "./modalVueComposablesQuickStart.mdx";
+import * as instantiate from "./instantiatePnPModal.mdx";
+import * as setupWeb3AuthProvider from "./setupWeb3AuthProvider.mdx";
+import * as configureExternalWallets from "./configureExternalWallets.mdx";
 
 const STEPS = toSteps({
   reactQuickStart,
+  reactHooksQuickStart,
   installation,
   reactBundlerIssues,
   registerApp,
@@ -30,9 +36,13 @@ const STEPS = toSteps({
   nextQuickStart,
   angularQuickStart,
   vueQuickStart,
+  vueComposablesQuickStart,
   htmlQuickStart,
   vueBundlerIssues,
+  instantiate,
   angularBundlerIssues,
+  setupWeb3AuthProvider,
+  configureExternalWallets,
 });
 
 export default STEPS;

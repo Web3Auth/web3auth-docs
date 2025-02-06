@@ -1,0 +1,169 @@
+---
+title: "Installing MPC Core Kit React Native SDK"
+sidebar_label: "Install"
+description: "Web3Auth MPC Core Kit React Native SDK - Install | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+The MPC Core Kit React Native SDK contains multiple packages that are needed to enable different
+functionalities of the MPC Core Kit React Native SDK. You can choose the packages you want to
+install according to the functionalities you want to enable in your application. In this doc we have
+highlighted all of the packages and their functionalities.
+
+## Base MPC Core Kit React Native Package
+
+This is the base SDK that helps you implement Web3Auth's MPC TSS features while giving you the
+flexibility to customize the UI and UX of the authentication process.
+
+```bash npm2yarn
+npm install @web3auth/react-native-mpc-core-kit
+```
+
+:::note
+
+If you were using the MPC Core Kit JS SDK in your react native application, you need to follow this
+[migration guide](/migration-guides/mpc-core-kit-react-native-migration) to migrate to the new MPC
+Core Kit React Native SDK.
+
+:::
+
+## Common Types and Interfaces
+
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by
+providing you a standard way of importing the values you need to work with the SDKs. We highly
+recommend using it while working with Typescript.
+
+```bash npm2yarn
+npm install @web3auth/base
+```
+
+## Ethereum Signing Provider
+
+This package gives EIP1193 compatible Ethereum signing provider. This provider is used to make calls
+to the selected blockchain, and can be used with `web3.js`, `ethers.js`, or `viem` to make
+integration with EVM compatible chains easier.
+
+```bash npm2yarn
+npm install @web3auth/ethereum-mpc-provider
+```
+
+## Additional Configuration
+
+### Install the following packages
+
+```bash npm2yarn
+npm install react-native-react-bridge react-native-webview
+npm install --save-dev esbuild-plugins-node-modules-polyfill ts-node empty-module @craftzdog/react-native-buffer
+```
+
+### Add a Custom Transformer
+
+Add a custom transformer to your project by creating a new file called `customTransformer.js` and
+updating your metro config to use it. This transformer is specifically designed to handle the
+polyfills and transformations needed by the MPC Core Kit SDK.
+
+```js title="customTransformer.js"
+const { nodeModulesPolyfillPlugin } = require("esbuild-plugins-node-modules-polyfill");
+const reactNativeReactBridgeTransformer = require("react-native-react-bridge/lib/plugin");
+const esbuildOptions = {
+  plugins: [
+    nodeModulesPolyfillPlugin({
+      globals: {
+        Buffer: true,
+        crypto: true,
+      },
+    }),
+  ],
+};
+module.exports.transform = function ({ src, filename, options }) {
+  const transform = reactNativeReactBridgeTransformer.createTransformer(esbuildOptions);
+  return transform({ src, filename, options });
+};
+```
+
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo", value: "expo" },
+  ]}
+>
+
+<TabItem value="bare">
+
+```js title="metro.config.js"
+require("ts-node/register");
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
+
+const config = {
+  resolver: {
+    extraNodeModules: {
+      assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+      http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+      https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+      os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+      url: require.resolve("empty-module"), // url can be polyfilled here if needed
+      zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+      path: require.resolve("empty-module"),
+      crypto: require.resolve("empty-module"),
+      buffer: require.resolve("@craftzdog/react-native-buffer"),
+    },
+
+    assetExts: ["svg", "png", "json"],
+    sourceExts: ["js", "mjs", "cjs", "jsx", "ts", "tsx"],
+  },
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: true,
+        inlineRequires: true,
+      },
+    }),
+    // This detects entry points of React app and transforms them
+    babelTransformerPath: require.resolve("./customTransformer.js"),
+  },
+};
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+```
+
+</TabItem>
+
+<TabItem value="expo">
+
+```js title="metro.config.js"
+const config = getDefaultConfig(__dirname);
+
+// focus-start
+config.transformer.babelTransformerPath = require.resolve("./customTransformer.js");
+// focus-end
+
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+
+  assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+  http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+  https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+  os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+  url: require.resolve("empty-module"), // url can be polyfilled here if needed
+  zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+  path: require.resolve("empty-module"),
+  crypto: require.resolve("empty-module"),
+  buffer: require.resolve("@craftzdog/react-native-buffer"),
+};
+
+module.exports = config;
+```
+
+</TabItem>
+</Tabs>
+
+### Add Buffer in your globals/ entry level file
+
+No need for `react-native-quick-crypto` any longer, just polyfill buffer in your entry file.
+
+```js title="globals.ts"
+global.Buffer = require("buffer").Buffer;
+```

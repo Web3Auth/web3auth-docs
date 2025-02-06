@@ -361,7 +361,7 @@ val userInfo = web3Auth.getUserInfo()
 ## Session Management
 
 The Session Management feature allows you to check the existing sessions with Web3Auth. The SDK will
-allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 7 days, or
+allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 30 days, or
 until the user logout or session data is cleared.
 
 The `Web3AuthOptions` initialization accepts a `sessionTime` parameter.
@@ -514,15 +514,13 @@ val signMsgCompletableFuture = web3Auth.request(
 )
 // focus-end
 
-signMsgCompletableFuture.whenComplete { _, error ->
+signMsgCompletableFuture.whenComplete { signResult, error ->
     if (error == null) {
-        Log.d("MainActivity_Web3Auth", "Message signed successfully")
         // focus-next-line
-        val signResult = Web3Auth.getSignResponse()
-        Log.d("MainActivity_Web3Auth", signResult.toString())
+        Log.d("Sign Result", signResult.toString())
 
     } else {
-        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+        Log.d("Sign Error", error.message ?: "Something went wrong")
     }
 }
 ```

@@ -33,6 +33,14 @@ An aggregate verifier helps to generate a same account across multiple verifiers
 verification field. For instance if you are using Google, and Email Passwordless, and want to
 genetate the same account across both authentication method, you need to use an aggregate verifier.
 
+The `OAuthLoginParams` has two additional properties which can be used to customize the login flow.
+Please check the table below for more details.
+
+| Parameter                 | Description                                                                                                                                                                                                                              |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `importTssKey?`           | The TSS key to import an existing account.                                                                                                                                                                                               |
+| `registerExistingSFAKey?` | Allows to import the [Single Factor Auth(SFA) SDK](/docs/sdk/sfa/sfa-js/) key into the MPC Core Kit SDK. Default value is `false`. Please note, once SFA Key is imported, users won't be able to access their account using the SFA SDK. |
+
 ### SubVerifierDetailsParams
 
 Contains the details of the verifier the app needs to use for authentication. You need to use this
@@ -194,6 +202,15 @@ By default, the ed25519 key is formatted in base58 and is 64 bytes long. This co
 32 bytes as the seed (also known as the private key) and the last 32 bytes as the public key. Ensure
 that the first 32 bytes are provided in hexadecimal format when using the ed25519 seed.
 
+:::info ED25519 Seed
+
+The ed25519 seed is a 64-byte value, where the first 32 bytes represent the private key and the last
+32 bytes represent the public key. When using the ed25519 seed, ensure that the first 32 bytes
+(private key) are provided in hexadecimal format. For example, a sample ed25519 seed in hexadecimal
+format could be `0x1a2b3c4d5e6f7890a1b2c3d4e5f67890a1b2c3d4e5f67890a1b2c3d4e5f6789`.
+
+:::
+
 ```tsx
 import { SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
 
@@ -205,6 +222,41 @@ const verifierConfig: SubVerifierDetailsParams = {
   },
   // focus-next-line
   importTssKey: "SECP256K1_PRIVATE_KEY_OR_ED25519_SEED",
+};
+
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+## Importing an existing Single Factor Auth(SFA) Key.
+
+When logging in for the first time, you can import an existing [SFA SDK](/docs/sdk/sfa/sfa-js/) key
+using the `registerExistingSFAKey` parameter. By default, the value of this parameter is `false`.
+
+Additionally, this parameter allows you to leverage the
+[wallet pregeneration API](/docs/features/wallet-pregeneration) to pre-generate a wallet address.
+This approach enhances the user experience by enabling the creation of a wallet without requiring
+end users to initiate or complete an authentication flow.
+
+To use this feature, you need to make sure that you are using the same `verifier` for both the SFA
+SDK/ Wallet Pregeneration API and MPC Core Kit SDK.
+
+:::info
+
+Please note, once the SFA Key is imported, users will no longer be able to access their account
+through the SFA SDK.
+
+:::
+
+```tsx
+const verifierConfig: SubVerifierDetailsParams = {
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    // Please make sure to use the same verifier of the SFA/ Wallet Pregeneration API
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
+  },
+  // focus-next-line
+  registerExistingSFAKey: true,
 };
 
 await coreKitInstance.loginWithOAuth(verifierConfig);
