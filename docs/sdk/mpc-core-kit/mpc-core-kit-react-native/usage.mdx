@@ -22,12 +22,11 @@ Please, note we for the simplicity, we use the `coreKitInstance` to refer to the
 
 ### Authentication Methods
 
-| Method Name                                     | Description                                                                                                  |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [loginWithJWT](#login-with-jwt)                 | Logs in the user with a JWT-based ID Token.                                                                  |
-| [handleRedirectResult](#handle-redirect-result) | Handles the redirect result from OAuth Flow.                                                                 |
-| [inputFactorKey](#login-with-existing-factor)   | This method can be used to login with the exisitng factor key, for instance when threshold is not satisfied. |
-| [logout](#logout)                               | This methods logs out the user and invalidates the session.                                                  |
+| Method Name                                   | Description                                                                                                  |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [loginWithJWT](#login-with-jwt)               | Logs in the user with a JWT-based ID Token.                                                                  |
+| [inputFactorKey](#login-with-existing-factor) | This method can be used to login with the exisitng factor key, for instance when threshold is not satisfied. |
+| [logout](#logout)                             | This methods logs out the user and invalidates the session.                                                  |
 
 :::info Get help with Authentication
 
@@ -343,7 +342,9 @@ import { FactorKeyTypeShareDescription } from "@web3auth/react-native-mpc-core-k
 import { Point, secp256k1 } from "@tkey/common-types";
 
 let factorPub: string | undefined;
-for (const [key, value] of Object.entries(coreKitInstance.getKeyDetails().shareDescriptions)) {
+for (const [key, value] of Object.entries(
+  (await coreKitInstance.getKeyDetails()).shareDescriptions,
+)) {
   if (value.length > 0) {
     const parsedData = JSON.parse(value[0]);
     if (parsedData.module === FactorKeyTypeShareDescription.SocialShare) {
@@ -409,7 +410,7 @@ This method is only supported for Secp256k1 curve, and not supported for Ed25519
 :::
 
 ```tsx
-coreKitInstance.setTssWalletIndex(index);
+await coreKitInstance.setTssWalletIndex(index);
 ```
 
 ### Get Secp256k1 Public Key
@@ -421,7 +422,7 @@ When you use the `setTssWalletIndex` method to set your account index, a unique 
 generated! Remember that each account index you set will result in a different public key.
 
 ```ts
-const pubKey = coreKitInstance.getPubKey();
+const pubKey = await coreKitInstance.getPubKey();
 ```
 
 ### Get Ed25519 Public Key
@@ -430,7 +431,7 @@ To retrive the ed25519 public key, you can use the `getPubKeyEd25519`method. You
 key to retrive the EOA address for the chains suporting the Ed25519 curve.
 
 ```ts
-const pubKey = coreKitInstance.getPubKeyEd25519();
+const pubKey = await coreKitInstance.getPubKeyEd25519();
 ```
 
 ### Get User Info
@@ -457,7 +458,7 @@ details has information like total factors, required factors, and threshold. Lea
 import { MPCKeyDetails } from "@web3auth/react-native-mpc-core-kit";
 
 // focus-next-line
-const keyDetails: MPCKeyDetails = coreKitInstance.getKeyDetails();
+const keyDetails: MPCKeyDetails = await coreKitInstance.getKeyDetails();
 ```
 
 #### MPCKeyDetails
