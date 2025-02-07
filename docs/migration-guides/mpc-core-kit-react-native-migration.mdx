@@ -1,0 +1,218 @@
+---
+title: MPC Core Kit React Native SDK Migration
+description: MPC Core Kit React Native SDK Migration | Documentation - Web3Auth"
+sidebar_label: React Native SDK Migration
+---
+
+## Overview
+
+This migration guide provides steps for upgrading from the Web3Auth MPC CoreKit Web SDK to the new
+MPC CoreKit React Native SDK. This new SDK is specifically designed and optimized for React Native
+applications, providing better performance and a more native experience.
+
+#### Key Benefits of the React Native SDK:
+
+- Native Performance: Optimized for React Native's architecture, for faster speeds across the board
+- Platform-specific Features: Takes advantage of React Native capabilities for session and share
+  storage
+- Improved Developer Experience: APIs designed specifically for React Native development, reducing
+  the need to multiple extra polyfills
+
+## Breaking Changes
+
+### Package Changes
+
+Removes the need of using the `@toruslabs/react-native-tss-lib-bridge` & `@web3auth/mpc-core-kit`
+packages and introduces the `@web3auth/react-native-mpc-core-kit` package which includes the TSS
+library bridge and MPC Core Kit functionality in a single package.
+
+:::note
+
+You might still keep the `@web3auth/mpc-core-kit` package for some common helper functions and
+types.
+
+:::
+
+```tsx
+// remove-next-line
+import { Bridge, tssLib } from "@toruslabs/react-native-tss-lib-bridge";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+import {
+  COREKIT_STATUS,
+  generateFactorKey,
+  JWTLoginParams,
+  keyToMnemonic,
+  makeEthereumSigner,
+  mnemonicToKey,
+  parseToken,
+  TssShareType,
+  WEB3AUTH_NETWORK,
+  // remove-next-line
+  Web3AuthMPCCoreKit,
+} from "@web3auth/mpc-core-kit";
+
+// add-next-line
+import { Bridge, mpclib, TssDklsLib } from "@web3auth/react-native-mpc-core-kit";
+```
+
+### Constructor Changes
+
+Use the `Web3AuthMPCCoreKitRN` class from the `mpclib` object imported from
+`@web3auth/react-native-mpc-core-kit` for creating an instance. Additionally, pass the `TssDklsLib`
+that is directly exposed from the SDK as the `tssLib` parameter.
+
+:::info
+
+- Use `TssDklsLib` for generating `secp256k1` curve signatures (ECDSA)
+- Use `TssFrostLib` for generating `ed25519` curve signatures (EdDSA)
+
+:::
+
+```tsx
+// remove-next-line
+const coreKitInstance = new Web3AuthMPCCoreKit({...}):
+// add-next-line
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  // remove-next-line
+  tssLib: tsslibInstance, // tss lib bridge for react native
+  // add-next-line
+  tssLib: TssDklsLib, // tss lib bridge for react native
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+});
+```
+
+### Add the Bridge in your codebase
+
+Add the Bridge component at the bottom of your App's codebase where the MPC Instance needs to be
+used. The Bridge component creates a WebView instance that executes the MPC Core Kit library. The
+Bridge component also exposes a `resolveReady` callback that notifies when the bridge is ready to be
+used.
+
+```ts
+
+// remove-next-line
+import { Bridge, tssLib } from "@toruslabs/react-native-tss-lib-bridge";
+// add-next-line
+import { Bridge, mpclib, TssDklsLib } from "@web3auth/react-native-mpc-core-kit";
+
+function Home() {
+return (
+    <View style={styles.container}>
+      // remove-next-line
+      <Bridge logLevel={"debug"} />
+      // add-start
+      <Bridge
+        logLevel={"DEBUG"}
+        resolveReady={(ready) => {
+          setBridgeReady(ready);
+        }}
+      />
+      // add-end
+    </View>
+  );
+}
+```
+
+### Check for the Bridge State before Initing
+
+The new package of React Native exposes a `resolveReady` callback that notifies when the bridge is
+ready to be used. Use this to init the SDK after the bridge has been configured.
+
+```js
+useEffect(() => {
+  if (bridgeReady) {
+    const init = async () => {
+      try {
+        await coreKitInstance.init();
+      } catch (error: any) {
+        uiConsole(error.message, "mounted caught");
+      }
+      setCoreKitStatus(coreKitInstance.status);
+    };
+    init();
+  }
+}, [bridgeReady]);
+```
+
+### Add a Custom Transformer
+
+Add a custom transformer to your project by creating a new file called `customTransformer.js` and
+updating your metro config to use it. This transformer is specifically designed to handle the
+polyfills and transformations needed by the MPC Core Kit SDK.
+
+```js title="customTransformer.js"
+const { nodeModulesPolyfillPlugin } = require("esbuild-plugins-node-modules-polyfill");
+const reactNativeReactBridgeTransformer = require("react-native-react-bridge/lib/plugin");
+const esbuildOptions = {
+  plugins: [
+    nodeModulesPolyfillPlugin({
+      globals: {
+        Buffer: true,
+        crypto: true,
+      },
+      // modules: {
+      //     Buffer : true,
+      // }
+    }),
+  ],
+};
+module.exports.transform = function ({ src, filename, options }) {
+  const transform = reactNativeReactBridgeTransformer.createTransformer(esbuildOptions);
+  return transform({ src, filename, options });
+};
+```
+
+```js title="metro.config.js"
+const config = getDefaultConfig(__dirname);
+
+// focus-start
+// remove-next-line
+config.transformer.babelTransformerPath = require.resolve("react-native-react-bridge/lib/plugin");
+// add-next-line
+config.transformer.babelTransformerPath = require.resolve("./customTransformer.js");
+// focus-end
+
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+
+  assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+  http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+  https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+  os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+  url: require.resolve("empty-module"), // url can be polyfilled here if needed
+  zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+  path: require.resolve("empty-module"),
+  crypto: require.resolve("empty-module"),
+  buffer: require.resolve("@craftzdog/react-native-buffer"),
+};
+// config.resolveRequest = (context, moduleName, platform) => {
+//   if (moduleName === "crypto") {
+//     // when importing crypto, resolve to react-native-quick-crypto
+//     return context.resolveRequest(context, "react-native-quick-crypto", platform);
+//   }
+//   // otherwise chain to the standard Metro resolver.
+//   return context.resolveRequest(context, moduleName, platform);
+// }
+module.exports = config;
+```
+
+### Add Buffer in your globals/ entry level file
+
+No need for `react-native-quick-crypto` any longer, just polyfill buffer in your entry file.
+
+```js title="globals.ts"
+//remove-start
+import { install } from "react-native-quick-crypto";
+
+install();
+// remove-end
+
+// add-next-line
+global.Buffer = require("buffer").Buffer;
+```
