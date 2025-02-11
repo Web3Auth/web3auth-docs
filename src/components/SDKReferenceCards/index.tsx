@@ -790,9 +790,6 @@ export const mpccorekitjs = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>MPC Core Kit JS SDK</h3>
-          <p>
-            Get the Web3Auth full TSS-MPC Infrastructure deeply integrated within your application.
-          </p>
           <div className={styles.links}>
             <a
               href={`${baseUrl}quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=REACT&stepIndex=0&stepIndex=0`}
@@ -808,16 +805,16 @@ export const mpccorekitjs = (
   </div>
 );
 
-export const mpccorekitreactnative = (
+export const mpccorekitmobile = (
   <div className={styles.card}>
     <div className={styles.cardContainerIntro}>
-      <h3 className={styles.title}>MPC Core Kit React Native SDK</h3>
+      <h3 className={styles.title}>MPC Core Kit Mobile SDKs</h3>
       <p>
         Designed for projects that require a tailored approach to authentication, providing the
         tools and flexibility necessary to build advanced, secure, and integrated authentication
         systems. <br />
         <br />
-        Works for React Native & Expo environments.
+        Get the Web3Auth full TSS-MPC Infrastructure deeply integrated within your application.
       </p>
       {mobileIconsWithoutFlutter}
     </div>
@@ -840,9 +837,6 @@ export const mpccorekitreactnative = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>MPC Core Kit React Native SDK</h3>
-          <p>
-            Get the Web3Auth full TSS-MPC Infrastructure deeply integrated within your application.
-          </p>
           <div className={styles.links}>
             <a
               href={`${baseUrl}quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_REACT_NATIVE&framework=IOS&stepIndex=0&stepIndex=0`}
@@ -858,23 +852,7 @@ export const mpccorekitreactnative = (
           </div>
         </div>
       </div>
-    </ul>
-  </div>
-);
-
-export const mpccorekitios = (
-  <div className={styles.card}>
-    <div className={styles.cardContainerIntro}>
-      <h3 className={styles.title}>MPC Core Kit Swift SDK</h3>
-      <p>
-        Get the Web3Auth full TSS-MPC Infrastructure deeply integrated within your native iOS
-        application.
-      </p>
-      {mobileIconsWithoutFlutter}
-    </div>
-    <ul className={styles.cardContainer}>
       <div className={styles.cardContent}>
-    <div className={styles.cardContent}>
         <div className={styles.sdkIconContainer}>
           <svg
             width="24"
@@ -891,18 +869,16 @@ export const mpccorekitios = (
           </svg>
         </div>
         <div className={styles.cardContentText}>
-          <h3 className={styles.title}>MPC Core Kit Swift SDK</h3>
-          <p>
-            Get the Web3Auth full TSS-MPC Infrastructure deeply integrated within your native iOS
-            application.
-          </p>
+          <div className={styles.cardTitleContainer}>
+            <h3 className={styles.title}>MPC Core Kit Swift SDK</h3>
+          </div>
           <div className={styles.links}>
             {/* <a
               href={`${baseUrl}quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT_NATIVE&stepIndex=0&stepIndex=0`}
             >
               Quick Start{chevron}
             </a> */}
-            <a href={`${baseUrl}sdk/core-kit/mpc-core-kit-ios`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mpc-core-kit/mpc-core-kit-swift`}>SDK Reference{chevron}</a>
           </div>
         </div>
       </div>
@@ -1061,7 +1037,7 @@ export default function QuickNavigation() {
       {product === sfa && sfaweb}
       {product === sfa && sfamobile}
       {product === mpccorekit && mpccorekitjs}
-      {product === mpccorekit && mpccorekitreactnative}
+      {product === mpccorekit && mpccorekitmobile}
       {product === infra && infrasdks}
     </div>
   );

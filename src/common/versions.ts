@@ -17,8 +17,9 @@ export const tkeyAndroidVersion = `0.0.5`;
 export const tkeyIOSVersion = `0.0.4`;
 export const mpcCoreKitJSVersion = `3.4.x`;
 export const mpcCoreKitReactNativeVersion = `1.0.0`;
+export const mpcCoreKitSwiftVersion = `1.0.0`;
 
-import { web, android, ios, js, reactnative, flutter, unity, unreal } from "./SDKOptions";
+import { web, android, ios, js, reactnative, flutter, unity, unreal, swift } from "./SDKOptions";
 
 export function getPnPVersion(platform: string) {
   if (platform === web) {
@@ -65,5 +66,8 @@ export function getMPCCoreKitVersion(platform: string) {
   }
   if (platform === reactnative) {
     return mpcCoreKitReactNativeVersion;
+  }
+  if (platform === swift) {
+    return mpcCoreKitSwiftVersion;
   }
 }
