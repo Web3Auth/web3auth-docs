@@ -1,0 +1,115 @@
+---
+title: "Log in with OAuth"
+sidebar_label: "Log in with OAuth"
+description: "Web3Auth MPC Core Kit Swift SDK - Log in with OAuth | Documentation - Web3Auth"
+---
+
+import ServiceWorkerCode from "@site/src/common/sdk/infra/tkey/_sw-js.mdx";
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+To authenticate users using Single Page Application(SPA) flow, you can use the `loginWithOAuth`
+method. The SDK uses method overloading to support both single verifier and aggregate verifier.
+
+Unlike the `loginWithJWT` method, this approach doesn't require you to manage the authentication
+process manually. The method automatically manages the authentication flow and handles the response
+from redirection internally.
+
+:::info Recommended
+
+The [loginWithJWT](/docs/sdk/mpc-core-kit/mpc-core-kit-ios/authentication/login-jwt) method is
+recommended for faster login experience.
+
+:::
+
+## Single Verifier
+
+A single verifier flow operates independently of the other verifiers you've created on the Web3Auth
+dashboard. For example, if you've set up custom verifiers for Google and Apple on the dashboard,
+each verifier will generate a different wallet for the same user.
+
+To login with a single verifier, you will require to create a custom verifier in the Web3Auth
+dashboard. If you haven't already created one,
+[learn how to create a verifier](/docs/auth-provider-setup/byo-jwt-provider/#set-up-custom-jwt-verifier).
+
+The method takes `SingleLoginParams` as a parameter.
+
+### Parameters
+
+| Name          | Description                                                                                                                                                                                                                                                                        |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `typeOfLogin` | Defines the type of social/ OAuth login you want to use. Available values are `.google`, `.facebook`, `.discord`, `.reddit`, `.twitch`, `.apple`, `.github`, `.linkedin`, `.twitter`, `.weibo`, `.line`, `.email_password`, `.email_passwordless`, `.sms_passwordless`, and `.jwt` |
+| `verifier`    | Your custom verifier name.                                                                                                                                                                                                                                                         |
+| `clientId`    | Your OAuth provider client id. For instance, if you are using `LoginType.google` it'll take the google login id.                                                                                                                                                                   |
+| `redirectURL` | Defines the redirect URL, the default value is `https://scripts.toruswallet.io/redirect.html`.                                                                                                                                                                                     |
+| `jwtParams?`  | Auth0 login parameters. See [Auth0ClientOptions](https://github.com/torusresearch/customauth-swift-sdk/blob/master/Sources/CustomAuth/Common/LoginParams/Auth0ClientOptions.swift). Explicitly required for login types: `.jwt`, `.email_passwordless`, `.sms_passwordless`.       |
+| `hash?`       | This is the urlfragment part of the url, only use if needed.                                                                                                                                                                                                                       |
+
+### Usage
+
+```swift
+import CustomAuth
+
+let singleLoginParams = SingleLoginParams(
+    typeOfLogin: .google,
+    verifier: "YOUR_GOOGLE_VERIFIER_NAME",
+    clientId: "YOUR_GOOGLE_CLIENT_ID"
+)
+
+do {
+    // Use an existing MPCCoreKit instance
+    let result = try await mpcCoreKit.loginWithOAuth(
+        singleLoginParams: singleLoginParams
+    )
+} catch {
+   // Handle error
+}
+```
+
+## Aggregate Verifier
+
+An aggregate verifier enables you to combine multiple verifiers/ login methods, ensuring that users
+can retrieve the same wallet address regardless of the method they choose to log in.
+[Learn more about aggregate verifiers](/docs/auth-provider-setup/aggregate-verifier).
+
+To login with an aggregate verifier, you will require to create an aggregate verifier in the
+Web3Auth dashboard. If you haven't already created one,
+[learn how to create an aggregate verifier](/docs/auth-provider-setup/aggregate-verifier#setting-up-an-aggregate-verifier).
+
+The method takes `AggregateLoginParams` as a parameter.
+
+### Parameters
+
+| Name                      | Description                                                                                                                                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aggregateVerifierType`   | Defines the aggregate verifier type. Supported value is `AggregateVerifierType.single_id_verifier`. This means the aggregate verifier would consider only one verification field to aggregate the different verifiers. |
+| `verifierIdentifier`      | Pass your top level aggregate verifier name.                                                                                                                                                                           |
+| `subVerifierDetailsArray` | Takes in a list of sub verifiers for the aggregate login, this is a list of [SingleLoginParams](#parameters).                                                                                                          |
+
+### Usage
+
+```swift
+import CustomAuth
+
+let aggregateLoginParams = AggregateLoginParams(
+    aggregateVerifierType: AggregateVerifierType.single_id_verifier,
+    verifierIdentifier: "YOUR_AGGREGATE_VERIFIER_NAME",
+    subVerifierDetailsArray: [
+        SingleLoginParams(
+            typeOfLogin: .google,
+            verifier: "YOUR_GOOGLE_SUB_VERIFIER_NAME",
+            clientId: "YOUR_GOOGLE_CLIENT_ID"
+        )
+    ]
+)
+
+do {
+    // Use an existing MPCCoreKit instance
+    let result = try await mpcCoreKit.loginWithOAuth(
+      aggregateLoginParams: aggregateLoginParams
+    )
+} catch {
+   // Handle error
+}
+```

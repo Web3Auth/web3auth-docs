@@ -1,0 +1,75 @@
+---
+title: "Log in with OAuth"
+
+sidebar_label: "Log in with OAuth"
+description: "Web3Auth MPC Core Kit JS SDK - Log in with OAuth | Documentation - Web3Auth"
+---
+
+import ServiceWorkerCode from "@site/src/common/sdk/infra/tkey/_sw-js.mdx";
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+To authenticate users using Single Page Application(SPA) flow, you can use the `loginWithOAuth`
+method. This methods takes the `OAuthLoginParams` as a parameter, which is an object that contains
+the details of the verifier, and additional authentication parameters.
+
+## Parameters
+
+| Parameters           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`      | Defines the login provider to be used. Supported values are `LoginProviders.google`, `LoginProviders.facebook`, `LoginProviders.twitch`, `LoginProviders.reddit`, `LoginProviders.discord`, `LoginProviders.apple`, `LoginProviders.github`, `LoginProviders.linkedin`, `LoginProviders.kakao`, `LoginProviders.twitter`, `LoginProviders.weibo`, `LoginProviders.line`, `LoginProviders.wechat`, `LoginProviders.email_password`, `LoginProviders.jwt` |
+| `clientId`           | Client id for respective `loginProvider`. For instance google client id, auth0 client id, and etc.                                                                                                                                                                                                                                                                                                                                                      |
+| `verifier`           | Verifier name from the Web3Auth Dashboard.                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `jwtParams`          | JWT parameters. It takes `[Stirng: Stirng]` as an input. The default value is `[:]`.                                                                                                                                                                                                                                                                                                                                                                    |
+| `redirectURL`        |                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `browserRedirectURL` |                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+
+## Usage
+
+```swift
+let result = try await mpcCoreKit.loginWithOAuth(
+    loginProvider: .google,
+    clientId: "Your Google Client id",
+    verifier: "Your Custom Verifier name"
+);
+```
+
+## Result
+
+The `loginWith0Auth`returns `MpcKeyDetails` upon success, which has infomration regarding
+thresholds, required factors, and etc.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Description                                                                                                                                                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tssPubKey`       | It holds the value for the TSS PubKey in compressed form. The type of `tssPubKey` is `String`.                                                                                                                              |
+| `metadataPubKey`  | It holds the value for metadata PubKey which is used for interacting with metadata layer.                                                                                                                                   |
+| `requiredFactors` | It defines the total factors still required for SDK to be in write mode. If required factors are greater than 0, the SDK will be in read mode. You can use `inputFactor` function to input factor and refresh the instance. |
+| `threshold`       | Defines the threshold set by the SDK. Ideally it would be 2.                                                                                                                                                                |
+| `total_shares`    | Defines the total number of shares for user. Initially if the hashed cloud factor is set, it would be 2.                                                                                                                    |
+
+</TabItem>
+
+<TabItem value = "class">
+```swift
+public struct MpcKeyDetails : Codable {
+    public let tssPubKey : String
+    public let metadataPubKey: String
+    public let requiredFactors: Int32
+    public let threshold: UInt32
+    public let shareDescriptions : String
+    public let total_shares: UInt32
+}
+```
+</TabItem>
+</Tabs>

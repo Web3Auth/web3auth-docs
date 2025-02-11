@@ -6,6 +6,7 @@ export const web = "Web";
 export const android = "Android";
 export const ios = "iOS";
 export const js = "Javascript";
+export const swift = "Swift";
 export const macOS = "macOS";
 export const reactnative = "React Native";
 export const rnbare = "React Native Bare";
