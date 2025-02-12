@@ -47,28 +47,28 @@ export const REACT_HOOKS = "REACT_HOOKS";
 export const VUE_COMPOSABLES = "VUE_COMPOSABLES";
 
 export const SDKS_PNP: DisplayChoice[] = [
-  { key: PNP_MODAL, displayName: "Web - Modal SDK" },
-  { key: PNP_NO_MODAL, displayName: "Web - No Modal SDK" },
-  { key: PNP_ANDROID, displayName: "Android SDK" },
-  { key: PNP_IOS, displayName: "iOS SDK" },
-  { key: PNP_REACT_NATIVE, displayName: "React Native SDK" },
-  { key: PNP_FLUTTER, displayName: "Flutter SDK" },
-  { key: PNP_UNITY, displayName: "Unity SDK" },
+  { key: PNP_MODAL, displayName: "PnP Web - Modal SDK" },
+  { key: PNP_NO_MODAL, displayName: "PnP Web - No Modal SDK" },
+  { key: PNP_ANDROID, displayName: "PnP Android SDK" },
+  { key: PNP_IOS, displayName: "PnP iOS SDK" },
+  { key: PNP_REACT_NATIVE, displayName: "PnP React Native SDK" },
+  { key: PNP_FLUTTER, displayName: "PnP Flutter SDK" },
+  { key: PNP_UNITY, displayName: "PnP Unity SDK" },
 ];
 
 export const SDKS_SFA: DisplayChoice[] = [
-  { key: SFA_WEB, displayName: "Single Factor Auth JS SDK for Web" },
-  { key: SFA_REACT_NATIVE, displayName: "Single Factor JS SDK for React Native" },
-  { key: SFA_NODE, displayName: "Single Factor Auth JS SDK for NodeJS" },
-  { key: SFA_ANDROID, displayName: "Single Factor Auth Android SDK" },
-  { key: SFA_IOS, displayName: "Single Factor Auth iOS SDK" },
-  { key: SFA_FLUTTER, displayName: "Single Factor Auth Flutter SDK" },
+  { key: SFA_WEB, displayName: "SFA JS SDK for Web" },
+  { key: SFA_REACT_NATIVE, displayName: "SFA JS SDK for React Native" },
+  { key: SFA_NODE, displayName: "SFA JS SDK for NodeJS" },
+  { key: SFA_ANDROID, displayName: "SFA Android SDK" },
+  { key: SFA_IOS, displayName: "SFA iOS SDK" },
+  { key: SFA_FLUTTER, displayName: "SFA Flutter SDK" },
 ];
 
 export const SDKS_MPC_CORE_KIT: DisplayChoice[] = [
-  { key: MPC_CORE_KIT_WEB, displayName: "MPC Core Kit JS SDK for Web" },
-  { key: MPC_CORE_KIT_REACT_NATIVE, displayName: "MPC Core Kit React Native SDK" },
-  { key: MPC_CORE_KIT_NODE, displayName: "MPC Core Kit JS SDK for NodeJS" },
+  { key: MPC_CORE_KIT_WEB, displayName: "MPC CK JS SDK for Web" },
+  { key: MPC_CORE_KIT_REACT_NATIVE, displayName: "MPC CK React Native SDK" },
+  { key: MPC_CORE_KIT_NODE, displayName: "MPC CK JS SDK for NodeJS" },
 ];
 
 export const LANGS_WEB: DisplayChoice[] = [
