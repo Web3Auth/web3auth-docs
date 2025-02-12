@@ -10,6 +10,19 @@ import FlutterResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
 import SMSPasswordless from "@site/src/common/sdk/pnp/flutter/_sms_passwordless.mdx";
 import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
+## Functionality Overview
+
+| Name                                            | Description                                                                                                                                           |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [login](#logging-in-a-user)                     | Logs in the user with the selected login provider.                                                                                                    |
+| [logout](#logging-out-a-user)                   | Logs out the user from the currently active session.                                                                                                  |
+| [getPrivKey](#secp256k1-private-key)            | Retrieve the user's secp256K1 key. The key can be used to sign transactions for chains using the secp256k1 curve like EVM-compatible chains.          |
+| [getEd25519PrivKey](#ed25519-private-key)       | Retrieve the user's ed25519 key. The key can be used to sign transactions for chains using the ed25519 curve like Solana, Near, Algorand, and others. |
+| [getUserInfo](#retrieve-user-information)       | Retrieve the user information, such as login provider, name, email, oAuth token, etc.                                                                 |
+| [enableMFA](#enable-mfa-for-a-user)             | Use to trigger the setup MFA flow for the users.                                                                                                      |
+| [launchWalletServices](#launch-wallet-services) | Use to open the templated wallet UI in WebView.                                                                                                       |
+| [request](#request-signature)                   | Use to open templated transaction screens for signing EVM transactions.                                                                               |
+
 ## Logging in a User
 
 To login in a user, you can use the `login` method. It will trigger login flow will navigate the
@@ -410,13 +423,14 @@ final privateKey = await Web3AuthFlutter.getPrivKey();
 ### Ed25519 Private Key
 
 To retrieve the secp256k1 private key of the user., use `getEd25519PrivKey` method. This private key
-can be used to sign transactions on Solana.
+can be used to sign transactions on Solana, Near, Algorand, and other chains that use the ed25519
+curve.
 
 ```dart
 final privateKey = await Web3AuthFlutter.getEd25519PrivKey();
 ```
 
-## Retrive User Information
+## Retrieve User Information
 
 You can use the `getUserInfo` method to retrieve various details about the user, such as their login
 type, whether multi-factor authentication (MFA) is enabled, profile image, name, and other relevant
@@ -586,8 +600,8 @@ try {
 ## Request signature
 
 The `request` method facilitates the use of templated transaction screens for signing transactions.
-Upon successful completion, you can retrieve the signature for the request using the
-`getSignResponse` static method.
+The method can be used to sign transactions for any EVM chain and screens can be whitelabeled to
+your branding.
 
 Please check the list of
 [JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
@@ -632,3 +646,11 @@ try {
   log("Unknown exception occurred");
 }
 ```
+
+### SignResponse
+
+| Name      | Description                                                   |
+| --------- | ------------------------------------------------------------- |
+| `success` | Determines whether the request was successful or not.         |
+| `result?` | Holds the signature for the request when `success` is `true`. |
+| `error?`  | Holds the error for the request when `success` is `false`.    |
