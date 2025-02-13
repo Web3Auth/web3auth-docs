@@ -1,0 +1,608 @@
+---
+title: How to use Bitcoin Taproot with Web3Auth MPC CoreKit SDK
+image: "banners/bitcoin.png"
+description:
+  A comprehensive guide to setting up your Web3Auth MPC Core Kit SDK, including development of a
+  basic web application on Bitcoin taproot blockchain.
+type: guide
+tags: [MPC, mpc core kit, web, bitcoin, taproot, firebase]
+date: February 13, 2025
+author: Web3Auth Team
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+As Bitcoin adoption continues to grow, ensuring secure and user-friendly key management is more
+important than ever. Web3Auth MPC CoreKit provides a robust solution by leveraging multi-party
+computation (MPC) to enhance security while maintaining a seamless user experience.
+
+This guide walks you through setting up and using Web3Auth MPC CoreKit specifically for Bitcoin
+Taproot, demonstrating how to integrate Web3Auth’s decentralized key infrastructure with Bitcoin
+transactions. By the end of this guide, you’ll be able to securely generate and manage Bitcoin keys,
+sign transactions, and interact with the Bitcoin network without compromising on security or
+usability.
+
+Whether you’re a developer looking to integrate Web3Auth MPC CoreKit into your Bitcoin applications
+or simply exploring MPC-based key management, this guide provides a hands-on approach to getting
+started. Let’s dive in!
+
+## Prerequisites
+
+- Web3Auth Dashboard: If you haven't already, sign up on the Web3Auth platform. It is free and gives
+  you access to the Web3Auth's base plan. Head to Web3Auth's documentation page for detailed
+  [instructions on setting up the Web3Auth Dashboard](/docs/dashboard-setup).
+- Web3Auth MPC CoreKit SDK: This guide assumes that you already know how to integrate the MPC
+  CoreKit SDK in your project and able to set up the login flow. If not, you can learn how to
+  [integrate Web3Auth in your web app](/docs/sdk/mpc-core-kit/mpc-core-kit-js).
+
+## Initialization
+
+Before interacting with Web3Auth MPC CoreKit, we need to initialize it. This is done in the App.tsx
+file, where we configure the CoreKit instance with the necessary parameters.
+
+### Setting Up Web3Auth MPC CoreKit
+
+In the snippet below, we create an instance of Web3Auth MPC CoreKit with the required
+configurations:
+
+```js
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+import { tssLibFrostBip340 } from "@toruslabs/tss-frost-lib-bip340";
+
+let coreKitInstance: Web3AuthMPCCoreKit;
+if (typeof window !== "undefined") {
+  coreKitInstance = new Web3AuthMPCCoreKit({
+    web3AuthClientId,  // Your Web3Auth Client ID
+    web3AuthNetwork: WEB3AUTH_NETWORK.DEVNET, // Connects to Web3Auth's DEVNET environment
+    storage: window.localStorage, // Uses localStorage for persisting user session
+    manualSync: true, // Requires manual syncing of key shares
+    tssLib: tssLibFrostBip340, // Uses Frost-BIP340 for threshold signature scheme (TSS)
+  });
+}
+```
+
+Here’s what each parameter does:
+
+    *	web3AuthClientId – Your unique Web3Auth Client ID.
+    *	web3AuthNetwork – Specifies the Web3Auth network (DEVNET in this case).
+    *	storage – Determines where session data is stored; here, we use localStorage.
+    *	manualSync – Enables manual synchronization of key shares for added control.
+    *	tssLibFrostBip340 – Defines the threshold signature scheme (TSS) library, in this case, Frost-BIP340, which is optimized for Bitcoin Taproot.
+
+### Initializing the CoreKit Instance
+
+Once the instance is created, we initialize it inside a useEffect hook:
+
+```js
+useEffect(() => {
+  const init = async () => {
+    setIsLoading(true);
+    await coreKitInstance.init(); // Initializes the CoreKit instance
+    setCoreKitStatus(coreKitInstance.status); // Updates state with CoreKit status
+    setIsLoading(false);
+  };
+  init();
+}, []);
+```
+
+Here’s how it works:
+
+    *	setIsLoading(true) – Sets a loading state while initialization is in progress.
+    *	coreKitInstance.init() – Calls the initialization method, which connects CoreKit to Web3Auth.
+    *	setCoreKitStatus(coreKitInstance.status) – Stores the current status of CoreKit after initialization.
+    *	setIsLoading(false) – Removes the loading state once the process is complete.
+
+## Authentication
+
+The project uses Firebase for authentication, allowing users to log in securely using their Google
+accounts. The login function, implemented in App.tsx, handles this authentication flow and
+integrates with Web3Auth MPC CoreKit.
+
+### Logging in with Google
+
+The login function follows these steps to authenticate users and establish a Web3Auth session:
+
+<Tabs
+defaultValue="login"
+values={[
+  { label: "Login with Google", value: "login" },
+  { label: "Firebase", value: "firebase" },
+]}
+>
+<TabItem value="login">
+
+```js
+import { signInWithGoogle } from "./firebase";
+
+const login = async () => {
+  try {
+    if (!coreKitInstance) {
+      throw new Error("CoreKit instance not initialized");
+    }
+
+    const loginRes = await signInWithGoogle(); // Sign in using Firebase Google authentication
+    const idToken = await loginRes.user.getIdToken(true); // Retrieve the Firebase ID token
+    const parsedToken = parseToken(idToken); // Decode the token to extract user details
+
+    const idTokenLoginParams = {
+      verifier, // The verifier configured for authentication
+      verifierId: parsedToken.sub, // Unique user identifier from the token
+      idToken, // The JWT token to be used for authentication
+    } as JWTLoginParams;
+
+    await coreKitInstance.loginWithJWT(idTokenLoginParams); // Authenticate with Web3Auth using the JWT token
+
+    if (coreKitInstance.status === COREKIT_STATUS.LOGGED_IN) {
+      await coreKitInstance.commitChanges(); // Required for new accounts to persist changes
+    }
+
+    if (coreKitInstance.status === COREKIT_STATUS.REQUIRED_SHARE) {
+      setShowRecoveryOptions(true);
+      uiConsole(
+        "More shares required. Please enter your backup/device factor key or reset your account. [Warning: Resetting is irreversible, use with caution]",
+      );
+    }
+
+    setCoreKitStatus(coreKitInstance.status); // Update the application state with the CoreKit status
+  } catch (err) {
+    uiConsole(err); // Log any errors to the console
+  }
+};
+```
+
+</TabItem>
+
+<TabItem value="firebase">
+
+```js
+import { initializeApp } from "firebase/app";
+
+const app = initializeApp(firebaseConfig);
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
+  authDomain: "web3auth-oauth-logins.firebaseapp.com",
+  projectId: "web3auth-oauth-logins",
+  storageBucket: "web3auth-oauth-logins.appspot.com",
+  messagingSenderId: "461819774167",
+  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
+};
+
+export const signInWithGoogle = async (): Promise<UserCredential> => {
+  try {
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+    const res = await signInWithPopup(auth, googleProvider);
+    console.log(res);
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+```
+
+</TabItem>
+</Tabs>
+
+Explanation
+
+    1.	Check CoreKit Instance – Ensures coreKitInstance is initialized before proceeding.
+    2.	Sign in with Google – Calls signInWithGoogle() to authenticate the user via Firebase.
+    3.	Retrieve ID Token – After login, the Firebase ID token is fetched for authentication.
+    4.	Parse Token – Decodes the ID token to extract user information, including the sub field (a unique user identifier).
+    5.	Authenticate with Web3Auth – Calls loginWithJWT(), passing the Firebase ID token to Web3Auth for authentication.
+    6.	Commit Changes (If Needed) – If the user is logging in for the first time, commitChanges() ensures key shares are properly stored.
+    7.	Handle Recovery (If Needed) – If Web3Auth requires additional shares to reconstruct the key, the UI prompts the user for recovery options.
+    8.	Update Application State – The current CoreKit status is stored for UI updates.
+
+Here’s the explanation in the style of your reference:
+
+## Bitcoin Signer
+
+To enable Bitcoin Taproot signing with Web3Auth MPC CoreKit, we need to create a
+BitcoinJS-compatible signer that works with the BIP340 Schnorr signature scheme. The function
+createBitcoinJsSignerBip340 accomplishes this by deriving a tweaked Taproot public key and
+implementing the necessary signing methods.
+
+### Implementing the Bitcoin Signer
+
+The following code defines the BIP340 signer using Web3Auth’s MPC CoreKit:
+
+```js
+import { secp256k1 } from "@tkey/common-types";
+import { Web3AuthMPCCoreKit } from "@web3auth/mpc-core-kit";
+import { networks, SignerAsync } from "bitcoinjs-lib";
+import * as bitcoinjs from "bitcoinjs-lib";
+import ECPairFactory from "ecpair";
+
+import ecc from "@bitcoinerlab/secp256k1";
+import BN from "bn.js";
+
+const ECPair = ECPairFactory(ecc);
+
+export function createBitcoinJsSignerBip340(props: { coreKitInstance: Web3AuthMPCCoreKit; network: networks.Network }): SignerAsync {
+  const bufPubKey = props.coreKitInstance.getPubKeyPoint().toSEC1(secp256k1, true);
+  const xOnlyPubKey = bufPubKey.subarray(1, 33);
+  const keyPair = ECPair.fromPublicKey(bufPubKey);
+  const tweak = bitcoinjs.crypto.taggedHash("TapTweak", xOnlyPubKey);
+  const tweakedChildNode = keyPair.tweak(tweak);
+  const pk = tweakedChildNode.publicKey;
+
+  return {
+    sign: async (msg: Buffer) => {
+      let sig = await props.coreKitInstance.sign(msg);
+      return sig;
+    },
+    signSchnorr: async (msg: Buffer) => {
+      const keyTweak = new BN(tweak);
+      let sig = await props.coreKitInstance.sign(msg, { keyTweak });
+      return sig;
+    },
+    publicKey: pk,
+    network: props.network,
+  };
+}
+```
+
+### Explanation
+
+1️⃣ Import Required Libraries
+
+The function imports:
+
+- BitcoinJS (bitcoinjs-lib) - Provides Bitcoin transaction utilities.
+- ECPair (ecpair) – Used for public key derivation and tweaking.
+- BN.js (bn.js) – Handles large number computations (for Taproot key tweaking).
+- Web3Auth MPC CoreKit (@web3auth/mpc-core-kit) – Enables multi-party computation for private keys.
+
+2️⃣ Retrieve the Public Key from CoreKit
+
+```js
+const bufPubKey = props.coreKitInstance.getPubKeyPoint().toSEC1(secp256k1, true);
+const xOnlyPubKey = bufPubKey.subarray(1, 33);
+```
+
+    *	The public key is fetched from the Web3Auth MPC CoreKit instance.
+    *	It is converted to SEC1 format and extracted as an x-only public key (removing the first byte).
+
+3️⃣ Apply Taproot Tweak for BIP340 Compatibility
+
+```js
+const keyPair = ECPair.fromPublicKey(bufPubKey);
+const tweak = bitcoinjs.crypto.taggedHash("TapTweak", xOnlyPubKey);
+const tweakedChildNode = keyPair.tweak(tweak);
+const pk = tweakedChildNode.publicKey;
+```
+
+    *	Taproot keys must be tweaked using a tagged hash (TapTweak) to ensure scriptless scripts work correctly.
+    *	The tweaked key is derived using ECPair.tweak(tweak).
+
+4️⃣ Implement Signing Functions
+
+```js
+sign: async (msg: Buffer) => {
+  let sig = await props.coreKitInstance.sign(msg);
+  return sig;
+}
+```
+
+    *	sign method – Uses Web3Auth MPC CoreKit to sign standard Bitcoin transactions.
+
+```js
+signSchnorr: async (msg: Buffer) => {
+  const keyTweak = new BN(tweak);
+  let sig = await props.coreKitInstance.sign(msg, { keyTweak });
+  return sig;
+},
+```
+
+    *	signSchnorr method – Signs transactions using the Schnorr signature scheme (BIP340).
+    *	The private key is tweaked using BN.js before signing.
+
+5️⃣ Return the BitcoinJS-Compatible Signer
+
+```js
+return {
+  publicKey: pk,
+  network: props.network,
+};
+```
+
+    *	The signer returns the tweaked Taproot public key and the associated Bitcoin network configuration.
+
+Summary
+
+- This function derives a Taproot-compatible public key using Web3Auth MPC CoreKit.
+- It implements both standard and Schnorr signing for Bitcoin transactions.
+- The returned object integrates seamlessly with bitcoinjs-lib, making it easy to use in Bitcoin
+  applications.
+
+## Bitcoin Operations
+
+The BitcoinComponent.tsx file implements Bitcoin-specific operations, allowing users to:
+
+- showAddress – Display the Taproot (BIP340) Bitcoin address.
+- showBalance – Fetch and display the balance for the generated Bitcoin address.
+- signAndSendTransaction – Sign and optionally broadcast Bitcoin transactions using Web3Auth MPC
+  CoreKit.
+
+This component integrates BitcoinJS (bitcoinjs-lib), Schnorr signatures (@bitcoinerlab/secp256k1),
+and Web3Auth MPC for Taproot-compatible signing.
+
+Code Implementation
+
+```js
+import { Web3AuthMPCCoreKit } from "@web3auth/mpc-core-kit";
+import { useEffect, useState } from "react";
+import ecc from "@bitcoinerlab/secp256k1";
+import { networks, Psbt, payments, SignerAsync } from "bitcoinjs-lib";
+import * as bitcoinjs from "bitcoinjs-lib";
+import { createBitcoinJsSignerBip340 } from "./BitcoinSigner";
+import axios from "axios";
+import { BlurredLoading } from "./Loading";
+
+bitcoinjs.initEccLib(ecc);
+```
+
+### Explanation
+
+1️⃣ Dependencies and Libraries
+
+- bitcoinjs-lib – Handles Bitcoin transactions and scripts.
+- @bitcoinerlab/secp256k1 – Implements Schnorr signatures for BIP340.
+- axios – Fetches data from external Bitcoin APIs (Blockstream testnet).
+- Web3AuthMPCCoreKit – Enables MPC-based key management and signing.
+
+2️⃣ Initialize BitcoinJS with Schnorr Support
+
+```jsx
+bitcoinjs.initEccLib(ecc);
+```
+
+    *	This ensures BitcoinJS uses Schnorr signing for Taproot transactions.
+
+3️⃣ Create a Bitcoin Address
+
+```jsx
+const getAddress = (bip340Signer: SignerAsync, network: networks.Network): string | undefined => {
+  return payments.p2tr({ pubkey: bip340Signer.publicKey.subarray(1, 33), network }).address;
+};
+```
+
+    *	Converts the BIP340 public key into a Taproot (P2TR) address.
+
+4️⃣ Fetch Unspent Transaction Outputs (UTXOs)
+
+```jsx
+const fetchUtxos = async (address: string) => {
+  try {
+    const response = await axios.get(`https://blockstream.info/testnet/api/address/${address}/utxo`);
+    return response.data.filter((utxo: { status: { confirmed: boolean } }) => utxo.status.confirmed);
+  } catch (error) {
+    console.error("Error fetching UTXOs:", error);
+    return [];
+  }
+};
+```
+
+    *	Calls Blockstream API to get UTXOs (spendable funds) for a given Bitcoin address.
+    *	Filters for confirmed transactions only.
+
+5️⃣ Sign and Send Taproot Transactions
+
+```jsx
+const signAndSendTransaction = async (send: boolean = false) => {
+  if (!bip340Signer) {
+    uiConsole("BIP340 Signer not initialized yet");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const account = payments.p2tr({ pubkey: bip340Signer.publicKey.subarray(1, 33), network: bitcoinNetwork });
+
+    const utxos = await fetchUtxos(account.address!);
+
+    if (!utxos.length) {
+      throw new Error("No UTXOs found for this address");
+    }
+
+    const utxo = utxos[0];
+    const feeResponse = await axios.get("https://blockstream.info/testnet/api/fee-estimates");
+    const maxFee = Math.max(...Object.values(feeResponse.data as Record<string, number>));
+    const fee = Math.ceil(maxFee * 1.2);
+
+    if (utxo.value <= fee) {
+      throw new Error(`Insufficient funds: ${utxo.value} satoshis <= ${fee} satoshis (estimated fee)`);
+    }
+
+    const sendAmount = amount ? parseInt(amount) : utxo.value - fee;
+
+    const psbt = new Psbt({ network: bitcoinNetwork });
+
+    psbt.addInput({
+      hash: utxo.txid,
+      index: utxo.vout,
+      witnessUtxo: {
+        script: account.output!,
+        value: utxo.value,
+      },
+      tapInternalKey: bip340Signer.publicKey.subarray(1, 33),
+    });
+
+    psbt.addOutput({
+      address: receiverAddr || account.address!,
+      value: sendAmount,
+    });
+
+    uiConsole("Signing transaction...");
+
+    await psbt.signInputAsync(0, bip340Signer);
+
+    const isValid = psbt.validateSignaturesOfInput(0, BTCValidator);
+    if (!isValid) {
+      throw new Error("Transaction signature validation failed");
+    }
+
+    const signedTransaction = psbt.finalizeAllInputs().extractTransaction().toHex();
+
+    uiConsole("Signed Transaction:", signedTransaction, "Copy the above into https://blockstream.info/testnet/tx/push");
+
+    if (send) {
+      const txid = await handleSendTransaction(signedTransaction);
+      uiConsole("Transaction sent. TXID:", txid);
+    }
+  } catch (error) {
+    console.error(`Error in signTaprootTransaction:`, error);
+    uiConsole("Error:", (error as Error).message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+    *	Fetches UTXOs for the Taproot address.
+    *	Estimates fees dynamically using Blockstream API.
+    *	Signs the transaction using the MPC-based BIP340 signer.
+    *	Validates the signature before broadcasting.
+    *	Finalizes and extracts the signed transaction hex.
+    *	Optionally sends the transaction via Blockstream API.
+
+6️⃣ Display Bitcoin Address and Balance
+
+```jsx
+const showAddress = async () => {
+  if (!bip340Signer) {
+    uiConsole("Signer not initialized yet");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const address = getAddress(bip340Signer, bitcoinNetwork);
+    if (address) {
+      uiConsole(`Address:`, address);
+    } else {
+      uiConsole("Invalid address");
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+    *	Displays the generated Taproot address.
+
+```jsx
+const showBalance = async () => {
+  if (!bip340Signer) {
+    uiConsole("Signer not initialized yet");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const address = getAddress(bip340Signer, bitcoinNetwork);
+    if (!address) {
+      uiConsole("Invalid address");
+      return;
+    }
+
+    const utxos = await fetchUtxos(address);
+    const balance = utxos.reduce((acc: any, utxo: { value: any }) => acc + utxo.value, 0);
+    uiConsole(` Balance:`, balance, "satoshis");
+  } catch (error) {
+    console.error(`Error fetching balance for  address:`, error);
+    uiConsole(`Error fetching balance for  address:`, (error as Error).message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+    - Fetches and displays the balance in satoshis by summing UTXOs.
+
+7️⃣ Component UI
+
+- Allows users to:
+  - Enter a receiver Bitcoin address and amount.
+  - Show the Taproot address.
+  - Check balance.
+  - Sign transactions.
+  - Send transactions to the Bitcoin network.
+
+```jsx
+<button onClick={() => showAddress()} className="card taproot-color">
+  Show Taproot Address
+</button>
+
+<button onClick={() => showBalance()} className="card taproot-color">
+  Show Taproot Balance
+</button>
+
+<button onClick={() => signAndSendTransaction()} className="card taproot-color">
+  Sign Taproot Transaction
+</button>
+
+<button onClick={() => signAndSendTransaction(true)} className="card taproot-color">
+  Send Taproot Transaction
+</button>
+```
+
+Summary
+
+- Derives a Taproot-compatible address using MPC-based signing.
+- Fetches UTXOs and balance via Blockstream API.
+- Signs transactions with Schnorr signatures (BIP340).
+- Broadcasts transactions using a centralized testnet API (for now).
+
+## Usage Guide
+
+1. **Login**: Click the "Login" button to authenticate using Firebase.
+
+2. **View Addresses**: Use the "Show Taproot Address" button to display the Taproot Bitcoin address.
+
+3. **Check Balance**: Click on "Show Taproot Balance" to view the balance for the Taproot address.
+
+4. **Send Transactions**:
+
+   - Enter the receiver's address and amount in satoshi.
+   - Click "Sign Taproot Transaction" to sign a transaction.
+   - Use "Send Taproot Transaction" to sign and send the transaction.
+
+5. **Enable MFA**: Click the "Enable MFA" button to enable Multi-Factor Authentication.
+
+6. **Logout**: Use the "Log Out" button to end your session.
+
+## Important Notes
+
+- This is a testnet implementation. Use a [faucet](https://coinfaucet.eu/en/btc-testnet/) to get
+  testnet BTC.
+- The project uses BlockStream's API for transaction broadcasting, which is not recommended for
+  production use.
+- Be cautious with the "Reset Account" functionality, as it will clear all metadata associated with
+  your account.
+
+## Customization
+
+To customize the project for your needs:
+
+1. Replace the `web3AuthClientId` in `App.tsx` with your own client ID from the Web3Auth dashboard.
+2. Modify the `firebaseConfig` in `App.tsx` if you want to use your own Firebase project.
+3. Customize the UI components in `BitcoinComponent.tsx` to match your design requirements.
+
+## Resources
+
+- [Web3Auth MPC CoreKit Documentation](https://web3auth.io/docs/sdk/mpc-core-kit/mpc-core-kit-js)
+- [Example Repository](https://github.com/Web3Auth/web3auth-core-kit-examples/mpc-core-kit-web/mpc-core-kit-bitcoin-taproot)
+
+## Conclusion
+
+This guide provides an overview of the Web3Auth MPC CoreKit Bitcoin Example. It demonstrates how to
+integrate secure authentication with Bitcoin functionality, allowing for a range of operations from
+address generation to transaction signing and sending.
