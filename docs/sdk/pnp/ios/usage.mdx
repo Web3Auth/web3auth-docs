@@ -11,6 +11,19 @@ import Tabs from "@theme/Tabs";
 import SMSPasswordless from "@site/src/common/sdk/pnp/ios/_sms_passwordless.mdx";
 import EnableMFAMethod from "@site/src/common/sdk/pnp/ios/_enable-mfa.mdx";
 
+## Functionality Overview
+
+| Name                                            | Description                                                                                                                                           |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [login](#logging-in-a-user)                     | Logs in the user with the selected login provider.                                                                                                    |
+| [logout](#logging-out-a-user)                   | Logs out the user from the currently active session.                                                                                                  |
+| [getPrivKey](#secp256k1-private-key)            | Retrieve the user's secp256K1 key. The key can be used to sign transactions for chains using the secp256k1 curve like EVM-compatible chains.          |
+| [getEd25519PrivKey](#ed25519-private-key)       | Retrieve the user's ed25519 key. The key can be used to sign transactions for chains using the ed25519 curve like Solana, Near, Algorand, and others. |
+| [getUserInfo](#retrieve-user-information)       | Retrieve the user information, such as login provider, name, email, oAuth token, etc.                                                                 |
+| [enableMFA](#enable-mfa-for-a-user)             | Use to trigger the setup MFA flow for the users.                                                                                                      |
+| [launchWalletServices](#launch-wallet-services) | Use to open the templated wallet UI in WebView.                                                                                                       |
+| [request](#request-signature)                   | Use to open templated transaction screens for signing EVM transactions.                                                                               |
+
 ## Logging in a User
 
 To login in a user, you can use the `login` method. It will trigger login flow will navigate the
@@ -281,13 +294,14 @@ let privateKey = web3Auth.getPrivKey();
 ### Ed25519 Private Key
 
 To retrieve the secp256k1 private key of the user., use `getEd25519PrivKey` method. This private key
-can be used to sign transactions on Solana.
+can be used to sign transactions on Solana, Near, Algorand, and other chains that use the ed25519
+curve.
 
 ```swift
 let privateKey = web3Auth.getEd25519PrivKey();
 ```
 
-## Retrive User Information
+## Retrieve User Information
 
 You can use the `getUserInfo` method to retrieve various details about the user, such as their login
 type, whether multi-factor authentication (MFA) is enabled, profile image, name, and other relevant
@@ -423,7 +437,8 @@ do {
 ## Request signature
 
 The `request` method facilitates the use of templated transaction screens for signing transactions.
-The method will return [SignResponse](#signresponse).
+The method will return [SignResponse](#signresponse). It can be used to sign transactions for any
+EVM chain and screens can be whitelabeled to your branding.
 
 Please check the list of
 [JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
