@@ -405,10 +405,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 {integration.embedLink && (
                   <button
                     className={styles.previewButton}
-                    onClick={() => {
-                      togglePreviewModal(integration.embedLink);
-                      setAbortCountdown(true);
-                    }}
+                    onClick={() => togglePreviewModal(integration.embedLink)}
                     type="button"
                     id="headerButton"
                   >
@@ -417,10 +414,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 )}
                 <button
                   className={styles.copyButton}
-                  onClick={() => {
-                    window.open(integration.sourceCodeLink, "_blank");
-                    setAbortCountdown(true);
-                  }}
+                  onClick={() => window.open(integration.sourceCodeLink, "_blank")}
                   type="button"
                   id="headerButton"
                 >
