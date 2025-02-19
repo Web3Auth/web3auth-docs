@@ -74,10 +74,10 @@ if (typeof window !== "undefined") {
 
 The parameters for initializing the Web3Auth MPC CoreKit instance are as follows:
 
-- `web3AuthClientId` is your unique Web3Auth Client ID,
-- `web3AuthNetwork` specifies the Web3Auth network (DEVNET in this case),
-- `storage` determines where session data is stored (using localStorage here),
-- `manualSync` enables manual synchronization of key shares for added control, and
+- `web3AuthClientId` is your unique Web3Auth Client ID.
+- `web3AuthNetwork` specifies the Web3Auth network (DEVNET in this case).
+- `storage` determines where session data is stored (using localStorage here).
+- `manualSync` enables manual synchronization of key shares for added control.
 - `tssLibFrostBip340` defines the threshold signature scheme (TSS) library, specifically
   Frost-BIP340, optimized for Bitcoin Taproot.
 
@@ -194,11 +194,11 @@ export const signInWithGoogle = async (): Promise<UserCredential> => {
 The login function performs the following steps:
 
     1.	**Checks the CoreKit Instance** – Ensures coreKitInstance is initialized before proceeding.
-    2.	**Sign in with Google** – Calls signInWithGoogle() to authenticate the user via Firebase.
+    2.	**Sign in with Google** – Calls `signInWithGoogle()` to authenticate the user via Firebase.
     3.	**Retrieve ID Token** – After login, the Firebase ID token is fetched.
     4.	**Parse Token** – Decodes the ID token to extract user information, including the sub field (a unique user identifier) used during login with Web3Auth.
-    5.	**Authenticate with Web3Auth** – Calls loginWithJWT(), passing the Firebase ID token(JWT) to Web3Auth for authentication.
-    6.	**Commit Changes** (If Needed) – If the user is logging in for the first time, commitChanges() ensures key shares are properly stored.
+    5.	**Authenticate with Web3Auth** – Calls `loginWithJWT()`, passing the Firebase ID token(JWT) to Web3Auth for authentication.
+    6.	**Commit Changes** (If Needed) – If the user is logging in for the first time, `commitChanges()` ensures key shares are properly stored.
     7.	**Handle Recovery** (If Needed) – If Web3Auth requires additional shares to reconstruct the key, the UI prompts the user for recovery options.
     8.	**Update Application State** – The current CoreKit status is stored for UI updates.
 
@@ -206,8 +206,17 @@ The login function performs the following steps:
 
 To enable Bitcoin Taproot signing with Web3Auth MPC CoreKit, we need to create a
 BitcoinJS-compatible signer that works with the BIP340 Schnorr signature scheme. The function
-createBitcoinJsSignerBip340 accomplishes this by deriving a tweaked Taproot public key and
+`createBitcoinJsSignerBip340` accomplishes this by deriving a tweaked Taproot public key and
 implementing the necessary signing methods.
+
+Bitcoin supports multiple signature schemes, including the Schnorr signature scheme introduced in
+BIP340. This scheme is essential for Taproot, a Bitcoin soft fork that improves privacy and
+efficiency. The following code demonstrates how to create a BIP340-compatible signer using
+Web3Auth’s MPC CoreKit.
+
+Bitcoin also has other form addresses like P2PKH, P2SH, P2WPKH, P2WSH, etc. For this example, we are
+using the Taproot address (P2TR) for demonstration purposes. Learn more about
+[Bitcoin address types](https://en.bitcoin.it/wiki/Address).
 
 ### Implementing the Bitcoin Signer
 
@@ -269,7 +278,7 @@ const xOnlyPubKey = bufPubKey.subarray(1, 33);
 ```
 
     *	The public key is fetched from the Web3Auth MPC CoreKit instance.
-    *	It is converted to SEC1 format and extracted as an x-only public key (removing the first byte).
+    *	It is converted to SEC1 format and extracted as an x-only public key (removing the first byte). The x-only public key is used for Taproot addresses.
 
 3️⃣ Apply Taproot Tweak for BIP340 Compatibility
 
@@ -303,7 +312,7 @@ signSchnorr: async (msg: Buffer) => {
 ```
 
     *	signSchnorr method – Signs transactions using the Schnorr signature scheme (BIP340).
-    *	The private key is tweaked using BN.js before signing.
+    *	The public key is tweaked using BN.js before signing.
 
 5️⃣ Return the BitcoinJS-Compatible Signer
 
@@ -347,6 +356,10 @@ The BitcoinComponent.tsx file imports the necessary libraries and components for
 - `@bitcoinerlab/secp256k1` – Implements Schnorr signatures for BIP340.
 - axios – Fetches data from external Bitcoin APIs (Blockstream testnet).
 - Web3AuthMPCCoreKit – Enables MPC-based key management and signing.
+
+```bash
+npm install bitcoinjs-lib @bitcoinerlab/secp256k1 axios @web3auth/mpc-core-kit
+```
 
 2️⃣ Initialize BitcoinJS with Schnorr Support
 
