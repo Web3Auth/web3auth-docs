@@ -51,6 +51,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const [isLinkCopied, setLinkCopied] = useState<boolean>(false);
   const [IBCountdown, setIBCountdown] = useState<number>(10);
   const [builderView, setBuilderView] = useState<boolean>(true);
+  const [abortCountdown, setAbortCountdown] = useState<boolean>(false);
   const [showPreviewModal, setShowPreviewModal] = useState<boolean>(false);
   const url = new URL(getWindowLocation());
   const [stepIndex, setStepIndex] = useState(
@@ -118,6 +119,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       ...builderOptions,
       [optionKey]: optionValue,
     });
+    setAbortCountdown(true);
   };
 
   const toggleBuilderView = async () => {
@@ -173,7 +175,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     if (IBCountdown > 0) {
       setTimeout(() => setIBCountdown(IBCountdown - 1), 1000);
     }
-    if (IBCountdown === 0 && builderView) {
+    if (IBCountdown === 0 && builderView && !abortCountdown) {
       toggleBuilderView();
     }
   }, [IBCountdown]);
@@ -330,26 +332,8 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <div className={styles.optionsHeader}>
               <h2 className={styles.optionsHeaderText}>Builder Settings</h2>
               <div className={styles.optionsHeaderButtonsContainer}>
-                {/* {integration.embedLink && (
-                  <button
-                    className={styles.previewButton}
-                    onClick={() => togglePreviewModal(integration.embedLink)}
-                    type="button"
-                    id="headerButton"
-                  >
-                    Preview
-                  </button>
-                )} */}
-                {/* <button
-                  className={styles.copyButton}
-                  onClick={() => window.open(integration.sourceCodeLink, "_blank")}
-                  type="button"
-                  id="headerButton"
-                >
-                  Source Code
-                </button> */}
                 <button className={styles.hideButton} onClick={toggleBuilderView} type="button">
-                  {IBCountdown ? `${IBCountdown}s` : ""}
+                  {IBCountdown && !abortCountdown ? `${IBCountdown}s` : ""}
                   <svg
                     width="20"
                     height="21"
