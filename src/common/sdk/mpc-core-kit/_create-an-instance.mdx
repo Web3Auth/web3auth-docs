@@ -1,0 +1,45 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "Secp256k1", value: "secp256k1" },
+    { label: "Ed25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```javascript
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+import { tssLib } from "@toruslabs/tss-dkls-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  tssLib: tssLib,
+  storage: window.storage,
+});
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```javascript
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+import { tssLib } from "@toruslabs/tss-frost-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  tssLib: tssLib,
+  storage: window.storage,
+});
+```
+
+</TabItem>
+</Tabs>

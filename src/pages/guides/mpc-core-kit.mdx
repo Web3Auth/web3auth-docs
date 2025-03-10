@@ -14,7 +14,7 @@ pinned: true
 
 import SEO from "@site/src/components/SEO";
 import Web3AuthSetup from "@site/src/common/guides/_setup-web3auth.mdx";
-import VerifierSetup from "@site/src/common/guides/_setup-verifier.mdx";
+import CreateAnInstance from "@site/src/common/sdk/mpc-core-kit/_create-an-instance.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -25,235 +25,293 @@ import Tabs from "@theme/Tabs";
   slug="/guides/mpc-core-kit"
 />
 
-This guide will help you create a React application using Web3Auth's MPC Core Kit SDK, covering the
-basic functionalities of how to use it.
+In this guide, we'll talk about how you can use Web3Auth to build your DApp/ Wallet with Mulit Party
+Computation (MPC) Threshold Signature Scheme (TSS) capabilities.
 
-**Live Demo:** [https://w3a.link/mpc-example](https://w3a.link/mpc-example)
+As an overview, the guide is quite simple, with functionality to log in, display user details, and
+perform blockchain interactions. The signing of the blockchain transactions is done through the
+Web3Auth TSS libraries. For those who want to skip straight to the code, you can find it on
+[GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-react-quick-start).
 
-## Quick Start
-
-```bash
-npx degit Web3Auth/web3auth-core-kit-examples/mpc-core-kit-web/implicit-flow-examples/mpc-core-kit-popup-flow-example w3a-mpc-core-kit-popup-flow-example && npm install && npm start
-```
-
-## Prerequisites
-
-- A basic knowledge of JavaScript and React.
-- A Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io/) and a verifier.
-
-## Understanding the Web3Auth MPC Core Kit SDK
+## What is MPC TSS Architecture?
 
 With Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices
-and our Auth Network. This ensures that your key is always available and never stored in a single
-place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the frontend
-using shamir secret sharing. With the new Web3Auth MPC (Multi-Party Computation) architecture, it is
-**never reconstructed**. Instead, these partial keys are stored across different locations, and your
-device is used to make partial signatures for your message/transaction. These are finally returned
-to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to make
-a final signature. You can use this finally signed message/transaction to make a transaction on the
-blockchain.
+and Web3Auth Auth Network. This ensures that your key is always available and never stored in a
+single place.
 
-:::tip
+Web3Auth provides SDKS with two different architectures, Shamire Secret Sharing(SSS) and MPC TSS.
+Compared to other Web3Auth SDKs, such as Plug and Play(PnP), and Single Factor Auth(SFA) SDKs which
+uses the SSS architecture to securely reconstruct the private key on user's device, and sign
+transactions, in the MPC TSS architecture, the private key is never reconstructed.
 
-Read more about how the SDK works in the
-[**MPC Core Kit SDK Reference**](/sdk/mpc-core-kit/mpc-core-kit-js).
+Instead, the partial key shares are stored at different locations which are used to generate the
+partial signatures. Since the private key is never reconstructed, it's more secure approach. This
+approach of generating signatures using partial key shares, and combining them is known as
+"Threshold Signature Scheme".
 
-:::
+## Overview of SDK Flow
+
+The MPC Core Kit SDK starts in a 2/2 flow by default. This means when user's logs in, a social login
+factor is generated and at the same time SDK will generate a hashed cloud factor. This hashed cloud
+factor is derived on the front end and stored in the encrypted metadata server.
+
+This is done to make sure the user can access their account from any device without having to
+generate a new factor. The hashed cloud factor is deleted when the user enables the MFA.
+
+The threshold to generate a final signature for the TSS Account is 2/n. These two factors can be
+combination of either social factor, device factor, or recovery factor.
 
 <Web3AuthSetup />
 
-<VerifierSetup />
+## Set up a Custom Verifier
+
+Since this is a Core Kit SDK, it does not provide any default authentication methods. You need to
+create a custom verifier to use this SDK. This means that you need to authenticate users with your
+own custom authentication service.
+
+For example, while authenticating with Google, you have to use your own Google Client ID setup to
+authenticate users directly or use auth provider services like Auth0, Firebase, AWS Cognito etc.
+Additionally, you can make your own JWT token authentication system and pass over the ID Token to
+Web3Auth.
+
+Head to the [Web3Auth's documentation](/docs/auth-provider-setup/verifiers#create-verifier) page for
+detailed instructions on setting up a custom verifier.
 
 ## Installation
 
-Let's start by adding the
-[`@web3auth/mpc-core-kit`](https://npmjs.com/package/@web3auth/mpc-core-kit) package.
+The MPC Core Kit JS SDK contains multiple packages that are needed to enable different
+functionalities of the MPC Core Kit JS SDK. You can choose the packages you want to install
+according to the functionalities you want to enable in your application. In this doc we have
+highlighted all of the packages and their functionalities.
+
+### Base MPC Core Kit Package
+
+This is the base SDK that helps you implement Web3Auth's MPC TSS features while giving you the
+flexibility to customize the UI and UX of the authentication process.
 
 ```bash npm2yarn
-npm install --save @web3auth/mpc-core-kit
+npm install @web3auth/mpc-core-kit
 ```
 
-#### Web3 Libraries
+### Common Types and Interfaces
 
-Depending on your preference, you can choose to install the `web3`, `ethers`, or `viem` libraries to
-interact with the EVM-compatible blockchains under the hood.
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by
+providing you a standard way of importing the values you need to work with the SDKs. We highly
+recommend using it while working with Typescript.
 
-We'll be using `web3` for this guide.
+```bash npm2yarn
+npm install @web3auth/base
+```
 
-```shell
-npm install --save web3
+### ECDSA Signing
+
+This packages gives you support for DKLS threshold signing which is used to generate the ECDSA
+signature. The ECDSA signatures can be used for blockchain applications which uses secp256k1 curve
+such as Bitcoin, Ethereum, and etc.
+
+```bash npm2yarn
+npm install @toruslabs/tss-dkls-lib
+```
+
+### EthereumSigningProvider
+
+This package gives EIP1193 compatible Ethereum signing provider. This provider is used to make calls
+to the selected blockchain, and can be used with `web3.js`, `ethers.js`, or `viem` to make
+integration with Ethereum-compatible chains more easier.
+
+```bash npm2yarn
+npm install @web3auth/ethereum-mpc-provider
+```
+
+### EdDSA Signing
+
+This packages gives you support for FROST threshold signing which is used to generate the EdDSA
+signature. The EdDSA signature can be used for blockchain applications which use ed25519 curve such
+as Solana, Aptos, and etc.
+
+```bash npm2yarn
+npm install @toruslabs/tss-frost-lib
 ```
 
 ## Initialization
 
-Once installed, your Web3Auth application needs to be initialized. Initialization is a two-step
-process where we add all the config details for Web3Auth:
-
-1. Instantiation
-2. Initialization
+Once you have installed the relevant packages, you need to initialize the SDK. Initialization is a
+two-step process of creating an instance of the SDK, and then initializing it.
 
 Ensure all of this happens in your application constructor. This ensures that Web3Auth is
 initialized when your application starts up.
 
-### Importing the Packages
+### Create an Instance
 
-```tsx
-import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-```
+While creating an instance of the SDK, you can define the curve used for account. This is an
+important step since it defines the type of signing that will be used for the transactions, and
+curve for the user's account. The SDK supports `secp256k1` and `ed25519` curves.
 
-### Instantiate the SDK
+<CreateAnInstance />
 
-```tsx
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId:
-    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
-  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  setupProviderOnInit: false, // needed to skip the provider setup
-  manualSync: true, // This is the recommended approach
-});
+### Initialize
 
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Use 0xaa36a7 for Sepolia Testnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
+Once you have created an instance of the SDK, you need to initialize it.
 
-const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
-evmProvider.setupProvider(coreKitInstance);
-```
-
-Here, we're instantiating the Web3Auth MPC CoreKit SDK and using the `chainConfig` property to set
-the chainId and chainNamespace. The `chainId` and `chainNamespace` are the id and the namespace
-respectively of the EVM chain you're connecting to. We've initialized them for the Ethereum Mainnet
-chain for this guide.
-
-Sometimes, you might face network congestion. To avoid this, you can use the `rpcTarget` property to
-specify the URL of the node you want to connect to.
-
-### Initialize the SDK
-
-```tsx
+```ts
+// Web3AuthMPCCoreKit instance from previous steps
 await coreKitInstance.init();
-// This will initialize the SDK
-
-// Check the status of the SDK with
-coreKitInstance.status;
 ```
 
 ## Authentication
 
-### Logging In
+As a prerequisite, before authentication, you need to create a verifier for your login method on the
+Web3Auth Dashboard. [Learn how to set up a Custom Verifier](#set-up-a-custom-verifier).
 
-Once initialized, you can use the `loginWithOauth()` or `loginWithJWT()` function to authenticate
-the user when they click the login button. Here, you can use a Single verifier or an Aggregate
-verifier to authenticate the user.
+There are two ways to login your users, depending on the type of authentication method you've
+chosen. If you are looking for an Authentication Flow in your application like
+[Single Page Application(SPA)](https://www.oauth.com/oauth2-servers/single-page-apps/) flow, you can
+use the [loginWithOAuth](#log-in-with-oauth) method.
 
-<Tabs
-defaultValue="single"
-values={[
-  { label: "Single Verifier", value: "single" },
-  { label: "Aggregate Verifier", value: "aggregate" },
-]}
->
-<TabItem value="single">
+If you are looking to pass a JWT-based IdToken to the SDK from your application, like
+[Regular Web Application(RWA)](https://www.oauth.com/oauth2-servers/server-side-apps/) flow or even
+using your own JWT provider, you can use the [loginWithJWT](#log-in-with-jwt) method.
 
-```tsx
-const web3authProvider = await coreKitInstance.loginWithOauth({
+### Log In With OAuth
+
+To authenticate users using Single Page Application(SPA) flow, you can use the loginWithOAuth
+method. You can configure the UX mode for the authentication, either as a popup or redirect, by
+passing the `uxMode` property.
+
+Learn more about the
+[loginWithOAuth method](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth).
+
+```ts
+import { SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig: SubVerifierDetailsParams = {
   subVerifierDetails: {
     typeOfLogin: "google",
-    verifier: "w3a-google-demo", // your verifier name
-    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // your client id received from google
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
   },
+};
+
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+### Log in With JWT (BYOA)
+
+To authenticate users using Regular Web Application(RWA) flow, you can use the loginWithJWT method.
+This methods takes the JWTLoginParams as a parameter, which is an object that contains the details
+of the verifier, and additional authentication parameters like idToken, subVerifier, etc.
+
+In JWT login flow, you'll have to manually get the idToken from the auth provider and pass it to the
+login function.
+
+Learn more about the
+[loginWithJWT method](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt).
+
+```ts
+import { JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const jwtLoginParams: JWTLoginParams = {
+  verifier: "YOUR_VERIFIER_NAME",
+  verifierId: "USER'S_VERIFIER_ID",
+  idToken: "USER'S_ID_TOKEN",
+};
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```
+
+## Enable MFA
+
+By default, the SDK starts with 2/2 flow unless the `disableHashedFactorKey` is set to true during
+initialization. To make the flow completely non-custodial, and have 2/3 flow, you can use the
+enableMFA method.
+
+It deletes the hashed factor key, creates a device factor and stores it in the local storage. It
+also creates a backup factor and returns it to the user. The default backup factor is 24 words
+mnemonic.
+
+You can configure the backup factor to be social recovery, password recovery, authenticator app, or
+back up of your choice. back up of your choice.
+
+```ts
+import { keyToMnemonic } from "@web3auth/mpc-core-kit";
+
+const factorKey = await coreKitInstance.enableMFA({});
+// Convert the factor key to 24 words mneonic
+const factorKeyMnemonic = keyToMnemonic(factorKey);
+```
+
+## Get Key Details
+
+To retieve the MPCKeyDetails for the user account you can use the `getKeyDetails` methods. These key
+details has information like total factors, required factors, and threshold.
+
+When the user is logged in, you can call the method to retrieve the key details. If the threshold is
+less than or equal to 0, you can route the user to home page, otherwise you can route the user to
+page to add more factors.
+
+```ts
+import { MPCKeyDetails } from "@web3auth/mpc-core-kit";
+
+const keyDetails: MPCKeyDetails = coreKitInstance.getKeyDetails();
+```
+
+## Recover with Existing Factor
+
+In case if the threshold is not met, you can use the `inputFactorKey` method to allow users to add
+their backup/ recovery factor.
+
+For example, if user's device factor is not present, this method can be used to input the back up
+factor key, and recover the account. If the factor key is correct, the SDK initializes the user's
+account and logs them in.
+
+```ts
+import { BN } from "bn.js";
+
+const factorKey = new BN("USER_FACTOR_KEY", "hex");
+await coreKitInstance.inputFactorKey(factorKey);
+```
+
+## Add Additional Factor
+
+To create a recovery factor for the user, you can use the `createFactor` method. This is a low-level
+function to help you to create a backup factor key based on the type of TSS Share you want to
+create. You can pass your own factor key or let the SDK generate one for you.
+
+You can use this method to add additional factor to the user's account such as device factor, social
+recovery, SMS OTP, authenticator, and more.
+
+For this guide, we will create a new factor of type recovery using random factor key generated by
+the SDK. You can also pass your own factor key obtained from other sources like social recovery,
+authenticator app, etc.
+
+```
+import { generateFactorKey } from "@web3auth/mpc-core-kit";
+
+const factorKey = generateFactorKey();
+
+await coreKitInstance.createFactor({
+  shareType: TssShareType.RECOVERY,
+  factorKey: factorKey.private,
 });
 ```
 
-</TabItem>
-<TabItem value="aggregate">
+## Logout
 
-```tsx
-// Google Login
-const web3authProvider = await coreKitInstance.loginWithOauth({
-  aggregateVerifierIdentifier: "aggregate-sapphire",
-  subVerifierDetails: {
-    typeOfLogin: "google",
-    verifier: "w3a-google", // your verifier name
-    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // your client id received from google
-  },
-});
-```
+To logout the user from the application and invalidate the session, you can use the logout method.
 
-```tsx
-// Facebook Login
-const web3authProvider = await coreKitInstance.loginWithOauth({
-  aggregateVerifierIdentifier: "aggregate-sapphire",
-  subVerifierDetails: {
-    typeOfLogin: "facebook",
-    verifier: "w3a-facebook", // your verifier name
-    clientId: "1222658941886084", // your client id received from facebook
-  },
-});
-```
-
-</TabItem>
-
-</Tabs>
-
-When connecting, your `loginWithOauth()` function takes the arguments to connect to the
-`loginProvider` for the login.
-
-### Get the User Profile
-
-```tsx
-const user = await coreKitInstance.getUserInfo();
-console.log("User info", user);
-```
-
-Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that
-these details are not stored anywhere in the Web3Auth network but are fetched from the ID token you
-received from AWS Cognito and live in the frontend context.
-
-Logging out your user is as simple as calling the `logout` function.
-
-### Get Key Details
-
-Returns the details of how the user's key is managed by the MPC Core Kit.
-
-```tsx
-await coreKitInstance.getKeyDetails();
-```
-
-**For more usage, please check the
-[MPC Core Kit SDK Usage](/sdk/mpc-core-kit/mpc-core-kit-js/usage).**
-
-### Logout
-
-```tsx
+```ts
 await coreKitInstance.logout();
 ```
 
-## Interacting with Blockchain
+## Generate TSS Signatures
 
-Once you have set up the web3 provider, you can use it to make blockchain calls. This can be used
-with any EVM-compatible chain.
+Web3Auth's MPC Core Kit SDK supports both secp256k1 and ed25519 cryptographic curves. The secp256k1
+curve enables the retrieval of public keys and the signing of transactions on blockchains compatible
+with secp256k1, such as Bitcoin and Ethereum. Meanwhile, the ed25519 curve provides the same
+capabilities for blockchains that support ed25519, ensuring broad compatibility across different
+blockchain ecosystems.
 
-:::tip
-
-You can check our [Connect Blockchain](/connect-blockchain) documentation, which has a detailed
-guide on how to connect to major blockchains.
-
-:::
-
-## Example Code
-
-The code for the application we developed in this guide can be found in the
-[examples repository](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-react-quick-start).
-Check it out and try running it locally yourself!
-
-## Questions?
-
-Ask us on the [Web3Auth's Community Support Portal](https://web3auth.io/community)
+- [Learn to generate ECDSA Signatures](/sdk/mpc-core-kit/mpc-core-kit-js/signing#ecdsa-signature)
+  (Used for Ethereum, etc).
+- [Learn to generate EdDSA Signatures](/sdk/mpc-core-kit/mpc-core-kit-js/signing#eddsa-signature)
+  (Used for Solana, Aptos, etc).
