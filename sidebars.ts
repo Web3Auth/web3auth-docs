@@ -995,6 +995,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Unichain",
+              items: [
+                "connect-blockchain/evm/unichain/unichain",
+                "connect-blockchain/evm/unichain/web",
+                "connect-blockchain/evm/unichain/android",
+                "connect-blockchain/evm/unichain/ios",
+                "connect-blockchain/evm/unichain/react-native",
+                "connect-blockchain/evm/unichain/flutter",
+                "connect-blockchain/evm/unichain/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "XDC Network",
               items: [
                 "connect-blockchain/evm/xdc/xdc",
