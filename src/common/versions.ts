@@ -1,5 +1,5 @@
 export const pnpWebVersion = `9.3.x`;
-export const pnpAndroidVersion = `9.0.4`;
+export const pnpAndroidVersion = `9.1.0`;
 export const pnpIOSVersion = `11.0.5`;
 export const pnpRNVersion = `8.1.x`;
 export const pnpFlutterVersion = `6.1.2`;
