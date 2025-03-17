@@ -19,11 +19,16 @@ you'll see an Error message.
 
 :::
 
+## Functionality Overview
+
 The SingleFactorAuth instance natively provides the following methods:
 
-- [connect](#login-user) - Use to login user and retrive private key pair.
-- [initialize](#session-management) - This method helps to achieve session management. It
-  authenticates user if the session is present, avoiding re-logging.
+| Method                                     | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| [connect](#login-user)                     | Use to login user and retrieve private key pair.             |
+| [logout](#logout-user)                     | Use to logout existing user.                                 |
+| [connected](#check-users-logged-in-status) | Use to check whether the user is logged in or not.           |
+| [getSessionData](#get-session-data)        | This method helps to get the session data for valid session. |
 
 ## Login User
 
@@ -48,12 +53,13 @@ method. The method accepts `LoginParams`, and returns `SFAKey`.
 >
 
 <TabItem value="table">
-| Parameter            | Description                                                                                                                                                                                                                |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier`           | The `verifier` parameter takes the name of the ustom verifier from the Web3Auth Dashboard. This is a required field that must be a `String`. If you're using an aggregate verifier, make sure to pass the sub-verifier name.  |
-| `verifierId`         | The `verifierID` takes the JWT verifier ID to be used for JWT/ID token verification. It can be an email, sub, or custom value available in the JWT token.                                                                           |
-| `idToken`            | The `idToken` accepts a JWT token obtained from the user's login provider.                                                                                                                                                 |
-| `aggregateVerifier?` | The `aggregateVerifier` parameter takes the name of the Aggregate verifier from the Web3Auth Dashboard.                                                                                                                        |
+
+| Parameter               | Description                                                                                                                                                                                                                         |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | The `verifier` parameter takes the name of the custom verifier from the Web3Auth Dashboard. This is a required field that must be a `String`. If you're using an aggregate verifier, make sure to pass the aggregate verifier name. |
+| `verifierId`            | The `verifierID` takes the JWT verifier ID to be used for JWT/ID token verification. It can be an email, sub, or custom value available in the JWT token.                                                                           |
+| `idToken`               | The `idToken` accepts a JWT token obtained from the user's login provider.                                                                                                                                                          |
+| `subVerifierInfoArray?` | Sub verifier info. Usually used during the aggregate verifier. It takes `List<TorusSubVerifierInfo>` as a value.                                                                                                                    |
 
 </TabItem>
 
@@ -99,36 +105,96 @@ class LoginParams {
 
 <TabItem value="single-verifier">
 ```dart
-Future<SFAKey> connect() {
-  return _singleFactorAuthFlutterPlugin.connect(LoginParams(
-    verifier: 'YOUR_VERIFIER_NAME',
-    verifierId: 'YOUR_VERIFIER_ID',
-    idToken: 'YOUR_ID_TOKEN',
-    ),
-  );
-}
-```
+final loginParams = LoginParams(
+  verifier: 'YOUR_VERIFIER_NAME',
+  verifierId: 'YOUR_VERIFIER_ID',
+  idToken: 'YOUR_ID_TOKEN',
+);
+
+try { final sessionData = await singleFactorAuthFlutter.connect(loginParams); } catch (e) { //
+Handle error }
+
+````
 </TabItem>
 <TabItem value="aggregate-verifier">
+
 ```dart
-Future<SFAKey> connect() {
-  return _singleFactorAuthFlutterPlugin.connect(LoginParams(
-    verifier: 'YOUR_VERIFIER_NAME',
-    verifierId: 'YOUR_VERIFIER_ID',
-    idToken: 'YOUR_ID_TOKEN',
-    aggregateVerifier: 'YOUR_AGGREGATE_VERIFIER_NAME',
-  ));
+
+final subVerifierInfoArray = [
+  TorusSubVerifierInfo(
+    'YOUR_SUB_VERIFIER_NAME',
+    'YOUR_ID_TOKEN',
+  ),
+];
+
+final loginParams = LoginParams(
+  verifier: 'YOUR_AGGREGATE_VERIFIER_NAME',
+  verifierId: 'YOUR_VERIFIER_ID',
+  idToken: 'YOUR_ID_TOKEN',
+  subVerifierInfoArray: subVerifierInfoArray,
+);
+
+try {
+  final sessionData = await singleFactorAuthFlutter.connect(loginParams);
+} catch (e) {
+  // Handle error
 }
-```
+````
+
 </TabItem>
 </Tabs>
 
-## Session Management
+## Logout User
 
-We have included Session Management in this SDK, so calling the initialize function to get the
-SFAKey value without re-logging in the user if a user has an active session will return the SFAKey,
-otherwise, it will throw an error.
+To logout the current user, you can use the `logout` method. Please note, the method will not logout
+the user from the authentication provider, it'll only logout and invalidate the Web3Auth session.
+
+### Usage
+
+```dart
+try {
+  await singleFactorAuthFlutter.logout();
+  // Logged out successfully
+} catch (e) {
+  // Handle error
+}
+```
+
+## Check User's Logged In Status
+
+You can use the `connected` method to check whether the user is logged in Web3Auth or not. Please
+note, you should call this method after the `initialize` method if you want to check the user's
+connection status for an existing session.
+
+### Usage
+
+```dart
+final isConnected = await singleFactorAuthFlutter.connected();
+```
+
+## Get Session Data
+
+We have included Session Management in this SDK, so calling the `getSessionData` will retrive the
+user's `SessionData` without re-logging in the user if a user has an active session. Otherwise, it
+will return `null`.
+
+:::tip
+
+Please note, you should use this method after the `initialize` method.
+
+:::
 
 ### Usage
 
 <SessionManagement />
+
+### Response
+
+The `SessionData` has the following properties to retrive the relevant session information.
+
+| Name            | Description                                                               |
+| --------------- | ------------------------------------------------------------------------- |
+| `privateKey`    | Retrieves the user's private key.                                         |
+| `publicAddress` | Retrieves the user's public address.                                      |
+| `userInfo?`     | Retrieves the user's information like email, name, verifier id, and more. |
+| `signatures?`   | Retrieves the node's signatures that are returned for request.            |
