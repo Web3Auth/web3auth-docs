@@ -9,21 +9,16 @@
   column-gap: 30px;
 }
 
-.checklist details {
+.checklistContainer {
   margin: var(--ifm-spacing-vertical) 0;
-  border: 2px solid var(--ifm-color-emphasis-300);
+  border-left: 10px solid var(--ifm-color-emphasis-300);
   border-radius: var(--ifm-global-radius);
   padding: var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal);
-  background-color: var(--ifm-background-surface-color);
+  padding-bottom: 0;
   transition: all var(--ifm-transition-fast) ease;
-
 }
 
-.checklist details:hover {
-  border: 2px solid var(--ifm-color-primary);
-}
-
-.checklist details summary {
+.checklistContainer summary {
   cursor: pointer;
   font-family: var(--ifm-font-family-base);
   font-weight: var(--ifm-font-weight-bold);
@@ -36,11 +31,59 @@
   align-items: center;
 }
 
-.checklist details summary::-webkit-details-marker {
+.checklistContainer summary::-webkit-details-marker {
   display: none;
 }
 
-.checklist details summary::before {
+.checklistContainer summary::after {
+  margin-top: -20px;
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 15px;
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+  transform: rotate(45deg);
+  transition: transform var(--ifm-transition-fast) ease;
+}
+
+.checklistContainer[open] summary::after {
+  transform: rotate(135deg);
+}
+
+
+.checklistItem {
+  margin: var(--ifm-spacing-vertical) 0;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal);
+  background-color: var(--ifm-background-surface-color);
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+.checklistItem:hover {
+  border: 2px solid var(--ifm-color-primary);
+}
+
+.checklistItem summary {
+  cursor: pointer;
+  font-family: var(--ifm-font-family-base);
+  font-weight: var(--ifm-font-weight-bold);
+  font-size: var(--ifm-h4-font-size);
+  line-height: var(--ifm-line-height-base);
+  color: var(--ifm-color-emphasis-700);
+  padding: var(--ifm-spacing-vertical) 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.checklistItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.checklistItem summary::before {
   content: '';
   display: inline-block;
   width: 5px;
@@ -52,11 +95,16 @@
   transition: transform var(--ifm-transition-fast) ease;
 }
 
-.checklist details[open] summary::before {
+.checklistItem[open] summary::before {
   transform: rotate(135deg);
 }
 
-.checklist details>*:not(summary) {
+.checklistItem summary::after {
+  display: none;
+}
+
+
+.checklistItem>*:not(summary) {
   margin-left: 1.25rem;
   margin-top: var(--ifm-spacing-vertical);
 }

@@ -408,7 +408,7 @@ export default function Checklist(props: {
   function renderChecklist(item: ChecklistType, index: number) {
     return (
       <>
-        <details open>
+        <details open className={styles.checklistItem}>
           <summary>
             {index + 1}. {item.heading}
           </summary>
@@ -527,12 +527,18 @@ export default function Checklist(props: {
         </div>
         <br />
         <div className={styles.checklist}>
-          <h2>Development Checklist</h2>
-          <hr />
-          {developmentChecklist.map((item, index) => renderChecklist(item, index))}
-          <h2>Production Checklist</h2>
-          <hr />
-          {productionChecklist.map((item, index) => renderChecklist(item, index))}
+          <details open className={styles.checklistContainer}>
+            <summary>
+              <h2>Development Checklist</h2>
+            </summary>
+            {developmentChecklist.map((item, index) => renderChecklist(item, index))}
+          </details>
+          <details open className={styles.checklistContainer}>
+            <summary>
+              <h2>Production Checklist</h2>
+            </summary>
+            {productionChecklist.map((item, index) => renderChecklist(item, index))}
+          </details>
         </div>
       </div>
     </>
