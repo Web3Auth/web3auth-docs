@@ -16,7 +16,8 @@ successful use of Web3Auth SFA Flutter.
 
 ## Parameters
 
-Construct and configure the `init` method with the `SFAParams`
+The `init` method requires a `Web3AuthOptions` object. Please note that these are the important
+parameters to configure the SDK.
 
 <Tabs
   defaultValue="table"
@@ -39,12 +40,12 @@ Construct and configure the `init` method with the `SFAParams`
 <TabItem value="class">
 
 ```dart
-class SFAParams {
+class Web3AuthOptions {
   final Web3AuthNetwork network;
   final String clientId;
   final int sessionTime;
 
-  SFAParams(
+  Web3AuthOptions(
       {required this.network,
       required this.clientId,
       this.sessionTime = 86400});
@@ -75,7 +76,11 @@ enum Web3AuthNetwork {
 
 ## Initialize Web3AuthFlutter
 
-Initialize the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState`
-function.
+To initialize the SDK, you can use the `init` method. Once, the SDK is initialized, you can use the
+`initialize` method to initialize the SDK with existing session. After successful initialization,
+you can use the `getSessionData` method to check if the user is logged in or not.
+
+Please note, the `initialize` method will throw an error if there is no active session present. You
+can swallow the error or handle it gracefully in your app.
 
 <Initialization />
