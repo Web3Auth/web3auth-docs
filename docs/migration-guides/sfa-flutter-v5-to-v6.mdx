@@ -1,0 +1,152 @@
+---
+title: SFA Flutter SDK - v5 to v6
+description: "SFA Flutter SDK - v5 to v6 | Documentation - Web3Auth"
+sidebar_label: v5 to v6
+---
+
+This migration guide provides steps for upgrading from version v5 to v6 of the SFA Flutter SDK. The
+guide outlines significant changes and enhancements, including the support of `logout` method, and
+changes in `LoginParams`.
+
+## Breaking Changes
+
+### `SingleFactAuthFlutter` is now renamed to `SingleFactorAuthFlutter`
+
+In v6, we have fixed the typo for the `SingleFactAuthFlutter`. Now you can use
+`SingleFactorAuthFlutter` to initialize the SDK.
+
+```dart
+// remove-next-line
+final singleFactAuthFlutter = SingleFactAuthFlutter();
+// add-next-line
+final singleFactorAuthFlutter = SingleFactorAuthFlutter();
+```
+
+### `SFAParams` is now renamed to `Web3AuthOptions`
+
+In v6, we try to improve the developer experience by renaming the `SFAParams` to `Web3AuthOptions`.
+The change has been made to align with naming conventions across Web3Auth SDKs.
+
+```dart
+final singleFactorAuthFlutter = SingleFactorAuthFlutter();
+
+await singleFactorAuthFlutter.init(
+    // focus-start
+    // remove-next-line
+    SFAParams(
+    // add-next-line
+    Web3AuthOptions(
+        network: Web3AuthNetwork.mainnet,
+        clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    ),
+    // focus-end
+);
+```
+
+### `SFAKey` is now renamed to `SessionData`
+
+In v6, the `SFAKey` is now renamed to `SessionData`. This change was made to align with the naming
+conventions across Web3Auth SDKs. Please check the [SessionData](#sessiondata) type for more
+details.
+
+```dart
+// remove-next-line
+final SFAKey key = await singleFactorAuthFlutter.connect(
+// add-next-line
+final SessionData sessionData = await singleFactorAuthFlutter.connect(
+    LoginParams(
+        verifier: 'YOUR_VERIFIER_NAME',
+        verifierId: "VERIFIER_ID",
+        idToken: "ID_TOKEN",
+    ),
+);
+```
+
+### isSessionIdExists is replaced with isConnected
+
+The `isSessionIdExists` method is replaced with the `isConnected` method to check whether the user
+is logged in Web3Auth or not. Please note, the `isConnected` method should be used after the
+`initialize` method.
+
+```dart
+// remove-next-line
+final bool isSessionIdExists = await singleFactorAuthFlutter.isSessionIdExists();
+// add-next-line
+final bool isConnected = await singleFactorAuthFlutter.isConnected();
+```
+
+### Changes in `LoginParams`
+
+In v6, the `aggregateVerifier` is replaced with `subVerifierInfoArray`. The `subVerifierInfoArray`
+can be used to pass the sub verifier details when using an aggregate verifier.
+
+Earlier, while using an aggregate verifier, the `verifier` was used to pass the sub verifier name.
+After v6, the `verifier` will take the aggregate verifier name, and sub verifier details can be
+passed in `subVerifierInfoArray`.
+
+```dart
+final loginParams = LoginParams(
+    // remove-next-line
+    verifier: "SUB_VERIFIER_NAME",
+    // add-next-line
+    verifier: "AGGREGATE_VERIFIER_NAME",
+    verifierId: "VERIFIER_ID",
+    idToken: "ID_TOKEN",
+    // remove-next-line
+    aggregateVerifier: "AGGREGATE_VERIFIER_NAME",
+    // add-next-line
+    subVerifierInfoArray: [
+        TorusSubVerifierInfo(
+            "SUB_VERIFIER_NAME",
+            "ID_TOKEN",
+        ),
+    ],
+);
+```
+
+## Additional Features
+
+Apart from the breaking changes, we have added couple of new functions in v6 to improve the
+developer experience.
+
+### logout Method
+
+The `logout` method is added to the SDK to log out the user and clear the session data. Please note,
+that this method only logout the user and invalides the Web3Auth session, and not the OAuth provider
+session.
+
+```dart
+try {
+    await singleFactorAuthFlutter.logout();
+} catch (e) {
+    // Handle the error
+}
+```
+
+### getSessionData Method
+
+The `getSessionData` method is added to the SDK to get the session data. You can use this method to
+retrive the session data for an existing session. The method will return `null` if the user does not
+have an existing session. Please note, the `getSessionData` method should be used after the
+`initialize` method.
+
+#### Usage
+
+```dart
+final SessionData? sessionData = await singleFactorAuthFlutter.getSessionData();
+
+if (sessionData == null) {
+    // User does not have an existing session
+}
+```
+
+#### SessionData
+
+The `SessionData` has the following properties to retrive the relevant session information.
+
+| Name            | Description                                                               |
+| --------------- | ------------------------------------------------------------------------- |
+| `privateKey`    | Retrieves the user's private key.                                         |
+| `publicAddress` | Retrieves the user's public address.                                      |
+| `userInfo?`     | Retrieves the user's information like email, name, verifier id, and more. |
+| `signatures?`   | Retrieves the node's signatures that are returned for request.            |
