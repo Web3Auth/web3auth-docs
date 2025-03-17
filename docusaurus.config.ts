@@ -498,11 +498,11 @@ const config: Config = {
           },
           {
             from: "/pnp/going-live",
-            to: "/going-live",
+            to: "/checklist",
           },
           {
             from: "/core-kit/going-live",
-            to: "/going-live",
+            to: "/checklist",
           },
           {
             from: "/auth-provider-setup/federated-identity-providers",

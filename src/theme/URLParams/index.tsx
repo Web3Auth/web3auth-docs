@@ -6,9 +6,11 @@ export const getWindowLocation = () => {
 export const getURLOptions = () => {
   const url = new URL(getWindowLocation());
 
-  const urlOpts = {};
+  const urlOpts: Record<string, string> = {};
   url.searchParams.forEach((value, key) => {
-    urlOpts[key] = value;
+    if (key !== "__proto__" && key !== "constructor" && key !== "prototype") {
+      urlOpts[key] = value;
+    }
   });
 
   return { ...urlOpts };
