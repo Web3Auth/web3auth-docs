@@ -16,6 +16,7 @@ import {
 import styles from "./styles.module.css";
 import Select, { StylesConfig } from "react-select";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import { getURLOptions, getURLFromFilterOptions } from "../../theme/URLParams";
 
 export default function Checklist(props: {
   showProductFilter: boolean;
@@ -30,36 +31,6 @@ export default function Checklist(props: {
     content: ReactNode;
     admonition?: ReactNode;
     admonitionType?: admonitionType;
-  };
-
-  const getWindowLocation = () => {
-    if (typeof window !== "undefined") return window.location.href;
-    return "http://localhost";
-  };
-
-  const getURLOptions = () => {
-    const url = new URL(getWindowLocation());
-
-    const urlOpts = {};
-    url.searchParams.forEach((value, key) => {
-      urlOpts[key] = value;
-    });
-
-    return { ...urlOpts };
-  };
-
-  const getURLFromFilterOptions = (opts: Record<string, string>): string => {
-    const url = new URL(getWindowLocation());
-    url.search = "";
-    for (const [key, value] of Object.entries(opts)) url.searchParams.append(key, value);
-    return url.toString();
-  };
-
-  const getExamplesURLFromFilterOptions = (opts: Record<string, string>): string => {
-    const url = new URL(useBaseUrl("/examples"));
-    url.search = "";
-    for (const [key, value] of Object.entries(opts)) url.searchParams.append(key, value);
-    return url.toString();
   };
 
   const { showProductFilter, showPlatformFilter, showBlockchainFilter, showFeatureFilter } = props;
