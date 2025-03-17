@@ -6,14 +6,12 @@ export const getWindowLocation = () => {
 export const getURLOptions = () => {
   const url = new URL(getWindowLocation());
 
-  const urlOpts: Record<string, string> = {};
+  const urlOpts = new Map<string, string>();
   url.searchParams.forEach((value, key) => {
-    if (key !== "__proto__" && key !== "constructor" && key !== "prototype") {
-      urlOpts[key] = value;
-    }
+    urlOpts.set(key, value);
   });
 
-  return { ...urlOpts };
+  return Object.fromEntries(urlOpts);
 };
 
 export const getURLFromFilterOptions = (opts: Record<string, string>): string => {
