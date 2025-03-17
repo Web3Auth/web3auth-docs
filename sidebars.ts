@@ -276,6 +276,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     "product-fit",
+    "checklist",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Features</span>",
