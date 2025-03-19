@@ -286,6 +286,18 @@ const config: Config = {
             to: "/sdk/pnp/flutter/",
           },
           {
+            from: "/product/wallet-ecosystems",
+            to: "/features/ecosystem-wallets",
+          },
+          {
+            from: "/features/blockchain-agnostic",
+            to: "/features/compatible-blockchains",
+          },
+          {
+            from: "/features/wallet-aggregation",
+            to: "/features/external-wallets",
+          },
+          {
             from: "/sdk/react-native/choose-workflows",
             to: "/sdk/pnp/react-native/",
           },
@@ -491,7 +503,7 @@ const config: Config = {
           },
           {
             from: "/pnp/features/connect-external-wallets",
-            to: "/features/wallet-aggregation",
+            to: "/features/external-wallets",
           },
           {
             from: "/pnp/features/dapp-share",
@@ -499,11 +511,11 @@ const config: Config = {
           },
           {
             from: "/pnp/going-live",
-            to: "/checklist",
+            to: "/resources/checklist",
           },
           {
             from: "/core-kit/going-live",
-            to: "/checklist",
+            to: "/resources/checklist",
           },
           {
             from: "/auth-provider-setup/federated-identity-providers",
@@ -527,11 +539,11 @@ const config: Config = {
           },
           {
             from: "/product-fit/partner-products",
-            to: "/product/wallet-ecosystems",
+            to: "/features/ecosystem-wallets",
           },
           {
             from: "/product-fit/enterprise",
-            to: "/product/wallet-ecosystems",
+            to: "/features/ecosystem-wallets",
           },
           {
             from: "/product-fit/web3auth-for-wallets",

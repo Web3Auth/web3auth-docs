@@ -1,0 +1,103 @@
+---
+title: Best Practices for MFA Setup
+sidebar_label: MFA Best Practices
+description: "Web3Auth MFA Best Practices | Documentation - Web3Auth"
+---
+
+With Core Kit MFA and Plug and Play SDKs, you have the choice to use multiple types of multi-factor
+flows according to your needs. With Plug and Play, we expose various logins out of the box. For Core
+Kit SDKs, the developers can determine which flow suits them the most, with total freedom of
+managing key storage and access.
+
+| MFA Type                     | Custodiality of MFA                             | Ease of Access | Setup Custodiality                                                                | Availability in Plug and Play SDKs                                     |
+| ---------------------------- | ----------------------------------------------- | -------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Recovery Mnemonic Phrase** | Self Custodial to User                          | Difficult      | Fully Non-Custodial                                                               | Yes                                                                    |
+| **Email Backup Share**       | Potentially Custodial to Email Provider         | Medium         | Non-Custodial / Semi-Custodial _(if same email as first factor social login)_     | Yes, SMTP server for email can be customized for Enterprise Customers. |
+| **Backup Password**          | Semi Custodial to the Encrypted Metadata Server | Medium         | Non-Custodial                                                                     | Yes                                                                    |
+| **Secondary Social Login**   | Semi Custodial to Social Provider               | Easy           | Non-Custodial / Semi-Custodial _(if same social login provider for first factor)_ | Yes, with Default Social Providers                                     |
+| **SMS Passwordless**         | Semi Custodial to SMS Service                   | Easy           | Non-Custodial                                                                     | Yes, with Web3Auth SMS Server                                          |
+| **Email Passwordless**       | Semi Custodial to Email Provider                | Easy           | Non-Custodial / Semi-Custodial _(if same email as first factor social login)_     | Yes, with Web3Auth Email Passwordless Server                           |
+| **Passkeys**                 | Non Custodial                                   | Easy           | Non-Custodial                                                                     | Yes, with Web3Auth Passkeys Server                                     |
+
+## Setting up the Threshold for MFA
+
+Web3Auth recommends Progressive Discoverability for user onboarding, allowing users to explore
+applications before introducing Multi-Factor Authentication (MFA). While the timing depends on the
+dApp's user flow, this method emphasizes seamless integration. Below are the three key pillars of
+Web3Auth's approach:
+
+1. **User Experience:** A one-click onboarding experience with familiar web2-like user interactions
+2. **Accessibility:** Onboarding flows tailored to the dApp’s security needs which could be
+   one-click login or enhanced security login that requires setting up an additional share
+3. **Non-Custodial:** Web3Auth ensures full user control by not storing keys or data on its servers.
+   Hence, it's important that users understand the implications of MFA.
+
+## Triggering MFA setup
+
+The ideal time to trigger MFA is when users are familiar with the application and ready to enhance
+their account security. While this timing isn't fixed, dApps can choose when to initiate MFA based
+on user behavior. With our SDKs, you have control over this: by setting the MFALevel parameter in
+the Plug and Play SDKs or manually via the CoreKit SDKs.
+
+## dApp Shares
+
+An alternative approach to MFA involves creating dApp Shares, which complement Share B and form half
+of the private key. The dApp securely stores this share in its local storage, allowing users to log
+in using their social media accounts to retrieve the other share. This eliminates the need to store
+shares in the browser context, ensuring a smoother login experience.
+
+:::note
+
+It's important to understand that `dappShare` is exclusively for `custom verifiers` and can't be
+used with standard Web3Auth verifiers. Moreover, **only users who have `enabled MFA` can access
+it**. To use dApp Share, you need to use the custom authentication feature of Web3Auth. This
+guarantees that an application can only access the share corresponding to a user's private key.
+
+:::
+
+## Implement diverse recovery methods
+
+Implement diverse recovery methods, such as social login, trusted devices, and recovery phrases, to
+cater to various user preferences and scenarios. With the Plug-and-Play SDKs, Web3Auth offers three
+default options for account recovery.
+
+However, it's essential to strike a balance when creating recovery shares. While having multiple
+shares increases backup options for users, creating too many shares can pose a security risk.
+
+## Managing MFA factors for end users
+
+After setting up MFA, it's crucial for users to stay informed about the factors they’ve configured
+and be able to manage the factors. Regularly prompting users to review and verify their MFA setup
+helps ensure it remains valid and functional.
+
+Users can manage their MFA setup, including viewing and removing existing factors, through the Auth
+Dashboard. For more information, refer to the documentation [here](features/account-dashboard).
+
+## User Education
+
+As Web3Auth is non-custodial, users are responsible for reconstructing their private keys using
+their shares. Therefore, it's crucial to ensure users understand the implications of their MFA setup
+by:
+
+- Inform users about the non-custodial nature of the wallet and the risks involved
+- Clearly explain the importance of MFA and managing recovery methods to prevent loss of access
+- Encourage users to safely note their selected recovery options and ensure they understand the
+  consequences of losing shares.
+- Periodically verify if a recovery option is properly set up.
+
+## Deciding the MFA Threshold
+
+The MFA threshold determines the number of shares required to access a user's wallet, making it a
+key consideration for your onboarding flow. The ideal threshold is typically 2/n, combining a social
+login share with one of the multiple recovery or device shares. This approach balances user
+familiarity with convenient access on trusted devices.
+
+The Plug and Play SDKs and CoreKit SDK have a default threshold of 2/n. The threshold can be
+customized based on the application's security needs, with the CoreKit SDK.
+
+| Parameter                                                                                                                                              | restricting to 2/2 shares                                                                                                                                                                                                                                                                                                    | allowing ≥ 2/3 shares                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Non-Custodiality:** Ownership/access to a user key and/or Ability to grief?                                                                          | “Semi-custodial” - Never has access but nodes/networks always can grieve in this setup, as they always own one of the only factors.                                                                                                                                                                                          | More fully non-custodial, can’t grief, a user can ALWAYS reconstruct their key pair                                                                                                                                                           |
+| **Redundancy:** The ability to ensure that users never lose their key. Conversely the likelihood of a user’s key being lost, due to a loss of factors. | In a 2/2 setup, the nodes become even more important. If nodes go down/lose factor due to issues users lose their keys. Users get redundancy on their side by copying the factor/share that they have across their devices.                                                                                                  | In a ≥ 2/3 setup, users can get redundancy in the same way as 2/2 (by copying the same factors) or by increasing the threshold 2/4, 2/5.                                                                                                      |
+| **Control vs Security:** Restricted access means greater practical security from the network/cloud provider                                            | When we restrict things to the 2/2 flow, we can be certain that the user cannot transact without the node network. While it acts as a sword towards non-custodial, it can be a strong shield. For example, we can not allow a tx that withdraws all the user's money from the user (unless they do extra validation with us) | in the 2/3 flow, the user always has full access to the key. We can still do the same restrictions, but we don’t have the guarantee that the user won’t transact without us cause they can always reconstruct the key.                        |
+| **Exportability vs Security:** Exporting keys from the system                                                                                          | To have a restricted 2/2 flow is to restrict exportability. Still can be done with extra validation.                                                                                                                                                                                                                         | Always exportable all the time. This could be a detriment as, if we give the ability to transport and reshare the key out (without extra validation/restriction) it's as good as v1 technically as a hacker can always reshare the user keys. |
