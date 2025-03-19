@@ -205,6 +205,10 @@ export const tags = {
   tezos: "tezos",
   tron: "tron",
   ton: "ton",
+  customAuthentication: "custom authentication",
+  accountAbstraction: "account abstraction",
+  onRamp: "on ramp",
+  mfa: "mfa",
 };
 
 export const productMap = [
@@ -257,9 +261,82 @@ export const platformMap = [
   },
 ];
 
+export const pnpPlatformMap = [
+  {
+    label: "Web",
+    value: tags.web,
+  },
+  {
+    label: "Android",
+    value: tags.android,
+  },
+  {
+    label: "iOS/ Swift",
+    value: tags.ios,
+  },
+  {
+    label: "React Native",
+    value: tags.reactNative,
+  },
+  {
+    label: "Flutter",
+    value: tags.flutter,
+  },
+  {
+    label: "Unity",
+    value: tags.unity,
+  },
+  {
+    label: "Unreal Engine",
+    value: tags.unreal,
+  },
+];
+
+export const sfaPlatformMap = [
+  {
+    label: "Web",
+    value: tags.web,
+  },
+  {
+    label: "Android",
+    value: tags.android,
+  },
+  {
+    label: "iOS/ Swift",
+    value: tags.ios,
+  },
+  {
+    label: "React Native",
+    value: tags.reactNative,
+  },
+  {
+    label: "Flutter",
+    value: tags.flutter,
+  },
+  {
+    label: "Node.js",
+    value: tags.node,
+  },
+];
+
+export const mpcPlatformMap = [
+  {
+    label: "Web",
+    value: tags.web,
+  },
+  {
+    label: "React Native",
+    value: tags.reactNative,
+  },
+  {
+    label: "Node.js",
+    value: tags.node,
+  },
+];
+
 export const blockchainMap = [
   {
-    label: "Ethereum/ EVM Compatible Chains",
+    label: "Ethereum/ EVM",
     value: tags.evm,
   },
   {
@@ -267,7 +344,7 @@ export const blockchainMap = [
     value: tags.solana,
   },
   {
-    label: "Connect Multiple Chains",
+    label: "Multiple Chains",
     value: tags.multiChain,
   },
   {
@@ -329,6 +406,36 @@ export const blockchainMap = [
   {
     label: "TON",
     value: tags.ton,
+  },
+];
+
+export const pnpFeatureMap = [
+  {
+    label: "Custom Authentication",
+    value: tags.customAuthentication,
+  },
+  {
+    label: "Account Abstraction",
+    value: tags.accountAbstraction,
+  },
+  {
+    label: "On Ramp",
+    value: tags.onRamp,
+  },
+  {
+    label: "Multi Factor Auth",
+    value: tags.mfa,
+  },
+];
+
+export const sfaFeatureMap = [
+  {
+    label: "Account Abstraction",
+    value: tags.accountAbstraction,
+  },
+  {
+    label: "On Ramp",
+    value: tags.onRamp,
   },
 ];
 

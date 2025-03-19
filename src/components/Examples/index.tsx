@@ -11,6 +11,7 @@ import {
 import styles from "./styles.module.css";
 import Select, { StylesConfig } from "react-select";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import { getURLOptions, getURLFromFilterOptions } from "../../theme/URLParams";
 
 export default function Examples(props: {
   exampleMap: ExamplesInterface[];
@@ -33,6 +34,13 @@ export default function Examples(props: {
   const [platformFilter, setPlatformFilter] = useState<string[]>([]);
   const [blockchainFilter, setBlockchainFilter] = useState<string[]>([]);
   const [filteredExamples, setFilteredExamples] = useState<ExamplesInterface[]>(sortedExamples);
+
+  useEffect(() => {
+    const urlOpts = getURLOptions();
+    if (urlOpts["product"]) setProductFilter(urlOpts["product"].split(","));
+    if (urlOpts["platform"]) setPlatformFilter(urlOpts["platform"].split(","));
+    if (urlOpts["blockchain"]) setBlockchainFilter(urlOpts["blockchain"].split(","));
+  }, []);
 
   const chevron = (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,6 +74,16 @@ export default function Examples(props: {
     // Reset search when filters change
     setSearchInput("");
     setFilteredExamples(filtered);
+
+    window.history.pushState(
+      {},
+      "",
+      getURLFromFilterOptions({
+        product: productFilter.join(","),
+        platform: platformFilter.join(","),
+        blockchain: blockchainFilter.join(","),
+      }),
+    );
   }, [productFilter, platformFilter, blockchainFilter]);
 
   const onChangeProduct = (e) => {
@@ -235,6 +253,12 @@ export default function Examples(props: {
             styles={customSelectButtonStyles}
             onChange={onChangeProduct}
             placeholder="Select Product"
+            value={productFilter.map((value) => {
+              return {
+                value,
+                label: productMap.find((p) => p.value === value)?.label || "",
+              };
+            })}
           />
         )}
         {showPlatformFilter && (
@@ -244,6 +268,12 @@ export default function Examples(props: {
             styles={customSelectButtonStyles}
             onChange={onChangePlatform}
             placeholder="Select Platform"
+            value={platformFilter.map((value) => {
+              return {
+                value,
+                label: platformMap.find((p) => p.value === value)?.label || "",
+              };
+            })}
           />
         )}
         {showBlockchainFilter && (
@@ -254,6 +284,12 @@ export default function Examples(props: {
             onChange={onChangeBlockchain}
             placeholder="Select Blockchain"
             closeMenuOnSelect={false}
+            value={blockchainFilter.map((value) => {
+              return {
+                value,
+                label: blockchainMap.find((p) => p.value === value)?.label || "",
+              };
+            })}
           />
         )}
       </div>
