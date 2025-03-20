@@ -502,6 +502,14 @@ const config: Config = {
             to: "/features/mfa",
           },
           {
+            from: "/features/smart-accounts",
+            to: "/features/account-abstraction",
+          },
+          {
+            from: "/features/nft-services",
+            to: "/features/nft-minting",
+          },
+          {
             from: "/pnp/features/connect-external-wallets",
             to: "/features/external-wallets",
           },
