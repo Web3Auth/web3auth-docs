@@ -59,17 +59,9 @@ after successful authentication.
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: ChainNamespace.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(1, "your_web3auth_client_id");
 ```
 
 </TabItem>
@@ -79,15 +71,9 @@ const chainConfig = {
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: ChainNamespace.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorer: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(11155111, "your_web3auth_client_id");
 ```
 
 </TabItem>

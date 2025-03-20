@@ -476,6 +476,7 @@ const sidebars: SidebarsConfig = {
       label: "Connect Blockchain",
       items: [
         "connect-blockchain/connect-blockchain",
+        "connect-blockchain/built-in-chainconfigs",
         {
           type: "category",
           label: "EVM Based Chains",

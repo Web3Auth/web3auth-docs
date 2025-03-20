@@ -67,17 +67,9 @@ after successful authentication.
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xe708", // hex of 42161
-  rpcTarget: "https://rpc.linea.build",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Linea Mainnet",
-  blockExplorer: "https://lineascan.build/",
-  ticker: "ETH",
-  tickerName: "ETH",
-};
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(59144, "your_web3auth_client_id");
 ```
 
 </TabItem>
@@ -92,7 +84,7 @@ const chainConfig = {
   chainId: "0xe705", // hex of 421611
   rpcTarget: "https://rpc.sepolia.linea.build",
   // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
+  // Use services like Infura
   displayName: "Linea Sepolia Testnet",
   blockExplorer: "https://sepolia.lineascan.build/",
   ticker: "ETH",
