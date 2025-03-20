@@ -307,11 +307,10 @@ const sidebars: SidebarsConfig = {
     "features/mobile",
     "features/mfa",
     "features/mpc",
-    "features/nft-services",
+    "features/nft-minting",
     "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
-    "features/smart-accounts",
     "features/wallet-pregeneration",
     "features/whitelabel",
     {
