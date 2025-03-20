@@ -68,18 +68,9 @@ after successful authentication.
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x2019", // hex of 8217, Klaytn mainnet
-  rpcTarget: "`https://public-node-api.klaytnapi.com/v1/cypress`",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Klaytn Mainnet",
-  blockExplorerUrl: "https://scope.klaytn.com",
-  ticker: "KLAY",
-  tickerName: "KLAY",
-  logo: "https://cryptologos.cc/logos/klaytn-klay-logo.png",
-};
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(8217, "your_web3auth_client_id");
 ```
 
 </TabItem>
@@ -94,7 +85,7 @@ const chainConfig = {
   chainId: "0x3e9", // hex of 1001, Klaytn Boabab testnet
   rpcTarget: "https://api.baobab.klaytn.net:8651",
   // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
+  // Use services like Infura
   displayName: "Klaytn Testnet",
   blockExplorerUrl: "https://baobab.scope.klaytn.com/",
   ticker: "KLAY",

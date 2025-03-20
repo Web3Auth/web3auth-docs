@@ -79,18 +79,9 @@ after successful authentication.
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x38", // hex of 56
-  rpcTarget: "https://rpc.ankr.com/bsc",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Binance SmartChain Mainnet",
-  blockExplorerUrl: "https://bscscan.com/",
-  ticker: "BNB",
-  tickerName: "BNB",
-  logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png",
-};
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(56, "your_web3auth_client_id");
 ```
 
 </TabItem>
@@ -100,18 +91,7 @@ const chainConfig = {
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x61", // hex of 97
-  rpcTarget: "https://rpc.ankr.com/bsc_testnet_chapel",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Binance SmartChain Testnet",
-  blockExplorerUrl: "https://testnet.bscscan.com",
-  ticker: "BNB",
-  tickerName: "BNB",
-  logo: "https://cryptologos.cc/logos/bnb-bnb-logo.png",
-};
+const chainConfig = getEvmChainConfig(97, "your_web3auth_client_id");
 ```
 
 </TabItem>
