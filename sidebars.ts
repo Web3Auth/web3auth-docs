@@ -9,6 +9,7 @@ import {
   unity,
   unreal,
   js,
+  swift,
 } from "./src/common/SDKOptions";
 
 import { getPnPVersion, getSFAVersion, getMPCCoreKitVersion } from "./src/common/versions";
@@ -107,6 +108,7 @@ function mpcckTopNavButton(selectedSDK: string): string {
   var mpcCoreKitSDKs = {
     [js]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js`,
     [reactnative]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-react-native`,
+    [swift]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-swift`,
   };
   if (mpcCoreKitSDKs.hasOwnProperty(selectedSDK)) {
     delete mpcCoreKitSDKs[selectedSDK];
@@ -131,6 +133,7 @@ function mpcckTopNavButton(selectedSDK: string): string {
           <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
               <option value="">${selectedSDK}</option>
               <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
+              <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
           </select>
           v${sdkVersion}
         </div>
@@ -1801,6 +1804,47 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: ["migration-guides/mpc-core-kit-web-v2-to-v3"],
+    },
+    ...sdkQuickLinks,
+  ],
+  sdk_core_kit_mpc_swift: [
+    {
+      type: "html",
+      value: mpcckTopNavButton(swift),
+      defaultStyle: true,
+    },
+    "sdk/mpc-core-kit/mpc-core-kit-swift/mpc-core-kit-swift",
+    "sdk/mpc-core-kit/mpc-core-kit-swift/install",
+    "sdk/mpc-core-kit/mpc-core-kit-swift/initialize",
+    {
+      type: "category",
+      label: "Authentication",
+      items: [
+        "sdk/mpc-core-kit/mpc-core-kit-swift/authentication/authentication",
+        "sdk/mpc-core-kit/mpc-core-kit-swift/authentication/login-jwt",
+        "sdk/mpc-core-kit/mpc-core-kit-swift/authentication/login-oauth",
+      ],
+    },
+    // "sdk/mpc-core-kit/mpc-core-kit-swift/signing",
+    "sdk/mpc-core-kit/mpc-core-kit-swift/usage",
+    // "sdk/mpc-core-kit/mpc-core-kit-swift/examples",
+    {
+      type: "category",
+      label: "Providers",
+      items: [
+        "sdk/mpc-core-kit/mpc-core-kit-swift/providers/providers",
+        "sdk/mpc-core-kit/mpc-core-kit-swift/providers/evm",
+      ],
+    },
+    {
+      type: "link",
+      label: "Support Forum",
+      href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33",
+    },
+    {
+      type: "link",
+      label: "Release Notes",
+      href: "https://github.com/Web3Auth/mpc-core-kit-swift/releases",
     },
     ...sdkQuickLinks,
   ],

@@ -1,0 +1,135 @@
+---
+title: "Initializing MPC Core Kit Swift SDK"
+sidebar_label: "Initialize"
+description: "Web3Auth MPC Core Kit Swift SDK - Initialize | Documentation - Web3Auth"
+---
+
+import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
+import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After installation, the next step to use Web3Auth MPC Core Kit is to configure the storage & MPC
+Core Kit instance.
+
+1. [Configure Storage](#configure-storage)
+2. [Configure MpcCoreKit instance](#configure-instance)
+
+## Configure Storage
+
+MPC Core Kit uses `IStorage` to store the TSS Factor. `IStorage` being a `protocol` gives you the
+freedom to choose the storage of your choice. Here we are using `UserDefaults`, but you can choose
+the storage layer of your choice.
+
+The storage layer is generally used to store the Device Factor.
+
+### Methods
+
+The `IStorage` protocol has the following methods which you need to implement in your storage layer
+implementation.
+
+| Name  | Description                                                                                                                                          |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `set` | This method will be used to store the factor in the storage layer. This method doesn't return anything on success.                                   |
+| `get` | This method will be used to try and retrieve the factor based on the given key from the storage layer. The method should return `Data` upon success. |
+
+### Example
+
+```swift
+import Foundation
+import mpc_core_kit_swift
+
+class UserStorage : IStorage {
+    func get(key: String) async throws -> Data {
+        print(key)
+        guard let data = UserDefaults().value(forKey: key) as? Data else  {
+            return Data()
+        }
+        return data
+    }
+
+    func set(key: String, payload: Data) async throws {
+        UserDefaults().setValue(payload, forKey: key)
+    }
+}
+```
+
+## Configure MpcCoreKit instance
+
+Once, we have configured the storage layer, we can now configure the `MpcCoreKit` instance. Please
+note that this is the most critical steps where you need to pass different parameters according to
+the preference of your project.
+
+### Parameters
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                | Description                                                                                                                                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId`       | The Web3Auth Client ID for your application. Find one at [https://dashboard.web3auth.io](https://dashboard.web3auth.io/)                                                                                  |
+| `manualSync`             | Enables you to manually sync with the Web3Auth Metadata Server, helping you manage the API calls to the server. Default value is false.                                                                   |
+| `web3AuthNetwork`        | Web3Auth Network used for MPC Wallet Management.                                                                                                                                                          |
+| `disableHashedFactorKey` | Disables the Hashed Key, making the sure user logs in always in a non-custodial mode. Recommended only if you have proper MFA flow setup for the user while creating the account. Default value is false. |
+| `hashedFactorNonce?`     | Nonce for the hashed factor. Default value is Web3Auth Client id. [Learn more about hashed factor](https://web3auth.io/docs/sdk/mpc-core-kit/mpc-core-kit-js/#hashed-cloud-factor).                       |
+| `storage`                | Defines the storage for MPC Core Kit's state. You'll have to define your own storage layer by implementing the `IStorage` protocol.                                                                       |
+| `storageKey?`            | Defines the custom storage key to be used to store and retrieve the MPC Core Kit state from the storage layer.                                                                                            |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```swift
+public class CoreKitWeb3AuthOptions {
+    public let web3AuthClientId: String
+    public let manualSync: Bool
+    public let web3AuthNetwork: Web3AuthNetwork
+    public let storageKey: String?
+    public let sessionTime: Int?
+    public let disableHashedFactorKey: Bool
+    public let storage: IStorage
+    // It is used to define the URL for the Metadata to be used in the SDK.
+    // This is for internal testing only, and shouldn't be used.
+    public let overwriteMetadataUrl: String?
+    public let hashedFactorNonce: String
+
+    public init(web3AuthClientId: String, manualSync: Bool = false, web3AuthNetwork: Web3AuthNetwork = .SAPPHIRE_MAINNET, storage: IStorage, storageKey: String? = "local", sessionTime: Int? = 86000, disableHashedFactorKey: Bool = false, overwriteMetadataUrl: String? = nil, hashedFactorNonce: String? = nil) {
+        self.web3AuthClientId = web3AuthClientId
+        self.manualSync = manualSync
+        self.web3AuthNetwork = web3AuthNetwork
+        self.storageKey = storageKey
+        self.sessionTime = sessionTime
+        self.storage = storage
+        self.disableHashedFactorKey = disableHashedFactorKey
+        self.overwriteMetadataUrl = overwriteMetadataUrl
+        self.hashedFactorNonce = hashedFactorNonce ?? web3AuthClientId
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Example
+
+```swift
+do {
+  let mpcCoreKit = MpcCoreKit(
+    options: .init(
+      web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get it from Web3Auth Dashboard,
+      web3AuthNetwork: .SAPPHIRE_MAINNET,
+      // Please check the storage configuration above
+      storage: UserStorage()
+    )
+  )
+} catch let error {
+    // Handle error
+}
+```
