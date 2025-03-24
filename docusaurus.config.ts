@@ -1,21 +1,28 @@
-const path = require("path");
-require("dotenv").config();
+import path from "path";
+import dotenv from "dotenv";
+
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import fs from "fs";
+import { themes } from "prism-react-renderer";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
+import npm2yarn from "@docusaurus/remark-plugin-npm2yarn";
+const sidebarPath = require.resolve("./sidebars");
+const customCss = require.resolve("./src/css/custom.css");
+// Initialize dotenv
+dotenv.config();
+
 const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
-const remarkMath = require("remark-math");
-const rehypeKatex = require("rehype-katex");
-const fs = require("fs");
 const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
-const { themes } = require("prism-react-renderer");
 
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
-import type { Config } from "@docusaurus/types";
-import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Documentation | Web3Auth",
@@ -194,15 +201,12 @@ const config: Config = {
           routeBasePath: "/",
           breadcrumbs: true,
           editUrl: githubEditUrl,
-          sidebarPath: require.resolve("./sidebars.js"),
-          remarkPlugins: [
-            remarkMath,
-            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
-          ],
+          sidebarPath,
+          remarkPlugins: [remarkMath, [npm2yarn, { sync: true }]],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss,
         },
         gtag: {
           trackingID: "GTM-NFBSNHL",
@@ -218,10 +222,7 @@ const config: Config = {
             "**/__tests__/**",
           ],
           mdxPageComponent: "@theme/MDXPage",
-          remarkPlugins: [
-            remarkMath,
-            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
-          ],
+          remarkPlugins: [remarkMath, [npm2yarn, { sync: true }]],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
           beforeDefaultRehypePlugins: [],
@@ -283,6 +284,18 @@ const config: Config = {
           {
             from: "/sdk/flutter/setting-up",
             to: "/sdk/pnp/flutter/",
+          },
+          {
+            from: "/product/wallet-ecosystems",
+            to: "/features/ecosystem-wallets",
+          },
+          {
+            from: "/features/blockchain-agnostic",
+            to: "/features/compatible-blockchains",
+          },
+          {
+            from: "/features/wallet-aggregation",
+            to: "/features/external-wallets",
           },
           {
             from: "/sdk/react-native/choose-workflows",
@@ -489,8 +502,16 @@ const config: Config = {
             to: "/features/mfa",
           },
           {
+            from: "/features/smart-accounts",
+            to: "/features/account-abstraction",
+          },
+          {
+            from: "/features/nft-services",
+            to: "/features/nft-minting",
+          },
+          {
             from: "/pnp/features/connect-external-wallets",
-            to: "/features/wallet-aggregation",
+            to: "/features/external-wallets",
           },
           {
             from: "/pnp/features/dapp-share",
@@ -498,11 +519,11 @@ const config: Config = {
           },
           {
             from: "/pnp/going-live",
-            to: "/going-live",
+            to: "/resources/checklist",
           },
           {
             from: "/core-kit/going-live",
-            to: "/going-live",
+            to: "/resources/checklist",
           },
           {
             from: "/auth-provider-setup/federated-identity-providers",
@@ -526,11 +547,11 @@ const config: Config = {
           },
           {
             from: "/product-fit/partner-products",
-            to: "/product/wallet-ecosystems",
+            to: "/features/ecosystem-wallets",
           },
           {
             from: "/product-fit/enterprise",
-            to: "/product/wallet-ecosystems",
+            to: "/features/ecosystem-wallets",
           },
           {
             from: "/product-fit/web3auth-for-wallets",

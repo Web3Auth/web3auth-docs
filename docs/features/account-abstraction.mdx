@@ -1,145 +1,52 @@
 ---
-title: Account Abstraction
-description: "Account Abstraction | Documentation - Web3Auth"
+title: Web3Auth's Native Account Abstraction​
+sidebar_label: Account Abstraction
+description: "Native Account Abstraction | Documentation - Web3Auth"
 ---
 
-Account abstraction is a term commonly used to address the use of smart contract wallets. These
-smart contract wallets are based on the [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) which
-aims at improving the user onboarding journey and enabling more sophisticated transaction patterns
-by abstracting details like validation, gas payment, and execution from the user.
+Create and manage smart accounts for your users with just a few lines of code, using Web3Auth’s
+native account abstraction. With smart accounts, you can offer enhanced control and programmability,
+such as these listed below:
 
-## Web3Auth's Native Account Abstraction
+- **Gas Sponsorship:** Cover transaction fees, or allow users to pay for their own transactions
+  using ERC-20 tokens.
 
-Effortlessly create and manage smart accounts for your users with just a few lines of code, using
-our native account abstraction. Additionally, SCWs offer enhanced control and programmability,
-enabling features like those listed below.
+- **Batch Transactions:** Perform multiple transactions in a single call.
 
-- Gas Abstraction: Cover transaction fees for users, or allow users to pay for their own
-  transactions using ERC-20 tokens.
-- Batch Transactions: Perform multiple transactions in a single call.
-- Automated Transactions: Allow users to automate actions, like swapping ETH to USDT when ETH hits
-  $4,000.
-- Set Spending Limits: Allow users to set tailored spending limits.
+- **Automated Transactions:** Allow users to automate actions, like swapping ETH to USDT when ETH
+  hits $4,000.
 
-Our native AA integration streamlines your setup, allowing you to create and manage smart accounts
-using your favorite libraries like Viem, Ethers, and Web3.js. With this, you don't need to rely on
-third party packages to effortlessly create ERC-4337 compatible Smart Contract Wallets (SCWs), and
-give users the ability to perform batch transactions and efficiently manage gas sponsorship.
+- **Set Spending Limits:** Allow users to set tailored spending limits.
 
-Web3Auth's native account abstraction gives you the flexibility to choose your preferred account
-abstraction provider, configure your bundler client, and integrate your paymaster. Please checkout
-our documentation on how [ERC-4337 components](#components-of-erc-4337) work for more information.
+:::note
+
+Find out more about
+[Account Abstraction (ERC 4337)](https://blog.web3auth.io/an-ultimate-guide-to-web3-wallets-externally-owned-account-and-smart-contract-wallet/#introduction-to-eip-4337)
+and how it works.
+
+:::
 
 ## Getting Started
 
-Web3Auth's native account abstraction gives you the flexibility to choose your preferred account
-abstraction provider, configure your bundler client, and integrate your paymaster. Learn how to use
-[Web3Auth with Account Abstraction](/docs/sdk/pnp/web/providers/aa-provider).
+Our native Account Abstraction (AA) integration simplifies setup, enabling you to create and manage
+smart accounts effortlessly with popular libraries like Viem, Ethers, and Web3.js—no need for
+third-party packages to achieve ERC-4337 compatibility. We are working closely with different
+partners in the account abstraction ecosystem and will provide support for evolving standards like
+EIP-7702, ERC-7579 (Modular Accounts), and ERC-7555 (account discovery) as they get finalized.
 
-## Components of ERC 4337
+:::note
 
-Smart contract wallets did exist before ERC 4337 but lacked a standardization across the ecosystem
-which reduced the interoperability. ERC 4337 helps to standardize account abstraction across all the
-Ethereum compatible chains. ERC 4337 consists of a few main components which help us achieve account
-abstraction.
+Getting started is easy; you just have to select your preferred smart account provider, configure
+your bundler client, and integrate your paymaster.
+[See this link for the steps.](/sdk/pnp/web/providers/aa-provider)
 
-### UserOperation
+:::
 
-A UserOperation is the transaction object for the smart contract wallets, and was introduced to
-avoid the changes on the EVM. Unlike EOA wallets, where the user signs the transaction, in smart
-contract wallets, the user signs a UserOperation.
+:::tip
 
-<details>
-<summary> UserOperation Structure </summary>
+For a quick configuration tailored to your needs, explore our detailed guides:
 
-| Field                           | Type      | Description                                                                              |
-| ------------------------------- | --------- | ---------------------------------------------------------------------------------------- |
-| `sender`                        | `address` | The address of the sender smart account                                                  |
-| `nonce`                         | `uint256` | Anti-replay parameter                                                                    |
-| `factory`                       | `address` | Contract address for the Factory contract used to deploy new account, if not deployed.   |
-| `factoryData`                   | `bytes`   | Data to be used during deploying the new account through Factory.                        |
-| `callData`                      | `bytes`   | The data to pass to the smart account during the main execution phase                    |
-| `callGasLimit`                  | `uint256` | The amount of gas to allocate the main execution call                                    |
-| `verificationGasLimit`          | `uint256` | The amount of gas to allocate for the verification step                                  |
-| `preVerificationGas`            | `uint256` | Extra gas to pay the bundler                                                             |
-| `maxFeePerGas`                  | `uint256` | Maximum fee per gas (see [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559))            |
-| `maxPriorityFeePerGas`          | `uint256` | Maximum priority fee per gas (see EIP-1559)                                              |
-| `paymaster`                     | `address` | Address of paymaster contract. Should be empty if account is paying for the fees itself. |
-| `paymasterVerificationGasLimit` | `uint256` | The amount of gas to allocate for the paymaster validation code.                         |
-| `paymasterPostOpGasLimit`       | `uint256` | The amount of gas to allocate for the paymaster post-operation code.                     |
-| `paymasterData`                 | `bytes`   | Data for paymaster, only if the paymaster is used                                        |
-| `signature`                     | `bytes`   | Data passed into the account to verify authorization                                     |
+- [Guide to Sending Gasless Transactions](/guides/sending-gasless-transaction)
+- [Guide to Sending Transactions with an ERC-20 Paymaster](/guides/erc20-paymaster)
 
-</details>
-
-### UserOp Mempool
-
-Mempools for User Operation are separate from the regular blockchain transaction mempool.ERC 4337
-introduces an alternative to the mempool, called UserOp Mempool, which helps to keep track of
-pending UserOperations. It acts as a waiting room and helps bundlers to keep track of
-UserOperations.
-
-### Bundler
-
-Unlike the RPC nodes responsible for validating the transactions and submitting them to the
-blockchain, bundlers are third party nodes that bundles the UserOperations, perform the validation,
-and runs the simulations before submitting them on-chain.
-
-The bundler is also responsible to validate that the Paymaster has enough balance to sponsor the gas
-fees for the batch transactions. For aggregated UserOperations, the bundler also ensures that the
-aggregated signature is created, and the UserOperations are updated with the same. The aggregated
-signatures are used to improve the efficiency and scalability of transaction processing by bundler.
-
-### EntryPoint
-
-The EntryPoint contract, as its name suggests, serves as the global singleton that manages
-UserOperations by validating and executing them. When a UserOperation is submitted, the EntryPoint
-performs the following key tasks:
-
-![EntryPoint](/images/entrypoint.png)
-
-- If the UserOperations are bundled into a single transaction, the EntryPoint validates the
-  aggregated signature to ensure its validity.
-
-- The EntryPoint checks if the user's account is already deployed. If it isn't, the contract deploys
-  the account using the CREATE2Factory. Afterwards, the EntryPoint uses the Account contract to
-  validate the UserOperation.
-
-- If a Paymaster is involved in the UserOperation, the EntryPoint verifies that the Paymaster has
-  agreed to cover the transaction fees by validating its signature. If no Paymaster is used, the
-  EntryPoint ensures that the user has sufficient balance to pay for the gas fees.
-
-- After successfully validating the UserOperation and Paymaster details, the EntryPoint proceeds to
-  execute the transaction.
-
-### Smart Account
-
-Smart accounts are user facing accounts deployed through the CREATE2Factory. Each smart account
-contains a key function called `validateUserOp`, which validates the UserOperation. This function is
-triggered by the EntryPoint contract during the operation validation phase.
-
-Beyond basic functionality, smart accounts can incorporate advanced features like account recovery,
-autopilot execution, spend limits, and other customizable, programmable capabilities.
-
-### Paymaster
-
-The paymaster component of the ERC 4337 is responsible for sponsoring the gas fees for the
-UserOperations. The paymaster contract also allows the user to pay the gas fees with the supported
-ERC-20 tokens.
-
-The paymaster contract must implement the `validatePaymasterUserOp` function which is called by the
-EntryPoint contract during the validation phase. The paymaster also has additional `postOp` function
-which is called by the EntryPoint contract after the transaction is executed. This function handles
-the additional logic required by the paymaster. For instance, withdraw the ERC-20 token from the
-user's account after the transaction is executed.
-
-### Aggregator
-
-As the name suggests, the aggregator contract is responsible for aggregating the signatures of the
-UserOperations. The aggregator contract must implement the `aggregateSignatures` function which
-takes in a list of signatures and returns the aggregated signature. The signatues are usually
-aggregated by the bundler to improve the efficiency and scalability of transaction processing, as it
-allows bundler to submit multiple UserOperations in a single transaction.
-
-For validating the aggregated signature, the Aggregator also has the `validateSignatures` function
-used by the EntryPoint contract during the validation phase.
+:::

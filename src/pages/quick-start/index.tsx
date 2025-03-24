@@ -17,11 +17,7 @@ import builder from "./builder";
 import { SFA, MPC_CORE_KIT, PNP } from "./builder/choices";
 import styles from "./styles.module.css";
 import { quickStartHostedLinks } from "../../common/maps";
-
-const getWindowLocation = () => {
-  if (typeof window !== "undefined") return window.location.href;
-  return "http://localhost";
-};
+import { getWindowLocation } from "../../theme/URLParams";
 
 const getDefaultBuilderOptions = () => {
   const defaultOpts = Object.fromEntries(

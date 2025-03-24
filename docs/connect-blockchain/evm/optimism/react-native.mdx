@@ -59,17 +59,9 @@ after successful authentication.
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: ChainNamespace.EIP155,
-  chainId: "0xA", // hex of 10
-  rpcTarget: "https://rpc.ankr.com/optimism",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Optimism Mainnet",
-  blockExplorer: "https://optimistic.etherscan.io",
-  ticker: "OP",
-  tickerName: "OP",
-};
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(10, "your_web3auth_client_id");
 ```
 
 </TabItem>
@@ -81,14 +73,14 @@ const chainConfig = {
 ```typescript
 const chainConfig = {
   chainNamespace: ChainNamespace.EIP155,
-  chainId: "0x45", // hex of 69
-  rpcTarget: "https://rpc.ankr.com/optimism_testnet",
+  chainId: "0xAA37DC", // hex of 11155420
+  rpcTarget: "https://sepolia.optimism.io",
   // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Optimism Testnet",
-  blockExplorer: "`https://kovan-optimistic.etherscan.io`",
-  ticker: "OP",
-  tickerName: "OP",
+  // Use services like Infura
+  displayName: "OP Sepolia",
+  blockExplorer: "`https://sepolia-optimistic.etherscan.io`",
+  ticker: "ETH",
+  tickerName: "ETH",
 };
 ```
 

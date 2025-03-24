@@ -20,8 +20,7 @@ The error might look something like this:
 
 In that case, we recommend you to pass on your own node server in the `rpcTarget` value while
 Instantiating Web3Auth, that can be easily created by using a service like
-[Infura](https://app.infura.io/login), [Quicknode](https://www.quicknode.com/endpoints),
-[dRPC](https://drpc.org/chainlist) etc.
+[Infura](https://app.infura.io/login).
 
 ## For EVM Based Chains
 
@@ -37,16 +36,17 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    rpcTarget: "https://rpc.ethereum.org", // This is the public RPC we have added, please pass on your own endpoint while creating an app
   },
 });
 ```
 
 ## For Solana Blockchain
 
-[Quicknode](https://www.quicknode.com/endpoints) can help you create your own node server. Also,
-Ankr has a [public Solana RPC](https://www.ankr.com/protocol/public/solana/) available which you can
-use for testing purposes as mentioned below:
+You can obtain official Solana RPC endpoints directly from the
+[Solana documentation](https://solana.com/docs/references/clusters). For production-grade usage or
+development, the Solana Foundation provides publicly accessible RPC endpoints for Mainnet Beta,
+Testnet, and Devnet.
 
 ### Example
 
@@ -56,7 +56,7 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    rpcTarget: "https://api.mainnet-beta.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
   },
 });
 ```

@@ -1,21 +1,47 @@
 ---
-title: Custom Authentication
+title: Use your own Authentication with Web3Auth
 image: "images/docs-meta-cards/documentation-card.png"
-
-description: "Custom Authentication | Documentation - Web3Auth"
+sidebar_label: Custom Authentication
+description: "Use your own Authentication | Documentation - Web3Auth"
 ---
 
 import BYOCustomJWTTiles from "@site/src/common/docs/_byo-custom-jwt-providers.mdx";
 import FederatedTiles from "@site/src/common/docs/_federated-providers.mdx";
 import SocialTiles from "@site/src/common/docs/_social-login-providers.mdx";
 
-# Custom Authentication with Web3Auth
+Custom Authentication enables you to create tailored auth flows designed specifically for your app.
+Whether you’re migrating from an existing system or starting fresh, we’ve got you covered.
 
-Custom Authentication represents a pivotal feature within Web3Auth, enabling the integration of
-bespoke authentication flows into your application. This approach is recommended for those seeking
-to move beyond Web3Auth's standard authentication modal, offering a more tailored and comprehensive
-user experience. It empowers developers to craft authentication flows that are not only unique to
-their applications but also align with the nuanced needs of their user base.
+## Authentication Methods
+
+### 1. Web3Auth's Built-in Social Logins
+
+Web3Auth provides pre-built social login solutions that work out of the box. These use Web3Auth's
+internal credentials and require minimal setup:
+
+- Ready-to-use implementation
+- Quick integration
+- Managed by Web3Auth
+- Limited customization options
+- Best for rapid prototyping and simple applications
+
+:::warning
+
+If you opt for prebuilt social login providers, migration to custom authentication will not be
+possible in the future.
+
+:::
+
+### 2. Custom Authentication (Recommended)
+
+Custom Authentication offers more flexibility by allowing you to:
+
+- Use your own credentials for social logins
+- Integrate your existing authentication system
+- Connect third-party identity providers (Auth0, Cognito, etc.)
+- Maintain full control over the authentication flow
+- Create custom user experiences
+- Handle complex authentication requirements
 
 :::note
 
@@ -26,6 +52,17 @@ feature for projects on `sapphire_devnet` for free.
 
 :::
 
+### 3. Grouped Custom Authentication
+
+This method combines multiple authentication providers under a single
+[aggregate verifier](/auth-provider-setup/aggregate-verifier), enabling:
+
+- Same private key generation across different login methods
+- User account linking across multiple providers
+- Unified authentication experience
+- Single user identity with multiple login options
+- Seamless transition between authentication methods
+
 :::tip
 
 Check out our reference on [Auth Provider Setup](/auth-provider-setup) for a detailed guide on how
@@ -33,29 +70,16 @@ to set up your custom authentication.
 
 :::
 
-## Advantages of Custom Authentication
+## Why Choose Custom Authentication?
 
-- **Enhanced User Experience:** Custom Authentication ensures a seamless journey for users from the
-  start of the authentication process to its completion, maintaining consistency with your
-  application's design and workflow.
-- **Customizable User Data Collection:** It allows for the customization of the data collected from
-  users during the authentication process, enabling you to tailor onboarding and user management
-  according to your specific requirements.
-- **Seamless User Migration:** For applications transitioning to Web3Auth, Custom Authentication
-  facilitates the migration of existing user bases without necessitating the creation of new
-  accounts, thereby preserving user continuity.
+- **Effortless User Migration:** Transition existing users seamlessly while setting up wallets
+  without requiring new accounts.
 
-## Implementation Across Web3Auth Products
+- **Native Experience:** Deliver an authentication flow that feels fully integrated with your app,
+  avoiding redirects to Web3Auth screens.
 
-- **Plug and Play SDKs:** While Custom Authentication remains an optional feature for Plug and Play
-  SDKs, it's highly recommended for developers looking to provide a unique user experience and meet
-  specific authentication requirements.
-- **Core Kit SDKs:** Custom Authentication is a fundamental requirement for Core Kit SDKs,
-  underscoring the need for bespoke authentication flows that align with the specific needs of the
-  application and its users.
-- **Wallet Ecosystems:** Currently, Wallet Ecosystem integrations do not support Custom
-  Authentication. These ecosystems leverage predefined authentication mechanisms specific to each
-  wallet platform.
+- **Greater Control:** Own the authentication process, giving you flexibility to switch between SDKs
+  and providers as needed.
 
 ## Supported Login Providers
 
