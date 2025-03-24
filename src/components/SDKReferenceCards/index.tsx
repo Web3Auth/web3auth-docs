@@ -1018,3 +1018,31 @@ export default function QuickNavigation() {
     </div>
   );
 }
+
+export const PnPCards = () => {
+  return (
+    <div className={styles.container}>
+      {pnpweb}
+      {pnpmobile}
+      {pnpgaming}
+    </div>
+  );
+};
+
+export const SFACards = () => {
+  return (
+    <div className={styles.container}>
+      {sfaweb}
+      {sfamobile}
+    </div>
+  );
+};
+
+export const MPCCards = () => {
+  return (
+    <div className={styles.container}>
+      {mpccorekitjs}
+      {mpccorekitreactnative}
+    </div>
+  );
+};
