@@ -1,11 +1,10 @@
 ---
-title: Integrate Web3Auth with the Soneium Blockchain in JavaScript
+title: Integrate Web3Auth with the Unichain Blockchain in JavaScript
 sidebar_label: Web
-image: "banners/soneium.png"
-
-keywords: [soneium, web3auth, authentication, blockchain]
+image: "banners/unichain.png"
+keywords: [unichain, web3auth, authentication, blockchain]
 description:
-  "Integrate Web3Auth with the Soneium Blockchain in JavaScript | Documentation - Web3Auth"
+  "Integrate Web3Auth with the Unichain Blockchain in JavaScript | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
@@ -27,10 +26,10 @@ import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the Soneium Blockchain in JavaScript"
-  description="Integrate Web3Auth with the Soneium Blockchain in JavaScript | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/banners/Soneium.png"
-  slug="/connect-blockchain/evm/Soneium/web"
+  title="Integrate Web3Auth with the Unichain Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Unichain Blockchain in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/unichain.png"
+  slug="/connect-blockchain/evm/unichain/web"
 />
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
@@ -38,13 +37,13 @@ provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethe
 This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
 [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Soneium](https://soneium.org) blockchain calls like getting the user's `account`, fetching
+[Unichain](https://www.unichain.org/) blockchain calls like getting the user's `account`, fetching
 `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
 etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
-To interact with the Soneium blockchain, you can use either library with Web3Auth.
+To interact with the Unichain blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
@@ -60,25 +59,24 @@ after successful authentication.
  defaultValue="mainnet"
   values={[
     { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet (Minato)", value: "testnet", },
+    { label: "Testnet", value: "testnet", },
   ]}
-
 >
-
 <TabItem
   value="mainnet"
 >
 
 ```typescript
 const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x74c", // hex of 1868
-  rpcTarget: "https://rpc.soneium.org",
-  displayName: "Soneium",
-  blockExplorerUrl: "https://www.okx.com/web3/explorer/soneium",
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: "0x82", // hex of 130
+  rpcTarget: "https://mainnet.unichain.org",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Unichain Mainnet",
+  blockExplorer: "https://uniscan.xyz",
   ticker: "ETH",
   tickerName: "ETH",
-  logo: "https://iili.io/2i5xce2.png",
 };
 ```
 
@@ -90,15 +88,15 @@ const chainConfig = {
 
 ```typescript
 const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x79a", // hex of 1946
-  rpcTarget: "https://rpc.minato.soneium.org",
-  displayName: "Soneium Minato Testnet",
-  blockExplorerUrl: "https://explorer-testnet.soneium.org",
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: "0x515", // hex of 1301
+  rpcTarget: "https://sepolia.unichain.org",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Unichain Sepolia Testnet",
+  blockExplorer: "https://sepolia.uniscan.xyz/",
   ticker: "ETH",
   tickerName: "ETH",
-  logo: "https://iili.io/2i5xce2.png",
-  // faucet- "https://bridge.soneium.org/en/testnet" bridge the sepolia ETH to Soneium
 };
 ```
 
@@ -136,23 +134,3 @@ const chainConfig = {
 ### Sign Typed Data v4
 
 <SignTypedDataV4Snippet />
-
-## Smart Contract
-
-<SmartContractSoliditySnippet />
-
-### Deploy Contract
-
-<DeployContractSolidityDeploySnippet />
-
-### Read From Contract
-
-<DeployContractSolidityReadSnippet />
-
-### Write to Contract
-
-<DeployContractSolidityWriteSnippet />
-
-## Fetch User's Private Key
-
-<FetchUserPrivateKeySnippet />
