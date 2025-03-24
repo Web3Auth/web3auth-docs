@@ -14,22 +14,27 @@ Once you've installed and successfully initialized Web3Auth, you can use it to a
 users. Further, you can use the native provider given by Web3Auth to connect the users to the
 respective blockchain network.
 
-Natively, the instance of Web3Auth (called web3auth in our examples) returns the following
-functions:
+## Functionality Overview
 
-- `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken`, which are
-  mandatory, while `subVerifierInfoArray` and `serverTimeOffset` are optional.
-- `provider()` - Returns the native provider that can be used to make different blockchain
-  transactions.
-- `sessionId()` - Returns the sessionId of the user as a string.
-- `authenticateUser()` - Returns a promise of the `UserAuthInfo` object containing the `idToken` of
-  the user.
-- `addChain()` - Add chain configuration to the web3auth instance.
-- `switchChain()` - Switches the chainId to one of the added chainIds.
-- `getUserInfo()` - Returns the user information.
-- `logout()` - Log out the user from the web3auth instance.
+Natively, the instance of Web3Auth (called web3auth in our examples) has the following
+methods/getters:
+
+| Name                                       | Description                                                                             |
+| ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| [connect](#logging-in-your-user)           | Use this method to login a user to Web3Auth SFA JS SDK.                                 |
+| [provider](#get-a-native-provider)         | Returns the native provider that can be used to make different blockchain transactions. |
+| [sessionId](#get-sessionid)                | Returns the sessionId of the user as a string.                                          |
+| [authenticateUser](#authenticate-the-user) | Returns a promise of the `UserAuthInfo` object containing the `idToken` of the user.    |
+| [addChain](#add-a-new-chain)               | Add chain configuration to the web3auth instance.                                       |
+| [switchChain](#switch-the-chain)           | Switches the chainId to one of the added chainIds.                                      |
+| [getUserInfo](#get-user-info)              | Returns the user information.                                                           |
+| [logout](#logging-out-the-user)            | Log out the user from the web3auth instance.                                            |
 
 ## Logging in your User
+
+To log in a user using the Web3Auth SFA JS SDK, call the `connect` method. This method returns an
+`IProvider` instance upon successful authentication which can then be used to interact with various
+blockchain networks. For more details, [refer to the provider documentation](./providers/).
 
 :::tip
 
@@ -38,33 +43,13 @@ your verifier and other authentication parameters.
 
 :::
 
-`connect(loginParams: LoginParams)`
+### LoginParams
 
-To log a user in the Web3Auth SFA JS SDK, you need to call the `connect()` function.
-
-| Variable      | Description                |
-| ------------- | -------------------------- |
-| `loginParams` | Mandatory login Parameters |
-
-#### Returns
-
-```tsx
-connect(loginParams: LoginParams): Promise<IProvider | null>
-```
-
-#### `LoginParams`
-
-`connect(loginParams: LoginParams)`
-
-On successful login, the `connect()` function returns a `IProvider` instance. This instance contains
-the corresponding provider for your selected blockchain. You can use this provider to connect your
-user to the blockchain and perform transactions.
-
-On unsuccessful login, this function will return a `null` value.
+The method accepts `LoginParams` as an input.
 
 <SFALoginParams />
 
-#### `TorusSubVerifierInfo`
+### TorusSubVerifierInfo
 
 <Tabs
   defaultValue="table"
@@ -76,7 +61,7 @@ On unsuccessful login, this function will return a `null` value.
 
 <TabItem value="table">
 
-| Parameter  | Description                                                                                                                                              |
+| Name       | Description                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `verifier` | Name of the verifier. It's a `string` mandatory parameter.                                                                                               |
 | `idToken`  | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. It's a `string` mandatory parameter. |
@@ -95,7 +80,7 @@ export interface TorusSubVerifierInfo {
 </TabItem>
 </Tabs>
 
-#### Usage
+### Usage
 
 <Tabs
   defaultValue="single"
@@ -109,9 +94,12 @@ export interface TorusSubVerifierInfo {
 
 ```js
 await web3auth.connect({
-  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+  // Get the verifier name from the Web3Auth Dashboard
+  verifier: "YOUR_VERIFIER_NAME",
+  // Pass the JWT token verification value selected for verifier.
+  verifierId: "YOUR_VERIFIER_ID",
+  // Pass your JWT token
+  idToken: "YOUR_JWT_TOKEN",
 });
 ```
 
@@ -121,13 +109,18 @@ await web3auth.connect({
 
 ```js
 await web3auth.connect({
-  verifier: "aggregate-verifier-name", // e.g. `web3auth-aggregate-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+  // Get the aggregate verifier name from the Web3Auth Dashboard
+  verifier: "YOUR_AGGREGATE_VERIFIER_NAME",
+  // Pass the JWT token verification value selected for sub verifier.
+  verifierId: "YOUR_VERIFIER_ID",
+  // Pass your JWT token
+  idToken: "YOUR_JWT_TOKEN",
   subVerifierInfoArray: [
     {
-      verifier: "sub-verifier-name", // e.g. `google`
-      idToken: "JWT Token", // replace with your newly created unused JWT Token.
+      // Get the sub verifier name from the Web3Auth Dashboard
+      verifier: "YOUR_SUB_VERIFIER_NAME",
+      // Pass the JWT token
+      idToken: "YOUR_JWT_TOKEN",
     },
   ],
 });
@@ -139,41 +132,40 @@ await web3auth.connect({
 
 ## Get a native provider
 
-`provider()`
+The method returns the provider instance that can be used to interact with different blockchain
+networks. Please note, if there's no active session, the method will return `null`.
 
-Returns the native provider that can be used to make different blockchain transactions.
+Please refer to the [provider documentation](./providers/) for more details.
 
-#### Returns
+### Usage
 
 ```js
-get provider(): IProvider | null;
+const provider = web3auth.provider;
+// Use the provider to interact with the blockchain
 ```
 
 ## Get sessionId
 
-`sessionId()`
+The method returns the session id for the current active session as the string.
 
-Returns the sessionId of the user as a string.
-
-#### Returns
+### Usage
 
 ```js
-get sessionId(): string;
+const sessionId = web3auth.sessionId;
 ```
 
 ## Authenticate the user
 
-`authenticateUser()`
+The method authenticates the connected user, and returns user auth info containing the Web3Auth JWT
+token. You can use the idToken for backend verification.
 
-Returns a promise of the `UserAuthInfo` object containing the `idToken` of the user.
-
-#### Returns
+### Usage
 
 ```js
-authenticateUser(): Promise<UserAuthInfo>;
+const userAuthInfo = await web3auth.authenticateUser();
 ```
 
-#### `UserAuthInfo`
+### Response
 
 ```ts
 export type UserAuthInfo = {
@@ -183,15 +175,11 @@ export type UserAuthInfo = {
 
 ## Add a new chain
 
-`addChain(chainConfig: CustomChainConfig)`
+To add a new chain to your Web3Auth provider instance you can use the `addChain` method.
 
-Add chain configuration to the web3auth instance.
+### Parameters
 
-| Variable      | Description                                                           |
-| ------------- | --------------------------------------------------------------------- |
-| `chainConfig` | Mandatory chain-specific configuration as a `CustomChainConfig` type. |
-
-#### `CustomChainConfig`
+The method accepts a `CustomChainConfig` object as an input.
 
 <Tabs
   defaultValue="table"
@@ -203,19 +191,19 @@ Add chain configuration to the web3auth instance.
 
 <TabItem value="table">
 
-| Parameter          | Description                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| `chainNamespace`   | Namespace of the chain. It's a mandatory parameter as a `ChainNamespaceType` type.              |
-| `chainId`          | The chain id of the chain. It's a mandatory parameter as a `string`.                            |
-| `rpcTarget`        | RPC target URL for the chain. It's a mandatory parameter as a `string`.                         |
-| `wsTarget`         | Web socket target URL for the chain. It's an optional parameter as a `string`.                  |
-| `displayName`      | Display Name for the chain. It's an optional parameter as a `string`.                           |
-| `blockExplorerUrl` | URL of the block explorer. It's an optional parameter as a `string`.                            |
-| `ticker`           | Default currency ticker of the network (e.g: ETH). It's an optional parameter as a `string`.    |
-| `tickerName`       | Name for currency ticker (e.g: `Ethereum`). It's an optional parameter as a `string`.           |
-| `decimals`         | Number of decimals for the currency ticker (e.g: 18). It's an optional parameter as a `number`. |
-| `logo`             | Logo for the token. It's an optional parameter as a `string`.                                   |
-| `isTestnet`        | Whether the network is testnet or not. It's an optional parameter as a `boolean`.               |
+| Name                | Description                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| `chainNamespace`    | Namespace of the chain. It `ChainNamespaceType` type.                                      |
+| `chainId`           | The chain id of the network in Hex format.                                                 |
+| `rpcTarget`         | RPC target URL for the chain. The RPC url is used to interact with the blockchain network. |
+| `wsTarget?`         | Web socket target URL for the chain.                                                       |
+| `displayName?`      | Display Name for the chain.                                                                |
+| `blockExplorerUrl?` | Blockchain explorer URL for the network.                                                   |
+| `ticker?`           | Network's native currency ticker (e.g: ETH for Ethereum)                                   |
+| `tickerName?`       | Network's native currency name (e.g: `Ethereum`).                                          |
+| `decimals?`         | Network's native currency decimal precision (e.g: 18 for Ethereum). Default value is 18.   |
+| `logo?`             | Logo for the token.                                                                        |
+| `isTestnet?`        | Whether the network is testnet or not.                                                     |
 
 </TabItem>
 
@@ -282,32 +270,32 @@ export type CustomChainConfig = {
 
 ## Switch the chain
 
-`switchChain(params: {chainId: string;})`
+To switch the chain for the provider instance you need to call the `switchChain` method. Please make
+sure, you have first added the chain using the [addChain](#add-a-new-chain) method.
 
-Switch to one of the added chains
+### Parameters
 
-| Variable  | Description                                                            |
-| --------- | ---------------------------------------------------------------------- |
-| `chainId` | Id of the chain to switch to. It's a mandatory parameter as a `string` |
+| Name      | Description                                                      |
+| --------- | ---------------------------------------------------------------- |
+| `chainId` | The hex chain ID of the blockchain network you want to switch to |
+
+### Usage
+
+```ts
+// Switches the chain to the Polygon network
+await web3auth.switchChain({ chainId: "0x89" });
+```
 
 ## Logging out the user
 
-`logout()`
+To logout the user and clear the session, call the `logout` method. Please note, this method only
+clears the Web3Auth session, and doesn't clears the OAuth session.
 
-Logs out the user and clears the session.
+### Usage
 
-:::tip Note
-
-`@web3auth/single-factor-auth` SDK only works for users who have **not enabled MFA**.
-
-:::
-
-:::danger MFA enabled users
-
-For MFA enabled users, you'll see
-`Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
-
-:::
+```ts
+await web3auth.logout();
+```
 
 ## Wallet Services Plugin Methods
 
@@ -344,13 +332,3 @@ You can use the `showWalletUI` function to show the templated wallet UI services
 You can use the wallet services provider to integrate prebuilt transaction confirmation screens into
 your application. Upon successful completion, you can retrieve the signature for the request.
 [Learn more about transaction confirmation screens](./wallet-services/usage#transaction-confirmation-screens).
-
-## Example
-
-### Custom JWT Example
-
-<SFAWebCustomJWTExample />
-
-### Firebase JWT Example
-
-<SFAWebFirebaseJWTExample />
