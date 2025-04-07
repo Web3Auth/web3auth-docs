@@ -504,7 +504,7 @@ export default function QuickNavigation() {
           </div>
         </div>
       </div>
-      <Link className={styles.cardAlert} to={`${baseUrl}product/wallet-ecosystems`}>
+      <Link className={styles.cardAlert} to={`${baseUrl}features/ecosystem-wallets`}>
         <div className={styles.cardContent}>
           <span>
             <svg
