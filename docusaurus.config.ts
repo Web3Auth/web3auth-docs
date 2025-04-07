@@ -482,10 +482,6 @@ const config: Config = {
             to: "/connect-blockchain/other/sui",
           },
           {
-            from: "/account-abstraction/safeauth",
-            to: "/sdk/wallet-ecosystems/safeauth",
-          },
-          {
             from: "/user-flow",
             to: "/features/mfa",
           },
