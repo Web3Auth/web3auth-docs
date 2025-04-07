@@ -580,7 +580,6 @@ const config: Config = {
               existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
               existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
               existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
-              // existingPath.replace("/sdk/tkey", "/sdk/self-host"),
               existingPath.replace("/product/core-kit", "/core-kit/"),
               existingPath.replace("/product/pnp", "/pnp/"),
               existingPath.replace(
