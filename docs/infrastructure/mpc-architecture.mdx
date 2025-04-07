@@ -12,14 +12,10 @@ import TkeyMpcFlowDark from "@site/static/images/tkey-mpc-flow-dark.png";
 import TkeyMpcFlowLight from "@site/static/images/tkey-mpc-flow-light.png";
 
 This document provides an in-depth exploration of the technical architecture of the MPC-based SDKs,
-this includes the tKey MPC SDK and CoreKit MPC SDK (a rundown of our SDKs
-[here](/how-web3auth-works/)).
+this includes the MPC Core Kit SDKs.
 
 The only difference between the SSS-based SDKs and MPC SDKs are that during usage/login MPC SDKs do
 not reconstruct user private keys.
-
-While the tKey MPC SDK, supports multiple configurations like 2/n, 2/2 flows, this documentation,
-for simplicity, focuses on a 2/3 setup.
 
 ## Overview of Cryptographic and Blockchain Support (compatibility and implementations)
 
@@ -58,8 +54,8 @@ much more convienent. Notably, but non-exhaustively, Web3Auth supports:
 
 ## User Key Overview
 
-Web3Auth uses tKey MPC to manage user wallets in a distributed fashion, leveraging various factors
-or shares managed by users, including their devices, private inputs, backup locations, and cloud
+Web3Auth uses MPC to manage user wallets in a distributed fashion, leveraging various factors or
+shares managed by users, including their devices, private inputs, backup locations, and cloud
 service providers. As long as a user can access 2 out of n (2/n) of these shares, they can access
 their key. This distributedly secure key is called the $TSSKey$.
 
@@ -99,8 +95,7 @@ $z_1,z_2 \in \mathbb{Z}_q$.
 
 This key's storage process mirrors that of the TSSKey, with the primary difference being that the
 metadataKey is always reconstructed and used for encryption/decryption tasks. It's based on the
-fundamental Shamir’s Secret Sharing scheme and initially generated on the user's front-end. Readers
-can further reference tKey v1 flows used by the metadataKey in our SSS Infrastructure Documentation.
+fundamental Shamir’s Secret Sharing scheme and initially generated on the user's front-end.
 
 ## Other components
 

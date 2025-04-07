@@ -19,7 +19,6 @@ export const weblist = [reactJS, angular, vue, nextjs];
 
 export const pnp = "Plug and Play";
 export const sfa = "Single Factor Auth";
-export const infra = "Infra SDKs";
 export const pnpwebmodal = "Plug and Play Web Modal";
 export const pnpwebnomodal = "Plug and Play Web No Modal";
 export const pnpandroid = "Plug and Play Android";
@@ -40,9 +39,6 @@ export const pnplist = [
 ];
 
 export const mpccorekit = "MPC Core Kit";
-export const tkeyjs = "tKey JS";
-export const tkeyios = "tKey iOS";
-export const tkeyandroid = "tKey Android";
 export const singlefactorauth = "Single Factor Auth";
 export const singlefactorauthjs = "SFA JS";
 export const singlefactorauthandroid = "SFA Android";
@@ -59,13 +55,8 @@ export const sfalist = [
 ];
 
 export const mpccorekitlist = [
-  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist, reactnative, nodejs] },
-];
-
-export const infralist = [
-  { label: "tKey JS", value: tkeyjs, platforms: [reactJS, reactnative] },
-  { label: "tKey Android", value: tkeyandroid, platforms: [android] },
-  { label: "tKey iOS", value: tkeyios, platforms: [ios] },
+  { label: "MPC Core Kit JS", value: mpccorekitjs, platforms: [...weblist, reactnative, nodejs] },
+  { label: "MPC Core Kit React Native", value: mpccorekitreactnative, platforms: [reactnative] },
 ];
 
 const getWindowLocation = () => {
