@@ -57,8 +57,10 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 
 - `deviceShareFactor`,
 - `backUpShareFactor`,
-- `socialBackupFactor`, and
-- `passwordFactor`.
+- `socialBackupFactor`,
+- `passwordFactor`,
+- `passkeysFactor`, and
+- `authenticatorFactor`.
 
 ```tsx
 export declare const MFA_FACTOR: {
@@ -66,6 +68,8 @@ export declare const MFA_FACTOR: {
   readonly BACKUP_SHARE: "backUpShareFactor";
   readonly SOCIAL_BACKUP: "socialBackupFactor";
   readonly PASSWORD: "passwordFactor";
+  readonly PASSKEYS: "passkeysFactor";
+  readonly AUTHENTICATOR: "authenticatorFactor";
 };
 export type MFA_FACTOR_TYPE = (typeof MFA_FACTOR)[keyof typeof MFA_FACTOR];
 export type MFA_SETTINGS = {
@@ -104,6 +108,16 @@ const state = await web3auth.login({
     passwordFactor: {
       enable: true,
       priority: 4,
+      mandatory: true, // at least two factors are mandatory
+    },
+    passkeysFactor: {
+      enable: true,
+      priority: 5,
+      mandatory: true, // at least two factors are mandatory
+    },
+    authenticatorFactor: {
+      enable: true,
+      priority: 6,
       mandatory: true, // at least two factors are mandatory
     },
   },

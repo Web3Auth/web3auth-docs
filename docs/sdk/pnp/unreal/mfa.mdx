@@ -78,6 +78,12 @@ struct FMfaSettings
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         FMfaSetting passwordFactor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FMfaSetting passkeysFactor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FMfaSetting authenticatorFactor;
+
 	FMfaSettings() {};
 
 	void operator= (const FMfaSettings& other) {
@@ -85,6 +91,8 @@ struct FMfaSettings
 		backUpShareFactor = other.backUpShareFactor;
 		socialBackupFactor = other.socialBackupFactor;
 		passwordFactor = other.passwordFactor;
+		passkeysFactor = other.passkeysFactor;
+		authenticatorFactor = other.authenticatorFactor;
 	}
 
 	bool operator==(const FMfaSettings& other) const
@@ -92,7 +100,9 @@ struct FMfaSettings
     if (deviceShareFactor == other.deviceShareFactor &&
 	    backUpShareFactor == other.backUpShareFactor  &&
 	    socialBackupFactor == other.socialBackupFactor &&
-	    passwordFactor == other.passwordFactor)
+	    passwordFactor == other.passwordFactor &&
+	    passkeysFactor == other.passkeysFactor &&
+	    authenticatorFactor == other.authenticatorFactor)
 		{
 			return true;
 		}
