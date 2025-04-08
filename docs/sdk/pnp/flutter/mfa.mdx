@@ -110,12 +110,16 @@ class MfaSettings {
   final MfaSetting? backUpShareFactor;
   final MfaSetting? socialBackupFactor;
   final MfaSetting? passwordFactor;
+  final MfaSetting? passkeysFactor;
+  final MfaSetting? authenticatorFactor;
 
   MfaSettings({
     this.deviceShareFactor,
     this.backUpShareFactor,
     this.socialBackupFactor,
     this.passwordFactor,
+    this.passkeysFactor,
+    this.authenticatorFactor,
   });
 
   Map<String, dynamic> toJson() {
@@ -124,6 +128,8 @@ class MfaSettings {
       'backUpShareFactor': backUpShareFactor,
       'socialBackupFactor': socialBackupFactor,
       'passwordFactor': passwordFactor,
+      'passkeysFactor': passkeysFactor,
+      'authenticatorFactor': authenticatorFactor,
     };
   }
 }
@@ -212,6 +218,16 @@ Future<void> initWeb3Auth() async {
       passwordFactor: MfaSetting(
         enable: true,
         priority: 1,
+        mandatory: true,
+      ),
+      passkeysFactor: MfaSetting(
+        enable: true,
+        priority: 5,
+        mandatory: true,
+      ),
+      authenticatorFactor: MfaSetting(
+        enable: true,
+        priority: 6,
         mandatory: true,
       ),
     ),
