@@ -80,11 +80,11 @@ export const LANGS_WEB: DisplayChoice[] = [
 ];
 
 export const LANGS_WEB_PNP: DisplayChoice[] = [
-  { key: REACT_HOOKS, displayName: "React Hooks" },
-  { key: VUE_COMPOSABLES, displayName: "Vue Composables" },
   { key: REACT, displayName: "React" },
-  { key: NEXTJS, displayName: "Next JS" },
+  { key: REACT_HOOKS, displayName: "React Hooks" },
   { key: VUE, displayName: "Vue" },
+  { key: VUE_COMPOSABLES, displayName: "Vue Composables" },
+  { key: NEXTJS, displayName: "Next JS" },
   { key: ANGULAR, displayName: "Angular" },
   { key: HTML, displayName: "Vanilla JS" },
 ];
