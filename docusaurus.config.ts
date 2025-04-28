@@ -246,6 +246,7 @@ const config: Config = {
       { rootDir: ".integrationBuilderCache" },
     ],
     path.resolve(__dirname, "plugins", "node-polyfills"),
+    path.resolve(__dirname, "plugins", "env-variables-plugin"),
     [
       "@docusaurus/plugin-client-redirects",
       {
