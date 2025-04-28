@@ -38,24 +38,29 @@ combined. The following table shows all possible combinations of login providers
 
 :::
 
-| First Sub-Verifier | Google | Facebook | Twitch | Discord | Auth0 | Email Passwordless | SMS Passwordless |
-| :----------------- | :----: | :------: | :----: | :-----: | :---: | :----------------: | :--------------: |
-| **Google**         |   ✅   |    ❌    |   ❌   |   ❌    |  ✅   |         ✅         |        ❌        |
-| **Facebook**       |   ❌   |    ❌    |   ❌   |   ❌    |  ✅   |         ❌         |        ❌        |
-| **Twitch**         |   ❌   |    ❌    |   ✅   |   ❌    |  ❌   |         ❌         |        ❌        |
-| **Discord**        |   ❌   |    ❌    |   ❌   |   ✅    |  ❌   |         ❌         |        ❌        |
-| **Email P'less**   |   ✅   |    ❌    |   ❌   |   ❌    |  ✅   |         ✅         |        ❌        |
-| **SMS P'less**     |   ❌   |    ❌    |   ❌   |   ❌    |  ✅   |         ❌         |        ✅        |
-| **Auth0**          |   ✅   |    ✅    |   ❌   |   ❌    |  ✅   |         ✅         |        ✅        |
+| First Sub-Verifier | Google | Twitch | Discord | Auth0\* | Email Passwordless |
+| :----------------- | :----: | :----: | :-----: | :-----: | :----------------: |
+| **Google**         |   ✅   |   ❌   |   ❌    |   ✅    |         ✅         |
+| **Twitch**         |   ❌   |   ✅   |   ❌    |   ❌    |         ❌         |
+| **Discord**        |   ❌   |   ❌   |   ✅    |   ❌    |         ❌         |
+| **Email P'less**   |   ✅   |   ❌   |   ❌    |   ✅    |         ✅         |
+| **Auth0\***        |   ✅   |   ❌   |   ❌    |   ✅    |         ✅         |
+
+\*Auth0 column also includes Custom JWT, AWS Cognito, and Firebase providers when the JWT verifier
+identifier is email.
 
 :::info Important
 
-Some login methods (like Twitch and Discord) cannot be combined with others because they lack a
-**common identifier**, such as an email. This identifier is crucial for connecting user accounts
-across different authentication methods and ensuring reliable user recognition when switching
-between login methods.
+- **Twitch** and **Discord** can only be aggregated with themselves (self-aggregate).
+- **Google** and **Email Passwordless** can always be aggregated with each other.
+- **Google** and **Email Passwordless** can also be aggregated with Auth0, Custom JWT, AWS Cognito,
+  and Firebase providers, but only when the JWT user identifier is set to email.
 
 :::
+
+Some login methods cannot be combined with others because they lack a **common identifier**, such as
+an email. This identifier is crucial for connecting user accounts across different authentication
+methods and ensuring reliable user recognition when switching between login methods.
 
 ### Auth0 Special Capabilities
 
