@@ -1,4 +1,4 @@
-import * as createVerifier from "../../../../commonSteps/createVerifier.mdx";
+import * as createVerifier from "../../../../commonSteps/createFirebaseVerifier.mdx";
 import * as authProviderLogin from "../../../../commonSteps/authProviderLogin.mdx";
 import * as getUserInfo from "../../../../commonSteps/getUserInfo.mdx";
 import * as reactNativeBundlerIssues from "../../../../commonSteps/reactNativeBundlerIssues.mdx";

@@ -1,4 +1,4 @@
-import * as createVerifier from "../../../../commonSteps/createVerifier.mdx";
+import * as createVerifier from "../../../../commonSteps/createFirebaseVerifier.mdx";
 import { toSteps } from "../../../../utils";
 import * as initialization from "./initialize.mdx";
 import * as authProviderLogin from "../../../../commonSteps/authProviderLogin.mdx";

@@ -1,7 +1,7 @@
 import * as angularBundlerIssues from "../../../../commonSteps/angularBundlerIssues.mdx";
 import * as authProviderLogin from "../../../../commonSteps/authProviderLogin.mdx";
 import * as blockchainCalls from "../../../../commonSteps/blockchainCalls.mdx";
-import * as createVerifier from "../../../../commonSteps/createVerifier.mdx";
+import * as createVerifier from "../../../../commonSteps/createFirebaseVerifier.mdx";
 import * as getUserInfo from "../../../../commonSteps/getUserInfo.mdx";
 import * as reactBundlerIssues from "../../../../commonSteps/reactBundlerIssues.mdx";
 import * as registerApp from "../../../../commonSteps/registerApp.mdx";
