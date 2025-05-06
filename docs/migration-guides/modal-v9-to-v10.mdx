@@ -1,0 +1,207 @@
+---
+title: PnP Modal SDK - v9 to v10
+description: "PnP Modal SDK - v9 to v10 | Documentation - Web3Auth"
+sidebar_label: v9 to v10
+---
+
+This migration guide provides steps for upgrading from version v9 to v10 of the Web3Auth PnP Modal
+SDK. Version 10 introduces a simpler architecture by eliminating verifiers and adapters from the
+frontend codebase, consolidating all configurations within the Web3Auth Developer Dashboard.
+
+## Breaking Changes
+
+### 1. `verifier` and `verifierSubIdentifier` replaced with `authConnectionId` and `groupedAuthConnectionId`
+
+In v9, aggregating social logins to return the same account (for the same user email) required using
+an aggregate verifier with `verifierSubIdentifier`:
+
+```ts title="v9 - Before"
+loginConfig: {
+  google: {
+    verifier: "aggregate-verifier",
+    verifierSubIdentifier: "w3a-google",
+    typeOfLogin: "google",
+    clientId: "<GOOGLE_CLIENT_ID>",
+  },
+  github: {
+    verifier: "aggregate-verifier",
+    verifierSubIdentifier: "w3a-github",
+    typeOfLogin: "github",
+    clientId: "<GITHUB_CLIENT_ID>",
+  },
+}
+```
+
+In v10, this logic is now abstracted to the dashboard. Use `authConnectionId` for each provider and
+group them using the new `groupedAuthConnectionId`:
+
+```ts title="v10 - After"
+modalConfig: {
+  connectors: {
+    [WALLET_CONNECTORS.AUTH]: {
+      label: "auth",
+      loginMethods: {
+        google: {
+          authConnection: AUTH_CONNECTION.GOOGLE,
+          authConnectionId: "w3a-google",
+          groupedAuthConnectionId: "group-main",
+        },
+        github: {
+          authConnection: AUTH_CONNECTION.GITHUB,
+          authConnectionId: "w3a-github",
+          groupedAuthConnectionId: "group-main",
+        },
+      },
+    },
+  },
+}
+```
+
+> ✅ This results in the same user account when logging in with Google or GitHub using the same
+> email, no additional setup needed in code.
+
+---
+
+### 2. `adapters` are fully removed — use `connectors` instead
+
+In v9, adapters had to be manually configured:
+
+```ts title="v9 - Before"
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+const authAdapter = new AuthAdapter(adapterSettings);
+web3auth.configureAdapter(authAdapter);
+```
+
+In v10, connectors replace adapters entirely:
+
+```ts title="v10 - After"
+modalConfig: {
+  connectors: {
+    [WALLET_CONNECTORS.AUTH]: {
+      label: "auth",
+      loginMethods: {
+        google: {
+          authConnection: AUTH_CONNECTION.GOOGLE,
+          authConnectionId: "w3a-google",
+        },
+      },
+    },
+  },
+}
+```
+
+> ✅ No need to configure or import adapters anymore.
+
+---
+
+### 3. `privateKeyProvider` and `chainConfig` are deprecated
+
+In v9, you had to manually pass chain config and instantiate a private key provider:
+
+```ts title="v9 - Before"
+const chainConfig = getEvmChainConfig(chainId, clientId);
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3auth = new Web3Auth({
+  clientId,
+  privateKeyProvider,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+```
+
+In v10, all chain settings are handled via the dashboard. These parameters are no longer required or
+accepted:
+
+```ts title="v10 - After"
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  modalConfig: {
+    connectors: {
+      [WALLET_CONNECTORS.AUTH]: {
+        label: "auth",
+        loginMethods: {
+          google: {
+            authConnection: AUTH_CONNECTION.GOOGLE,
+            authConnectionId: "w3a-google",
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+> ✅ Cleaner setup, with all chain management handled through the dashboard.
+
+---
+
+### 4. Modal configuration is now part of the constructor
+
+In v9, you had to call `initModal()` and pass `modalConfig` separately:
+
+```ts title="v9 - Before"
+await web3auth.initModal({
+  modalConfig: {
+    [WALLET_ADAPTERS.AUTH]: {
+      loginMethods: {
+        google: {
+          name: "google",
+          showOnModal: true,
+        },
+      },
+    },
+  },
+});
+```
+
+In v10, the configuration is moved into the constructor. `initModal()` is still required but without
+parameters:
+
+```ts title="v10 - After"
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  modalConfig: {
+    connectors: {
+      [WALLET_CONNECTORS.AUTH]: {
+        label: "auth",
+        loginMethods: {
+          google: {
+            authConnection: AUTH_CONNECTION.GOOGLE,
+            authConnectionId: "w3a-google",
+          },
+        },
+      },
+    },
+  },
+});
+
+await web3auth.initModal();
+```
+
+> ✅ Setup is now centralized and more intuitive.
+
+---
+
+## Summary of Key Migration Steps
+
+| Feature              | v9                                  | v10                                        |
+| -------------------- | ----------------------------------- | ------------------------------------------ |
+| Verifier             | `verifier`, `verifierSubIdentifier` | ⛔ Removed, use `authConnectionId` instead |
+| Account Linking      | Manual via aggregate verifiers      | ✅ Automatic via `groupedAuthConnectionId` |
+| Adapter Setup        | Required (`AuthAdapter`, etc.)      | ⛔ Removed, use `connectors` only          |
+| Chain Configuration  | Required in code                    | ✅ Handled via dashboard                   |
+| Private Key Provider | Required                            | ⛔ No longer needed                        |
+| Modal Config Setup   | Inside `initModal()`                | ✅ Now in constructor                      |
+
+---
+
+For examples, check out:
+
+- [React Modal Quick Start](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start)
+- [Web3Auth Docs](https://web3auth.io/docs/sdk/pnp/web/modal)
+
+Need help? Reach out on [Discord](https://discord.gg/web3auth) or post on
+[GitHub Discussions](https://github.com/Web3Auth/web3auth-pnp-examples/discussions).
