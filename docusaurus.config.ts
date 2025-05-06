@@ -26,7 +26,7 @@ const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "ut
 
 const config: Config = {
   title: "Documentation | Web3Auth",
-  tagline: "Web3 Auth and Wallet Management (WaaS) SDKs with MPC", // TODO: Confirm with content team
+  tagline: "Web3 Auth and Wallet Management (WaaS) SDKs with MPC",
   url: "https://web3auth.io",
   baseUrl,
   onBrokenLinks: "warn",
@@ -190,6 +190,11 @@ const config: Config = {
     {
       src: baseUrl + "js/code-focus.js",
       async: false,
+      defer: true,
+    },
+    {
+      src: "https://cmp.osano.com/AzZMxHTbQDOQD8c1J/da3b35cc-707f-44ba-a83e-b28b8a08eeac/osano.js",
+      async: true,
       defer: true,
     },
   ],
@@ -370,20 +375,8 @@ const config: Config = {
             to: "/sdk/pnp/web/modal/mfa",
           },
           {
-            from: "/sdk/tkey/initialization",
-            to: "/sdk/infra/tkey/initialize",
-          },
-          {
-            from: "/sdk/tkey/initialisation",
-            to: "/sdk/infra/tkey/initialize",
-          },
-          {
             from: "/troubleshooting/different-wallet-address-issue",
             to: "/troubleshooting/different-private-key",
-          },
-          {
-            from: "/sdk/tkey/installation",
-            to: "/sdk/infra/tkey/install",
           },
           {
             from: "/connect-blockchain/polygon/",
@@ -494,10 +487,6 @@ const config: Config = {
             to: "/connect-blockchain/other/sui",
           },
           {
-            from: "/account-abstraction/safeauth",
-            to: "/sdk/wallet-ecosystems/safeauth",
-          },
-          {
             from: "/user-flow",
             to: "/features/mfa",
           },
@@ -569,10 +558,6 @@ const config: Config = {
             from: "/pnp/features/mfa",
             to: "/features/mfa",
           },
-          {
-            from: "/sdk/infra/tkey/intrinsic-flow",
-            to: "/sdk/infra/tkey/implicit-flow",
-          },
         ],
         createRedirects(existingPath) {
           // Only create redirects if the path matches certain patterns
@@ -600,7 +585,6 @@ const config: Config = {
               existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
               existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
               existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
-              existingPath.replace("/sdk/tkey", "/sdk/self-host"),
               existingPath.replace("/product/core-kit", "/core-kit/"),
               existingPath.replace("/product/pnp", "/pnp/"),
               existingPath.replace(
@@ -631,7 +615,7 @@ const config: Config = {
 async function createConfig() {
   const prismTheme = themes.vsDark;
 
-  (config.themeConfig.prism as any).theme = {
+  (config.themeConfig!.prism as any).theme = {
     ...prismTheme,
     plain: {
       color: "var(--ifm-color-gray-200)",
@@ -720,7 +704,7 @@ async function createConfig() {
       },
     ],
   };
-  (config.themeConfig.prism as any).darkTheme = {
+  (config.themeConfig!.prism as any).darkTheme = {
     ...prismTheme,
     plain: {
       color: "var(--ifm-color-gray-200)",
