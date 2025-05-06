@@ -231,6 +231,26 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
 
 ---
 
+
+### 6. `@web3auth/base` is deprecated — use `@web3auth/modal` instead
+
+In v9, imports were often split across `@web3auth/base`, `@web3auth/modal`, and other packages:
+
+```ts title="v9 - Before"
+import { Web3Auth } from "@web3auth/modal";
+import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+```
+
+In v10, everything you need is available directly from `@web3auth/modal`. The `@web3auth/base` package is deprecated and should no longer be used:
+
+```ts title="v10 - After"
+import { Web3Auth, WALLET_CONNECTORS, WEB3AUTH_NETWORK, AUTH_CONNECTION } from "@web3auth/modal";
+```
+
+> ✅ Cleaner import structure — use `@web3auth/modal` for everything.
+
+---
+
 ## Summary of Key Migration Steps
 
 | Feature              | v9                                  | v10                                        |
@@ -241,7 +261,7 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
 | Chain Configuration  | Required in code                    | ✅ Handled via dashboard                   |
 | Private Key Provider | Required                            | ⛔ No longer needed                        |
 | Modal Config Setup   | Inside `initModal()`                | ✅ Now in constructor                      |
-| Hook Setup Context   | Verbose with adapters/plugins       | ✅ Minimal with `connectors` only          |
+| Base Package Usage   | `@web3auth/base` + `@web3auth/modal`| ✅ Use only `@web3auth/modal`              |
 
 ---
 
