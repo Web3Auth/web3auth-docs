@@ -93,12 +93,14 @@ parameter in `Web3AuthOptions` during initialization.
 
 <TabItem value="table">
 
-| Parameter             | Description                                                             |
-| --------------------- | ----------------------------------------------------------------------- |
-| `deviceShareFactor?`  | MFA setting for deviceShareFactor. It accepts `MfaSetting` as a value.  |
-| `backUpShareFactor?`  | MFA setting for backUpShareFactor. It accepts `MfaSetting` as a value.  |
-| `socialBackupFactor?` | MFA setting for socialBackupFactor. It accepts `MfaSetting` as a value. |
-| `passwordFactor?`     | MFA setting for passwordFactor. It accepts `MfaSetting` as a value.     |
+| Parameter              | Description                                                              |
+| ---------------------- | ------------------------------------------------------------------------ |
+| `deviceShareFactor?`   | MFA setting for deviceShareFactor. It accepts `MfaSetting` as a value.   |
+| `backUpShareFactor?`   | MFA setting for backUpShareFactor. It accepts `MfaSetting` as a value.   |
+| `socialBackupFactor?`  | MFA setting for socialBackupFactor. It accepts `MfaSetting` as a value.  |
+| `passwordFactor?`      | MFA setting for passwordFactor. It accepts `MfaSetting` as a value.      |
+| `passkeysFactor?`      | MFA setting for passkeysFactor. It accepts `MfaSetting` as a value.      |
+| `authenticatorFactor?` | MFA setting for authenticatorFactor. It accepts `MfaSetting` as a value. |
 
 </TabItem>
 
@@ -110,12 +112,16 @@ class MfaSettings {
   final MfaSetting? backUpShareFactor;
   final MfaSetting? socialBackupFactor;
   final MfaSetting? passwordFactor;
+  final MfaSetting? passkeysFactor;
+  final MfaSetting? authenticatorFactor;
 
   MfaSettings({
     this.deviceShareFactor,
     this.backUpShareFactor,
     this.socialBackupFactor,
     this.passwordFactor,
+    this.passkeysFactor,
+    this.authenticatorFactor,
   });
 
   Map<String, dynamic> toJson() {
@@ -124,6 +130,8 @@ class MfaSettings {
       'backUpShareFactor': backUpShareFactor,
       'socialBackupFactor': socialBackupFactor,
       'passwordFactor': passwordFactor,
+      'passkeysFactor': passkeysFactor,
+      'authenticatorFactor': authenticatorFactor,
     };
   }
 }
@@ -212,6 +220,16 @@ Future<void> initWeb3Auth() async {
       passwordFactor: MfaSetting(
         enable: true,
         priority: 1,
+        mandatory: true,
+      ),
+      passkeysFactor: MfaSetting(
+        enable: true,
+        priority: 5,
+        mandatory: true,
+      ),
+      authenticatorFactor: MfaSetting(
+        enable: true,
+        priority: 6,
         mandatory: true,
       ),
     ),

@@ -101,12 +101,14 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 
 <TabItem value="table">
 
-| Parameter             | Description                                                             |
-| --------------------- | ----------------------------------------------------------------------- |
-| `deviceShareFactor?`  | MFA setting for deviceShareFactor. It accepts `MfaSetting` as a value.  |
-| `backUpShareFactor?`  | MFA setting for backUpShareFactor. It accepts `MfaSetting` as a value.  |
-| `socialBackupFactor?` | MFA setting for socialBackupFactor. It accepts `MfaSetting` as a value. |
-| `passwordFactor?`     | MFA setting for passwordFactor. It accepts `MfaSetting` as a value.     |
+| Parameter              | Description                                                              |
+| ---------------------- | ------------------------------------------------------------------------ |
+| `deviceShareFactor?`   | MFA setting for deviceShareFactor. It accepts `MfaSetting` as a value.   |
+| `backUpShareFactor?`   | MFA setting for backUpShareFactor. It accepts `MfaSetting` as a value.   |
+| `socialBackupFactor?`  | MFA setting for socialBackupFactor. It accepts `MfaSetting` as a value.  |
+| `passwordFactor?`      | MFA setting for passwordFactor. It accepts `MfaSetting` as a value.      |
+| `passkeysFactor?`      | MFA setting for passkeysFactor. It accepts `MfaSetting` as a value.      |
+| `authenticatorFactor?` | MFA setting for authenticatorFactor. It accepts `MfaSetting` as a value. |
 
 </TabItem>
 
@@ -114,17 +116,21 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 
 ```swift
 	public struct MfaSettings: Codable {
-        public init(deviceShareFactor: MfaSetting?, backUpShareFactor: MfaSetting?, socialBackupFactor: MfaSetting?, passwordFactor: MfaSetting?) {
+        public init(deviceShareFactor: MfaSetting?, backUpShareFactor: MfaSetting?, socialBackupFactor: MfaSetting?, passwordFactor: MfaSetting?, passkeysFactor: MfaSetting?, authenticatorFactor: MfaSetting?) {
             self.deviceShareFactor = deviceShareFactor
             self.backUpShareFactor = backUpShareFactor
             self.socialBackupFactor = socialBackupFactor
             self.passwordFactor = passwordFactor
+            self.passkeysFactor = passkeysFactor
+            self.authenticatorFactor = authenticatorFactor
         }
 
         let deviceShareFactor: MfaSetting?
         let backUpShareFactor: MfaSetting?
         let socialBackupFactor: MfaSetting?
         let passwordFactor: MfaSetting?
+        let passkeysFactor: MfaSetting?
+        let authenticatorFactor: MfaSetting?
     }
 ```
 
@@ -189,7 +195,9 @@ let web3auth = try await Web3Auth(W3AInitParams(
       deviceShareFactor: MfaSetting(enable: true, priority: 1),
       backUpShareFactor: MfaSetting(enable: true, priority: 2),
       socialBackupFactor: MfaSetting(enable: true, priority: 3),
-      passwordFactor: MfaSetting(enable: true, priority: 4)
+      passwordFactor: MfaSetting(enable: true, priority: 4),
+      passkeysFactor: MfaSetting(enable: true, priority: 5),
+      authenticatorFactor: MfaSetting(enable: true, priority: 6)
     )
   )
   // focus-end

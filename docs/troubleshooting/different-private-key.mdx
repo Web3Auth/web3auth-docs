@@ -85,14 +85,14 @@ Every product across the Web3Auth Stack has a different set of keys, owing to ho
 is set up and how the keys are generated. At large, we can consider 3 different sets of Web3Auth
 Products:
 
-- Core Kit: Includes Web3Auth SFA and tKey SDKs. Contain the base key generation logic according to
-  the verifier selected.
-- Plug and Play: Includes the Plug and Play SDKs across various platforms. The keys here are
-  generated from the Core Kit SDKs, however, the keys are different because of the subkey generation
-  logic. Keys here change according to the verifier and client ID selected.
-- Torus Wallet: It is a wallet built on top of our Core Kit SDK. It has a different set of keys
-  because it is an application integration Web3Auth and not directly related to any of our
-  infrastructure offerings.
+- Plug and Play SDKs: Includes the Plug and Play SDKs across various platforms. The accounts here
+  are generated from the Single Factor Auth SDKs, however, the keys are different because of the
+  subkey generation logic. Keys here change according to the verifier and client ID selected.
+
+- Single Factor Auth SDKs: Contain the base key generation logic according to the verifier selected.
+
+- MPC Core Kit SDKs: Includes the MPC Core Kit SDKs across various platforms. The accounts here are
+  generated using TSS (Threshold Signature Scheme) and are different from the other products.
 
 ### Migrating between SDKs
 
@@ -107,10 +107,7 @@ account. Please ensure you meet all the requirements for migrating between SDKs.
 
 :::
 
-#### Plug and Play to Core Kit Migration
-
-This is one of the most common migration paths. Usually, developers start with the Web3Auth Plug and
-Play for low engineering effort and then transition to Core Kit for a more customized integration.
+#### Plug and Play to Single Factor Auth Migration
 
 :::danger
 
@@ -143,21 +140,17 @@ subkey(PRIVATE_KEY.padStart(64, "0"), Buffer.from(CLIENT_ID, "base64"));
 
 :::info Pre-planning Migrations
 
-Ideally, we would recommend you use the products within the correct configuration to minimize the
-migration efforts. Ideally, using the Single Factor Auth SDK beforehand and then shifting to tKey
-SDK works best for most integrations, pre-planning your key requirements while using Plug and Play
-SDKs can be helpful.
-
-##### If you're looking to use Core Kit SDKs in the future, planning the use Plug and Play SDKs right now, make sure:
+If you're looking to use Single Factor Auth SDKs in the future, planning the use Plug and Play SDKs
+right now, make sure:
 
 - You're using Custom Authentication with your own login verifiers.
 - Set the `useCoreKitKey` flag to `true`
 
 :::
 
-#### Core Kit to Plug and Play Migration
+#### Single Factor Auth to Plug and Play Migration
 
 This migration typically occurs when developers want to leverage the prebuilt UI/UX of the Plug and
-Play SDKs for user MFA. Use the same verifier details from your Core Kit integration in the custom
-authentication feature of Plug and Play. Set the `useCoreKitKey` flag to `true` to use the same
-private key as the Core Kit SDKs.
+Play SDKs for user MFA. Use the same verifier details from your Single Factor Auth integration in
+the custom authentication feature of Plug and Play. Set the `useCoreKitKey` flag to `true` to use
+the same private key as the Single Factor Auth SDKs.
