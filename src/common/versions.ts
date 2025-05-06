@@ -8,7 +8,7 @@ export const pnpUnrealVersion = `4.1.x`;
 
 export const sfaWebVersion = `9.2.x`;
 export const sfaAndroidVersion = `4.0.1`;
-export const sfaIOSVersion = `9.0.4`;
+export const sfaIOSVersion = `9.1.0`;
 export const sfaRNVersion = `2.0.x`;
 export const sfaFlutterVersion = `6.0.0`;
 export const sfaNodeJSVersion = `7.4.x`;
