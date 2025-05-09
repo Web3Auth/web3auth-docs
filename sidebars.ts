@@ -497,6 +497,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Linea",
+              items: [
+                "connect-blockchain/evm/linea/linea",
+                "connect-blockchain/evm/linea/web",
+                "connect-blockchain/evm/linea/android",
+                "connect-blockchain/evm/linea/ios",
+                "connect-blockchain/evm/linea/react-native",
+                "connect-blockchain/evm/linea/flutter",
+                "connect-blockchain/evm/linea/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "5ire",
               items: [
                 "connect-blockchain/evm/5ire/5ire",
@@ -679,6 +692,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Fhenix",
+              items: [
+                "connect-blockchain/evm/fhenix/fhenix",
+                "connect-blockchain/evm/fhenix/web",
+                "connect-blockchain/evm/fhenix/android",
+                "connect-blockchain/evm/fhenix/ios",
+                "connect-blockchain/evm/fhenix/react-native",
+                "connect-blockchain/evm/fhenix/flutter",
+                "connect-blockchain/evm/fhenix/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Flare",
               items: [
                 "connect-blockchain/evm/flare/flare",
@@ -701,19 +727,6 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/flow/react-native",
                 "connect-blockchain/evm/flow/flutter",
                 "connect-blockchain/evm/flow/unity",
-              ],
-            },
-            {
-              type: "category",
-              label: "Fhenix",
-              items: [
-                "connect-blockchain/evm/fhenix/fhenix",
-                "connect-blockchain/evm/fhenix/web",
-                "connect-blockchain/evm/fhenix/android",
-                "connect-blockchain/evm/fhenix/ios",
-                "connect-blockchain/evm/fhenix/react-native",
-                "connect-blockchain/evm/fhenix/flutter",
-                "connect-blockchain/evm/fhenix/unity",
               ],
             },
             {
@@ -766,19 +779,6 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/klaytn/react-native",
                 "connect-blockchain/evm/klaytn/flutter",
                 "connect-blockchain/evm/klaytn/unity",
-              ],
-            },
-            {
-              type: "category",
-              label: "Linea zkEVM",
-              items: [
-                "connect-blockchain/evm/linea/linea",
-                "connect-blockchain/evm/linea/web",
-                "connect-blockchain/evm/linea/android",
-                "connect-blockchain/evm/linea/ios",
-                "connect-blockchain/evm/linea/react-native",
-                "connect-blockchain/evm/linea/flutter",
-                "connect-blockchain/evm/linea/unity",
               ],
             },
             {
@@ -1018,6 +1018,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/xdc/react-native",
                 "connect-blockchain/evm/xdc/flutter",
                 "connect-blockchain/evm/xdc/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "XPLA",
+              items: [
+                "connect-blockchain/evm/xpla/xpla",
+                "connect-blockchain/evm/xpla/web",
+                "connect-blockchain/evm/xpla/android",
+                "connect-blockchain/evm/xpla/ios",
+                "connect-blockchain/evm/xpla/react-native",
+                "connect-blockchain/evm/xpla/flutter",
+                "connect-blockchain/evm/xpla/unity",
               ],
             },
             {
