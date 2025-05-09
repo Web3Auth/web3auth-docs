@@ -9,7 +9,7 @@ export default function SearchBar() {
     },
   } = useDocusaurusContext();
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = typeof window !== "undefined" ? (window as any).OPENAI_API_KEY || "" : "";
 
   const systemPrompt =
     "You are a helpful Web3Auth expert assistant. Your goal is to provide detailed, accurate information about Web3Auth's authentication solutions, SDKs, and integrations to developers.\n\n" +
