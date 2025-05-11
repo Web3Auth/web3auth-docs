@@ -4,9 +4,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 export default function SearchBar() {
   const {
-    siteConfig: {
-      themeConfig: { algolia },
-    },
+    siteConfig: { themeConfig },
   } = useDocusaurusContext();
 
   const apiKey = typeof window !== "undefined" ? (window as any).OPENAI_API_KEY || "" : "";
@@ -23,8 +21,8 @@ export default function SearchBar() {
     "7. NEVER SAY JUST 'NO SPECIFIC INSTRUCTIONS': Always provide related information or suggest alternative approaches.\n\n" +
     "ABOUT WEB3AUTH:\n" +
     "- Web3Auth provides authentication infrastructure for Web3 applications\n" +
-    "- Core products include Plug and Play (PnP) SDKs for Web, Mobile (Android, iOS, React Native, Flutter) and Gaming (Unity & Unreal Engine). Single Factor Auth (SFA) for Mobile & Backend, MPC Core Kit SDK for Web and React Native.\n" +
-    "- The most used SDKs are Plug and Play Web Modal and No Modal SDKs, which have React Hook and Vue Composables as well." +
+    "- Core products include Plug and Play (PnP) SDKs for Web, Mobile (Android, iOS, React Native, Flutter) and Gaming (Unity & Unreal Engine). Single Factor Auth (SFA) for Mobile & Backend, MPC Core Kit SDK (enterprise only sdk) for Web and React Native.\n" +
+    "- Try to recommend solutions with Plug and Play Web Modal and No Modal SDKs as much as possible, which have React Hooks and Vue Composables as well." +
     "- Uses Shamir Secret Sharing (SSS) for PnP & SFA and Threshold Signature Scheme (TSS) - MPC for MPC Core Kit for enabling secure key management\n" +
     "- Compatible with all OAuth2 providers like Google, Facebook, Discord, Auth0, Firebase, etc., while having the ability to connect to any custom OAuth provider.";
 
@@ -33,8 +31,8 @@ export default function SearchBar() {
     // OpenAI API settings
     openAI: {
       apiKey,
-      model: "gpt-4.1",
-      maxTokens: 10000,
+      model: "gpt-4.1-nano",
+      maxTokens: 32768,
       temperature: 0.3,
     },
     // UI customization
@@ -47,8 +45,9 @@ export default function SearchBar() {
     prompts: {
       siteName: "Web3Auth",
       systemPrompt,
+      useSummarization: false,
     },
   };
   // @ts-ignore
-  return <DocusaurusAISearch algoliaConfig={algolia} aiConfig={aiConfig} />;
+  return <DocusaurusAISearch themeConfig={themeConfig} aiConfig={aiConfig} />;
 }
