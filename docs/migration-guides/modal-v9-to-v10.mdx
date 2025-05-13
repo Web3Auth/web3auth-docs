@@ -4,13 +4,16 @@ description: "PnP Modal SDK - v9 to v10 | Documentation - Web3Auth"
 sidebar_label: v9 to v10
 ---
 
-This migration guide provides steps for upgrading from version v9 to v10 of the Web3Auth PnP Modal SDK. Version 10 introduces a simpler architecture by eliminating verifiers and adapters from the frontend codebase, consolidating all configurations within the Web3Auth Developer Dashboard.
+This migration guide provides steps for upgrading from version v9 to v10 of the Web3Auth PnP Modal
+SDK. Version 10 introduces a simplified architecture by removing adapters and verifiers from your
+frontend code, and centralizing all configurations via the Web3Auth Developer Dashboard.
 
 ## Breaking Changes
 
 ### 1. `verifier` and `verifierSubIdentifier` replaced with `authConnectionId` and `groupedAuthConnectionId`
 
-In v9, aggregating social logins to return the same account (for the same user email) required using an aggregate verifier with `verifierSubIdentifier`:
+In v9, account linking across login methods (e.g., Google and GitHub using the same email) required
+setting up an aggregate verifier with a `verifierSubIdentifier`:
 
 ```ts title="v9 - Before"
 loginConfig: {
@@ -29,7 +32,8 @@ loginConfig: {
 }
 ```
 
-In v10, this logic is now abstracted to the dashboard. Use `authConnectionId` for each provider and group them using the new `groupedAuthConnectionId`:
+In v10, this logic has been moved to the Web3Auth Dashboard using grouped connections. You now use
+`authConnectionId` and a common `groupedAuthConnectionId`:
 
 ```ts title="v10 - After"
 modalConfig: {
@@ -53,13 +57,14 @@ modalConfig: {
 }
 ```
 
-> ✅ This results in the same user account when logging in with Google or GitHub using the same email, no additional setup needed in code.
+> ✅ This ensures the same wallet address is returned when the same email is used across providers —
+> no manual linking logic needed in code.
 
 ---
 
 ### 2. `adapters` are fully removed — use `connectors` instead
 
-In v9, adapters had to be manually configured:
+In v9, you had to manually configure and register adapters like `AuthAdapter`:
 
 ```ts title="v9 - Before"
 import { AuthAdapter } from "@web3auth/auth-adapter";
@@ -68,7 +73,7 @@ const authAdapter = new AuthAdapter(adapterSettings);
 web3auth.configureAdapter(authAdapter);
 ```
 
-In v10, connectors replace adapters entirely:
+In v10, this is fully replaced by connectors declared inside the `modalConfig`:
 
 ```ts title="v10 - After"
 modalConfig: {
@@ -86,13 +91,13 @@ modalConfig: {
 }
 ```
 
-> ✅ No need to configure or import adapters anymore.
+> ✅ Cleaner structure. No adapter imports or manual configuration.
 
 ---
 
 ### 3. `privateKeyProvider` and `chainConfig` are deprecated
 
-In v9, you had to manually pass chain config and instantiate a private key provider:
+In v9, you had to explicitly configure chain settings and pass a private key provider:
 
 ```ts title="v9 - Before"
 const chainConfig = getEvmChainConfig(chainId, clientId);
@@ -105,35 +110,23 @@ const web3auth = new Web3Auth({
 });
 ```
 
-In v10, all chain settings are handled via the dashboard. These parameters are no longer required or accepted:
+In v10, chain setup is fully abstracted behind the Web3Auth Dashboard configuration:
 
 ```ts title="v10 - After"
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  modalConfig: {
-    connectors: {
-      [WALLET_CONNECTORS.AUTH]: {
-        label: "auth",
-        loginMethods: {
-          google: {
-            authConnection: AUTH_CONNECTION.GOOGLE,
-            authConnectionId: "w3a-google",
-          },
-        },
-      },
-    },
-  },
+  modalConfig: { ... },
 });
 ```
 
-> ✅ Cleaner setup, with all chain management handled through the dashboard.
+> ✅ No chainConfig, no manual key provider setup — just use your Dashboard settings.
 
 ---
 
 ### 4. Modal configuration is now part of the constructor
 
-In v9, you had to call `initModal()` and pass `modalConfig` separately:
+In v9, you passed `modalConfig` to `initModal()` after instantiating the SDK:
 
 ```ts title="v9 - Before"
 await web3auth.initModal({
@@ -141,7 +134,6 @@ await web3auth.initModal({
     [WALLET_ADAPTERS.AUTH]: {
       loginMethods: {
         google: {
-          name: "google",
           showOnModal: true,
         },
       },
@@ -150,7 +142,8 @@ await web3auth.initModal({
 });
 ```
 
-In v10, the configuration is moved into the constructor. `initModal()` is still required but without parameters:
+In v10, the same configuration is now included in the constructor. You still call `initModal()`, but
+without parameters:
 
 ```ts title="v10 - After"
 const web3auth = new Web3Auth({
@@ -174,39 +167,101 @@ const web3auth = new Web3Auth({
 await web3auth.initModal();
 ```
 
-> ✅ Setup is now centralized and more intuitive.
+> ✅ Setup is now centralized at construction time.
 
 ---
 
-### 5. Changes to Modal Hooks (`useWeb3Auth`)
+### 5. React SDK must use hooks
 
-In v9, you had to create a full `Web3AuthContextConfig` and pass `adapters`, `plugins`, and `privateKeyProvider`:
+In v10, all React-based usage must switch to hooks via `@web3auth/modal/react`.
+
+In v9:
 
 ```ts title="v9 - Before"
-const web3AuthContextConfig: Web3AuthContextConfig = {
+const web3auth = new Web3Auth({ ... });
+await web3auth.initModal();
+await web3auth.connect();
+```
+
+In v10, you use the hooks provided:
+
+```ts title="v10 - After"
+const { connect, disconnect, isConnected } = useWeb3AuthConnect();
+
+await connect(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+  authConnectionId: "w3a-google",
+});
+```
+
+> ✅ All SDK methods are exposed via hooks — cleaner, reactive, and consistent.
+
+---
+
+### 6. Non-React usage still supports class-based Web3Auth
+
+React apps must use the new hooks approach, but non-React frameworks like Angular or Vanilla JS can
+continue using the `Web3Auth` class directly:
+
+```ts title="Angular or Vanilla - v10"
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  modalConfig: { ... },
+});
+
+await web3auth.initModal();
+await web3auth.connect();
+```
+
+> ✅ No breaking change for non-React usage.
+
+---
+
+### 7. Blockchain RPC usage (React) should migrate to Wagmi
+
+In v9, blockchain interactions were handled via custom RPC files using `viem`, `ethers`, or `web3`:
+
+```ts title="v9 - Before"
+const rpc = new EthereumRpc(provider);
+await rpc.getAccounts();
+await rpc.signMessage();
+```
+
+In v10 React projects, use Wagmi hooks instead:
+
+```ts title="v10 - After"
+import { useAccount, useSignMessage, useSendTransaction } from "wagmi";
+
+const { address } = useAccount();
+const { data: hash, sendTransaction } = useSendTransaction();
+const { signMessage } = useSignMessage();
+```
+
+> ✅ No need to pass around `provider`; Wagmi handles everything via context.
+
+---
+
+### 8. `web3authContext.tsx` is simplified
+
+In v9, the context required full config including adapters, plugins, and privateKeyProvider:
+
+```ts title="v9 - Before"
+const web3AuthContextConfig = {
   web3AuthOptions: {
     clientId,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
     privateKeyProvider,
-  },
-  modalConfig: {
-    [WALLET_ADAPTERS.AUTH]: {
-      loginMethods: {
-        google: {
-          showOnModal: true,
-        },
-      },
-    },
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   },
   adapters: [authAdapter],
   plugins: [walletServicesPlugin],
 };
 ```
 
-In v10, all complexity is removed. Just pass connectors directly inside `modalConfig`:
+In v10, it’s just a basic config — hooks and connectors take care of the rest:
 
 ```ts title="v10 - After"
-const web3AuthContextConfig: Web3AuthContextConfig = {
+const web3AuthContextConfig = {
   web3AuthOptions: {
     clientId,
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
@@ -227,47 +282,49 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
 };
 ```
 
-> ✅ Fewer props, no adapters/plugins, and modal config becomes declarative.
+> ✅ No adapters, plugins, or manual providers needed.
 
 ---
 
+### 9. `@web3auth/base` is deprecated — use `@web3auth/modal` only
 
-### 6. `@web3auth/base` is deprecated — use `@web3auth/modal` instead
-
-In v9, imports were often split across `@web3auth/base`, `@web3auth/modal`, and other packages:
+In v9, you often had to mix imports:
 
 ```ts title="v9 - Before"
 import { Web3Auth } from "@web3auth/modal";
-import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { WALLET_ADAPTERS } from "@web3auth/base";
 ```
 
-In v10, everything you need is available directly from `@web3auth/modal`. The `@web3auth/base` package is deprecated and should no longer be used:
+In v10, everything you need comes from `@web3auth/modal`:
 
 ```ts title="v10 - After"
 import { Web3Auth, WALLET_CONNECTORS, WEB3AUTH_NETWORK, AUTH_CONNECTION } from "@web3auth/modal";
 ```
 
-> ✅ Cleaner import structure — use `@web3auth/modal` for everything.
+> ✅ One package, no fragmentation.
 
 ---
 
 ## Summary of Key Migration Steps
 
-| Feature              | v9                                  | v10                                        |
-| -------------------- | ----------------------------------- | ------------------------------------------ |
-| Verifier             | `verifier`, `verifierSubIdentifier` | ⛔ Removed, use `authConnectionId` instead |
-| Account Linking      | Manual via aggregate verifiers      | ✅ Automatic via `groupedAuthConnectionId` |
-| Adapter Setup        | Required (`AuthAdapter`, etc.)      | ⛔ Removed, use `connectors` only          |
-| Chain Configuration  | Required in code                    | ✅ Handled via dashboard                   |
-| Private Key Provider | Required                            | ⛔ No longer needed                        |
-| Modal Config Setup   | Inside `initModal()`                | ✅ Now in constructor                      |
-| Base Package Usage   | `@web3auth/base` + `@web3auth/modal`| ✅ Use only `@web3auth/modal`              |
+| Feature                | v9                                      | v10                                        |
+| ---------------------- | --------------------------------------- | ------------------------------------------ |
+| Verifier               | `verifier`, `verifierSubIdentifier`     | ⛔ Removed — use `authConnectionId`        |
+| Account Linking        | Manual via aggregate verifiers          | ✅ Automatic via `groupedAuthConnectionId` |
+| Adapter Setup          | Required (`AuthAdapter`, etc.)          | ⛔ Removed — use `connectors` only         |
+| Chain Configuration    | Required (`getEvmChainConfig`, etc.)    | ✅ Handled via dashboard                   |
+| Private Key Provider   | Required (`EthereumPrivateKeyProvider`) | ⛔ Not needed anymore                      |
+| Modal Config           | Inside `initModal()`                    | ✅ Passed in constructor                   |
+| React Usage            | Class-based or hooks                    | ✅ Hooks only via `@web3auth/modal/react`  |
+| Non-React Usage        | ✅ Supported                            | ✅ Still supported                         |
+| Blockchain RPC (React) | Manual via RPC helper class             | ✅ Use Wagmi hooks                         |
+| Base Package           | `@web3auth/base` used                   | ✅ Only `@web3auth/modal` used             |
 
 ---
 
-For SDK reference and examples, check out:
+For examples and reference:
 
 - [Web3Auth Docs](https://web3auth.io/docs/sdk/pnp/web/modal)
 - [Web3Auth Pnp Examples](https://github.com/web3auth/web3auth-pnp-examples)
 
-Need help? Reach out on [Web3Auth Community](https://web3auth.io/community)
+Need help? [Join the Community](https://web3auth.io/community)

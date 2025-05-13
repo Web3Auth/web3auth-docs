@@ -1,0 +1,237 @@
+---
+title: PnP No Modal SDK - v9 to v10
+description: "PnP No Modal SDK - v9 to v10 | Documentation - Web3Auth"
+sidebar_label: v9 to v10
+---
+
+This migration guide provides steps for upgrading from version v9 to v10 of the Web3Auth PnP No
+Modal SDK. Version 10 introduces a simplified hooks-based structure by removing adapters and
+verifiers from the frontend code, consolidating chain and login configuration within the Web3Auth
+Developer Dashboard.
+
+## Breaking Changes
+
+### 1. `verifier` and `verifierSubIdentifier` replaced with `authConnectionId` and `groupedAuthConnectionId`
+
+In v9, enabling account linking across login methods (e.g., Google and GitHub using the same email)
+required using an aggregate verifier with a `verifierSubIdentifier`:
+
+```ts title="v9 - Before"
+loginConfig: {
+  google: {
+    verifier: "aggregate-verifier",
+    verifierSubIdentifier: "w3a-google",
+    typeOfLogin: "google",
+    clientId: "<GOOGLE_CLIENT_ID>",
+  },
+  github: {
+    verifier: "aggregate-verifier",
+    verifierSubIdentifier: "w3a-github",
+    typeOfLogin: "github",
+    clientId: "<GITHUB_CLIENT_ID>",
+  },
+}
+```
+
+In v10, this logic is replaced by **grouped connections**, which are simpler and require only
+`authConnectionId` and a shared `groupedAuthConnectionId`:
+
+```ts title="v10 - After"
+await connect(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+  authConnectionId: "w3a-google",
+  groupedAuthConnectionId: "group-main",
+});
+```
+
+> ✅ Grouping is now declarative, allowing different login methods with the same email to return the
+> same account — without custom verifier setup.
+
+---
+
+### 2. `adapters` are fully removed — use `connect` with `connectors`
+
+In v9, adapters such as `AuthAdapter` had to be manually imported and configured:
+
+```ts title="v9 - Before"
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+const authAdapter = new AuthAdapter(adapterSettings);
+web3auth.configureAdapter(authAdapter);
+```
+
+In v10, the `connect` method replaces adapter usage entirely. You now pass login details directly to
+the hook:
+
+```ts title="v10 - After"
+await connect(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+  authConnectionId: "w3a-google",
+});
+```
+
+> ✅ No need to import or manage adapters in v10.
+
+---
+
+### 3. `privateKeyProvider` and `chainConfig` are deprecated
+
+In v9, you needed to manually define chain settings and pass a private key provider:
+
+```ts title="v9 - Before"
+const chainConfig = getEvmChainConfig(0xaa36a7, clientId);
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  privateKeyProvider,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+```
+
+In v10, all chain configurations are handled via the Web3Auth Dashboard:
+
+```ts title="v10 - After"
+const web3AuthOptions = {
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+};
+```
+
+> ✅ Simpler setup — no need to manage chain details or private key providers manually.
+
+---
+
+### 4. React SDK is now fully hooks-based
+
+In v9, you could choose between class-based or hooks-based setup. In v10, all Web3Auth React SDK
+usage requires hooks:
+
+```ts title="v9 - Before"
+const web3auth = new Web3AuthNoModal({...});
+await web3auth.init();
+await web3auth.connectTo(...);
+```
+
+```ts title="v10 - After"
+const { connect } = useWeb3AuthConnect();
+await connect(WALLET_CONNECTORS.AUTH, { ... });
+```
+
+> ✅ Only `@web3auth/no-modal/react` hooks are supported for React.
+
+---
+
+### 5. RPC helpers replaced with Wagmi hooks in React
+
+In v9, blockchain functions were handled via custom RPC classes using `viem`, `ethers`, or `web3`:
+
+```ts title="v9 - Before"
+const rpc = new EthereumRpc(provider);
+await rpc.sendTransaction();
+await rpc.getBalance();
+```
+
+In v10, Wagmi hooks should be used in all React-based apps:
+
+```ts title="v10 - After"
+import { useSendTransaction, useSignMessage, useBalance } from "wagmi";
+```
+
+> ✅ Hooks like `useSendTransaction`, `useSwitchChain`, and `useBalance` make blockchain operations
+> declarative.
+
+---
+
+### 6. Angular and non-React usage still supports `Web3AuthNoModal`
+
+While React apps now require hooks, non-React apps (Angular, Svelte, VanillaJS) can still use
+`Web3AuthNoModal` directly:
+
+```ts title="v10 - Angular"
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+
+await web3auth.init();
+await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+});
+```
+
+> ✅ Class-based SDK usage remains valid in non-React environments.
+
+---
+
+### 7. `web3authContext.tsx` structure updated
+
+In v9, the context included full configuration of `adapters`, `plugins`, and `privateKeyProvider`:
+
+```ts title="v9 - Before"
+const web3AuthContextConfig = {
+  web3AuthOptions: {
+    clientId,
+    privateKeyProvider,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  },
+  adapters: [...],
+};
+```
+
+In v10, only minimal SDK options are required — no adapters or providers:
+
+```ts title="v10 - After"
+const web3AuthContextConfig = {
+  web3AuthOptions: {
+    clientId,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  },
+};
+```
+
+> ✅ Simpler and cleaner context config in v10.
+
+---
+
+### 8. `@web3auth/base` is deprecated — use `@web3auth/no-modal` only
+
+In v9, imports were split across `@web3auth/base`, `@web3auth/no-modal`, and more:
+
+```ts title="v9 - Before"
+import { WEB3AUTH_NETWORK } from "@web3auth/base";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+```
+
+In v10, everything is available via `@web3auth/no-modal`:
+
+```ts title="v10 - After"
+import { Web3AuthNoModal, WEB3AUTH_NETWORK, WALLET_CONNECTORS } from "@web3auth/no-modal";
+```
+
+> ✅ Use a single package for all imports.
+
+---
+
+## Summary of Key Migration Steps
+
+| Feature              | v9                                  | v10                                                 |
+| -------------------- | ----------------------------------- | --------------------------------------------------- |
+| Verifier             | `verifier`, `verifierSubIdentifier` | ⛔ Removed, use `authConnectionId` instead          |
+| Account Linking      | Manual via aggregate verifiers      | ✅ Automatic via `groupedAuthConnectionId`          |
+| Adapter Setup        | Required (`AuthAdapter`, etc.)      | ⛔ Removed, use `connect()` with connection details |
+| Chain Configuration  | Required in code                    | ✅ Handled via dashboard                            |
+| Private Key Provider | Required                            | ⛔ No longer needed                                 |
+| React SDK Setup      | Class or hook-based                 | ✅ Hooks only (`useWeb3AuthConnect`)                |
+| Blockchain RPC       | Manual RPC via viem/ethers          | ✅ Use `wagmi` in React apps                        |
+| Angular Support      | ✅ Supported                        | ✅ Still supported                                  |
+| Base Package Usage   | `@web3auth/base` + others           | ✅ Use `@web3auth/no-modal` only                    |
+
+---
+
+For examples, check out:
+
+- [Web3Auth Docs](https://web3auth.io/docs/sdk/pnp/web/no-modal)
+- [Web3Auth Pnp Examples](https://github.com/web3auth/web3auth-pnp-examples)
+
+Need help? Reach out on [Web3Auth Community](https://web3auth.io/community)
