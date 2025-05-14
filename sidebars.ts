@@ -308,7 +308,6 @@ const sidebars: SidebarsConfig = {
     "features/mfa",
     "features/mpc",
     "features/nft-minting",
-    "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
     "features/wallet-pregeneration",
@@ -1608,7 +1607,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/sfa/sfa-js/passkeys-sfa",
         "sdk/sfa/sfa-js/account-abstraction",
         "sdk/sfa/sfa-js/initiate-topup",
         "sdk/sfa/sfa-js/show-wallet-connect",
