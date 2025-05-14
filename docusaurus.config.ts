@@ -192,6 +192,11 @@ const config: Config = {
       async: false,
       defer: true,
     },
+    {
+      src: "https://cmp.osano.com/AzZMxHTbQDOQD8c1J/da3b35cc-707f-44ba-a83e-b28b8a08eeac/osano.js",
+      async: true,
+      defer: true,
+    },
   ],
   presets: [
     [
