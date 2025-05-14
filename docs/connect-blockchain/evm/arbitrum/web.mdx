@@ -22,6 +22,7 @@ import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-con
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
 import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import ChainDetailsArbitrum from "@site/src/common/docs/general-connect-blockchain/_arbitrum.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -41,6 +42,10 @@ This provider can be used with libraries like
 [Arbitrum](https://arbitrum.io/) blockchain calls like getting the user's `account`, fetching
 `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
 etc. We have highlighted a few here to get you started quickly on that.
+
+## Chain Details for Arbitrum
+
+<ChainDetailsArbitrum />
 
 ## Installation
 
@@ -70,7 +75,7 @@ after successful authentication.
 ```typescript
 import { getEvmChainConfig } from "@web3auth/base";
 
-const chainConfig = getEvmChainConfig(42161, "your_web3auth_client_id"); // gets the arbitrum mainnet chain config
+const chainConfig = getEvmChainConfig(42161, "your_web3auth_client_id"); // For mainnet
 ```
 
 </TabItem>
@@ -80,18 +85,7 @@ const chainConfig = getEvmChainConfig(42161, "your_web3auth_client_id"); // gets
 >
 
 ```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x66eee", // Hex of 421614
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  rpcTarget: "https://sepolia-rollup.arbitrum.io/rpc",
-  displayName: "Arbitrum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.arbiscan.io/",
-  ticker: "AETH",
-  tickerName: "AETH",
-  logo: "https://cryptologos.cc/logos/arbitrum-arb-logo.png",
-};
+const chainConfig = getEvmChainConfig(421613, "your_web3auth_client_id"); // For testnet
 ```
 
 </TabItem>
