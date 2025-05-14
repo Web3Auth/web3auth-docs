@@ -1,22 +1,27 @@
 ---
 title: Integrate Web3Auth with the Avalanche Blockchain in Unity
 sidebar_label: Unity
-image: "banners/unity.png"
+image: "banners/avalanche.png"
 
-keywords: [unity, avalanche, web3auth, authentication, blockchain]
+keywords: [avalanche, web3auth, authentication, blockchain, unity]
 description: "Integrate Web3Auth with the Avalanche Blockchain in Unity | Documentation - Web3Auth"
 ---
 
-import InstallationSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-installation.mdx";
-import GetAccountSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-get-account.mdx";
-import UserInfoSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-user-info.mdx";
-import GetBalanceSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-get-balance.mdx";
-import InitialisationSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-initialisation.mdx";
-import SignMessageSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-sign-message.mdx";
-import SendTransactionSnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-send-transaction.mdx";
+import InitializeUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-initialize.mdx";
+import GetUserInfoUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-get-userinfo.mdx";
+import GetAccountAndBalanceUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-get-account-n-balance.mdx";
+import SendTransactionUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-send-transaction.mdx";
+import SignTransactionUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-sign-transaction.mdx";
+import SignPersonalMessageUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV4UnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-sign-message-v4.mdx";
+import SmartContractSolidityUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-smart-contract-solidity.mdx";
+import DeployContractSolidityDeployUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeyUnitySnippet from "@site/src/common/docs/unity-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import ChainDetailsAvalanche from "@site/src/common/docs/general-connect-blockchain/_avalanche.mdx";
-import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
 
 <SEO
@@ -26,40 +31,94 @@ import SEO from "@site/src/components/SEO";
   slug="/connect-blockchain/evm/avalanche/unity"
 />
 
-While using the Web3Auth Unity SDK, you get the private key within the user scope. This private key
-can interact with the [Avalanche (C-Chain)](https://www.avax.network/) to make EVM-based blockchain
-calls, like getting the user's `account`, fetch `balance`, `sign transaction`, `send transaction`,
+While using the Web3Auth Unity SDK, you get a private key that can be used with libraries like
+[`Nethereum`](https://nethereum.com/) to make [Avalanche](https://www.avax.network/) blockchain
+calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
 `read` from and `write` to the smart contract, etc. We have highlighted a few here to get you
 started quickly on that.
-
-## Installation
-
-<InstallationSnippet />
 
 ## Chain Details for Avalanche
 
 <ChainDetailsAvalanche />
 
-## Initialize
+## Installation
 
-<InitialisationSnippet />
+To interact with the Avalanche blockchain, you can use the Nethereum library with Web3Auth.
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "NPM", value: "npm", },
+    { label: "OpenUPM", value: "openupm", },
+  ]}
+>
+<TabItem value="npm">
+
+```bash
+npm install --save nethereum.unity
+```
+
+</TabItem>
+<TabItem value="openupm">
+
+```bash
+openupm add nethereum.unity
+```
+
+</TabItem>
+</Tabs>
+
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide a private key that can
+be used to initialize the Nethereum library and make blockchain calls.
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeUnitySnippet />
 
 ## Get User Info
 
-<UserInfoSnippet />
+<GetUserInfoUnitySnippet />
 
-## Get Account
+## Get Account and Balance
 
-<GetAccountSnippet />
-
-## Get Balance
-
-<GetBalanceSnippet />
-
-## Sign a message
-
-<SignMessageSnippet />
+<GetAccountAndBalanceUnitySnippet />
 
 ## Send Transaction
 
-<SendTransactionSnippet />
+<SendTransactionUnitySnippet />
+
+## Sign Transaction
+
+<SignTransactionUnitySnippet />
+
+## Sign Message
+
+### Personal Sign
+
+<SignPersonalMessageUnitySnippet />
+
+### Sign Typed Data v4
+
+<SignTypedDataV4UnitySnippet />
+
+## Smart Contract
+
+<SmartContractSolidityUnitySnippet />
+
+### Deploy Contract
+
+<DeployContractSolidityDeployUnitySnippet />
+
+### Read From Contract
+
+<DeployContractSolidityReadUnitySnippet />
+
+### Write to Contract
+
+<DeployContractSolidityWriteUnitySnippet />
+
+## Fetch User's Private Key
+
+<FetchUserPrivateKeyUnitySnippet />
