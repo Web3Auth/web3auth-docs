@@ -50,7 +50,7 @@ function pnpTopNavButton(selectedSDK: string): string {
         </div>
       </div>
       <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
-        Single Factor Auth SDKs
+        Single Factor Auth Mobile SDKs
         <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
       </a>
       <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
@@ -83,7 +83,7 @@ function sfaTopNavButton(selectedSDK: string): string {
         <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
       </a>
       <div class="sdk-sidebar-option-selected">
-        Single Factor Auth SDKs
+        Single Factor Auth Mobile SDKs
                 <div class="sdk-sidebar-dropdown-container">
         <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
             <option value="">${selectedSDK}</option>
@@ -122,7 +122,7 @@ function mpcckTopNavButton(selectedSDK: string): string {
         <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
       </a>
        <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
-        Single Factor Auth SDKs
+        Single Factor Auth Mobile SDKs
         <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
       </a>
       <div class="sdk-sidebar-option-selected">

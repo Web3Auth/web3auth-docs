@@ -423,7 +423,7 @@ export default function QuickNavigation() {
                 />
               </svg>
             </div>
-            <h5>Single Factor Auth SDKs</h5>
+            <h5>Single Factor Auth Mobile SDKs</h5>
           </Link>
           <div className={styles.cardContent}>
             <Link className={styles.cardContentText} to={`${baseUrl}product/sfa`}>

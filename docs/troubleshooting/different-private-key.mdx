@@ -86,10 +86,11 @@ is set up and how the keys are generated. At large, we can consider 3 different 
 Products:
 
 - Plug and Play SDKs: Includes the Plug and Play SDKs across various platforms. The accounts here
-  are generated from the Single Factor Auth SDKs, however, the keys are different because of the
-  subkey generation logic. Keys here change according to the verifier and client ID selected.
+  are generated from the Single Factor Auth Mobile SDKs, however, the keys are different because of
+  the subkey generation logic. Keys here change according to the verifier and client ID selected.
 
-- Single Factor Auth SDKs: Contain the base key generation logic according to the verifier selected.
+- Single Factor Auth Mobile SDKs: Contain the base key generation logic according to the verifier
+  selected.
 
 - MPC Core Kit SDKs: Includes the MPC Core Kit SDKs across various platforms. The accounts here are
   generated using TSS (Threshold Signature Scheme) and are different from the other products.
@@ -119,10 +120,10 @@ the new integration.
 
 ##### To Single Factor Auth (SFA) SDKs
 
-If you're migrating to SFA SDKs, you can directly use the SDK with the same Client ID, alongside
-authentication and verifier details. Additionally, by setting the `usePnPKey` flag to `true`, you
-can get the same key as the Plug and Play SDKs. However, if a user has enabled MFA, they will not be
-able to use the SFA SDKs.
+If you're migrating to SFA Mobile SDKs, you can directly use the SDK with the same Client ID,
+alongside authentication and verifier details. Additionally, by setting the `usePnPKey` flag to
+`true`, you can get the same key as the Plug and Play SDKs. However, if a user has enabled MFA, they
+will not be able to use the SFA Mobile SDKs.
 
 ##### To tKey JS SDK
 
@@ -140,8 +141,8 @@ subkey(PRIVATE_KEY.padStart(64, "0"), Buffer.from(CLIENT_ID, "base64"));
 
 :::info Pre-planning Migrations
 
-If you're looking to use Single Factor Auth SDKs in the future, planning the use Plug and Play SDKs
-right now, make sure:
+If you're looking to use Single Factor Auth Mobile SDKs in the future, planning the use Plug and
+Play SDKs right now, make sure:
 
 - You're using Custom Authentication with your own login verifiers.
 - Set the `useCoreKitKey` flag to `true`
@@ -153,4 +154,4 @@ right now, make sure:
 This migration typically occurs when developers want to leverage the prebuilt UI/UX of the Plug and
 Play SDKs for user MFA. Use the same verifier details from your Single Factor Auth integration in
 the custom authentication feature of Plug and Play. Set the `useCoreKitKey` flag to `true` to use
-the same private key as the Single Factor Auth SDKs.
+the same private key as the Single Factor Auth Mobile SDKs.
