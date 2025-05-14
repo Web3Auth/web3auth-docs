@@ -24,6 +24,7 @@ import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.md
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
+import ChainDetailsCelo from "@site/src/common/docs/general-connect-blockchain/_celo.mdx";
 
 <SEO
   title="Integrate Web3Auth with the Celo Blockchain in JavaScript"
@@ -41,6 +42,10 @@ blockchain calls like getting the user's `account`, fetching `balance`, `sign tr
 `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few
 here to get you started quickly on that.
 
+## Chain Details for Celo
+
+<ChainDetailsCelo />
+
 ## Installation
 
 To interact with the Celo blockchain, you can use either library with Web3Auth.
@@ -52,58 +57,6 @@ To interact with the Celo blockchain, you can use either library with Web3Auth.
 Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
 [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
 after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xa4ec", // hex of 42220, Celo mainnet
-  rpcTarget: "https://forno.celo.org",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Celo Mainnet",
-  blockExplorerUrl: "https://explorer.celo.org",
-  ticker: "CELO",
-  tickerName: "CELO",
-  logo: "https://cryptologos.cc/logos/celo-celo-logo.png",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaef3", // hex of 44787, celo testnet
-  rpcTarget: "https://alfajores-forno.celo-testnet.org",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Celo Testnet",
-  blockExplorerUrl: "https://alfajores-blockscout.celo-testnet.org",
-  ticker: "CELO",
-  tickerName: "CELO",
-  logo: "https://cryptologos.cc/logos/celo-celo-logo.png",
-};
-```
-
-</TabItem>
-</Tabs>
 
 ### Initializing and instantiating the Web3Auth SDK
 
