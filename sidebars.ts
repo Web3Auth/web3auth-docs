@@ -1182,7 +1182,24 @@ const sidebars: SidebarsConfig = {
           collapsed: false,
           label: "Additional Settings",
           items: [
-            "sdk/pnp/web/modal/account-abstraction",
+            {
+              type: "category",
+              label: "Account Abstraction",
+              items: [
+                "sdk/pnp/web/modal/account-abstraction/account-abstraction",
+                {
+                  type: "category",
+                  collapsible: true,
+                  collapsed: false,
+                  label: "Configure",
+                  items: [
+                    "sdk/pnp/web/modal/account-abstraction/configure/dashboard",
+                    "sdk/pnp/web/modal/account-abstraction/configure/sdk",
+                  ],
+                },
+                "sdk/pnp/web/modal/account-abstraction/usage",
+              ],
+            },
             "sdk/pnp/web/modal/whitelabel",
             "sdk/pnp/web/modal/custom-authentication",
             "sdk/pnp/web/modal/mfa",
