@@ -22,6 +22,7 @@ import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-con
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
 import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import ChainDetailsShardeum from "@site/src/common/docs/general-connect-blockchain/_shardeum.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -49,41 +50,9 @@ To interact with the Shardeum blockchain, you can use either library with Web3Au
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Shardeum
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="testnet"
-  values={[
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1F92", // hex of 8082, Shardeum Atomium testnet
-  rpcTarget: "https://atomium.shardeum.org",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Shardeum Atomium",
-  blockExplorerUrl: "https://explorer-atomium.shardeum.org/",
-  ticker: "SHM",
-  tickerName: "SHM",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsShardeum />
 
 ### Initializing and instantiating the Web3Auth SDK
 
