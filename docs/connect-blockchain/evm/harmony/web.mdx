@@ -25,6 +25,7 @@ import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.md
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
+import ChainDetailsHarmony from "@site/src/common/docs/general-connect-blockchain/_harmony.mdx";
 
 <SEO
   title="Integrate Web3Auth with the Harmony Blockchain in JavaScript"
@@ -48,63 +49,9 @@ To interact with the Harmony blockchain, you can use either library with Web3Aut
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Harmony
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x63564c40", // hex of 1666600000, Harmony mainnet
-  rpcTarget: "https://api.harmony.one",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Harmony Mainnet",
-  blockExplorerUrl: "https://explorer.harmony.one",
-  ticker: "ONE",
-  tickerName: "ONE",
-  logo: "https://cryptologos.cc/logos/harmony-one-logo.png",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x6357d2e0", // hex of 1666700000
-  rpcTarget: "https://api.s0.b.hmny.io",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Harmony Testnet",
-  blockExplorerUrl: "https://explorer.testnet.harmony.one",
-  ticker: "ONE",
-  tickerName: "ONE",
-  logo: "https://cryptologos.cc/logos/harmony-one-logo.png",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsHarmony />
 
 ### Initializing and instantiating the Web3Auth SDK
 
