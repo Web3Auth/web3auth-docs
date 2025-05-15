@@ -9,6 +9,7 @@ description: "Integrate Web3Auth with the Tron Blockchain in JavaScript | Docume
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import ChainDetailsTron from "@site/src/common/docs/general-connect-blockchain/_tron.mdx";
 
 ## Overview
 
@@ -31,74 +32,9 @@ npm install @web3auth/no-modal @web3auth/ethereum-provider @web3auth/auth-adapte
 
 ---
 
-## Getting the ChainConfig
+## Chain Details for Tron
 
-For different Tron networks, you can use the appropriate chain configuration.
-
-<Tabs defaultValue="testnet" groupId="chainConfig">
-  <TabItem value="mainnet" label="Mainnet">
-    ```typescript
-    const TRON_MAINNET = {
-      chainNamespace: "eip155",
-      chainId: "0x2b6653dc", // Tron Mainnet Chain ID
-      rpcTarget: "https://api.trongrid.io",
-      displayName: "TRON Mainnet",
-      blockExplorerUrl: "https://tronscan.org",
-      ticker: "TRX",
-      tickerName: "TRON",
-      logo: "https://cryptologos.cc/logos/tron-trx-logo.png",
-    };
-    ```
-  </TabItem>
-  <TabItem value="testnet" label="Testnet (Shasta)">
-    ```typescript
-    const TRON_SHASTA_TESTNET = {
-      chainNamespace: "eip155",
-      chainId: "0x94a9059e", // Tron Shasta Testnet Chain ID
-      rpcTarget: "https://api.shasta.trongrid.io/jsonrpc",
-      displayName: "TRON Shasta Testnet",
-      blockExplorerUrl: "https://shasta.tronscan.org",
-      ticker: "TRX",
-      tickerName: "TRON",
-      logo: "https://cryptologos.cc/logos/tron-trx-logo.png",
-    };
-    ```
-  </TabItem>
-</Tabs>
-
----
-
-## Initializing and Instantiating the Web3Auth SDK
-
-We will now initialize Web3Auth with the TRON configuration.
-
-```typescript
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-import { TRON_SHASTA_TESTNET } from "./chainConfig";
-import TronRpc from "./tronRPC";
-
-const clientId = "YOUR_CLIENT_ID"; // Replace with your Web3Auth client ID
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: TRON_SHASTA_TESTNET },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId, // Your Web3Auth Client ID
-  chainConfig: TRON_SHASTA_TESTNET, // Using Tron Shasta Testnet
-  privateKeyProvider,
-});
-
-const authAdapter = new AuthAdapter({
-  adapterSettings: {
-    uxMode: "redirect",
-  },
-});
-web3auth.configureAdapter(authAdapter);
-await web3auth.init();
-```
+<ChainDetailsTron />
 
 ---
 
@@ -131,7 +67,7 @@ console.log(user);
 
 ## Get Account and Balance
 
-Once logged in, we can use `tronRpc.ts` to fetch the user’s account and balance.
+Once logged in, we can use `tronRpc.ts` to fetch the user's account and balance.
 
 ```typescript
 // tronRpc.ts should be implemented as per previous example
