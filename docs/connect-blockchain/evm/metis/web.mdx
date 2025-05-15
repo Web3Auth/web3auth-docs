@@ -34,6 +34,7 @@ import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-p
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
+import ChainDetailsMetis from "@site/src/common/docs/general-connect-blockchain/_metis.mdx";
 
 <SEO
   title="Integrate Web3Auth with the Metis Blockchain in JavaScript"
@@ -57,63 +58,9 @@ To interact with the Metis blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Metis
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x440", // hex of 1088, Metis Andromeda Mainnet
-  rpcTarget: "https://andromeda.metis.io/?owner=1088",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Andromeda Mainnet",
-  blockExplorerUrl: "https://andromeda-explorer.metis.io",
-  ticker: "METIS",
-  tickerName: "Metis",
-  logo: "https://cdn.prod.website-files.com/6507242ad3e4e6ff563301e4/65456ca18876498fe5fd2a49_Symbol.png",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xE9FE", // hex of 59902, Metis Sepolia Testnet
-  rpcTarget: "https://sepolia.metisdevops.link/",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia-explorer.metisdevops.link/",
-  ticker: "tMetis",
-  tickerName: "tMetis",
-  logo: "https://cdn.prod.website-files.com/6507242ad3e4e6ff563301e4/65456ca18876498fe5fd2a49_Symbol.png",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsMetis />
 
 ### Initializing and Instantiating the Web3Auth SDK
 
