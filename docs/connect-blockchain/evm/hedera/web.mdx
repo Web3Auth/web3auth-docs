@@ -25,6 +25,7 @@ import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.md
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
+import ChainDetailsHedera from "@site/src/common/docs/general-connect-blockchain/_hedera.mdx";
 
 <SEO
   title="Integrate Web3Auth with the Hedera Blockchain in JavaScript"
@@ -49,79 +50,9 @@ To interact with the Hedera blockchain, you can use either library with Web3Auth
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Hedera
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-    { label: "Previewnet", value: "previewnet", },
-]}
-
->
-
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x127",
-  rpcTarget: "https://mainnet.hashio.io/api",
-  displayName: "Hedera Mainnet",
-  blockExplorerUrl: "https://hashscan.io/mainnet/",
-  ticker: "HBAR",
-  tickerName: "HBAR",
-  logo: "https://cryptologos.cc/logos/hedera-hbar-logo.png?v=033",
-};
-```
-
-</TabItem>
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x128",
-  rpcTarget: "https://testnet.hashio.io/api",
-  displayName: "Hedera Testnet",
-  blockExplorerUrl: "https://hashscan.io/testnet/",
-  ticker: "HBAR",
-  tickerName: "HBAR",
-  logo: "https://cryptologos.cc/logos/hedera-hbar-logo.png?v=033",
-};
-```
-
-</TabItem>
-<TabItem
-  value="previewnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x129",
-  rpcTarget: "https://previewnet.hashio.io/api",
-  displayName: "Hedera Previewnet",
-  blockExplorerUrl: "https://hashscan.io/previewnet/",
-  ticker: "HBAR",
-  tickerName: "HBAR",
-  logo: "https://cryptologos.cc/logos/hedera-hbar-logo.png?v=033",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsHedera />
 
 ### Initializing and instantiating the Web3Auth SDK
 
