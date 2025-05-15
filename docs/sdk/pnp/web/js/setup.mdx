@@ -1,0 +1,74 @@
+---
+title: Setup
+sidebar_label: Setup
+description: "@web3auth/no-modal Native Account Abstraction | Documentation - Web3Auth"
+---
+
+## Instantiating Web3Auth
+
+### 1. Import the Web3Auth class
+
+First, import the `Web3Auth` class from the `@web3auth/modal` package:
+
+```javascript
+import { Web3Auth } from "@web3auth/modal";
+```
+
+### 2. Create a Web3Auth instance
+
+Next, create an instance of the `Web3Auth` class. You'll need to pass the `Web3AuthOptions` object,
+which contains the configuration you set up in the
+[Configuration Section](/sdk/pnp/web/modal/config):
+
+```javascript
+const web3auth = new Web3Auth(Web3AuthOptions);
+```
+
+## Initialize Web3Auth
+
+The final step in the whole setup process is to initialize the Web3Auth instance. This is done by
+calling the `initModal` function of the `web3auth` instance we created above.
+
+:::caution
+
+The `initModal` needs to be called only once, ideally within the constructor. This has to be done
+before the user tries to login or connect to a wallet.
+
+:::
+
+```javascript
+await web3auth.initModal();
+```
+
+## Example
+
+```ts
+import { Component } from "@angular/core";
+// focus-next-line
+import { Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
+
+// focus-start
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+// focus-end
+
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+})
+export class AppComponent {
+
+  async ngOnInit() {
+    const init = async () => {
+      // focus-next-line
+      await web3auth.initModal();
+    };
+
+    init();
+  }
+  ...
+}
+```

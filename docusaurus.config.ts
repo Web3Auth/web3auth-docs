@@ -267,14 +267,6 @@ const config: Config = {
             to: "/quick-start",
           },
           {
-            from: "/sdk/web/modal/wagmi-connector",
-            to: "/sdk/pnp/web/wagmi-connector",
-          },
-          {
-            from: "/sdk/web/no-modal/wagmi-connector",
-            to: "/sdk/pnp/web/wagmi-connector",
-          },
-          {
             from: "/sdk/web/choosesdk/",
             to: "/sdk/pnp/web/",
           },
@@ -305,10 +297,6 @@ const config: Config = {
           {
             from: "/sdk/react-native/choose-workflows",
             to: "/sdk/pnp/react-native/",
-          },
-          {
-            from: "/sdk/web/customauth",
-            to: "/sdk/pnp/web/no-modal/custom-authentication",
           },
           {
             from: "/overview/what-is-web3auth",
@@ -361,18 +349,6 @@ const config: Config = {
           {
             from: "/customauth/verifiers",
             to: "/auth-provider-setup/verifiers",
-          },
-          {
-            from: "/sdk/web/modal/multi-factor-authentication",
-            to: "/sdk/pnp/web/modal/mfa",
-          },
-          {
-            from: "/sdk/web/core/multi-factor-authentication",
-            to: "/sdk/pnp/web/no-modal/mfa",
-          },
-          {
-            from: "/sdk/web/web3auth/multi-factor-authentication",
-            to: "/sdk/pnp/web/modal/mfa",
           },
           {
             from: "/troubleshooting/different-wallet-address-issue",
@@ -581,10 +557,6 @@ const config: Config = {
               existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
               existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
               existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
-              existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
-              existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
-              existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
-              existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
               existingPath.replace("/product/core-kit", "/core-kit/"),
               existingPath.replace("/product/pnp", "/pnp/"),
               existingPath.replace(

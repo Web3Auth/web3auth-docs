@@ -1,0 +1,66 @@
+---
+title: useWeb3AuthConnect
+sidebar_label: useWeb3AuthConnect
+description: "@web3auth/modal React Hooks useWeb3AuthConnect | Documentation - Web3Auth"
+---
+
+Hook to connect to Web3Auth.
+
+### Import
+
+```tsx
+import { useWeb3AuthConnect } from "@web3auth/modal/react";
+```
+
+### Usage
+
+```tsx
+import { useWeb3AuthConnect } from "@web3auth/modal/react";
+
+function ConnectButton() {
+  const { connect, loading, isConnected, error } = useWeb3AuthConnect();
+
+  return (
+    <button onClick={() => connect()} disabled={loading || isConnected}>
+      {loading ? "Connecting..." : isConnected ? "Connected" : "Connect"}
+    </button>
+    {error && <div>{error.message}</div>}
+  );
+}
+```
+
+### Return Type
+
+```tsx
+import { type IUseWeb3AuthConnect } from "@web3auth/modal/react";
+```
+
+#### isConnected
+
+`boolean`
+
+Whether the user is connected to Web3Auth.
+
+#### loading
+
+`boolean`
+
+Whether the connection process is in progress.
+
+#### error
+
+`Web3AuthError | null`
+
+Error that occurred during the connection process.
+
+#### connectorName
+
+`WALLET_CONNECTOR_TYPE | null`
+
+Name of the connected connector.
+
+#### connect
+
+`() => Promise<IProvider | null>`
+
+Function to initiate the connection process.

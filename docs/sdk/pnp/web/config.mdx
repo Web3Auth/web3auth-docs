@@ -1,0 +1,158 @@
+---
+title: Configuring PnP Web Modal SDK
+sidebar_label: Configuration
+description: "@web3auth/modal initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import ExampleCards from "@theme/ExampleCards";
+import { pnpModalExamples, QUICK_START } from "@site/src/common/maps";
+import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3auth-options.mdx";
+
+After Installation, the next step to use Web3Auth is to configure. For this, you need to create an
+instance of the config object `Web3AuthOptions`, and pass it in the constructor.
+
+:::info Prerequisites
+
+Before you start, make sure you have registered on the
+[Web3Auth Dashboard](https://dashboard.web3auth.io/) and have set up your project. You can look into
+the [Dashboard Setup](/dashboard-setup) guide to learn more.
+
+:::
+
+## Instantiating Web3Auth
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as the type.
+
+:::note Type Reference
+
+Import the type `Web3AuthOptions` for easy type interface for Typescript.
+
+```javascript
+import { type Web3AuthOptions } from "@web3auth/modal";
+```
+
+:::
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+<Web3AuthOptions />
+
+## Usage
+
+<Tabs
+  defaultValue="basic-config"
+  values={[
+    { label: "With Basic Configurations", value: "basic-config" },
+    { label: "With Advanced Configurations", value: "advanced-config" },
+  ]}
+>
+
+<TabItem value="basic-config">
+
+```ts
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+};
+```
+
+</TabItem>
+
+<TabItem value="advanced-config">
+
+```ts
+import { WALLET_CONNECTORS, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+  modalConfig: {
+    connectors: {
+      [WALLET_CONNECTORS.AUTH]: {
+        label: "auth",
+        loginMethods: {
+          google: {
+            name: "google login",
+            // logoDark: "url to your custom logo which will shown in dark mode",
+          },
+          facebook: {
+            // it will hide the facebook option from the Web3Auth modal.
+            name: "facebook login",
+            showOnModal: false,
+          },
+          email_passwordless: {
+            name: "email passwordless login",
+            showOnModal: true,
+            authConnectionId: "w3a-email_passwordless-demo",
+          },
+          sms_passwordless: {
+            name: "sms passwordless login",
+            showOnModal: true,
+            authConnectionId: "w3a-sms_passwordless-demo",
+          },
+        },
+        // setting it to false will hide all social login methods from modal.
+        showOnModal: true,
+      },
+    },
+    // setting it to true will hide the external wallets discovery.
+    hideWalletDiscovery: true,
+  },
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+## Advanced Configurations
+
+Web3Auth Modal SDK provides several advanced configuration options to enhance your integration. Each
+configuration option serves a specific purpose and can be implemented based on your application's
+requirements:
+
+:::tip
+
+Each of these configuration options has detailed documentation in their respective sections. Click
+on the links above to learn more about implementing these advanced features.
+
+:::
+
+- **[Configuring Account Abstraction](/sdk/pnp/web/modal/advanced/account-abstraction)**
+
+  - `accountAbstractionConfig`: Configure account abstraction parameters
+  - `useAAWithExternalWallet`: Enable account abstraction with external wallet connections
+
+- **[Setting up Custom Authentication](/sdk/pnp/web/modal/advanced/custom-authentication)**
+
+  - `modalConfig`: Customize authentication methods and their appearance in the modal
+
+- **[Whitelabeling your integration](/sdk/pnp/web/modal/advanced/whitelabel)**
+
+  - `uiConfig`: Customize the UI appearance including colors, logos, and themes
+  - `modalConfig`: Configure which authentication options appear and their presentation
+
+- **[Adding a Multi-Factor Authentication](/sdk/pnp/web/modal/advanced/multi-factor-authentication)**
+
+  - `connectors`: Configure MFA settings for different authentication methods
+
+- **[Wallet Services for additional features](/sdk/pnp/web/modal/advanced/wallet-services)**
+
+  - `walletServicesConfig`: Configure wallet services parameters
+  - `plugins`: Add additional plugins or their parameters
+
+- **[Connecting with other Blockchain Networks](/sdk/pnp/web/modal/advanced/other-chains)**
+
+  - `chains`: Specify which blockchain networks to support
+  - `defaultChainId`: Set the default blockchain network
+  - `privateKeyProvider`: Configure custom private key provider for specific chains
+
+## Quick Starts
+
+<ExampleCards exampleMap={pnpModalExamples.filter((obj) => obj.type === QUICK_START)} />

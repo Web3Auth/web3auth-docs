@@ -1,0 +1,48 @@
+---
+title: connect
+sidebar_label: connect
+description: "@web3auth/modal Connect | Documentation - Web3Auth"
+---
+
+Function to show the Web3Auth modal in the browser. Your users can choose their preferred login
+method and access your application.
+
+### Import
+
+```javascript
+import { Web3Auth } from "@web3auth/modal";
+```
+
+### Usage
+
+```javascript
+// Initialize Web3Auth first
+const web3auth = new Web3Auth({
+  // Your configuration options
+});
+
+await web3auth.init();
+
+// Show the modal and connect
+const provider = await web3auth.connect();
+```
+
+### Return Type
+
+```tsx
+connect(): Promise<IProvider | null>;
+```
+
+#### Return Values
+
+- **IProvider | null**
+  - On successful login, returns an `IProvider` instance containing the respective provider
+    corresponding to your selected blockchain.
+  - On unsuccessful login, returns `null`.
+
+:::tip
+
+Read more about connecting your users with the selected blockchain in the
+[Providers SDK Reference](/sdk/pnp/web/providers).
+
+:::

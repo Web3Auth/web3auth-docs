@@ -1,0 +1,111 @@
+---
+title: Setting up Vue Composables
+sidebar_label: Setup
+description: "@web3auth/modal Vue Composables Setup | Documentation - Web3Auth"
+---
+
+For a seamless integration in Vue, Web3Auth provides essential composables for the Web3Auth Modal
+SDK. These composables, paired with Wagmi or Solana composables (our custom implementation), become
+a powerful combination for building your dApp quickly and efficiently.
+
+## Web3Auth Provider
+
+Wrap your application with the `Web3AuthProvider` in your root component (e.g., `App.vue`).
+
+```html title="App.vue"
+<script setup lang="ts">
+  import Home from "./Home.vue";
+  // focus-next-line
+  import { Web3AuthProvider } from "@web3auth/modal/vue";
+  import web3AuthContextConfig from "./web3authContext";
+</script>
+
+<template>
+  <div class="min-h-screen flex flex-col">
+    <!-- focus-start -->
+    <Web3AuthProvider :config="web3AuthContextConfig">
+      <Home />
+    </Web3AuthProvider>
+    <!-- focus-end -->
+  </div>
+</template>
+```
+
+### Config
+
+The Web3Auth Provider requires a `config` object to be passed in. This config object contains the
+config you setup in the [Configuration Section](/sdk/pnp/web/modal/config).
+
+```ts title="web3authContext.ts"
+// focus-next-line
+import { type Web3AuthContextConfig } from "@web3auth/modal/vue";
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+};
+
+// focus-start
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
+// focus-end
+```
+
+## Wagmi Integration
+
+If you are using Wagmi, you need to install the `wagmi` & `@tanstack/vue-query` packages and use the
+**Web3Auth implementation of `WagmiProvider`** for configuration.
+
+:::info
+
+The Web3Auth implementation of `WagmiProvider` is a custom implementation that is used to integrate
+with the Web3Auth Modal SDK. It is a wrapper around the `WagmiProvider` that makes it compatible.
+
+With this implementation, you can use the Wagmi composables, however **no external connectors are
+supported**. Web3Auth provides a whole suite of connectors which you can use directly for a better
+experience with external wallets.
+
+:::
+
+```bash
+npm install wagmi @tanstack/vue-query
+```
+
+Update your `main.ts` to use the Vue Query plugin **only if you are using Wagmi**:
+
+```ts title="main.ts"
+// focus-next-line
+import { VueQueryPlugin } from "@tanstack/vue-query";
+import { createApp } from "vue";
+import App from "./App.vue";
+import "./style.css";
+
+// focus-next-line
+createApp(App).use(VueQueryPlugin).mount("#app");
+```
+
+Then, in your `App.vue`, wrap your app with both providers:
+
+```html title="App.vue"
+<script setup lang="ts">
+  import Home from "./Home.vue";
+  import { Web3AuthProvider } from "@web3auth/modal/vue";
+  // focus-next-line
+  import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
+  import web3AuthContextConfig from "./web3authContext";
+</script>
+
+<template>
+  <div class="min-h-screen flex flex-col">
+    <Web3AuthProvider :config="web3AuthContextConfig">
+      <!-- focus-start -->
+      <WagmiProvider>
+        <Home />
+      </WagmiProvider>
+      <!-- focus-end -->
+    </Web3AuthProvider>
+  </div>
+</template>
+```
