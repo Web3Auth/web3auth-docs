@@ -1,97 +1,104 @@
 ---
-title: Account Abstraction
-sidebar_label: Account Abstraction
-description: "@web3auth/no-modal Native Account Abstraction | Documentation - Web3Auth"
+title: Setting up React Hooks
+sidebar_label: Setup
+description: "@web3auth/modal React Hooks Setup | Documentation - Web3Auth"
 ---
 
-import AccountAbstractionDescription from "@site/src/common/sdk/pnp/web/_account-abstraction-description.mdx";
-import AccountAbstractionProviderInstallation from "@site/src/common/sdk/pnp/web/_aa-provider-installation.mdx";
-import AAProviderConfiguration from "@site/src/common/sdk/pnp/web/_aa-provider-configuration.mdx";
-import ConfigureSmartAccountProvider from "@site/src/common/sdk/pnp/web/_smart-account-provider-configuration.mdx";
-import ConfigureBundler from "@site/src/common/sdk/pnp/web/_bundler-configuration.mdx";
-import ConfigureSponsoredPaymaster from "@site/src/common/sdk/pnp/web/_sponsored-paymaster-configuration.mdx";
-import ConfigurePaymasterContext from "@site/src/common/sdk/pnp/web/_paymaster-context.mdx";
-import ConfigureERC20Paymaster from "@site/src/common/sdk/pnp/web/_erc20-paymaster-configuration.mdx";
-import AANoModalSetup from "@site/src/common/sdk/pnp/web/_aa-no-modal-setup.mdx";
-import ConfigureSigners from "@site/src/common/sdk/pnp/web/_configure-aa-signers.mdx";
-import SmartAccountAddress from "@site/src/common/sdk/pnp/web/_aa-address.mdx";
-import SmartAccountSendTransaction from "@site/src/common/sdk/pnp/web/_aa-send-transaction.mdx";
+For a seamless integration in React, Web3Auth provides essential React hooks for Web3Auth Modal SDK.
+These hooks, paired with Wagmi or Solana Hooks (our custom implementation), become a powerful
+combination for building your dApp quickly and efficiently.
 
-import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
+## Web3Auth Provider
 
-<AccountAbstractionDescription />
-<GrowthPlanNote />
+In your main entry file (generally `index.tsx` or `main.tsx`), import the `Web3AuthProvider`
+component and wrap your application with it.
 
-## Installation
+```tsx title="main.tsx"
+import "./index.css";
 
-<AccountAbstractionProviderInstallation />
+import ReactDOM from "react-dom/client";
+// focus-next-line
+import { Web3AuthProvider } from "@web3auth/modal/react";
+import web3AuthContextConfig from "./web3authContext";
 
-## Configure
+import App from "./App";
 
-<AAProviderConfiguration />
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  {/* focus-start */}
+  <Web3AuthProvider config={web3AuthContextConfig}>
+    <App />
+  </Web3AuthProvider>,
+  {/* focus-end */}
+);
+```
 
-Please note this is the important step for setting the Web3Auth account abstraction provider.
+### Config
 
-- [Configure Smart Account provider](#configure-smart-account-provider)
-- [Configure Bundler](#configure-bundler)
-- [Configure Sponsored Paymaster](#sponsored-paymaster)
-- [Configure ERC-20 Paymaster](#erc-20-paymaster)
+The Web3Auth Provider requires a `config` object to be passed in. This config object contains the
+config you setup in the [Configuration Section](/sdk/pnp/web/modal/config).
 
-## Configure Smart Account Provider
+```tsx title="web3authContext.tsx"
+// focus-next-line
+import { type Web3AuthContextConfig } from "@web3auth/modal/react";
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 
-<ConfigureSmartAccountProvider />
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+};
 
-## Configure Bundler
+// focus-start
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
+// focus-end
+```
 
-<ConfigureBundler />
+## Wagmi Integration
 
-## Configure Paymaster
+If you are using Wagmi, you need to install the `wagmi` and `@tanstack/react-query` packages and use
+the **Web3Auth implementation of `WagmiProvider`** for configuration.
 
-You can configure the paymaster of your choice to sponsor gas fees for your users, along with the
-paymaster context. The paymaster context lets you set additional parameters, such as choosing the
-token for ERC-20 paymasters, defining gas policies, and more.
+:::info
 
-### Configure Paymaster Context
+The Web3Auth implementation of `WagmiProvider` is a custom implementation that is used to integrate
+with the Web3Auth Modal SDK. It is a wrapper around the `WagmiProvider` that makes it compatible.
 
-<ConfigurePaymasterContext />
-### Sponsored Paymaster
+With this implementation, you can use the Wagmi hooks, however **no external connectors are
+supported**. Web3Auth provides a whole suite of connectors which you can use directly for a better
+experience with external wallets.
 
-<ConfigureSponsoredPaymaster />
+:::
 
-### ERC-20 Paymaster
+```bash npm2yarn
+npm install wagmi @tanstack/react-query
+```
 
-<ConfigureERC20Paymaster />
+```tsx title="main.tsx"
+import "./index.css";
 
-## Set up
+import ReactDOM from "react-dom/client";
+import { Web3AuthProvider } from "@web3auth/modal/react";
+import web3AuthContextConfig from "./web3authContext";
+// focus-start
+import { WagmiProvider } from "@web3auth/modal/react/wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// focus-end
 
-Once you have configured your AccountAbstractionProvider, you can now plug it in your Web3Auth Modal
-instance. If you are using the external wallets like MetaMask, Coinbase, etc, you can define whether
-you want to use the AccountAbstractionProvider, or EthereumPrivateKeyProvider by setting the
-`useAAWithExternalWallet` in `IWeb3AuthCoreOptions`.
+import App from "./App";
 
-If you are setting `useAAWithExternalWallet` to `true`, it'll create a new Smart Account for your
-user, where the signer/creator of the Smart Account would be the external wallet.
+// focus-next-line
+const queryClient = new QueryClient();
 
-If you are setting `useAAWithExternalWallet` to `false`, it'll skip creating a new Smart Account,
-and directly use the external wallet to sign the transactions.
-
-### Configure Web3Auth Instance
-
-<AANoModalSetup />
-
-### Configure Signer
-
-<ConfigureSigners />
-
-## Smart Account Address
-
-<SmartAccountAddress />
-
-## Send Transaction
-
-<SmartAccountSendTransaction />
-
-## Advanced Smart Account Operations
-
-To learn more about supported transaction methods, and how to perform batch transactions,
-[checkout our detailed documentation of AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider/#send-batch-transaction).
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <Web3AuthProvider config={web3AuthContextConfig}>
+    {/* focus-start */}
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider>
+        <App />
+      </WagmiProvider>
+    </QueryClientProvider>
+    {/* focus-end */}
+  </Web3AuthProvider>,
+);
+```

@@ -1,11 +1,8 @@
 ---
 title: "Installing PnP Web Modal SDK"
-sidebar_label: "Install"
+sidebar_label: "Installation"
 description: "Installing Web3Auth PnP Web Modal SDK | Documentation - Web3Auth"
 ---
-
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
 
 ## [`@web3auth/modal`](https://npmjs.com/package/@web3auth/modal)
 
@@ -13,85 +10,57 @@ import Tabs from "@theme/Tabs";
 npm install --save @web3auth/modal
 ```
 
-### Add `@web3auth/base` to your project
+## Troubleshooting
 
-```bash npm2yarn
-npm install --save @web3auth/base
-```
+:::warning SDK Errors & Warnings
 
-This package gives access to common types and interfaces for Web3Auth. This comes in handy by
-providing you with a standard way of importing the values you need to work with the SDKs. We highly
-recommend using it while working with `Typescript`.
-
-### Add a Provider to your project
-
-The `@web3auth/modal` package requires a private key provider to facilitate interaction with your
-preferred blockchain network. You can choose between the following providers based on your usecase.
-
-- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/pnp/web/providers/evm)
-- [Solana Private Key Provider for Solana Blockchain](/sdk/pnp/web/providers/solana)
-- [XRPL Private Key Provider for XRPL Blockchain](/sdk/pnp/web/providers/xrpl)
-- [Common Private Key Provider for Connecting to any Blockchain](/sdk/pnp/web/providers/common)
-
-:::note
-
-It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more
-in-depth about providers, have a look at the [Providers reference](/sdk/pnp/web/providers).
+Check out our guide for common **[SDK Errors & Warnings](/troubleshooting/sdk-errors-warnings)**
 
 :::
 
-<Tabs
-  defaultValue="evm"
-  values={[
-    { label: "EIP1193 Provider", value: "evm" },
-    { label: "Solana Provider", value: "solana" },
-    { label: "XRPL Provider", value: "xrpl" },
-    { label: "Common Provider", value: "common" },
-  ]}
->
-
-<TabItem value="evm">
-
-```bash npm2yarn
-npm install --save @web3auth/ethereum-provider
-```
-
-</TabItem>
-
-<TabItem value="solana">
-
-```bash npm2yarn
-npm install --save @web3auth/solana-provider
-```
-
-</TabItem>
-
-<TabItem value="xrpl">
-
-```bash npm2yarn
-npm install --save @web3auth/xrpl-provider
-```
-
-</TabItem>
-
-<TabItem value="common">
-
-```bash npm2yarn
-npm install --save @web3auth/base-provider
-```
-
-</TabItem>
-
-</Tabs>
-
-## Troubleshooting
-
 ### Bundler Issues: Missing Dependencies
 
-You might face issues mentioning that certain dependencies are missing within the browser
-environment. These are node dependencies that need to be polyfilled in your application, to enable
-Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while
-building the app. We have created guides for different bundlers to help you with this issue:
+You might encounter errors related to missing dependencies in the browser environment when
+implementing Web3Auth.
 
-- Please check out our **[Vite Troubleshooting Guide](/troubleshooting/vite-issues)**
-- Please check out our **[Webpack 5 Troubleshooting Guide](/troubleshooting/webpack-issues)**
+Common error messages include `Buffer is not defined`, `process is not defined`, or other
+Node.js-specific modules that aren't available in browsers by default.
+
+These Node.js dependencies need to be polyfilled in your application to enable Web3Auth
+functionality properly. Additionally, your bundler configuration may need adjustments to handle
+these dependencies correctly during the build process.
+
+We've prepared detailed troubleshooting guides for popular bundlers:
+
+- **[Vite Troubleshooting Guide](/troubleshooting/vite-issues)**
+- **[Svelte Troubleshooting Guide](/troubleshooting/svelte-issues)**
+- **[Nuxt Troubleshooting Guide](/troubleshooting/nuxt-issues)**
+- **[Webpack 5 Troubleshooting Guide](/troubleshooting/webpack-issues)**
+
+### JWT Errors
+
+When configuring Web3Auth's Custom Authentication, you may encounter JWT errors. Below is a list of
+common JWT errors and links to their solutions:
+
+- [**Invalid JWT Verifiers ID field**](/troubleshooting/jwt-errors#invalid-jwt-verifiers-id-field) \
+   `Error occurred while verifying params could not verify identity`
+
+- [**Failed to verify JWS signature**](/troubleshooting/jwt-errors#failed-to-verify-jws-signature) \
+   `Error occurred while verifying params unable to verify jwt token`
+
+- [**Duplicate Token**](/troubleshooting/jwt-errors#duplicate-token) \
+   `Could not get result from torus nodes Duplicate token found`
+
+- [**Expired Token**](/troubleshooting/jwt-errors#expired-token) \
+   `Error occurred while verifying params timesigned is more than 1m0s ago`
+
+- [**Mismatch JWT Validation field**](/troubleshooting/jwt-errors#mismatch-jwt-validation-field)
+
+- [**Looking for Refresh Tokens?**](/troubleshooting/jwt-errors#looking-for-refresh-tokens)
+
+### Different Private Keys across integrations
+
+If you are getting different private keys across integrations, it is likely because you are using
+different conflicting projects, SDKs, or configurations. Please refer to our troubleshooting guide
+**[Different Private Keys across integrations](/troubleshooting/different-private-key)** to
+understand and resolve this issue.
