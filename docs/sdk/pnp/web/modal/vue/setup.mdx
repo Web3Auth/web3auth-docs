@@ -1,97 +1,111 @@
 ---
-title: Account Abstraction
-sidebar_label: Account Abstraction
-description: "@web3auth/no-modal Native Account Abstraction | Documentation - Web3Auth"
+title: Setting up Vue Composables
+sidebar_label: Setup
+description: "@web3auth/modal Vue Composables Setup | Documentation - Web3Auth"
 ---
 
-import AccountAbstractionDescription from "@site/src/common/sdk/pnp/web/_account-abstraction-description.mdx";
-import AccountAbstractionProviderInstallation from "@site/src/common/sdk/pnp/web/_aa-provider-installation.mdx";
-import AAProviderConfiguration from "@site/src/common/sdk/pnp/web/_aa-provider-configuration.mdx";
-import ConfigureSmartAccountProvider from "@site/src/common/sdk/pnp/web/_smart-account-provider-configuration.mdx";
-import ConfigureBundler from "@site/src/common/sdk/pnp/web/_bundler-configuration.mdx";
-import ConfigureSponsoredPaymaster from "@site/src/common/sdk/pnp/web/_sponsored-paymaster-configuration.mdx";
-import ConfigurePaymasterContext from "@site/src/common/sdk/pnp/web/_paymaster-context.mdx";
-import ConfigureERC20Paymaster from "@site/src/common/sdk/pnp/web/_erc20-paymaster-configuration.mdx";
-import AANoModalSetup from "@site/src/common/sdk/pnp/web/_aa-no-modal-setup.mdx";
-import ConfigureSigners from "@site/src/common/sdk/pnp/web/_configure-aa-signers.mdx";
-import SmartAccountAddress from "@site/src/common/sdk/pnp/web/_aa-address.mdx";
-import SmartAccountSendTransaction from "@site/src/common/sdk/pnp/web/_aa-send-transaction.mdx";
+For a seamless integration in Vue, Web3Auth provides essential composables for the Web3Auth Modal
+SDK. These composables, paired with Wagmi or Solana composables (our custom implementation), become
+a powerful combination for building your dApp quickly and efficiently.
 
-import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
+## Web3Auth Provider
 
-<AccountAbstractionDescription />
-<GrowthPlanNote />
+Wrap your application with the `Web3AuthProvider` in your root component (e.g., `App.vue`).
 
-## Installation
+```html title="App.vue"
+<script setup lang="ts">
+  import Home from "./Home.vue";
+  // focus-next-line
+  import { Web3AuthProvider } from "@web3auth/modal/vue";
+  import web3AuthContextConfig from "./web3authContext";
+</script>
 
-<AccountAbstractionProviderInstallation />
+<template>
+  <div class="min-h-screen flex flex-col">
+    <!-- focus-start -->
+    <Web3AuthProvider :config="web3AuthContextConfig">
+      <Home />
+    </Web3AuthProvider>
+    <!-- focus-end -->
+  </div>
+</template>
+```
 
-## Configure
+### Config
 
-<AAProviderConfiguration />
+The Web3Auth Provider requires a `config` object to be passed in. This config object contains the
+config you setup in the [Configuration Section](/sdk/pnp/web/modal/config).
 
-Please note this is the important step for setting the Web3Auth account abstraction provider.
+```ts title="web3authContext.ts"
+// focus-next-line
+import { type Web3AuthContextConfig } from "@web3auth/modal/vue";
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 
-- [Configure Smart Account provider](#configure-smart-account-provider)
-- [Configure Bundler](#configure-bundler)
-- [Configure Sponsored Paymaster](#sponsored-paymaster)
-- [Configure ERC-20 Paymaster](#erc-20-paymaster)
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+};
 
-## Configure Smart Account Provider
+// focus-start
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
+// focus-end
+```
 
-<ConfigureSmartAccountProvider />
+## Wagmi Integration (Optional)
 
-## Configure Bundler
+If you are using Wagmi, you need to install the `wagmi` & `@tanstack/vue-query` packages and use the
+**Web3Auth implementation of `WagmiProvider`** for configuration.
 
-<ConfigureBundler />
+:::info
 
-## Configure Paymaster
+The Web3Auth implementation of `WagmiProvider` is a custom implementation that is used to integrate
+with the Web3Auth Modal SDK. It is a wrapper around the `WagmiProvider` that makes it compatible.
 
-You can configure the paymaster of your choice to sponsor gas fees for your users, along with the
-paymaster context. The paymaster context lets you set additional parameters, such as choosing the
-token for ERC-20 paymasters, defining gas policies, and more.
+With this implementation, you can use the Wagmi composables, however **no external connectors are
+supported**. Web3Auth provides a whole suite of connectors which you can use directly for a better
+experience with external wallets.
 
-### Configure Paymaster Context
+:::
 
-<ConfigurePaymasterContext />
-### Sponsored Paymaster
+```bash
+npm install wagmi @tanstack/vue-query
+```
 
-<ConfigureSponsoredPaymaster />
+Update your `main.ts` to use the Vue Query plugin **only if you are using Wagmi**:
 
-### ERC-20 Paymaster
+```ts title="main.ts"
+// focus-next-line
+import { VueQueryPlugin } from "@tanstack/vue-query";
+import { createApp } from "vue";
+import App from "./App.vue";
+import "./style.css";
 
-<ConfigureERC20Paymaster />
+// focus-next-line
+createApp(App).use(VueQueryPlugin).mount("#app");
+```
 
-## Set up
+Then, in your `App.vue`, wrap your app with both providers:
 
-Once you have configured your AccountAbstractionProvider, you can now plug it in your Web3Auth Modal
-instance. If you are using the external wallets like MetaMask, Coinbase, etc, you can define whether
-you want to use the AccountAbstractionProvider, or EthereumPrivateKeyProvider by setting the
-`useAAWithExternalWallet` in `IWeb3AuthCoreOptions`.
+```html title="App.vue"
+<script setup lang="ts">
+  import Home from "./Home.vue";
+  import { Web3AuthProvider } from "@web3auth/modal/vue";
+  // focus-next-line
+  import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
+  import web3AuthContextConfig from "./web3authContext";
+</script>
 
-If you are setting `useAAWithExternalWallet` to `true`, it'll create a new Smart Account for your
-user, where the signer/creator of the Smart Account would be the external wallet.
-
-If you are setting `useAAWithExternalWallet` to `false`, it'll skip creating a new Smart Account,
-and directly use the external wallet to sign the transactions.
-
-### Configure Web3Auth Instance
-
-<AANoModalSetup />
-
-### Configure Signer
-
-<ConfigureSigners />
-
-## Smart Account Address
-
-<SmartAccountAddress />
-
-## Send Transaction
-
-<SmartAccountSendTransaction />
-
-## Advanced Smart Account Operations
-
-To learn more about supported transaction methods, and how to perform batch transactions,
-[checkout our detailed documentation of AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider/#send-batch-transaction).
+<template>
+  <div class="min-h-screen flex flex-col">
+    <Web3AuthProvider :config="web3AuthContextConfig">
+      <!-- focus-start -->
+      <WagmiProvider>
+        <Home />
+      </WagmiProvider>
+      <!-- focus-end -->
+    </Web3AuthProvider>
+  </div>
+</template>
+```
