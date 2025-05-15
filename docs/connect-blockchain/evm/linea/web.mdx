@@ -24,6 +24,7 @@ import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.md
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
+import ChainDetailsLinea from "@site/src/common/docs/general-connect-blockchain/_linea.mdx";
 
 <SEO
   title="Integrate Web3Auth with the Linea Blockchain in JavaScript"
@@ -47,53 +48,9 @@ To interact with the Linea blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Linea
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-import { getEvmChainConfig } from "@web3auth/base";
-
-const chainConfig = getEvmChainConfig(59144, "your_web3auth_client_id");
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xe705", // hex of 421611
-  rpcTarget: "https://rpc.sepolia.linea.build",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Linea Sepolia Testnet",
-  blockExplorer: "https://sepolia.lineascan.build/",
-  ticker: "ETH",
-  tickerName: "ETH",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsLinea />
 
 ### Initializing and instantiating the Web3Auth SDK
 
