@@ -1,56 +1,253 @@
 ---
-title: PnP Modal SDK - v9 to v10 Migration Guide
-description: Simplify your migration to Web3Auth v10 with this structured guide.
-sidebar_label: v9 → v10 Migration
+title: Migrating to Web3Auth PnP Modal SDK v10
+description:
+  Learn how to upgrade from Web3Auth v9 to v10 with minimal changes and cleaner architecture.
+sidebar_label: v9 to v10
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# 🚀 Migrating to Web3Auth PnP Modal SDK v10
+# Web3Auth Modal SDK v10 Migration Guide
 
-Web3Auth v10 streamlines your authentication experience by centralizing all setup in the Developer
-Dashboard, removing the complexity of adapters, verifiers, and manual blockchain configuration.
+This guide will help you upgrade your Web3Auth PnP Modal SDK integration from v9 to v10.
 
-> ✅ **Recommended**: Before upgrading, ensure you’re using the latest Web3Auth v9.x to receive
-> helpful deprecation warnings and simplify the migration process.
+Version 10 significantly simplifies your Web3Auth integration by centralizing configuration in the
+Developer Dashboard and removing the complexity of adapters, verifiers, and manual blockchain
+configuration from your frontend code. React integrations now exclusively use a hooks-based
+approach.
+
+:::note Before You Start
+
+To ensure a smooth migration, please consider the following steps:
+
+- **Backup Your Project:** It's crucial to have a backup or a version control checkpoint of your
+  project before starting the migration process.
+- **Use Latest v9.x Version:** Ensure your application is on the latest Web3Auth v9.x version. This
+  can provide helpful deprecation warnings from the SDK itself.
+- **Web3Auth Developer Dashboard Access:** A key aspect of v10 is that many configurations (like
+  verifiers, chain settings, Smart Accounts, and modal UI options) are now managed via the
+  [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). Make sure you have access to your
+  project settings on the dashboard.
+- **Understand the Scope:** Briefly review the "Why these changes?" and "Migration Overview"
+  sections to understand the scope and nature of the upgrade.
+- **Allocate Sufficient Time:** Go through this guide once entirely to estimate the time and effort
+  required for your specific integration.
+
+:::
+
+:::tip Key Change in v10: Dashboard-Centric Configuration
+
+Remember, a fundamental shift in v10 is moving many configurations that were previously in your
+client-side code (like verifier details, chain configurations, Smart Account settings, and even
+modal UI customizations) to the **Web3Auth Developer Dashboard**. Throughout this guide, when
+client-side code is removed or simplified, it's often because that configuration now resides on the
+dashboard.
+
+:::
 
 ---
 
-## 📥 Installation
+## Why these changes?
 
-Start by updating your dependencies to use the latest v10 release:
+Web3Auth v9 was designed for flexibility, but it often led to verbose setup and configuration
+overhead. Common issues included:
+
+- **Manual adapter registration:** Developers had to import and configure adapters like
+  `AuthAdapter`, often duplicating login method declarations.
+- **Frontend-managed verifiers:** Account linking required setting `verifier` and
+  `verifierSubIdentifier` manually for each login provider, creating potential for drift between
+  frontend and backend logic.
+- **Explicit blockchain configuration:** Every app needed to manually construct a `chainConfig`
+  object and pass a `privateKeyProvider`, even for commonly used chains.
+- **Smart Account complexity:** Integrating Smart Accounts required understanding and configuring
+  additional providers like bundlers and paymasters using a separate SDK.
+
+Web3Auth v10 simplifies all of this by introducing:
+
+- **Dashboard-centric configuration:** Login methods, verifiers, adapters, Smart Account settings,
+  and chain details are now managed through the Web3Auth Developer Dashboard—eliminating duplication
+  and reducing error-prone frontend logic.
+- **Automatic blockchain config resolution:** You no longer need to pass `chainConfig` or
+  `privateKeyProvider`. The SDK automatically applies correct settings based on your dashboard
+  config.
+- **Declarative login setup via `connectors`:** Replaces adapter-based setup with a single source of
+  truth for login providers in `modalConfig.connectors`.
+- **React-first hooks API:** The SDK now exposes hooks like `useWeb3AuthConnect()` to align with
+  modern React patterns and simplify lifecycle and state management.
+- **Simplified Smart Accounts:** All Smart Account logic is abstracted and optionally overridden via
+  `accountAbstractionConfig`, with no need for a separate provider SDK.
+
+The result is a cleaner, more declarative, and more maintainable integration experience—especially
+for teams maintaining apps across multiple auth flows and chains.
+
+---
+
+## Migration Overview
+
+You'll migrate your app following these steps, ordered from simplest to most complex for minimum
+cognitive load:
+
+1. Install Web3Auth Modal v10.
+2. Move `modalConfig` to the constructor.
+3. Remove `privateKeyProvider` and `chainConfig`.
+4. Remove adapters.
+5. Replace `verifier` and `verifierSubIdentifier`.
+6. Migrate React usage to hooks (required for React users).
+7. Use Wagmi for blockchain RPC interactions (React + EVM chains).
+8. Update Smart Accounts setup (optional).
+9. Review deprecated APIs.
+10. Confirm changes with a migration summary.
+
+---
+
+## Installation
+
+Install the latest v10 SDK package:
 
 ```bash
 npm install @web3auth/modal@latest
-# or
-yarn add @web3auth/modal@latest
 ```
 
-> ⚠️ **Note**: Ensure removal of deprecated packages like `@web3auth/base`.
+Remove deprecated packages if present:
+
+- `@web3auth/base`
+- `@web3auth/auth-adapter`
+- `@web3auth/account-abstraction-provider`
+
+:::warning Important
+
+Ensure these packages are fully removed to avoid unexpected behavior during migration.
+
+:::
 
 ---
 
-## 🧹 Migration Steps
+## Step-by-step migration
 
-To migrate effectively, proceed in the following logical order:
-
-1. [Update Authentication Configuration](#1-update-authentication-configuration)
-2. [Remove Adapter Setup](#2-remove-adapter-setup)
-3. [Simplify Chain and Key Provider Setup](#3-simplify-chain-and-key-provider-setup)
-4. [Update Modal Configuration](#4-update-modal-configuration)
-5. [Switch to React Hooks (if applicable)](#5-switch-to-react-hooks-if-applicable)
-6. [Update Blockchain RPC Usage](#6-update-blockchain-rpc-usage-react-only)
-7. [Review Deprecated Features](#7-review-deprecated-features)
+Below are detailed instructions for each migration step. Complete them sequentially for clarity and
+minimal complexity.
 
 ---
 
-## 1. Update Authentication Configuration
+## 1. Move `modalConfig` into the constructor
 
-Replace `verifier` and `verifierSubIdentifier` with dashboard-based identifiers:
+Previously, you passed `modalConfig` when calling `initModal()`. Now it must be moved directly into
+the Web3Auth constructor.
 
 <Tabs>
-  <TabItem value="v9" label="v9 (Before)">
+<TabItem value="v9" label="v9 (before)">
+
+```ts
+await web3auth.initModal({
+  modalConfig: {
+    /* your modal configuration */
+  },
+});
+```
+
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
+
+```ts
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  modalConfig: {
+    /* your modal configuration */
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## 2. Remove `privateKeyProvider` and `chainConfig`
+
+Explicit blockchain configuration via `privateKeyProvider` and `chainConfig` is now fully handled
+through the Web3Auth Dashboard.
+
+<Tabs>
+<TabItem value="v9" label="v9 (before)">
+
+```ts
+const chainConfig = getEvmChainConfig("0x1", clientId);
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3auth = new Web3Auth({
+  clientId,
+  privateKeyProvider,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+```
+
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
+
+```ts
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  modalConfig: {
+    /* your modal configuration */
+  },
+});
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## 3. Remove adapters
+
+Adapters like `AuthAdapter` are removed. Login methods are now directly declared in the `connectors`
+configuration.
+
+<Tabs>
+<TabItem value="v9" label="v9 (before)">
+
+```ts
+import { AuthAdapter } from "@web3auth/auth-adapter";
+
+const adapter = new AuthAdapter(adapterConfig);
+web3auth.configureAdapter(adapter);
+```
+
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
+
+```ts
+modalConfig: {
+  connectors: {
+    [WALLET_CONNECTORS.AUTH]: {
+      loginMethods: {
+        google: {
+          authConnection: AUTH_CONNECTION.GOOGLE,
+          authConnectionId: "w3a-google",
+        },
+      },
+    },
+  },
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## 4. Replace `verifier` and `verifierSubIdentifier`
+
+Verifiers and sub-verifiers are now managed via your dashboard. Use `authConnectionId` and
+`groupedAuthConnectionId` instead.
+
+<Tabs>
+<TabItem value="v9" label="v9 (before)">
 
 ```ts
 loginConfig: {
@@ -63,8 +260,8 @@ loginConfig: {
 }
 ```
 
-  </TabItem>
-  <TabItem value="v10" label="v10 (After)">
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
 
 ```ts
 modalConfig: {
@@ -82,121 +279,18 @@ modalConfig: {
 }
 ```
 
-  </TabItem>
-</Tabs>
-
-> ✅ **Benefit**: Automatic account linking via dashboard, reducing frontend complexity.
-
----
-
-## 2. Remove Adapter Setup
-
-Adapters like `AuthAdapter` are fully removed. Migrate directly to connectors:
-
-<Tabs>
-  <TabItem value="v9" label="v9 (Before)">
-
-```ts
-import { AuthAdapter } from "@web3auth/auth-adapter";
-
-const authAdapter = new AuthAdapter(adapterSettings);
-web3auth.configureAdapter(authAdapter);
-```
-
-  </TabItem>
-  <TabItem value="v10" label="v10 (After)">
-
-```ts
-modalConfig: {
-  connectors: {
-    [WALLET_CONNECTORS.AUTH]: {
-      loginMethods: {
-        google: {
-          authConnection: AUTH_CONNECTION.GOOGLE,
-          authConnectionId: "w3a-google",
-        },
-      },
-    },
-  },
-}
-```
-
-  </TabItem>
-</Tabs>
-
-> ✅ **Result**: Cleaner, zero-import setup.
-
----
-
-## 3. Simplify Chain and Key Provider Setup
-
-Manual `privateKeyProvider` and `chainConfig` are deprecated. Now fully dashboard-driven:
-
-<Tabs>
-  <TabItem value="v9" label="v9 (Before)">
-
-```ts
-const chainConfig = getEvmChainConfig(chainId, clientId);
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-const web3auth = new Web3Auth({
-  clientId,
-  privateKeyProvider,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-});
-```
-
-  </TabItem>
-  <TabItem value="v10" label="v10 (After)">
-
-```ts
-const web3auth = new Web3Auth({
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  modalConfig: { ... },
-});
-```
-
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
 
-## 4. Update Modal Configuration
+## 5. Migrate React usage to hooks (React only)
 
-Move `modalConfig` setup directly into the SDK constructor:
-
-<Tabs>
-  <TabItem value="v9" label="v9 (Before)">
-
-```ts
-await web3auth.initModal({
-  modalConfig: { ... },
-});
-```
-
-  </TabItem>
-  <TabItem value="v10" label="v10 (After)">
-
-```ts
-const web3auth = new Web3Auth({
-  clientId,
-  modalConfig: { ... },
-});
-await web3auth.initModal();
-```
-
-  </TabItem>
-</Tabs>
-
----
-
-## 5. Switch to React Hooks (if applicable)
-
-React apps must migrate from class-based methods to hooks provided by `@web3auth/modal/react`:
+React apps must now use hooks from `@web3auth/modal/react`. Class-based methods are removed for
+React.
 
 <Tabs>
-  <TabItem value="v9" label="v9 (Before)">
+<TabItem value="v9" label="v9 (before)">
 
 ```ts
 const web3auth = new Web3Auth({ ... });
@@ -204,8 +298,8 @@ await web3auth.initModal();
 await web3auth.connect();
 ```
 
-  </TabItem>
-  <TabItem value="v10" label="v10 (After)">
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
 
 ```ts
 const { connect } = useWeb3AuthConnect();
@@ -216,17 +310,17 @@ await connect(WALLET_CONNECTORS.AUTH, {
 });
 ```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
 
-## 6. Update Blockchain RPC Usage (React only)
+## 6. Use Wagmi for blockchain RPC (React + EVM only)
 
-React-based blockchain RPC calls should now use `wagmi` hooks:
+Replace manual RPC handling with Wagmi hooks for simplicity.
 
 <Tabs>
-  <TabItem value="v9" label="v9 (Before)">
+<TabItem value="v9" label="v9 (before)">
 
 ```ts
 const rpc = new EthereumRpc(provider);
@@ -234,8 +328,8 @@ await rpc.getAccounts();
 await rpc.signMessage();
 ```
 
-  </TabItem>
-  <TabItem value="v10" label="v10 (After)">
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
 
 ```ts
 import { useAccount, useSignMessage } from "wagmi";
@@ -244,44 +338,86 @@ const { address } = useAccount();
 const { signMessage } = useSignMessage();
 ```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
 
-## 7. Review Deprecated Features
+## 7. Smart Accounts setup (optional)
 
-Plan for future removal of deprecated features:
-
-| Feature                        | v10 Status | Action required                |
-| ------------------------------ | ---------- | ------------------------------ |
-| `@web3auth/base` package       | Deprecated | Replace with `@web3auth/modal` |
-| `privateKeyProvider`           | Removed    | Dashboard-managed              |
-| Class-based React usage        | Removed    | Switch to hooks                |
-| Adapters (`AuthAdapter`, etc.) | Removed    | Use `connectors`               |
+Smart Accounts are now fully configurable via the Web3Auth Dashboard and optionally overridden
+through `accountAbstractionConfig` in the `Web3Auth` constructor options (for class-based SDK or if
+customizing for React provider) or within the `options` prop of the `Web3AuthProvider` (for React
+apps).
 
 ---
 
-## 🚦 Framework Compatibility Table
+## Deprecated APIs
 
-| Framework | Class-based usage | React hooks | Wagmi RPC      |
-| --------- | ----------------- | ----------- | -------------- |
-| React     | ❌ Unsupported    | ✅ Required | ✅ Recommended |
-| Angular   | ✅ Supported      | N/A         | N/A            |
-| Vue       | ✅ Supported      | N/A         | N/A            |
-| Vanilla   | ✅ Supported      | N/A         | N/A            |
+Review and remove any deprecated APIs:
+
+- **`@web3auth/base`**: Functionality merged into `@web3auth/modal`. _See Step 9: "Consolidate
+  imports" (implicitly, though not an explicit step in modal, this is the outcome)._
+- **`@web3auth/auth-adapter`** (and other specific adapter packages): Adapters are no longer
+  configured in client code; social connections are defined in `modalConfig.connectors`. _See Step
+  4: "Remove adapters"._
+- **`@web3auth/account-abstraction-provider`**: Smart Account configuration is now part of
+  `@web3auth/modal` options and primarily dashboard-driven. _See Step 8: "Update Smart Accounts
+  setup (optional)"._
+- **`verifier`, `verifierSubIdentifier`** (in client code for adapters/loginConfig): Replaced by
+  `authConnectionId` and `groupedAuthConnectionId` within `modalConfig.connectors`, with primary
+  configuration on the dashboard. _See Step 5: "Replace `verifier` and `verifierSubIdentifier`"._
+- **`privateKeyProvider`, `chainConfig`** (in client code): Replaced by configuration via the
+  Web3Auth Developer Dashboard. _See Step 3: "Remove `privateKeyProvider` and `chainConfig`"._
+- **`web3auth.configureAdapter()`**: This method is removed as adapters are no longer configured
+  directly on the `web3auth` instance. _See Step 4: "Remove adapters"._
+- **React class-based methods for `Web3Auth`**: React integrations must use hooks. _See Step 6:
+  "Migrate React usage to hooks (React only)"._
 
 ---
 
-## 🎯 Summary & Next Steps
+## Migration Summary
 
-- ✅ **Review:** Verify you've addressed all breaking changes.
-- ✅ **Testing:** Thoroughly test your migrated application.
-- ✅ **Support:** Reach out via our [community forums](https://web3auth.io/community) for help.
+Confirm all changes using the detailed table provided in the previous sections.
 
 ---
 
-## 📖 Additional Resources
+## Verifying Your v10 Integration
+
+After completing all the migration steps, it's crucial to thoroughly test your application to ensure
+everything functions as expected. Here's a checklist of areas to focus on:
+
+- **Modal Display & UI:** Ensure the Web3Auth Modal displays correctly with your configured login
+  methods (as set up in the `modalConfig` and on the Dashboard).
+- **Login Methods:** Test every social login, email passwordless, and external wallet connection
+  method you have configured.
+- **Account Consistency:** If you use features like `groupedAuthConnectionId` for account linking,
+  verify that logging in with different methods linked to the same identifier correctly resolves to
+  the same user account and private key.
+- **Blockchain Provider:** Ensure `web3auth.provider` (for class-based usage) or the provider from
+  `useWeb3Auth()` / `useWeb3AuthConnect()` (for React hooks) is available and correctly initialized
+  for your target chain(s).
+- **Core Blockchain Operations:**
+  - Fetch user account address.
+  - Fetch account balance.
+  - Sign a message.
+  - Send a simple transaction.
+- **Smart Accounts (if applicable):**
+  - Verify that the Smart Account is deployed as expected.
+  - Test all key interactions with your Smart Account.
+- **Logout Functionality:** Ensure logout clears the session and provider correctly.
+- **Session Management:** Test session persistence and restoration if applicable.
+- **Error Handling:** Test common error scenarios.
+
+Refer back to the "Migration Summary" table in this guide to double-check that all relevant changes
+for your integration have been addressed.
+
+---
+
+## Further Reading
 
 - [Web3Auth Documentation](https://web3auth.io/docs/sdk/pnp/web/modal)
-- [PnP Examples](https://github.com/web3auth/web3auth-pnp-examples)
+
+- [Web3Auth Examples](https://github.com/web3auth/web3auth-pnp-examples)
+
+- [Join the Community](https://web3auth.io/community)
