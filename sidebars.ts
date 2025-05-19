@@ -171,8 +171,8 @@ const sdkQuickLinks: any = [
   },
   {
     type: "link",
-    label: "Dashboard Setup",
-    href: "/dashboard-setup",
+    label: "Dashboard",
+    href: "/dashboard",
   },
 ];
 
@@ -1108,15 +1108,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Dashboard Setup",
+      label: "Dashboard",
       items: [
-        "dashboard-setup/dashboard-setup",
-        "dashboard-setup/projects-and-analytics",
-        "dashboard-setup/whitelisting",
-        "dashboard-setup/enable-interoperability",
-        "dashboard-setup/setup-custom-authentication",
-        "dashboard-setup/billing-and-usage",
-        "dashboard-setup/roles-and-permissions",
+        "dashboard/overview",
+        "dashboard/create-new-project",
+        "dashboard/configure-connections",
       ],
     },
     "examples",
