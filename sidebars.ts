@@ -1,7 +1,8 @@
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 import {
-  web,
+  reactJS,
+  vue,
   android,
   ios,
   reactnative,
@@ -11,92 +12,167 @@ import {
   js,
 } from "./src/common/SDKOptions";
 
-import { getPnPVersion, getSFAVersion, getMPCCoreKitVersion } from "./src/common/versions";
+import {
+  getPnPVersion,
+  getSFAVersion,
+  getMPCCoreKitVersion,
+  pnpWebVersion,
+} from "./src/common/versions";
 
-function pnpTopNavButton(selectedSDK: string): string {
+function webTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-  var pnpSDKs = {
-    [web]: `${baseUrl}sdk/pnp/web`,
-    [android]: `${baseUrl}sdk/pnp/android`,
-    [ios]: `${baseUrl}sdk/pnp/ios`,
-    [reactnative]: `${baseUrl}sdk/pnp/react-native`,
-    [flutter]: `${baseUrl}sdk/pnp/flutter`,
-    [unity]: `${baseUrl}sdk/pnp/unity`,
-    [unreal]: `${baseUrl}sdk/pnp/unreal`,
+  var webSDKs = {
+    [reactJS]: `${baseUrl}sdk/web/react`,
+    [vue]: `${baseUrl}sdk/web/vue`,
+    [js]: `${baseUrl}sdk/web/js`,
   };
-  if (pnpSDKs.hasOwnProperty(selectedSDK)) {
-    delete pnpSDKs[selectedSDK];
+  if (webSDKs.hasOwnProperty(selectedSDK)) {
+    delete webSDKs[selectedSDK];
   }
-  var sdkNames = Object.keys(pnpSDKs);
-  var sdkLinks = Object.values(pnpSDKs);
-  var sdkVersion = getPnPVersion(selectedSDK);
+  var sdkNames = Object.keys(webSDKs);
+  var sdkLinks = Object.values(webSDKs);
+  var sdkVersion = pnpWebVersion;
 
   return `
     <div class="sdk-sidebar-container">
       <div class="sdk-sidebar-option-selected">
-        Plug and Play SDKs
+        Web
+        <div class="sdk-sidebar-dropdown-container">
+          <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
+              <option value="">${selectedSDK}</option>
+              <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
+              <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
+          </select>
+          v${sdkVersion}
+        </div>
+      </div>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mobile">
+        Mobile
+      </a>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/gaming">
+        Gaming
+      </a>
+    </div>`;
+}
+
+function gamingTopNavButton(selectedSDK: string): string {
+  const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
+
+  var gamingSDKs = {
+    [unity]: `${baseUrl}sdk/gaming/unity`,
+    [unreal]: `${baseUrl}sdk/gaming/unreal`,
+  };
+  if (gamingSDKs.hasOwnProperty(selectedSDK)) {
+    delete gamingSDKs[selectedSDK];
+  }
+  var sdkNames = Object.keys(gamingSDKs);
+  var sdkLinks = Object.values(gamingSDKs);
+  var sdkVersion = getPnPVersion(selectedSDK);
+
+  return `
+    <div class="sdk-sidebar-container">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/web">
+        Web
+      </a>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mobile">
+        Mobile
+      </a>
+      <div class="sdk-sidebar-option-selected">
+        Gaming
+        <div class="sdk-sidebar-dropdown-container">
+          <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
+              <option value="">${selectedSDK}</option>
+              <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
+          </select>
+          v${sdkVersion}
+        </div>
+      </div>
+    </div>`;
+}
+
+function pnpMobileTopNavButton(selectedSDK: string): string {
+  const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
+
+  var pnpMobileSDKs = {
+    [android]: `${baseUrl}sdk/mobile/pnp/android`,
+    [ios]: `${baseUrl}sdk/mobile/pnp/ios`,
+    [reactnative]: `${baseUrl}sdk/mobile/pnp/react-native`,
+    [flutter]: `${baseUrl}sdk/mobile/pnp/flutter`,
+  };
+  if (pnpMobileSDKs.hasOwnProperty(selectedSDK)) {
+    delete pnpMobileSDKs[selectedSDK];
+  }
+  var sdkNames = Object.keys(pnpMobileSDKs);
+  var sdkLinks = Object.values(pnpMobileSDKs);
+  var sdkVersion = getPnPVersion(selectedSDK);
+
+  return `
+    <div class="sdk-sidebar-container">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/web">
+        Web
+      </a>
+      <div class="sdk-sidebar-option-selected">
+        Plug and Play
         <div class="sdk-sidebar-dropdown-container">
           <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
               <option value="">${selectedSDK}</option>
               <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
               <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
               <option value="${sdkLinks[2]}">${sdkNames[2]}</option>
-              <option value="${sdkLinks[3]}">${sdkNames[3]}</option>
-              <option value="${sdkLinks[4]}">${sdkNames[4]}</option>
-              <option value="${sdkLinks[5]}">${sdkNames[5]}</option>
           </select>
           v${sdkVersion}
         </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
-        Single Factor Auth Mobile SDKs
-        <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mobile/sfa/android">
+        Single Factor Auth
+        <span class="sdk-sidebar-description">Use native logins of your app, keeping Web3Auth hidden from users.</span>
       </a>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
-        MPC Core Kit SDK
-        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/gaming">
+        Gaming
       </a>
     </div>`;
 }
 
-function sfaTopNavButton(selectedSDK: string): string {
+function sfaMobileTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-  var sfaSDKs = {
-    [js]: `${baseUrl}sdk/sfa/sfa-js`,
-    [android]: `${baseUrl}sdk/sfa/sfa-android`,
-    [ios]: `${baseUrl}sdk/sfa/sfa-ios`,
-    [flutter]: `${baseUrl}sdk/sfa/sfa-flutter`,
+  var sfaMobileSDKs = {
+    [android]: `${baseUrl}sdk/mobile/sfa/android`,
+    [ios]: `${baseUrl}sdk/mobile/sfa/ios`,
+    [reactnative]: `${baseUrl}sdk/mobile/sfa/react-native`,
+    [flutter]: `${baseUrl}sdk/mobile/sfa/flutter`,
   };
-  if (sfaSDKs.hasOwnProperty(selectedSDK)) {
-    delete sfaSDKs[selectedSDK];
+  if (sfaMobileSDKs.hasOwnProperty(selectedSDK)) {
+    delete sfaMobileSDKs[selectedSDK];
   }
-  var sdkNames = Object.keys(sfaSDKs);
-  var sdkLinks = Object.values(sfaSDKs);
+  var sdkNames = Object.keys(sfaMobileSDKs);
+  var sdkLinks = Object.values(sfaMobileSDKs);
   var sdkVersion = getSFAVersion(selectedSDK);
 
   return `
     <div class="sdk-sidebar-container">
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/pnp/web">
-        Plug and Play SDKs
-        <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/web">
+        Web
+      </a>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mobile/pnp/android">
+        Plug and Play
+        <span class="sdk-sidebar-description">Integrate the full Web3Auth functionality with just 4 lines of code.</span>
       </a>
       <div class="sdk-sidebar-option-selected">
-        Single Factor Auth Mobile SDKs
-                <div class="sdk-sidebar-dropdown-container">
-        <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
-            <option value="">${selectedSDK}</option>
-            <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
-            <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
-            <option value="${sdkLinks[2]}">${sdkNames[2]}</option>
-        </select>
-                  v${sdkVersion}
-                  </div>
+        Single Factor Auth
+        <div class="sdk-sidebar-dropdown-container">
+          <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
+              <option value="">${selectedSDK}</option>
+              <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
+              <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
+              <option value="${sdkLinks[2]}">${sdkNames[2]}</option>
+          </select>
+          v${sdkVersion}
+        </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
-        MPC Core Kit SDK
-        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/gaming">
+        Gaming
       </a>
     </div>`;
 }
@@ -117,16 +193,8 @@ function mpcckTopNavButton(selectedSDK: string): string {
 
   return `
     <div class="sdk-sidebar-container">
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/pnp/web">
-        Plug and Play SDKs
-        <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
-      </a>
-       <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
-        Single Factor Auth Mobile SDKs
-        <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
-      </a>
       <div class="sdk-sidebar-option-selected">
-        MPC Core Kit SDKs
+        MPC Core Kit
         <div class="sdk-sidebar-dropdown-container">
           <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
               <option value="">${selectedSDK}</option>
@@ -294,24 +362,7 @@ const sidebars: SidebarsConfig = {
       value: "<span class='sidebarHeading'>Features</span>",
       defaultStyle: true,
     },
-    "features/account-abstraction",
-    "features/account-dashboard",
-    "features/compatible-blockchains",
-    "features/custom-authentication",
-    "features/ecosystem-wallets",
-    "features/wallet-ui",
-    "features/external-wallets",
-    "features/topup",
-    "features/gaming",
-    "features/interoperability",
-    "features/mobile",
-    "features/mfa",
-    "features/mpc",
-    "features/nft-minting",
-    "features/server-side-verification",
-    "features/session-management",
-    "features/wallet-pregeneration",
-    "features/whitelabel",
+    { type: "autogenerated", dirName: "features" },
     {
       type: "html",
       value: "<span class='sidebarHeading'>Additional Reading</span>",
@@ -526,97 +577,184 @@ const sidebars: SidebarsConfig = {
       ],
     },
   ],
-  sdk_pnp_web: [
+  sdk_pnp_react: [
     {
       type: "html",
-      value: pnpTopNavButton(web),
+      value: webTopNavButton(reactJS),
       defaultStyle: true,
     },
-    "sdk/pnp/web/web",
-    "sdk/pnp/web/install",
-    "sdk/pnp/web/config",
+    "sdk/web/react/react",
+    "sdk/web/react/install",
+    "sdk/web/react/setup",
     {
       type: "category",
-      label: "React SDK",
+      collapsible: true,
+      collapsed: false,
+      label: "Web3Auth Hooks",
+      items: [{ type: "autogenerated", dirName: "sdk/web/react/hooks" }],
+    },
+    "sdk/web/react/ethereum-hooks",
+    {
+      type: "category",
+      collapsible: true,
+      collapsed: false,
+      label: "Solana Hooks",
+      items: [{ type: "autogenerated", dirName: "sdk/web/react/solana-hooks" }],
+    },
+    {
+      type: "category",
+      collapsible: true,
+      collapsed: false,
+      label: "Advanced Settings",
+      items: [{ type: "autogenerated", dirName: "sdk/web/advanced" }],
+    },
+    "sdk/web/react/examples",
+    {
+      type: "link",
+      label: "Support Forum",
+      href: "https://web3auth.io/community/c/help-pnp/pnp-web/7",
+    },
+    {
+      type: "link",
+      label: "Release Notes",
+      href: "https://github.com/Web3Auth/web3auth-web/releases",
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
       items: [
-        "sdk/pnp/web/react/setup",
         {
           type: "category",
-          collapsible: true,
-          collapsed: false,
-          label: "Web3Auth Hooks",
-          items: [{ type: "autogenerated", dirName: "sdk/pnp/web/react/hooks" }],
+          label: "Plug and Play Modal SDK",
+          items: [
+            "migration-guides/modal-v8-to-v9",
+            "migration-guides/modal-v7-to-v8",
+            "migration-guides/modal-v6-to-v7",
+            "migration-guides/modal-v5-to-v6",
+          ],
         },
-        "sdk/pnp/web/react/ethereum-hooks",
         {
           type: "category",
-          collapsible: true,
-          collapsed: false,
-          label: "Solana Hooks",
-          items: [{ type: "autogenerated", dirName: "sdk/pnp/web/react/solana-hooks" }],
+          label: "Plug and Play No Modal SDK",
+          items: [
+            "migration-guides/no-modal-v8-to-v9",
+            "migration-guides/no-modal-v7-to-v8",
+            "migration-guides/no-modal-v6-to-v7",
+            "migration-guides/no-modal-v5-to-v6",
+          ],
         },
       ],
     },
+    ...sdkQuickLinks,
+  ],
+  sdk_pnp_vue: [
+    {
+      type: "html",
+      value: webTopNavButton(vue),
+      defaultStyle: true,
+    },
+    "sdk/web/vue/vue",
+    "sdk/web/vue/install",
+    "sdk/web/vue/setup",
     {
       type: "category",
-      label: "Vue SDK",
+      collapsible: true,
+      collapsed: false,
+      label: "Web3Auth Composables",
+      items: [{ type: "autogenerated", dirName: "sdk/web/vue/composables" }],
+    },
+    "sdk/web/vue/ethereum-composables",
+    {
+      type: "category",
+      collapsible: true,
+      collapsed: false,
+      label: "Solana Composables",
+      items: [{ type: "autogenerated", dirName: "sdk/web/vue/solana-composables" }],
+    },
+    {
+      type: "category",
+      collapsible: true,
+      collapsed: false,
+      label: "Advanced Settings",
+      items: [{ type: "autogenerated", dirName: "sdk/web/advanced" }],
+    },
+    "sdk/web/vue/examples",
+    {
+      type: "link",
+      label: "Support Forum",
+      href: "https://web3auth.io/community/c/help-pnp/pnp-web/7",
+    },
+    {
+      type: "link",
+      label: "Release Notes",
+      href: "https://github.com/Web3Auth/web3auth-web/releases",
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
       items: [
-        "sdk/pnp/web/vue/setup",
         {
           type: "category",
-          collapsible: true,
-          collapsed: false,
-          label: "Web3Auth Composables",
-          items: [{ type: "autogenerated", dirName: "sdk/pnp/web/vue/composables" }],
+          label: "Plug and Play Modal SDK",
+          items: [
+            "migration-guides/modal-v8-to-v9",
+            "migration-guides/modal-v7-to-v8",
+            "migration-guides/modal-v6-to-v7",
+            "migration-guides/modal-v5-to-v6",
+          ],
         },
-        "sdk/pnp/web/vue/ethereum-composables",
         {
           type: "category",
-          collapsible: true,
-          collapsed: false,
-          label: "Solana Composables",
-          items: [{ type: "autogenerated", dirName: "sdk/pnp/web/vue/solana-composables" }],
+          label: "Plug and Play No Modal SDK",
+          items: [
+            "migration-guides/no-modal-v8-to-v9",
+            "migration-guides/no-modal-v7-to-v8",
+            "migration-guides/no-modal-v6-to-v7",
+            "migration-guides/no-modal-v5-to-v6",
+          ],
         },
+      ],
+    },
+    ...sdkQuickLinks,
+  ],
+  sdk_pnp_js: [
+    {
+      type: "html",
+      value: webTopNavButton(js),
+      defaultStyle: true,
+    },
+    "sdk/web/js/js",
+    "sdk/web/js/install",
+    "sdk/web/js/setup",
+    "sdk/web/js/events",
+    {
+      type: "category",
+      collapsible: true,
+      collapsed: false,
+      label: "Functions",
+      items: [
+        "sdk/web/js/functions/functions",
+        "sdk/web/js/functions/authenticateUser",
+        "sdk/web/js/functions/connect",
+        "sdk/web/js/functions/enableMFA",
+        "sdk/web/js/functions/getUserInfo",
+        "sdk/web/js/functions/logout",
+        "sdk/web/js/functions/manageMFA",
+        "sdk/web/js/functions/showCheckout",
+        "sdk/web/js/functions/showSwap",
+        "sdk/web/js/functions/showWalletConnectScanner",
+        "sdk/web/js/functions/showWalletUI",
+        "sdk/web/js/functions/switchChain",
       ],
     },
     {
       type: "category",
       collapsible: true,
       collapsed: false,
-      label: "JavaScript SDK",
-      items: [
-        "sdk/pnp/web/js/setup",
-        "sdk/pnp/web/js/events",
-        {
-          type: "category",
-          collapsible: true,
-          collapsed: false,
-          label: "Functions",
-          items: [
-            "sdk/pnp/web/js/functions/functions",
-            "sdk/pnp/web/js/functions/authenticateUser",
-            "sdk/pnp/web/js/functions/connect",
-            "sdk/pnp/web/js/functions/enableMFA",
-            "sdk/pnp/web/js/functions/getUserInfo",
-            "sdk/pnp/web/js/functions/logout",
-            "sdk/pnp/web/js/functions/manageMFA",
-            "sdk/pnp/web/js/functions/showCheckout",
-            "sdk/pnp/web/js/functions/showSwap",
-            "sdk/pnp/web/js/functions/showWalletConnectScanner",
-            "sdk/pnp/web/js/functions/showWalletUI",
-            "sdk/pnp/web/js/functions/switchChain",
-          ],
-        },
-      ],
+      label: "Advanced Settings",
+      items: [{ type: "autogenerated", dirName: "sdk/web/advanced" }],
     },
-    // {
-    //   type: "category",
-    //   collapsible: true,
-    //   collapsed: false,
-    //   label: "Advanced Settings",
-    //   items: [{ type: "autogenerated", dirName: "sdk/pnp/web/advanced" }],
-    // },
-    "sdk/pnp/web/examples",
+    "sdk/web/js/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -658,24 +796,24 @@ const sidebars: SidebarsConfig = {
   sdk_pnp_android: [
     {
       type: "html",
-      value: pnpTopNavButton(android),
+      value: pnpMobileTopNavButton(android),
       defaultStyle: true,
     },
-    "sdk/pnp/android/android",
-    "sdk/pnp/android/install",
-    "sdk/pnp/android/initialize",
-    "sdk/pnp/android/usage",
-    "sdk/pnp/android/examples",
+    "sdk/mobile/pnp/android/android",
+    "sdk/mobile/pnp/android/install",
+    "sdk/mobile/pnp/android/initialize",
+    "sdk/mobile/pnp/android/usage",
+    "sdk/mobile/pnp/android/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/pnp/android/whitelabel",
-        "sdk/pnp/android/custom-authentication",
-        "sdk/pnp/android/mfa",
-        "sdk/pnp/android/dapp-share",
+        "sdk/mobile/pnp/android/whitelabel",
+        "sdk/mobile/pnp/android/custom-authentication",
+        "sdk/mobile/pnp/android/mfa",
+        "sdk/mobile/pnp/android/dapp-share",
       ],
     },
     {
@@ -711,24 +849,24 @@ const sidebars: SidebarsConfig = {
   sdk_pnp_ios: [
     {
       type: "html",
-      value: pnpTopNavButton(ios),
+      value: pnpMobileTopNavButton(ios),
       defaultStyle: true,
     },
-    "sdk/pnp/ios/ios",
-    "sdk/pnp/ios/install",
-    "sdk/pnp/ios/initialize",
-    "sdk/pnp/ios/usage",
-    "sdk/pnp/ios/examples",
+    "sdk/mobile/pnp/ios/ios",
+    "sdk/mobile/pnp/ios/install",
+    "sdk/mobile/pnp/ios/initialize",
+    "sdk/mobile/pnp/ios/usage",
+    "sdk/mobile/pnp/ios/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/pnp/ios/whitelabel",
-        "sdk/pnp/ios/custom-authentication",
-        "sdk/pnp/ios/mfa",
-        "sdk/pnp/ios/dapp-share",
+        "sdk/mobile/pnp/ios/whitelabel",
+        "sdk/mobile/pnp/ios/custom-authentication",
+        "sdk/mobile/pnp/ios/mfa",
+        "sdk/mobile/pnp/ios/dapp-share",
       ],
     },
     {
@@ -763,37 +901,37 @@ const sidebars: SidebarsConfig = {
   sdk_pnp_react_native: [
     {
       type: "html",
-      value: pnpTopNavButton(reactnative),
+      value: pnpMobileTopNavButton(reactnative),
       defaultStyle: true,
     },
-    "sdk/pnp/react-native/react-native",
-    "sdk/pnp/react-native/install",
-    "sdk/pnp/react-native/initialize",
-    "sdk/pnp/react-native/usage",
-    "sdk/pnp/react-native/examples",
+    "sdk/mobile/pnp/react-native/react-native",
+    "sdk/mobile/pnp/react-native/install",
+    "sdk/mobile/pnp/react-native/initialize",
+    "sdk/mobile/pnp/react-native/usage",
+    "sdk/mobile/pnp/react-native/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/pnp/react-native/account-abstraction",
-        "sdk/pnp/react-native/whitelabel",
-        "sdk/pnp/react-native/custom-authentication",
-        "sdk/pnp/react-native/mfa",
-        "sdk/pnp/react-native/dapp-share",
+        "sdk/mobile/pnp/react-native/account-abstraction",
+        "sdk/mobile/pnp/react-native/whitelabel",
+        "sdk/mobile/pnp/react-native/custom-authentication",
+        "sdk/mobile/pnp/react-native/mfa",
+        "sdk/mobile/pnp/react-native/dapp-share",
       ],
     },
     {
       type: "category",
       label: "Providers",
       items: [
-        "sdk/pnp/react-native/providers/providers",
-        "sdk/pnp/react-native/providers/evm",
-        "sdk/pnp/react-native/providers/aa-provider",
-        "sdk/pnp/react-native/providers/solana",
-        "sdk/pnp/react-native/providers/xrpl",
-        "sdk/pnp/react-native/providers/common",
+        "sdk/mobile/pnp/react-native/providers/providers",
+        "sdk/mobile/pnp/react-native/providers/evm",
+        "sdk/mobile/pnp/react-native/providers/aa-provider",
+        "sdk/mobile/pnp/react-native/providers/solana",
+        "sdk/mobile/pnp/react-native/providers/xrpl",
+        "sdk/mobile/pnp/react-native/providers/common",
       ],
     },
     {
@@ -806,16 +944,6 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/Web3Auth/web3auth-react-native-sdk/releases",
     },
-    // {
-    //   type: "link",
-    //   label: "Playground Android",
-    //   href: "https://w3a.link/pnp-rn-android-playground",
-    // },
-    // {
-    //   type: "link",
-    //   label: "Playground iOS",
-    //   href: "https://w3a.link/pnp-rn-ios-playground",
-    // },
     {
       type: "category",
       label: "Migration Guides",
@@ -831,24 +959,24 @@ const sidebars: SidebarsConfig = {
   sdk_pnp_flutter: [
     {
       type: "html",
-      value: pnpTopNavButton(flutter),
+      value: pnpMobileTopNavButton(flutter),
       defaultStyle: true,
     },
-    "sdk/pnp/flutter/flutter",
-    "sdk/pnp/flutter/install",
-    "sdk/pnp/flutter/initialize",
-    "sdk/pnp/flutter/usage",
-    "sdk/pnp/flutter/examples",
+    "sdk/mobile/pnp/flutter/flutter",
+    "sdk/mobile/pnp/flutter/install",
+    "sdk/mobile/pnp/flutter/initialize",
+    "sdk/mobile/pnp/flutter/usage",
+    "sdk/mobile/pnp/flutter/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/pnp/flutter/whitelabel",
-        "sdk/pnp/flutter/custom-authentication",
-        "sdk/pnp/flutter/mfa",
-        "sdk/pnp/flutter/dapp-share",
+        "sdk/mobile/pnp/flutter/whitelabel",
+        "sdk/mobile/pnp/flutter/custom-authentication",
+        "sdk/mobile/pnp/flutter/mfa",
+        "sdk/mobile/pnp/flutter/dapp-share",
       ],
     },
     {
@@ -881,24 +1009,24 @@ const sidebars: SidebarsConfig = {
   sdk_pnp_unity: [
     {
       type: "html",
-      value: pnpTopNavButton(unity),
+      value: gamingTopNavButton(unity),
       defaultStyle: true,
     },
-    "sdk/pnp/unity/unity",
-    "sdk/pnp/unity/install",
-    "sdk/pnp/unity/initialize",
-    "sdk/pnp/unity/usage",
-    "sdk/pnp/unity/examples",
+    "sdk/gaming/unity/unity",
+    "sdk/gaming/unity/install",
+    "sdk/gaming/unity/initialize",
+    "sdk/gaming/unity/usage",
+    "sdk/gaming/unity/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/pnp/unity/whitelabel",
-        "sdk/pnp/unity/custom-authentication",
-        "sdk/pnp/unity/mfa",
-        "sdk/pnp/unity/dapp-share",
+        "sdk/gaming/unity/whitelabel",
+        "sdk/gaming/unity/custom-authentication",
+        "sdk/gaming/unity/mfa",
+        "sdk/gaming/unity/dapp-share",
       ],
     },
     {
@@ -916,23 +1044,23 @@ const sidebars: SidebarsConfig = {
   sdk_pnp_unreal: [
     {
       type: "html",
-      value: pnpTopNavButton(unreal),
+      value: gamingTopNavButton(unreal),
       defaultStyle: true,
     },
-    "sdk/pnp/unreal/unreal",
-    "sdk/pnp/unreal/install",
-    "sdk/pnp/unreal/initialize",
-    "sdk/pnp/unreal/usage",
-    "sdk/pnp/unreal/examples",
+    "sdk/gaming/unreal/unreal",
+    "sdk/gaming/unreal/install",
+    "sdk/gaming/unreal/initialize",
+    "sdk/gaming/unreal/usage",
+    "sdk/gaming/unreal/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/pnp/unreal/whitelabel",
-        "sdk/pnp/unreal/custom-authentication",
-        "sdk/pnp/unreal/mfa",
+        "sdk/gaming/unreal/whitelabel",
+        "sdk/gaming/unreal/custom-authentication",
+        "sdk/gaming/unreal/mfa",
       ],
     },
     {
@@ -947,48 +1075,48 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_sfa_web: [
+  sdk_core_kit_sfa_react_native: [
     {
       type: "html",
-      value: sfaTopNavButton(js),
+      value: sfaMobileTopNavButton(reactnative),
       defaultStyle: true,
     },
-    "sdk/sfa/sfa-js/sfa-js",
-    "sdk/sfa/sfa-js/install",
-    "sdk/sfa/sfa-js/initialize",
-    "sdk/sfa/sfa-js/authentication",
-    "sdk/sfa/sfa-js/usage",
-    "sdk/sfa/sfa-js/examples",
+    "sdk/mobile/sfa/react-native/react-native",
+    "sdk/mobile/sfa/react-native/install",
+    "sdk/mobile/sfa/react-native/initialize",
+    "sdk/mobile/sfa/react-native/authentication",
+    "sdk/mobile/sfa/react-native/usage",
+    "sdk/mobile/sfa/react-native/examples",
     {
       type: "category",
       collapsible: true,
       collapsed: false,
       label: "Additional Settings",
       items: [
-        "sdk/sfa/sfa-js/account-abstraction",
-        "sdk/sfa/sfa-js/initiate-topup",
-        "sdk/sfa/sfa-js/show-wallet-connect",
+        "sdk/mobile/sfa/react-native/account-abstraction",
+        "sdk/mobile/sfa/react-native/initiate-topup",
+        "sdk/mobile/sfa/react-native/show-wallet-connect",
       ],
     },
     {
       type: "category",
       label: "Providers",
       items: [
-        "sdk/sfa/sfa-js/providers/providers",
-        "sdk/sfa/sfa-js/providers/evm",
-        "sdk/sfa/sfa-js/providers/aa-provider",
-        "sdk/sfa/sfa-js/providers/solana",
-        "sdk/sfa/sfa-js/providers/xrpl",
-        "sdk/sfa/sfa-js/providers/common",
+        "sdk/mobile/sfa/react-native/providers/providers",
+        "sdk/mobile/sfa/react-native/providers/evm",
+        "sdk/mobile/sfa/react-native/providers/aa-provider",
+        "sdk/mobile/sfa/react-native/providers/solana",
+        "sdk/mobile/sfa/react-native/providers/xrpl",
+        "sdk/mobile/sfa/react-native/providers/common",
       ],
     },
     {
       type: "category",
       label: "Wallet Services Plugin",
       items: [
-        "sdk/sfa/sfa-js/wallet-services/wallet-services",
-        "sdk/sfa/sfa-js/wallet-services/usage",
-        "sdk/sfa/sfa-js/wallet-services/wallet-services-hooks",
+        "sdk/mobile/sfa/react-native/wallet-services/wallet-services",
+        "sdk/mobile/sfa/react-native/wallet-services/usage",
+        "sdk/mobile/sfa/react-native/wallet-services/wallet-services-hooks",
       ],
     },
     {
@@ -1013,18 +1141,18 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_sfa_android: [
+  sdk_sfa_android: [
     {
       type: "html",
-      value: sfaTopNavButton(android),
+      value: sfaMobileTopNavButton(android),
       defaultStyle: true,
     },
-    "sdk/sfa/sfa-android/sfa-android",
-    "sdk/sfa/sfa-android/install",
-    "sdk/sfa/sfa-android/initialize",
-    "sdk/sfa/sfa-android/authentication",
-    "sdk/sfa/sfa-android/usage",
-    "sdk/sfa/sfa-android/examples",
+    "sdk/mobile/sfa/android/android",
+    "sdk/mobile/sfa/android/install",
+    "sdk/mobile/sfa/android/initialize",
+    "sdk/mobile/sfa/android/authentication",
+    "sdk/mobile/sfa/android/usage",
+    "sdk/mobile/sfa/android/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1047,18 +1175,18 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_sfa_ios: [
+  sdk_sfa_ios: [
     {
       type: "html",
-      value: sfaTopNavButton(ios),
+      value: sfaMobileTopNavButton(ios),
       defaultStyle: true,
     },
-    "sdk/sfa/sfa-ios/sfa-ios",
-    "sdk/sfa/sfa-ios/install",
-    "sdk/sfa/sfa-ios/initialize",
-    "sdk/sfa/sfa-ios/authentication",
-    "sdk/sfa/sfa-ios/usage",
-    "sdk/sfa/sfa-ios/examples",
+    "sdk/mobile/sfa/ios/ios",
+    "sdk/mobile/sfa/ios/install",
+    "sdk/mobile/sfa/ios/initialize",
+    "sdk/mobile/sfa/ios/authentication",
+    "sdk/mobile/sfa/ios/usage",
+    "sdk/mobile/sfa/ios/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1080,18 +1208,18 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_sfa_flutter: [
+  sdk_sfa_flutter: [
     {
       type: "html",
-      value: sfaTopNavButton(flutter),
+      value: sfaMobileTopNavButton(flutter),
       defaultStyle: true,
     },
-    "sdk/sfa/sfa-flutter/sfa-flutter",
-    "sdk/sfa/sfa-flutter/install",
-    "sdk/sfa/sfa-flutter/initialize",
-    "sdk/sfa/sfa-flutter/authentication",
-    "sdk/sfa/sfa-flutter/usage",
-    "sdk/sfa/sfa-flutter/examples",
+    "sdk/mobile/sfa/flutter/flutter",
+    "sdk/mobile/sfa/flutter/install",
+    "sdk/mobile/sfa/flutter/initialize",
+    "sdk/mobile/sfa/flutter/authentication",
+    "sdk/mobile/sfa/flutter/usage",
+    "sdk/mobile/sfa/flutter/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1114,7 +1242,7 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_mpc_js: [
+  sdk_mpc_core_kit_js: [
     {
       type: "html",
       value: mpcckTopNavButton(js),
@@ -1160,7 +1288,7 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_mpc_react_native: [
+  sdk_mpc_core_kit_react_native: [
     {
       type: "html",
       value: mpcckTopNavButton(reactnative),
