@@ -1,8 +1,8 @@
 ---
 title: Migrating to Web3Auth PnP No Modal SDK v10
 description:
-  "Learn how to upgrade your Web3Auth PnP No Modal SDK from v9 to v10 with minimal changes and
-  cleaner architecture."
+  Learn how to upgrade your Web3Auth PnP No Modal SDK from v9 to v10 with minimal changes and
+  cleaner architecture.
 sidebar_label: v9 to v10
 ---
 
@@ -387,48 +387,165 @@ from `web3auth.provider`.
 
 ## 6. Smart Accounts setup (optional)
 
-Smart Accounts are now fully configurable via the Web3Auth Dashboard and optionally overridden
-through the `accountAbstraction` parameter in the SDK options.
+Previously, configuring the adapter required installing the `@web3auth/account-abstraction-provider`
+package and using the `AccountAbstractionProvider` to set up the bundler, paymaster, and Smart
+Account Provider.
 
 <Tabs>
 <TabItem value="v9" label="v9 (before)">
 
 ```ts
-// Example: v9 might involve initializing AccountAbstractionProvider
-import { AccountAbstractionProvider } from "@web3auth/account-abstraction-provider";
+import {
+  AccountAbstractionProvider,
+  SafeSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+import { Web3AuthNoModal, WEB3AUTH_NETWORK } from "@web3auth/no-modal"; // Assuming privateKeyProvider is also imported or available
 
-// const web3auth = new Web3AuthNoModal({ /* ... */ });
-// await web3auth.init();
+// Assume privateKeyProvider is initialized appropriately, e.g.:
+// import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { /* ... */ } });
 
-// const aaProvider = new AccountAbstractionProvider(web3auth.provider, { /* config */ });
-// await aaProvider.init();
-// const smartAccountProvider = aaProvider.provider;
+// Assume pimlicoAPIKey is defined
+// const pimlicoAPIKey = "YOUR_PIMLICO_API_KEY";
+
+// 1. Initialize Web3AuthNoModal first
+const web3auth = new Web3AuthNoModal({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider, // This should be an initialized PrivateKeyProvider
+});
+await web3auth.init();
+// Example: Connect to a login provider
+// await web3auth.connectTo(WALLET_CONNECTORS.OPENLOGIN, { /* loginProvider specific details */ });
+
+// 2. Then initialize AccountAbstractionProvider with the provider from Web3AuthNoModal
+const chainConfig = {
+  // Chain config (example placeholder, replace with actual v9 config)
+  chainId: "0x1", // Example: Ethereum Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+if (web3auth.provider) {
+  const accountAbstractionProvider = new AccountAbstractionProvider({
+    config: {
+      chainConfig,
+      smartAccountInit: new SafeSmartAccount(),
+      bundlerConfig: {
+        // Get the pimlico API Key from dashboard.pimlico.io
+        url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${"YOUR_PIMLICO_API_KEY_VARIABLE"}`,
+      },
+    },
+  });
+  await accountAbstractionProvider.init(web3auth.provider);
+  // const smartAccountProvider = accountAbstractionProvider.provider;
+} else {
+  console.error("Web3Auth provider not available to initialize Smart Account provider.");
+}
 ```
 
 </TabItem>
 <TabItem value="v10" label="v10 (after)">
 
-```ts
-// For non-React apps (e.g., VanillaJS, Angular):
-const web3auth = new Web3AuthNoModal({
-  clientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  accountAbstraction: {
-    /* Optional: override dashboard settings */
-  },
-});
+In v10, the `@web3auth/account-abstraction-provider` has been deprecated. You can now enable Smart
+Accounts and configure the bundler and paymaster directly from the Web3Auth Dashboard. See
+[Smart Accounts dashboard configuration](https://web3auth.io/docs/product-infrastructure/account-abstraction/dashboard-setup)
+to learn more.
 
-// For React apps, pass it to the Web3AuthProvider options:
-const web3AuthOptions = {
-  clientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  accountAbstraction: {
-    /* Optional: override dashboard settings */
-  },
-};
+```
+// Add Dashboard image (Placeholder for visual guide)
 ```
 
-> ✅ The `@web3auth/account-abstraction-provider` package is deprecated.
+If you want to override the Smart Account provider, bundler, paymaster, or paymaster context, you
+can now pass the custom configuration directly to `Web3AuthNoModalOptions` (for non-React) or
+`Web3AuthProvider` options (for React).
+
+**For non-React apps (e.g., VanillaJS, Angular):**
+
+```ts
+import { WEB3AUTH_NETWORK, Web3AuthNoModalOptions, Web3AuthNoModal } from "@web3auth/no-modal";
+
+const web3AuthNoModalOptions: Web3AuthNoModalOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  // highlight-start
+  accountAbstractionConfig: {
+    smartAccountType: "metamask",
+    chains: [
+      {
+        chainId: "0x1",
+        bundlerConfig: {
+          url: "YOUR_BUNDLER_URL",
+          // This is just an example of how you can configure the paymaster context.
+          // Please refer to the documentation of the paymaster you are using
+          // to understand the required parameters.
+          paymasterContext: {
+            token: "SUPPORTED_TOKEN_CONTRACT_ADDRESS",
+            sponsorshipPolicyId: "sp_my_policy_id",
+          },
+        },
+        paymasterConfig: {
+          url: "YOUR_PAYMASTER_URL",
+        },
+      },
+    ],
+  },
+  // highlight-end
+};
+
+// Initialize Web3AuthNoModal with these options
+// const web3auth = new Web3AuthNoModal(web3AuthNoModalOptions);
+// await web3auth.init();
+// await web3auth.connectTo(...);
+```
+
+**For React apps:**
+
+```tsx
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/no-modal/react";
+// Define Web3AuthProviderOptions if not already defined/imported
+import type { Web3AuthProviderOptions } from "@web3auth/no-modal/react";
+
+const web3AuthProviderOptions: Web3AuthProviderOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  // highlight-start
+  accountAbstractionConfig: {
+    smartAccountType: "metamask",
+    chains: [
+      {
+        chainId: "0x1",
+        bundlerConfig: {
+          url: "YOUR_BUNDLER_URL",
+          // This is just an example of how you can configure the paymaster context.
+          // Please refer to the documentation of the paymaster you are using
+          // to understand the required parameters.
+          paymasterContext: {
+            token: "SUPPORTED_TOKEN_CONTRACT_ADDRESS",
+            sponsorshipPolicyId: "sp_my_policy_id",
+          },
+        },
+        paymasterConfig: {
+          url: "YOUR_PAYMASTER_URL",
+        },
+      },
+    ],
+  },
+  // highlight-end
+};
+
+// In your App or context provider:
+// <Web3AuthProvider options={web3AuthProviderOptions}>
+//   <YourApp />
+// </Web3AuthProvider>
+```
+
+> ✅ **Simplified Setup:** Smart Account configuration is now primarily dashboard-driven, with
+> optional client-side overrides for advanced cases, deprecating the need for the separate
+> `@web3auth/account-abstraction-provider` package.
 
 </TabItem>
 </Tabs>

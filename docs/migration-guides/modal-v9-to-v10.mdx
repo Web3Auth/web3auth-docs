@@ -345,10 +345,114 @@ const { signMessage } = useSignMessage();
 
 ## 7. Smart Accounts setup (optional)
 
-Smart Accounts are now fully configurable via the Web3Auth Dashboard and optionally overridden
-through `accountAbstractionConfig` in the `Web3Auth` constructor options (for class-based SDK or if
-customizing for React provider) or within the `options` prop of the `Web3AuthProvider` (for React
-apps).
+Previously, configuring the adapter required installing the `@web3auth/account-abstraction-provider`
+package and using the `AccountAbstractionProvider` to set up the bundler, paymaster, and Smart
+Account Provider.
+
+<Tabs>
+<TabItem value="v9" label="v9 (before)">
+
+```ts
+import {
+  AccountAbstractionProvider,
+  SafeSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+import { Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal"; // Assuming privateKeyProvider is also imported or available
+
+// Assume privateKeyProvider is initialized appropriately, e.g.:
+// import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { /* ... */ } });
+
+// Assume pimlicoAPIKey is defined
+// const pimlicoAPIKey = "YOUR_PIMLICO_API_KEY";
+
+const chainConfig = {
+  // Chain config (example placeholder, replace with actual v9 config)
+  chainId: "0x1", // Example: Ethereum Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    smartAccountInit: new SafeSmartAccount(),
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${"YOUR_PIMLICO_API_KEY_VARIABLE"}`,
+    },
+  },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider, // This should be an initialized PrivateKeyProvider
+  accountAbstractionProvider,
+});
+```
+
+</TabItem>
+<TabItem value="v10" label="v10 (after)">
+
+In v10, the `@web3auth/account-abstraction-provider` has been deprecated. You can now enable Smart
+Accounts and configure the bundler and paymaster directly from the Web3Auth Dashboard. See
+[Smart Accounts dashboard configuration](https://web3auth.io/docs/product-infrastructure/account-abstraction/dashboard-setup)
+to learn more.
+
+```
+// Add Dashboard image (Placeholder for visual guide)
+```
+
+If you want to override the Smart Account provider, bundler, paymaster, or paymaster context, you
+can now pass the custom configuration directly to `Web3AuthOptions`.
+
+```ts
+import { WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  // highlight-start
+  accountAbstractionConfig: {
+    smartAccountType: "metamask",
+    chains: [
+      {
+        chainId: "0x1",
+        bundlerConfig: {
+          url: "YOUR_BUNDLER_URL",
+          // This is just an example of how you can configure the paymaster context.
+          // Please refer to the documentation of the paymaster you are using
+          // to understand the required parameters.
+          paymasterContext: {
+            token: "SUPPORTED_TOKEN_CONTRACT_ADDRESS",
+            sponsorshipPolicyId: "sp_my_policy_id",
+          },
+        },
+        paymasterConfig: {
+          url: "YOUR_PAYMASTER_URL",
+        },
+      },
+    ],
+  },
+  // highlight-end
+};
+
+// Initialize Web3Auth with these options
+// const web3auth = new Web3Auth(web3AuthOptions);
+// await web3auth.initModal();
+// await web3auth.connect();
+```
+
+> ✅ **Simplified Setup:** Smart Account configuration is now primarily dashboard-driven, with
+> optional client-side overrides for advanced cases, deprecating the need for the separate
+> `@web3auth/account-abstraction-provider` package.
+
+</TabItem>
+</Tabs>
 
 ---
 
