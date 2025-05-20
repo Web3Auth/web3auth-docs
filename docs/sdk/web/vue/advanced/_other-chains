@@ -1,0 +1,153 @@
+---
+title: Multi Factor Authentication with PnP Web Modal SDK
+sidebar_label: Multi Factor Authentication
+description: "@web3auth/modal Multi Factor Authentication | Documentation - Web3Auth"
+---
+
+### Adding a Custom Chain Configuration
+
+:::tip
+
+Get the **Chain Config** for your preferred Blockchain from the
+[Connect Blockchain Reference](/connect-blockchain#reference-guides-for-blockchain-connections).
+
+:::
+
+### Adding a Private Key Provider
+
+#### `privateKeyProvider`
+
+`privateKeyProvider` parameter helps you to connect with various wallet SDKs. These are
+preconfigured RPC clients for different blockchains used to interact with the respective blockchain
+networks.
+
+:::note
+
+It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more
+in-depth about providers, have a look at the [Providers reference](/sdk/pnp/web/providers).
+
+:::
+
+You can choose between the following providers based on your usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/pnp/web/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/sdk/pnp/web/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/sdk/pnp/web/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/sdk/pnp/web/providers/common)
+
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "EIP1193 Provider", value: "evm" },
+    { label: "Solana Provider", value: "solana" },
+    { label: "XRPL Provider", value: "xrpl" },
+    { label: "Common Provider", value: "common" },
+  ]}
+>
+
+<TabItem value="evm">
+
+```ts
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```ts
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+<TabItem value="xrpl">
+
+```ts
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+<TabItem value="common">
+
+```ts
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+
+const privateKeyProvider = new CommonPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+### Whitelabeling
+
+Within the `uiConfig` parameter, you can configure the Web3Auth Modal according to your
+application's requirements.
+
+:::tip
+
+This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more
+in-depth about how you can Whitelabel your application with Web3Auth Plug and Play Modal SDK, have a
+look at our [Whitelabeling SDK Reference](/sdk/pnp/web/modal/whitelabel).
+
+:::
+
+#### `uiConfig`
+
+<UIConfig />
+
+<UIConfigWhitelabelExample />
+
+### Returns
+
+##### `Object`: The web3auth instance with all its methods and events.
+
+## Configuring Plugins
+
+:::info
+
+This step is totally optional. If you don't want to use any plugins, feel free to skip this section.
+
+:::
+
+<PluginsIntro />

@@ -53,59 +53,33 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
 // focus-end
 ```
 
-## Wagmi Integration
+## Blockchain Setup
 
-If you are using Wagmi, you need to install the `wagmi` & `@tanstack/vue-query` packages and use the
-**Web3Auth implementation of `WagmiProvider`** for configuration.
+Web3Auth is built to be blockchain agnostic, enabling integration with any blockchain network. For a
+comprehensive guide, see the [Connect Blockchain](/connect-blockchain) section. Out of the box,
+Web3Auth offers robust, first-class support for both **Solana** and **Ethereum**, each with
+dedicated Vue composables to streamline your development process.
 
-:::info
+### Solana Integration
 
-The Web3Auth implementation of `WagmiProvider` is a custom implementation that is used to integrate
-with the Web3Auth Modal SDK. It is a wrapper around the `WagmiProvider` that makes it compatible.
+Solana composables are included natively within the `@web3auth/modal` package. No additional setup
+is required—simply use the provided composables to interact with Solana networks.
 
-With this implementation, you can use the Wagmi composables, however **no external connectors are
-supported**. Web3Auth provides a whole suite of connectors which you can use directly for a better
-experience with external wallets.
+:::tip
+
+For detailed usage and examples, visit the [**Solana Composables**](./solana-composables) section.
 
 :::
 
-```bash
-npm install wagmi @tanstack/vue-query
-```
+### Ethereum Integration
 
-Update your `main.ts` to use the Vue Query plugin **only if you are using Wagmi**:
+Ethereum composables are provided through the popular `wagmi` library, which works seamlessly with
+Web3Auth. This allows you to leverage a wide range of Ethereum composables for account management,
+transactions, and more.
 
-```ts title="main.ts"
-// focus-next-line
-import { VueQueryPlugin } from "@tanstack/vue-query";
-import { createApp } from "vue";
-import App from "./App.vue";
-import "./style.css";
+:::tip
 
-// focus-next-line
-createApp(App).use(VueQueryPlugin).mount("#app");
-```
+For implementation details and examples, refer to the
+[**Ethereum Composables**](./ethereum-composables) section.
 
-Then, in your `App.vue`, wrap your app with both providers:
-
-```html title="App.vue"
-<script setup lang="ts">
-  import Home from "./Home.vue";
-  import { Web3AuthProvider } from "@web3auth/modal/vue";
-  // focus-next-line
-  import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
-  import web3AuthContextConfig from "./web3authContext";
-</script>
-
-<template>
-  <div class="min-h-screen flex flex-col">
-    <Web3AuthProvider :config="web3AuthContextConfig">
-      <!-- focus-start -->
-      <WagmiProvider>
-        <Home />
-      </WagmiProvider>
-      <!-- focus-end -->
-    </Web3AuthProvider>
-  </div>
-</template>
-```
+:::

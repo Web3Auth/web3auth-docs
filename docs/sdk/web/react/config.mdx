@@ -1,0 +1,173 @@
+---
+title: Configuring PnP Web Modal SDK
+sidebar_label: Configuration
+description: "@web3auth/modal initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3auth-options.mdx";
+
+During the setup, Web3Auth requires you to configure the SDK. For this, you need to create an
+instance of the config object `Web3AuthOptions`, and pass it in the `Web3AuthProvider`.
+
+:::info Prerequisites
+
+Before you start, make sure you have registered on the
+[Web3Auth Dashboard](https://dashboard.web3auth.io/) and have set up your project. You can look into
+the [Dashboard Setup](/dashboard-setup) guide to learn more.
+
+:::
+
+## `Web3AuthContextConfig`
+
+The Web3Auth Provider requires a `config` object to be passed in. This `Web3AuthContextConfig` takes
+an object with `Web3AuthOptions` as the type.
+
+```ts
+export type Web3AuthContextConfig = {
+  web3AuthOptions: Web3AuthOptions;
+};
+```
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+<Web3AuthOptions />
+
+### Usage
+
+:::info Type Reference
+
+Import the type `Web3AuthOptions` for easy type interface for Typescript.
+
+```javascript
+import { type Web3AuthOptions } from "@web3auth/modal";
+```
+
+:::
+
+<Tabs
+  defaultValue="basic-config"
+  values={[
+    { label: "With Basic Configurations", value: "basic-config" },
+    { label: "With Advanced Configurations", value: "advanced-config" },
+  ]}
+>
+
+<TabItem value="basic-config">
+
+```ts
+import { type Web3AuthContextConfig } from "@web3auth/modal/react";
+// focus-next-line
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
+
+// focus-start
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+};
+// focus-end
+
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
+```
+
+</TabItem>
+
+<TabItem value="advanced-config">
+
+```ts
+import { type Web3AuthContextConfig } from "@web3auth/modal/react";
+// focus-next-line
+import { WALLET_CONNECTORS, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
+
+// focus-start
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or WEB3AUTH_NETWORK.SAPPHIRE_DEVNET
+  modalConfig: {
+    connectors: {
+      [WALLET_CONNECTORS.AUTH]: {
+        label: "auth",
+        loginMethods: {
+          google: {
+            name: "google login",
+            // logoDark: "url to your custom logo which will shown in dark mode",
+          },
+          facebook: {
+            // it will hide the facebook option from the Web3Auth modal.
+            name: "facebook login",
+            showOnModal: false,
+          },
+          email_passwordless: {
+            name: "email passwordless login",
+            showOnModal: true,
+            authConnectionId: "w3a-email_passwordless-demo",
+          },
+          sms_passwordless: {
+            name: "sms passwordless login",
+            showOnModal: true,
+            authConnectionId: "w3a-sms_passwordless-demo",
+          },
+        },
+        // setting it to false will hide all social login methods from modal.
+        showOnModal: true,
+      },
+    },
+    // setting it to true will hide the external wallets discovery.
+    hideWalletDiscovery: true,
+  },
+};
+// focus-end
+
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+## Advanced Configuration Options
+
+The Web3Auth Modal SDK offers a rich set of advanced configuration options, allowing you to tailor
+authentication, UI, blockchain support, and security features to your application's needs.
+
+Explore the following advanced features to unlock the full potential of your integration:
+
+:::tip
+
+Each configuration option is documented in detail in its dedicated section. Click the links below to
+dive deeper into implementation guides and best practices.
+
+:::
+
+- **[Smart Accounts](./advanced/smart-accounts)**
+
+  - `accountAbstractionConfig`: Fine-tune account abstraction parameters for smart accounts.
+  - `useAAWithExternalWallet`: Enable account abstraction even when users connect external wallets.
+
+- **[Custom Authentication](./advanced/custom-authentication)**
+
+  - `modalConfig`: Define which authentication methods are available and how they appear in the
+    modal.
+
+- **[Whitelabeling & UI Customization](./advanced/whitelabel)**
+
+  - `uiConfig`: Personalize the modal’s look and feel—colors, logos, themes, and more.
+  - `modalConfig`: Control the visibility and arrangement of authentication options.
+
+- **[Multi-Factor Authentication (MFA)](./advanced/mfa)**
+
+  - `mfaSettings`: Set up and manage MFA for different authentication flows.
+
+- **[Wallet Services](./advanced/wallet-services)**
+
+  - `walletServicesConfig`: Integrate additional wallet services and features.
+
+Unlock advanced capabilities by leveraging these configuration options to create a seamless, secure,
+and branded authentication experience for your users.
