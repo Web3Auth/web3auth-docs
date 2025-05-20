@@ -455,7 +455,6 @@ const sidebars: SidebarsConfig = {
                 "authentication/custom-connections/custom-jwt",
                 "authentication/custom-connections/custom/jsonwebtoken",
                 "authentication/custom-connections/custom/jose",
-                "authentication/custom-connections/custom/passport-jwt",
               ],
             },
           ],
