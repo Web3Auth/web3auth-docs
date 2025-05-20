@@ -434,7 +434,7 @@ const sidebars: SidebarsConfig = {
             "authentication/social-logins/oauth",
           ],
           collapsible: true,
-          collapsed: false,
+          collapsed: true,
         },
         {
           type: "category",
@@ -446,7 +446,7 @@ const sidebars: SidebarsConfig = {
             "authentication/custom-connections/custom-jwt",
           ],
           collapsible: true,
-          collapsed: false,
+          collapsed: true,
         },
         "authentication/group-connections",
       ],
