@@ -1,97 +1,271 @@
 ---
-title: Account Abstraction
-sidebar_label: Account Abstraction
-description: "@web3auth/no-modal Native Account Abstraction | Documentation - Web3Auth"
+title: Wallet Services
+sidebar_label: Wallet Services
+description: "@web3auth/modal Wallet Services | Documentation - Web3Auth"
 ---
 
-import AccountAbstractionDescription from "@site/src/common/sdk/pnp/web/_account-abstraction-description.mdx";
-import AccountAbstractionProviderInstallation from "@site/src/common/sdk/pnp/web/_aa-provider-installation.mdx";
-import AAProviderConfiguration from "@site/src/common/sdk/pnp/web/_aa-provider-configuration.mdx";
-import ConfigureSmartAccountProvider from "@site/src/common/sdk/pnp/web/_smart-account-provider-configuration.mdx";
-import ConfigureBundler from "@site/src/common/sdk/pnp/web/_bundler-configuration.mdx";
-import ConfigureSponsoredPaymaster from "@site/src/common/sdk/pnp/web/_sponsored-paymaster-configuration.mdx";
-import ConfigurePaymasterContext from "@site/src/common/sdk/pnp/web/_paymaster-context.mdx";
-import ConfigureERC20Paymaster from "@site/src/common/sdk/pnp/web/_erc20-paymaster-configuration.mdx";
-import AANoModalSetup from "@site/src/common/sdk/pnp/web/_aa-no-modal-setup.mdx";
-import ConfigureSigners from "@site/src/common/sdk/pnp/web/_configure-aa-signers.mdx";
-import SmartAccountAddress from "@site/src/common/sdk/pnp/web/_aa-address.mdx";
-import SmartAccountSendTransaction from "@site/src/common/sdk/pnp/web/_aa-send-transaction.mdx";
-
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import AuthAdapterSettings from "@site/src/common/sdk/pnp/web/_auth-adapter-settings.mdx";
+import AuthLoginSettings from "@site/src/common/sdk/pnp/web/_auth-login-settings.mdx";
 import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
 
-<AccountAbstractionDescription />
+Web3Auth Wallet Services provides a comprehensive suite of wallet functionality including Fiat on
+Ramp, Swaps, and Wallet UI Interoperability with WalletConnect. These services enhance your
+application by offering a complete wallet experience without building these features from scratch.
+
+:::tip
+
+All these configurations can be directly accessed and managed through the Web3Auth dashboard. Manual
+configuration in the SDK is optional and provided here for reference purposes.
+
+:::
+
 <GrowthPlanNote />
 
-## Installation
+## `walletServicesConfig`
 
-<AccountAbstractionProviderInstallation />
+The `walletServicesConfig` option allows you to customize the wallet services experience for your
+users.
 
-## Configure
+```tsx
+walletServicesConfig?: WalletServicesConfig;
+```
 
-<AAProviderConfiguration />
+### Configuration Options
 
-Please note this is the important step for setting the Web3Auth account abstraction provider.
+<Tabs>
+  <TabItem value="Table">
 
-- [Configure Smart Account provider](#configure-smart-account-provider)
-- [Configure Bundler](#configure-bundler)
-- [Configure Sponsored Paymaster](#sponsored-paymaster)
-- [Configure ERC-20 Paymaster](#erc-20-paymaster)
+| Property               | Type                       | Description                                     |
+| ---------------------- | -------------------------- | ----------------------------------------------- |
+| `confirmationStrategy` | CONFIRMATION_STRATEGY_TYPE | How to display confirmation screens             |
+| `modalZIndex`          | number                     | Z-index for modal windows                       |
+| `enableKeyExport`      | boolean                    | Enable private key export functionality         |
+| `whiteLabel`           | Object                     | Customization options for the widget appearance |
 
-## Configure Smart Account Provider
+#### Confirmation Strategy Options
 
-<ConfigureSmartAccountProvider />
+| Strategy       | Description                                                    |
+| -------------- | -------------------------------------------------------------- |
+| `default`      | Uses auto-approve by default, modal for WalletConnect requests |
+| `modal`        | Always uses modal for confirmations                            |
+| `auto-approve` | Automatically approves transactions without confirmation       |
 
-## Configure Bundler
+#### WhiteLabel Options
 
-<ConfigureBundler />
+| Property            | Type                 | Description                               |
+| ------------------- | -------------------- | ----------------------------------------- |
+| `showWidgetButton`  | boolean              | Whether to show the widget button         |
+| `buttonPosition`    | BUTTON_POSITION_TYPE | Position of the widget button on the page |
+| `hideNftDisplay`    | boolean              | Hide NFT display in the wallet            |
+| `hideTokenDisplay`  | boolean              | Hide token display in the wallet          |
+| `hideTransfers`     | boolean              | Hide transfer functionality               |
+| `hideTopup`         | boolean              | Hide top-up (fiat on-ramp) functionality  |
+| `hideReceive`       | boolean              | Hide receive address functionality        |
+| `hideSwap`          | boolean              | Hide token swap functionality             |
+| `hideShowAllTokens` | boolean              | Hide the "show all tokens" option         |
+| `hideWalletConnect` | boolean              | Hide WalletConnect integration            |
+| `defaultPortfolio`  | "token" \| "nft"     | Default portfolio view                    |
 
-## Configure Paymaster
+#### Button Position Options
 
-You can configure the paymaster of your choice to sponsor gas fees for your users, along with the
-paymaster context. The paymaster context lets you set additional parameters, such as choosing the
-token for ERC-20 paymasters, defining gas policies, and more.
+| Position       | Description                     |
+| -------------- | ------------------------------- |
+| `bottom-left`  | Bottom left corner of the page  |
+| `top-left`     | Top left corner of the page     |
+| `bottom-right` | Bottom right corner of the page |
+| `top-right`    | Top right corner of the page    |
 
-### Configure Paymaster Context
+  </TabItem>
 
-<ConfigurePaymasterContext />
-### Sponsored Paymaster
+  <TabItem value="Interface">
 
-<ConfigureSponsoredPaymaster />
+```tsx
+export type WalletServicesConfig = Omit<
+  WsEmbedParams,
+  | "buildEnv"
+  | "enableLogging"
+  | "chainId"
+  | "chains"
+  | "confirmationStrategy"
+  | "accountAbstractionConfig"
+> & {
+  /**
+   * Determines how to show confirmation screens
+   * @defaultValue default
+   *
+   * default & auto-approve
+   * - use auto-approve as default
+   * - if wallet connect request use modal
+   *
+   * modal
+   * - use modal always
+   */
+  confirmationStrategy?: Exclude<WsEmbedParams["confirmationStrategy"], "popup">;
+  modalZIndex?: number;
+};
 
-### ERC-20 Paymaster
+export interface WsEmbedParams {
+  /**
+   * Supported chains
+   */
+  chains: ProviderConfig[];
+  /**
+   * Chain to connect with
+   */
+  chainId: string;
+  /**
+   * Build Environment of WsEmbed.
+   *
+   * production uses https://wallet.web3auth.io,
+   *
+   * staging uses https://staging-wallet.web3auth.io,
+   *
+   * testing uses https://develop-wallet.web3auth.io (latest internal build)
+   *
+   * development uses http://localhost:4050 (expects wallet-services-frontend to be run locally),
+   *
+   * @defaultValue production
+   */
+  buildEnv?: WS_EMBED_BUILD_ENV_TYPE;
+  /**
+   * Enables or disables logging.
+   *
+   * Defaults to false in prod and true in other environments
+   */
+  enableLogging?: boolean;
+  /**
+   * url of widget to load
+   *
+   * Defaults to true
+   * @defaultValue true
+   */
+  walletUrls?: Partial<Record<WS_EMBED_BUILD_ENV_TYPE, WalletUrlConfig>>;
+  /**
+   * Determines how to show confirmation screens
+   * @defaultValue default
+   *
+   * default & popup
+   * - use popop as default
+   * - if wallet connect request use modal
+   *
+   * modal
+   * - use modal always
+   *
+   * auto-approve
+   * - does not work on embed. will use default
+   */
+  confirmationStrategy?: CONFIRMATION_STRATEGY_TYPE;
+  /**
+   * Enable and configure account abstraction
+   */
+  accountAbstractionConfig?: AccountAbstractionMultiChainConfig;
+  /**
+   * Enable private key export
+   *
+   * Defaults to false
+   * @defaultValue false
+   */
+  enableKeyExport?: boolean;
+  /**
+   * Allows you to customize the look & feel of the widget
+   */
+  whiteLabel?: {
+    /**
+     * whether to show/hide ws-embed widget.
+     *
+     * Defaults to true
+     * @defaultValue true
+     */
+    showWidgetButton?: boolean;
+    /**
+     * Determines where the wsEmbed widget is visible on the page.
+     * @defaultValue bottom-left
+     */
+    buttonPosition?: BUTTON_POSITION_TYPE;
+    hideNftDisplay?: boolean;
+    hideTokenDisplay?: boolean;
+    hideTransfers?: boolean;
+    hideTopup?: boolean;
+    hideReceive?: boolean;
+    hideSwap?: boolean;
+    hideShowAllTokens?: boolean;
+    hideWalletConnect?: boolean;
+    defaultPortfolio?: "token" | "nft";
+  } & WhiteLabelData;
+}
 
-<ConfigureERC20Paymaster />
+export declare const CONFIRMATION_STRATEGY: {
+  readonly POPUP: "popup";
+  readonly MODAL: "modal";
+  readonly AUTO_APPROVE: "auto-approve";
+  readonly DEFAULT: "default";
+};
+export type CONFIRMATION_STRATEGY_TYPE =
+  (typeof CONFIRMATION_STRATEGY)[keyof typeof CONFIRMATION_STRATEGY];
 
-## Set up
+export type AccountAbstractionMultiChainConfig = {
+  smartAccountType?: SmartAccountType;
+  chains?: {
+    chainId: string;
+    bundlerConfig: BundlerConfig;
+    paymasterConfig?: PaymasterConfig;
+    smartAccountConfig?: SmartAccountConfig;
+  }[];
+};
 
-Once you have configured your AccountAbstractionProvider, you can now plug it in your Web3Auth Modal
-instance. If you are using the external wallets like MetaMask, Coinbase, etc, you can define whether
-you want to use the AccountAbstractionProvider, or EthereumPrivateKeyProvider by setting the
-`useAAWithExternalWallet` in `IWeb3AuthCoreOptions`.
+export declare const BUTTON_POSITION: {
+  readonly BOTTOM_LEFT: "bottom-left";
+  readonly TOP_LEFT: "top-left";
+  readonly BOTTOM_RIGHT: "bottom-right";
+  readonly TOP_RIGHT: "top-right";
+};
+export type BUTTON_POSITION_TYPE = (typeof BUTTON_POSITION)[keyof typeof BUTTON_POSITION];
+```
 
-If you are setting `useAAWithExternalWallet` to `true`, it'll create a new Smart Account for your
-user, where the signer/creator of the Smart Account would be the external wallet.
+  </TabItem>
+</Tabs>
 
-If you are setting `useAAWithExternalWallet` to `false`, it'll skip creating a new Smart Account,
-and directly use the external wallet to sign the transactions.
+## Usage
 
-### Configure Web3Auth Instance
+```ts title="web3authContext.ts"
+import {
+  BUTTON_POSITION,
+  CONFIRMATION_STRATEGY,
+  WEB3AUTH_NETWORK,
+  type Web3AuthOptions,
+} from "@web3auth/modal";
+import { type Web3AuthContextConfig } from "@web3auth/modal/vue";
 
-<AANoModalSetup />
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  // focus-start
+  walletServicesConfig: {
+    confirmationStrategy: CONFIRMATION_STRATEGY.MODAL,
+    modalZIndex: 99999,
+    enableKeyExport: false,
+    whiteLabel: {
+      showWidgetButton: true,
+      buttonPosition: BUTTON_POSITION.BOTTOM_RIGHT,
+      hideNftDisplay: false,
+      hideTokenDisplay: false,
+      hideTransfers: false,
+      hideTopup: false,
+      hideReceive: false,
+      hideSwap: false,
+      hideShowAllTokens: false,
+      hideWalletConnect: false,
+      defaultPortfolio: "token",
+    },
+  },
+  // focus-end
+};
 
-### Configure Signer
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
 
-<ConfigureSigners />
-
-## Smart Account Address
-
-<SmartAccountAddress />
-
-## Send Transaction
-
-<SmartAccountSendTransaction />
-
-## Advanced Smart Account Operations
-
-To learn more about supported transaction methods, and how to perform batch transactions,
-[checkout our detailed documentation of AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider/#send-batch-transaction).
+export default web3AuthContextConfig;
+```

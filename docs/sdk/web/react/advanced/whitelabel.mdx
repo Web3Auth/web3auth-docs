@@ -187,21 +187,23 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
     // focus-start
     modalConfig: {
-      [WALLET_CONNECTORS.AUTH]: {
-        label: "auth",
-        loginMethods: {
-          // Disable Facebook and Reddit
-          facebook: {
-            name: "facebook",
-            showOnModal: false,
+      connectors: {
+        [WALLET_CONNECTORS.AUTH]: {
+          label: "auth",
+          loginMethods: {
+            // Disable Facebook and Reddit
+            facebook: {
+              name: "facebook",
+              showOnModal: false,
+            },
+            reddit: {
+              name: "reddit",
+              showOnModal: false,
+            },
           },
-          reddit: {
-            name: "reddit",
-            showOnModal: false,
-          },
+          // Setting to false will hide all social login methods from modal
+          showOnModal: true,
         },
-        // Setting to false will hide all social login methods from modal
-        showOnModal: true,
       },
     },
     // focus-end
