@@ -413,6 +413,11 @@ const sidebars: SidebarsConfig = {
       items: [
         "authentication/authentication",
         {
+          type: "html",
+          value: "<span class='sidebarAuthHeading'>Login Connections</span>",
+          defaultStyle: true,
+        },
+        {
           type: "category",
           label: "Basic Logins",
           items: [
@@ -449,6 +454,13 @@ const sidebars: SidebarsConfig = {
           collapsed: true,
         },
         "authentication/group-connections",
+        {
+          type: "html",
+          value: "<span class='sidebarAuthHeading'>Advanced</span>",
+          defaultStyle: true,
+        },
+        "authentication/advanced/mfa",
+        "authentication/advanced/id-token",
       ],
     },
     {

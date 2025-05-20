@@ -1,0 +1,71 @@
+---
+title: Multi-Factor Authentication
+sidebar_label: MFA
+image: "images/docs-meta-cards/documentation-card.png"
+description: "Multi-Factor Authentication | Documentation - Web3Auth"
+---
+
+Web3Auth offers robust Multi-Factor Authentication (MFA) to enhance the security and recoverability
+of user accounts. MFA acts as an additional layer of protection, requiring users to authenticate
+using two or more verification methods before gaining access to their accounts. This system is
+designed to ensure key ownership remains self-custodial while maintaining ease of access and
+recovery.
+
+To activate MFA, users must configure at least one backup factor. Upon setup, Web3Auth splits the
+user’s private key into three shares using an off-chain threshold signature scheme. This
+cryptographic approach guarantees that even if one share is lost or compromised, access to the
+wallet can still be securely recovered using the remaining factors.
+
+Users can choose from various authentication methods including device-based shares, social logins,
+backup seed phrases, password factors, passkeys, and authenticator apps. These options offer
+flexibility for both account security and cross-device accessibility.
+
+![Backup MFA Options](/images/mfa-options.gif)
+
+## MFA Levels
+
+The `mfaLevel` parameter allows developers to configure the behavior and frequency of MFA prompts
+within their applications. This setting determines how and when users are prompted to configure or
+verify their backup factors.
+
+Supported values for `mfaLevel` include:
+
+- `default`: Displays the MFA setup screen every third login. Ideal for balanced security and user
+  convenience.
+- `optional`: Shows the MFA screen on every login, but users can skip the setup if desired.
+- `mandatory`: Forces MFA setup immediately after login. This is recommended for applications
+  prioritizing strong user authentication.
+- `none`: Completely bypasses the MFA setup screen. Suitable for use cases where MFA is managed
+  externally or intentionally disabled.
+
+## MFA Settings
+
+The `mfaSettings` parameter provides granular control over which backup factors are available to
+users and the order in which they appear in the UI. This enables developers to tailor the MFA
+experience to match their application’s security requirements and user preferences.
+
+Available MFA factors:
+
+- `deviceShareFactor`: Device-specific key share that is stored securely on the user’s device.
+- `backUpShareFactor`: Recovery factor using a backup seed phrase.
+- `socialBackupFactor`: Backup authentication using a linked social account (e.g., Google, Apple,
+  etc.).
+- `passwordFactor`: User-defined password used as a recovery mechanism.
+- `passkeysFactor`: Passkey-based authentication (FIDO/WebAuthn standard) for biometric or
+  hardware-based login.
+- `authenticatorFactor`: TOTP-based one-time codes generated through apps like Google Authenticator
+  or Authy.
+
+## Benefits of Web3Auth MFA
+
+- Self-Custodial Security: Key shares remain under user control without reliance on a centralized
+  entity.
+- Cross-Device Recovery: Users can regain access to their accounts even if they switch devices.
+- Flexible Implementation: Developers can choose the right balance between security and UX by tuning
+  MFA behavior and available factors.
+- Threshold Signature Architecture: Enhances resilience against loss or compromise of individual
+  factors.
+
+By integrating Web3Auth’s MFA, developers can provide a secure, user-friendly authentication system
+that aligns with the decentralized principles of web3 while delivering modern account recovery and
+protection features.
