@@ -409,7 +409,7 @@ const sidebars: SidebarsConfig = {
     "resources",
     {
       type: "category",
-      label: "Auth Provider Setup",
+      label: "Authentication",
       items: [
         "auth-provider-setup/auth-provider-setup",
         "auth-provider-setup/verifiers",
