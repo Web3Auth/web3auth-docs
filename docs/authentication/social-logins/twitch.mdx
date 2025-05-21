@@ -3,3 +3,121 @@ title: Twitch Social Login with Web3Auth
 sidebar_label: Twitch
 description: "Twitch Social Login with Web3Auth | Documentation - Web3Auth"
 ---
+
+import TwitchToggle from "@site/static/images/dashboard/authentication-social-connections.png";
+import TwitchConnection from "@site/static/images/dashboard/twitch-connection.png";
+
+import SetupTwitch from "@site/src/common/guides/_setup-twitch.mdx";
+
+Twitch Login is a social login provider that allows users to sign in using their Twitch credentials.
+Web3Auth supports Twitch as a social login provider, allowing developers to offer a familiar and
+quick authentication method for users with Twitch accounts.
+
+To integrate Twitch with Web3Auth, developers must first create a Twitch App via the
+[Twitch Developer Portal](https://dev.twitch.tv/console/apps).
+
+:::success Enable on Dashboard
+
+To use this feature, please enable `Twitch` from the Social Connections section in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={TwitchToggle}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Toggle Twitch Connection on Dashboard"
+  />
+</div>
+
+> By default, Web3Auth uses its own pre-configured credentials for Twitch login.
+
+:::
+
+## Create a Twitch app
+
+<SetupTwitch />
+
+## Create a Twitch Connection
+
+Follow these steps to create a Twitch connection:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+1. Go to the `Social Connections` section.
+1. Click on the `Settings` icon near the Twitch connection.
+1. Enter the `Auth Connection ID`.
+1. Enter the `Twitch Client ID`.
+1. Finally, click on the `Add Connection` button.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img
+    src={TwitchConnection}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Twitch Connection"
+  />
+</div>
+
+## Usage
+
+### Initialize Web3Auth
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+Since, the `Twitch Connection` details are available from Dashboard, developers don't need to pass
+any additional parameters to the `Web3AuthProvider`.
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with Google
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithTwitch = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-start
+      authConnectionId: "twitch-auth-connection-id",
+      authConnection: AUTH_CONNECTION.TWITCH,
+      // highlight-end
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithTwitch()}>Login with Twitch</button>
+      <p>Address: {address}</p>
+      {/* 0xA8b29d40d0FE6a0c153A5759B1f0059d8b7654c5 */}
+    </div>
+  );
+}
+```

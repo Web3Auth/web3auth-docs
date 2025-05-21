@@ -3,3 +3,314 @@ title: OAuth 2.0 Login with Web3Auth
 sidebar_label: OAuth 2.0
 description: "OAuth 2.0 Login with Web3Auth | Documentation - Web3Auth"
 ---
+
+import OAuthToggle from "@site/static/images/dashboard/authentication-social-connections.png";
+
+OAuth 2.0 is a widely adopted standard that enables users to authenticate with third-party identity
+providers in a secure and user-friendly manner. Web3Auth offers native support for multiple OAuth
+2.0 login options, allowing developers to integrate familiar authentication experiences directly
+into their applications.
+
+:::success Enable on Dashboard
+
+To use this feature, please enable `X(Twitter)`, `Farcaster`, `Apple`, `GitHub`, `Reddit`, `Line`,
+`Kakao`, `LinkedIn` or `Wechat` from the Social Connections section in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={OAuthToggle}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Toggle OAuth Connection on Dashboard"
+  />
+</div>
+
+> By default, Web3Auth uses its own pre-configured credentials for different social login providers.
+
+:::
+
+## Usage
+
+### Initialize Web3Auth
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with X
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithX = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.TWITTER,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithX()}>Login with X</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable X(Twitter) on the Dashboard.
+
+### Login with Farcaster
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithFarcaster = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.FARCASTER,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithFarcaster()}>Login with Farcaster</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable Farcaster on the Dashboard.
+
+### Login with Apple
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithApple = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.APPLE,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithApple()}>Login with Apple</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable Apple on the Dashboard.
+
+### Login with GitHub
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithGitHub = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.GITHUB,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithGitHub()}>Login with GitHub</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable GitHub on the Dashboard.
+
+### Login with Reddit
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithReddit = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.REDDIT,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithReddit()}>Login with Reddit</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable Reddit on the Dashboard.
+
+### Login with Line
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithLine = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.LINE,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithLine()}>Login with Line</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable Line on the Dashboard.
+
+### Login with Kakao
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithKakao = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.KAKAO,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithKakao()}>Login with Kakao</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable Kakao on the Dashboard.
+
+### Login with LinkedIn
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithLinkedIn = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.LINKEDIN,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithLinkedIn()}>Login with LinkedIn</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable LinkedIn on the Dashboard.
+
+### Login with Wechat
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithWechat = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-next-line
+      authConnection: AUTH_CONNECTION.WECHAT,
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithWechat()}>Login with Wechat</button>
+      <p>Address: {address}</p>
+    </div>
+  );
+}
+```
+
+> Don't forget to enable Wechat on the Dashboard.
