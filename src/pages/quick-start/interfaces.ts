@@ -33,7 +33,7 @@ export interface IntegrationBuilder {
     {
       displayName: string;
       default: string;
-      type: "dropdown" | "product_selection";
+      type: "dropdown";
       choices: DisplayChoice[];
     }
   >;
