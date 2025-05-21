@@ -1110,7 +1110,7 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Dashboard",
       items: [
-        "dashboard/overview",
+        "dashboard/dashboard",
         "dashboard/create-new-project",
         "dashboard/configure-connections",
       ],
