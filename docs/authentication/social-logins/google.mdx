@@ -19,10 +19,14 @@ ID in the Google Cloud Console.
 To use this feature, please enable `Google` from the Social Connections section in the
 [Web3Auth Dashboard](https://dashboard.web3auth.io).
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+<div style={{ display: "flex", margin: "20px 0" }}>
   <img
     src={GoogleToggle}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "800px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="Toggle Google Connection on Dashboard"
   />
 </div>
@@ -55,76 +59,59 @@ Follow these steps to create a Google connection:
 1. Enter the `Google Client ID`.
 1. Finally, click on the `Add Connection` button.
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+<div style={{ display: "flex", margin: "20px 0" }}>
   <img
     src={GoogleConnection}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "600px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="Google Connection"
   />
 </div>
 
 ## Usage
 
-### Initialize Web3Auth
-
-Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
-React tree as possible.
-
-```js title="Example: React + Vite (main.tsx)"
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-
-import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
-
-import App from "./App.tsx";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Web3AuthProvider
-      config={{
-        web3AuthOptions: {
-          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        },
-      }}
-    >
-      <App />
-    </Web3AuthProvider>
-  </StrictMode>
-);
-```
-
 Since, the `Google Connection` details are available from Dashboard, developers don't need to pass
 any additional parameters to the `Web3AuthProvider`.
 
 > Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
 
-### Login with Google
+### Implicit Login with Google
 
 ```jsx
-import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
-import { useAccount } from "wagmi";
+await connectTo(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+  authConnectionId: "w3a-google-demo",
+});
+```
 
-function LoginPage() {
-  const { connectTo } = useWeb3AuthConnect();
-  const { address } = useAccount();
+### JWT Login with Google One Tap
 
-  const loginWithGoogle = async () => {
-    await connectTo(WALLET_CONNECTORS.AUTH, {
-      // highlight-start
-      authConnectionId: "google-auth-connection-id",
-      authConnection: AUTH_CONNECTION.GOOGLE,
-      // highlight-end
-    });
-  };
+```jsx
+const loginWithGoogle = async (response: CredentialResponse) => {
+  const idToken = response.credential;
 
-  return (
-    <div>
-      <button onClick={() => loginWithGoogle()}>Login with Google</button>
-      <p>Address: {address}</p>
-      {/* 0xA8b29d40d0FE6a0c153A5759B1f0059d8b7654c5 */}
-    </div>
-  );
-}
+  // focus-start
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    authConnectionId: "w3a-google-demo",
+    authConnection: AUTH_CONNECTION.GOOGLE,
+    idToken,
+    extraLoginOptions: {
+      isUserIdCaseSensitive: false,
+    },
+  });
+  // focus-end
+};
+
+...
+
+<GoogleLogin
+  onSuccess={loginWithGoogle}
+  onError={() => {
+    console.log("Login Failed");
+  }}
+  useOneTap
+/>
 ```
