@@ -11,6 +11,8 @@ const framework = {
     filenames.push(hostedFileLinks.ANGULAR_APP_COMPONENT_HTML);
     filenames.push(hostedFileLinks.ANGULAR_POLYFILL_TS);
     filenames.push(hostedFileLinks.ANGULAR_TSCONFIG_JSON);
+    filenames.push(hostedFileLinks.ANGULAR_ETHERSRPC_TS);
+    filenames.push(hostedFileLinks.ANGULAR_VIEMRPC_TS);
 
     return { filenames, files, steps };
   },
