@@ -1,24 +1,24 @@
+import * as angularQuickStart from "./angularQuickStart.mdx";
 import * as angularBundlerIssues from "./angularBundlerIssues.mdx";
-import * as blockchainCalls from "../../../../commonSteps/blockchainCalls.mdx";
-import * as installation from "../../../../commonSteps/installationWeb.mdx";
-import * as registerApp from "../../../../commonSteps/registerApp.mdx";
-import { toSteps } from "../../../../utils";
 import * as initialization from "./initialize.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
-import * as angularQuickStart from "./angularQuickStart.mdx";
-import * as instantiate from "./instantiate.mdx";
+import * as blockchainCalls from "./blockchainCalls.mdx";
+import * as registerApp from "../../../../commonSteps/registerApp.mdx";
+import * as installation from "./installation.mdx";
+import * as config from "./config.mdx";
+import { toSteps } from "../../../../utils";
 
 const STEPS = toSteps({
-  installation,
   angularQuickStart,
   angularBundlerIssues,
-  registerApp,
+  installation,
   initialization,
-  login,
+  config,
+  registerApp,
   blockchainCalls,
+  login,
   logout,
-  instantiate,
 });
 
 export default STEPS;

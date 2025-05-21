@@ -20,7 +20,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.vueBundlerIssues,
+      ...STEPS.angularBundlerIssues,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.ANGULAR_POLYFILL_TS,
         files[hostedFileLinks.ANGULAR_POLYFILL_TS],
@@ -36,11 +36,11 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.chainConfig,
+      ...STEPS.config,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.ANGULAR_APP_COMPONENT_TS,
         files[hostedFileLinks.ANGULAR_APP_COMPONENT_TS],
-        "Chain Config",
+        "Config",
       ),
     },
     {
@@ -52,27 +52,11 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.configureExternalWallets,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.ANGULAR_APP_COMPONENT_TS,
-        files[hostedFileLinks.ANGULAR_APP_COMPONENT_TS],
-        "Configuring External Wallets",
-      ),
-    },
-    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.ANGULAR_APP_COMPONENT_TS,
         files[hostedFileLinks.ANGULAR_APP_COMPONENT_TS],
         "Login",
-      ),
-    },
-    {
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.ANGULAR_APP_COMPONENT_TS,
-        files[hostedFileLinks.ANGULAR_APP_COMPONENT_TS],
-        "Get User Information",
       ),
     },
     {
