@@ -340,21 +340,9 @@ Now (v10 unified `@web3auth/modal/react`):
 
 ```tsx title="v10 (Unified Modal SDK - React with Web3AuthProvider)"
 // src/Web3AuthProvider.tsx or your App's entry point
-import { Web3AuthProvider, WEB3AUTH_NETWORK, CHAIN_NAMESPACES } from "@web3auth/modal/react";
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
 
 const clientId = "YOUR_CLIENT_ID";
-
-// Define the chain configuration for the chain you want to connect to.
-// This is still needed for the Web3AuthProvider to establish initial context for a chain.
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EVM, // Example for EVM
-  chainId: "0xaa36a7", // Example: Sepolia Testnet
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
 
 function AppWithWeb3Auth() {
   return (
@@ -368,7 +356,6 @@ function AppWithWeb3Auth() {
         // mfaSettings: { /* ... */ } // Configure MFA factors here globally
         // accountAbstractionConfig: { /* ... */ } // If using Smart Accounts globally
       }}
-      chainConfig={chainConfig} // Pass your primary chainConfig here
     >
       <YourAppComponent />
     </Web3AuthProvider>
@@ -382,7 +369,9 @@ Key changes for React:
 - The `Web3AuthProvider` handles SDK initialization automatically; you do not need to call `init()`
   or `initModal()`.
 - Pass `initParams` (with `clientId`, `web3AuthNetwork`, optional `modalConfig`, `mfaSettings`,
-  `accountAbstractionConfig`, `useSFAKey`) and your primary `chainConfig` to `Web3AuthProvider`.
+  `accountAbstractionConfig`, `useSFAKey`) to `Web3AuthProvider`.
+- The `chainConfig` prop is no longer passed to `Web3AuthProvider`; chain configurations are managed
+  via the dashboard.
 - The `useCoreKitKey` parameter (boolean) in `initParams` is now `useSFAKey`.
 - Explicit `privateKeyProvider` is no longer passed for standard EVM chains.
 
@@ -402,8 +391,7 @@ client-side code when initializing Web3Auth.
 2.  **Remove `chainConfig` from Constructor/Options:** Delete `chainConfig` passed to the `Web3Auth`
     constructor or `Web3AuthProvider` options if it was for a standard chain now configurable on the
     dashboard.
-    - _Exception for React_: You still pass a primary `chainConfig` to `Web3AuthProvider` to set the
-      initial chain context for the hooks and provider instance it exposes.
+    - All chain configurations are now managed via the Web3Auth Developer Dashboard.
 3.  **Configure on Web3Auth Dashboard:**
     - Log in to the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).
     - Navigate to your Project > "Chains".
@@ -449,7 +437,6 @@ const web3auth = new Web3Auth({
 // Client-side for React (Web3AuthProvider)
 <Web3AuthProvider
   initParams={{ clientId, web3AuthNetwork }}
-  chainConfig={primaryChainConfig} // Sets initial context, but detailed configs are dashboard-driven
 >
   {/* ... */}
 </Web3AuthProvider>
@@ -965,10 +952,9 @@ React examples.**
     ```
 
     _Note: The `web3AuthContextConfig` in the example above refers to the configuration object you
-    would define for `Web3AuthProvider`, typically containing `initParams` and `chainConfig` as
-    shown in "Step 1. Update SDK Initialization" for React. If you pass `initParams` and
-    `chainConfig` directly to `Web3AuthProvider` rather than through a separate config object,
-    adjust accordingly._
+    would define for `Web3AuthProvider`, typically containing `initParams` as shown in "Step 1.
+    Update SDK Initialization" for React. If you pass `initParams` directly to `Web3AuthProvider`
+    rather than through a separate config object, adjust accordingly._
 
 **Usage Examples with Wagmi Hooks:**
 
@@ -1039,62 +1025,8 @@ Ensure you are no longer using these APIs from v9:
 This table summarizes the key changes when migrating from either v9 Modal or v9 No-Modal to the
 unified v10 Modal SDK.
 
-| Feature                       | v9 (`@web3auth/modal`)                                                                                                                                            | v9 (`@web3auth/no-modal`)                                                                                                                             | v10 (Unified `@web3auth/modal`)                                                                                                                        |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Primary SDK Package**       | `@web3auth/modal`                                                                                                                                                 | `@web3auth/no-modal`                                                                                                                                  | `@web3auth/modal` (handles both modal and direct/modal-less flows)                                                                                     |
-| Installation                  | `npm i @web3auth/modal`                                                                                                                                           | `npm i @web3auth/no-modal`                                                                                                                            | `npm i @web3auth/modal`                                                                                                                                |
-| Deprecated Packages           | `@web3auth/base`, `@web3auth/auth-adapter` (if used customly), `@web3auth/account-abstraction-provider`, `@web3auth/modal-react-hooks`                            | `@web3auth/base`, `@web3auth/auth-adapter`, `@web3auth/ethereum-provider`, `@web3auth/account-abstraction-provider`, `@web3auth/no-modal-react-hooks` | Remove all listed v9 packages, including `@web3auth/no-modal`, `@web3auth/modal-react-hooks`, and `@web3auth/no-modal-react-hooks`.                    |
-| Initialization (non-React)    | `new Web3Auth()`, `initModal()`                                                                                                                                   | `new Web3AuthNoModal()`, `init()`                                                                                                                     | `new Web3Auth()`, `init()`. `modalConfig` in constructor.                                                                                              |
-| Initialization (React)        | `Web3AuthProvider` from `@web3auth/modal-react-hooks` with `config` prop (incl. `web3AuthOptions`, `adapters`). Some might have used class-based init in Context. | `Web3AuthProvider` from `@web3auth/no-modal-react-hooks` with `config` prop (incl. `web3AuthOptions`, `adapters`).                                    | `Web3AuthProvider` from `@web3auth/modal/react`. Pass `initParams` (with `clientId`, `web3AuthNetwork`, etc.) and primary `chainConfig`.               |
-| Modal Display                 | `web3auth.connect()`                                                                                                                                              | N/A (No Modal UI)                                                                                                                                     | `connect()` (hook from `useWeb3AuthConnect`) triggers modal. Modal UI configured via `modalConfig` / Dashboard. For class-based: `web3auth.connect()`. |
-| Direct Connection (No UI)     | Possible with specific adapter configs (complex)                                                                                                                  | `web3auth.connectTo(connector, params)`                                                                                                               | `web3auth.connectTo(connector, params)` (class) or `connectTo(connector, params)` (hook from `useWeb3AuthConnect`). Simplified params.                 |
-| Chain Config (Client)         | Optional for standard, required for custom in `chainConfig`                                                                                                       | Required `chainConfig` & `privateKeyProvider` in constructor                                                                                          | ⛔️ Removed for standard chains (dashboard-driven). Primary `chainConfig` for React Provider context. Custom chains on dashboard.                      |
-| Private Key Provider (Client) | Not typically passed directly for modal UI                                                                                                                        | Explicit `privateKeyProvider` in constructor                                                                                                          | ⛔️ Not needed in constructor for standard chains.                                                                                                     |
-| Adapters (Client)             | `OpenLoginAdapter` in `modalConfig`, or `configureAdapter`                                                                                                        | `configureAdapter(new AuthAdapter(...))`                                                                                                              | ⛔️ Removed. Logins configured on Dashboard. `authConnectionId` used in `connect`/`connectTo`.                                                         |
-| Verifiers (Client)            | `verifier`, `verifierSubIdentifier` in adapter/login configs                                                                                                      | `verifier`, `verifierSubIdentifier` in adapter/login configs                                                                                          | ⛔️ Removed. Use `authConnectionId` (Auth Connection ID from Dashboard) and `groupedAuthConnectionId` in `connect`/`connect` params.                   |
-| React Usage                   | Class-based or older hooks                                                                                                                                        | Class-based or older hooks                                                                                                                            | ✅ Hooks only (`useWeb3AuthConnect`, etc.) from `@web3auth/modal/react`.                                                                               |
-| MFA Configuration             | Via `AuthAdapter` settings                                                                                                                                        | Via `AuthAdapter` settings                                                                                                                            | ✅ Global `mfaSettings` in SDK init (constructor/Provider options) OR per-connection `mfaLevel` in `connect`/`connectTo` params.                       |
-| Smart Accounts                | Separate `@web3auth/account-abstraction-provider`                                                                                                                 | Separate `@web3auth/account-abstraction-provider`                                                                                                     | ✅ Dashboard-driven, optional `accountAbstractionConfig` in SDK init. Deprecated provider package.                                                     |
-| SFA Key Retrieval             | `useCoreKitKey: true` in constructor options                                                                                                                      | `useCoreKitKey: true` in constructor options                                                                                                          | `useSFAKey: true` in constructor options (non-React) or `initParams` (React). (Breaking change from `useCoreKitKey`)                                   |
-
----
-
-## Verifying Your v10 Integration
-
-After completing all the migration steps, it's crucial to thoroughly test your application to ensure
-everything functions as expected. Here's a checklist:
-
-- **Modal Display & UI (if using modal):** Ensure the Web3Auth Modal displays correctly with your
-  configured login methods.
-- **Direct Connection Flows (if using `connectTo` for custom UI):** Verify that direct connections
-  to social providers or custom JWT authentications work as expected.
-- **Login Methods:** Test every social login, email passwordless (if configured via OpenLogin on
-  dashboard), and custom JWT connection method you have configured on the Web3Auth Dashboard.
-- **Account Consistency:** If you use features like `groupedAuthConnectionId` for account linking,
-  verify that logging in with different methods linked to the same identifier correctly resolves to
-  the same user account and private key.
-- **Blockchain Provider:** Ensure `web3auth.provider` (for class-based usage) or the provider from
-  React hooks (`useWeb3AuthConnect` or `useWeb3Auth`) is available and correctly initialized for
-  your target chain(s).
-- **Core Blockchain Operations:**
-  - Fetch user account address.
-  - Fetch account balance.
-  - Sign a message.
-  - Send a simple transaction.
-- **MFA Functionality:** Test your configured MFA flows (`mfaLevel` and/or `mfaSettings`).
-- **Smart Accounts (if applicable):**
-  - Verify that the Smart Account is deployed and functions as expected based on your dashboard and
-    client configurations.
-- **Logout Functionality:** Ensure logout clears the session and provider correctly.
-- **Session Management:** Test session persistence and restoration.
-- **Error Handling:** Test common error scenarios.
-
----
-
-## Further Reading
-
-- [Web3Auth Documentation - PnP Modal SDK v10](https://web3auth.io/docs/sdk/pnp/web/modal) (Link to
-  be updated to final v10 docs page)
-- [Web3Auth v10 Examples on GitHub](https://github.com/Web3Auth/web3auth-pnp-examples) (Ensure
-  examples are updated for v10)
-- [Join the Community](https://web3auth.io/community)
+| Feature                 | v9 (`@web3auth/modal`)  | v9 (`@web3auth/no-modal`)  | v10 (Unified `@web3auth/modal`)                                    |
+| ----------------------- | ----------------------- | -------------------------- | ------------------------------------------------------------------ |
+| **Primary SDK Package** | `@web3auth/modal`       | `@web3auth/no-modal`       | `@web3auth/modal` (handles both modal and direct/modal-less flows) |
+| Installation            | `npm i @web3auth/modal` | `npm i @web3auth/no-modal` | `npm i @web3auth/modal`                                            |
+| Deprecated Packages     | `                       |
