@@ -1,5 +1,5 @@
 import * as getUserInfo from "../../../commonSteps/getUserInfo.mdx";
-import * as reactNativeBundlerIssues from "../../../commonSteps/reactNativeBundlerIssues.mdx";
+import * as reactNativeBundlerIssues from "./reactNativeBundlerIssues.mdx";
 import * as registerApp from "../../../commonSteps/registerApp.mdx";
 import { toSteps } from "../../../utils";
 import * as blockchainCalls from "./blockchainCallsReactNative.mdx";

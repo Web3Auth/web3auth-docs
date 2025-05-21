@@ -1,10 +1,10 @@
 import hostedFileLinks from "../../../../../common/hostedFileLinks.json";
-import STEPS from "../stepContent";
+import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.reactHooksQuickStart,
+      ...STEPS.reactQuickStart,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX,
         files[hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX],
@@ -22,8 +22,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.reactBundlerIssues,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.REACT_VITE_CONFIG,
-        files[hostedFileLinks.REACT_VITE_CONFIG],
+        hostedFileLinks.REACT_INDEX_HTML,
+        files[hostedFileLinks.REACT_INDEX_HTML],
         "Bundler Issues",
       ),
     },
@@ -36,27 +36,11 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.chainConfig,
+      ...STEPS.config,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX,
         files[hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX],
-        "Chain Config",
-      ),
-    },
-    {
-      ...STEPS.instantiate,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX,
-        files[hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX],
-        "Instantiate SDK",
-      ),
-    },
-    {
-      ...STEPS.configureExternalWallets,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX,
-        files[hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX],
-        "Configuring External Wallets",
+        "Config",
       ),
     },
     {
@@ -68,6 +52,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.setupWagmiProvider,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.REACT_MAIN_TSX,
+        files[hostedFileLinks.REACT_MAIN_TSX],
+        "Setup Wagmi Provider",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.REACT_APP_TSX,
@@ -76,15 +68,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.REACT_APP_TSX,
-        files[hostedFileLinks.REACT_APP_TSX],
-        "Get User Information",
-      ),
-    },
-    {
-      ...STEPS.blockchainCalls,
+      ...STEPS.wagmiCalls,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.REACT_APP_TSX,
         files[hostedFileLinks.REACT_APP_TSX],

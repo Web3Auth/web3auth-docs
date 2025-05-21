@@ -1,10 +1,10 @@
 import hostedFileLinks from "../../../../../common/hostedFileLinks.json";
-import STEPS from "../stepContent";
+import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.vueComposablesQuickStart,
+      ...STEPS.vueQuickStart,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX,
         files[hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX],
@@ -36,27 +36,11 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.chainConfig,
+      ...STEPS.config,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX,
         files[hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX],
-        "Chain Config",
-      ),
-    },
-    {
-      ...STEPS.instantiate,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX,
-        files[hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX],
-        "Instantiate SDK",
-      ),
-    },
-    {
-      ...STEPS.configureExternalWallets,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX,
-        files[hostedFileLinks.VUE_WEB3AUTHCONTEXT_TSX],
-        "Configuring External Wallets",
+        "Config",
       ),
     },
     {
@@ -68,6 +52,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.setupWagmiProvider,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.VUE_APP_VUE,
+        files[hostedFileLinks.VUE_APP_VUE],
+        "Setup Wagmi Provider",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.VUE_HOME_VUE,
@@ -76,15 +68,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.VUE_HOME_VUE,
-        files[hostedFileLinks.VUE_HOME_VUE],
-        "Get User Information",
-      ),
-    },
-    {
-      ...STEPS.blockchainCalls,
+      ...STEPS.wagmiCalls,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.VUE_HOME_VUE,
         files[hostedFileLinks.VUE_HOME_VUE],

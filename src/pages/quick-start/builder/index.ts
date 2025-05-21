@@ -9,14 +9,12 @@ import flutter from "./flutter";
 import ios from "./ios";
 import react_native from "./react_native";
 import angular from "./web/angular";
-import html from "./web/html";
 import nextjs from "./web/nextjs";
 import react from "./web/react";
 import vue from "./web/vue";
 
 const frameworks = {
   ANGULAR: angular,
-  HTML: html,
   NEXTJS: nextjs,
   REACT: react,
   VUE: vue,

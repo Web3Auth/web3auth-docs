@@ -7,11 +7,10 @@ const framework = {
     const replacementAggregator = new ReplaceFileAggregator();
     getSteps(steps, files, replacementAggregator);
     filenames.push(hostedFileLinks.REACT_WEB3AUTHCONTEXT_TSX);
-    filenames.push(hostedFileLinks.REACT_APP_TSX);
     filenames.push(hostedFileLinks.REACT_MAIN_TSX);
-    filenames.push(hostedFileLinks.REACT_VITE_CONFIG);
-    filenames.push(hostedFileLinks.REACT_INDEX_HTML);
+    filenames.push(hostedFileLinks.REACT_APP_TSX);
     filenames.push(hostedFileLinks.REACT_PACKAGE_JSON);
+    filenames.push(hostedFileLinks.REACT_INDEX_HTML);
     filenames.push(hostedFileLinks.REACT_GET_BALANCE_TSX);
     filenames.push(hostedFileLinks.REACT_SEND_TRANSACTION_TSX);
     filenames.push(hostedFileLinks.REACT_SWITCH_NETWORK_TSX);

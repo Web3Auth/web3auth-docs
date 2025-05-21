@@ -1,13 +1,13 @@
 import hostedFileLinks from "../../../../../common/hostedFileLinks.json";
-import STEPS from "../stepContent";
+import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.nextQuickStart,
+      ...STEPS.nextjsQuickStart,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
+        hostedFileLinks.NEXTJS_LAYOUT_TSX,
+        files[hostedFileLinks.NEXTJS_LAYOUT_TSX],
         "Quick Start",
       ),
     },
@@ -22,64 +22,56 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
+        hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX],
         "Dashboard Registration",
       ),
     },
     {
-      ...STEPS.chainConfig,
+      ...STEPS.config,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
-        "Chain Config",
+        hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX],
+        "Config",
       ),
     },
     {
-      ...STEPS.initialization,
+      ...STEPS.setupWeb3AuthProvider,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
-        "SDK Initialization",
+        hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX],
+        "Setup Web3Auth Provider",
       ),
     },
     {
-      ...STEPS.configureExternalWallets,
+      ...STEPS.setupWagmiProvider,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
-        "Configuring External Wallets",
+        hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_PROVIDER_TSX],
+        "Setup Wagmi Provider",
       ),
     },
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
+        hostedFileLinks.NEXTJS_COMPONENTS_APP_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_APP_TSX],
         "Login",
       ),
     },
     {
-      ...STEPS.getUserInfo,
+      ...STEPS.wagmiCalls,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
-        "Get User Information",
-      ),
-    },
-    {
-      ...STEPS.blockchainCalls,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
+        hostedFileLinks.NEXTJS_COMPONENTS_APP_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_APP_TSX],
         "Blockchain Calls",
       ),
     },
     {
       ...STEPS.logout,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.NEXTJS_PAGE_TSX,
-        files[hostedFileLinks.NEXTJS_PAGE_TSX],
+        hostedFileLinks.NEXTJS_COMPONENTS_APP_TSX,
+        files[hostedFileLinks.NEXTJS_COMPONENTS_APP_TSX],
         "Logout",
       ),
     },

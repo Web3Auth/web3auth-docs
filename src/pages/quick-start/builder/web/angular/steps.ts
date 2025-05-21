@@ -1,5 +1,5 @@
 import hostedFileLinks from "../../../../../common/hostedFileLinks.json";
-import STEPS from "../stepContent";
+import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(

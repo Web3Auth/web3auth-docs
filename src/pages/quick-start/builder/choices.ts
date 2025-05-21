@@ -5,7 +5,6 @@ export const REACT = "REACT";
 export const NEXTJS = "NEXTJS";
 export const VUE = "VUE";
 export const ANGULAR = "ANGULAR";
-export const HTML = "HTML";
 export const ANDROID = "ANDROID";
 export const IOS = "IOS";
 export const WEBGL = "WEBGL";
@@ -17,7 +16,6 @@ export const LANGS: DisplayChoice[] = [
   { key: NEXTJS, displayName: "Next JS" },
   { key: VUE, displayName: "Vue" },
   { key: ANGULAR, displayName: "Angular" },
-  { key: HTML, displayName: "Vanilla JS" },
   { key: ANDROID, displayName: "Android" },
   { key: IOS, displayName: "iOS/Swift" },
   { key: REACT_NATIVE, displayName: "React Native" },

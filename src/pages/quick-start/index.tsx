@@ -9,7 +9,7 @@ import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
 import { UIEvent, useEffect, useMemo, useState, useRef } from "react";
 import MoonLoader from "react-spinners/BeatLoader";
-import { Tooltip } from "react-tooltip";
+import React from "react";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
@@ -33,8 +33,15 @@ const getDefaultBuilderOptions = () => {
 };
 const getURLFromBuilderOptions = (opts: Record<string, string>, stepIndex): string => {
   const url = new URL(getWindowLocation());
+  // Clear all existing parameters
   url.search = "";
-  for (const [key, value] of Object.entries(opts)) url.searchParams.append(key, value);
+  // Add all builder options except stepIndex (if it somehow exists in opts)
+  for (const [key, value] of Object.entries(opts)) {
+    if (key !== "stepIndex") {
+      url.searchParams.append(key, value);
+    }
+  }
+  // Add stepIndex separately to ensure only one exists
   url.searchParams.append("stepIndex", stepIndex.toString());
   return url.toString();
 };
@@ -53,6 +60,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     parseInt(url.searchParams.get("stepIndex") || "0", 10),
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const [initialLoadComplete, setInitialLoadComplete] = useState<boolean>(false);
   const integration = useMemo(
     () => builder.build(builderOptions, files, stepIndex),
     [builderOptions, files, stepIndex],
@@ -78,13 +86,14 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       // eslint-disable-next-line no-param-reassign
       index = steps.length - 1;
     }
-    setSelectedFilename(steps[index].pointer.filename);
+    setSelectedFilename(steps[index].pointer!.filename);
     setStepIndex(index);
   };
 
   const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
-    const el = e.target as HTMLDivElement;
+    if (!initialLoadComplete) return;
 
+    const el = e.target as HTMLDivElement;
     const stepEls = el.getElementsByClassName(styles.stepContainer);
 
     for (let i = 0; i < stepEls.length; i += 1) {
@@ -120,7 +129,10 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const toggleBuilderView = async () => {
     if (builderView) {
       setBuilderView(false);
-      ref.current?.scrollIntoView({ behavior: "smooth" });
+      const element = ref.current as HTMLElement | null;
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     } else {
       setBuilderView(true);
     }
@@ -138,7 +150,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   useEffect(() => {
     setStepIndex(integration.stepIndex);
     // Update selected file when either integration changed
-    setSelectedFilename(integration.steps[integration.stepIndex].pointer.filename);
+    setSelectedFilename(integration.steps[integration.stepIndex].pointer!.filename);
 
     for (const optionKey in builderOptions) {
       if (builder.options[optionKey]) {
@@ -156,9 +168,24 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
   }, [builderOptions, integration, stepIndex, isLinkCopied]);
 
+  // Update the useEffect for initial navigation
   useEffect(() => {
-    if (stepIndex > 0) {
-      window.location.href = `#step-${stepIndex}`;
+    // Initialize to the step index from URL
+    if (stepIndex > 0 && steps[stepIndex]) {
+      const stepElements = document.getElementsByClassName(styles.stepContainer);
+      if (stepElements && stepElements.length > stepIndex) {
+        const element = stepElements[stepIndex] as HTMLElement;
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+
+          // Set initialLoadComplete after a delay to allow scrolling to complete
+          setTimeout(() => {
+            setInitialLoadComplete(true);
+          }, 1000);
+        }
+      }
+    } else {
+      setInitialLoadComplete(true);
     }
   }, []);
 
@@ -315,9 +342,9 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               filenames={integration.filenames}
               fileContents={integration.files}
               highlight={
-                steps[stepIndex] &&
-                steps[stepIndex].pointer?.filename === selectedFilename &&
-                steps[stepIndex].pointer?.range
+                steps[stepIndex]?.pointer?.filename === selectedFilename
+                  ? steps[stepIndex]?.pointer?.range
+                  : undefined
               }
               selectedFilename={selectedFilename}
               onClickFilename={(filename: string) => setSelectedFilename(filename)}
