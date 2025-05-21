@@ -828,7 +828,7 @@ export const pnpNoModalExamples: ExamplesInterface[] = [
     id: "firebase-google-aggregate-no-modal-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/firebase-google-aggregate-no-modal-example",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
+    guideLink: "/authentication/group-connections",
   },
   {
     title: "Use Aggregate Verifiers in PnP No Modal SDK [Auth0 Implicit Mode Example]",
@@ -853,7 +853,7 @@ export const pnpNoModalExamples: ExamplesInterface[] = [
     id: "auth0-google-aggregate-no-modal-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/auth0-google-aggregate-no-modal-example",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
+    guideLink: "/authentication/group-connections",
   },
   {
     title: "Integrate Auth0 SPA in PnP No Modal SDK",
@@ -914,7 +914,7 @@ export const pnpNoModalExamples: ExamplesInterface[] = [
     id: "custom-jwt-no-modal-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/custom-jwt-no-modal-example",
-    guideLink: "/auth-provider-setup/byo-jwt-provider",
+    guideLink: "/authentication/custom-connections/custom-jwt",
   },
   {
     title: "Integrate Discord Login in PnP No Modal SDK",
@@ -1609,7 +1609,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     id: "sfa-web-aggregate-verifier-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/single-factor-auth-web/sfa-web-aggregate-verifier-example",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
+    guideLink: "/authentication/group-connections",
   },
   {
     title: "Integrate Single Factor Auth SDK with Bitcoin",
@@ -1653,7 +1653,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     id: "sfa-web-custom-jwt-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-custom-jwt-example",
-    guideLink: "/auth-provider-setup/byo-jwt-provider",
+    guideLink: "/authentication/custom-connections/custom-jwt",
   },
   {
     title: "Integrate Google Login in Single Factor Auth SDK",
@@ -1717,7 +1717,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     id: "sfa-web-passwordless-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-passwordless-example",
-    guideLink: "/auth-provider-setup/authentication-service-providers/firebase-service-provider",
+    guideLink: "/authentication/custom-connections/firebase",
   },
 ];
 export const coreKitSfaiOSExamples: ExamplesInterface[] = [
@@ -1952,7 +1952,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     id: "mpc-core-kit-aggregate-verifier-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/mpc-core-kit-web/mpc-core-kit-aggregate-verifier-example/",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
+    guideLink: "/authentication/group-connections",
   },
   {
     title: "Integrate Farcaster Login in MPC Core Kit SDK",

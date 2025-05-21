@@ -95,11 +95,7 @@ export default function LookupAPIPage() {
               <td>
                 The verifier name can be found on your Web3Auth dashboard. To learn more about
                 verifiers, click{" "}
-                <a
-                  href="/docs/auth-provider-setup/verifiers#what-is-a-verifier"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="/docs/authentication" target="_blank" rel="noopener noreferrer">
                   here
                 </a>
                 .

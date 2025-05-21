@@ -561,7 +561,7 @@ const sidebars: SidebarsConfig = {
     },
     "examples",
     "resources/checklist",
-    "resources/mfa-best-practices",
+    // "resources/mfa-best-practices",
     {
       type: "category",
       label: "Web3Auth Infrastructure",

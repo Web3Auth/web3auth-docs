@@ -5,9 +5,10 @@ sidebar_label: Custom Authentication
 description: "Use your own Authentication | Documentation - Web3Auth"
 ---
 
-import BYOCustomJWTTiles from "@site/src/common/docs/_byo-custom-jwt-providers.mdx";
-import FederatedTiles from "@site/src/common/docs/_federated-providers.mdx";
-import SocialTiles from "@site/src/common/docs/_social-login-providers.mdx";
+import BasicConnections from "@site/src/common/docs/_basic-connections.mdx";
+import SocialConnections from "@site/src/common/docs/_social-connections.mdx";
+import CustomConnections from "@site/src/common/docs/_custom-connections.mdx";
+import GroupConnections from "@site/src/common/docs/_group-connections.mdx";
 
 Custom Authentication enables you to create tailored auth flows designed specifically for your app.
 Whether you’re migrating from an existing system or starting fresh, we’ve got you covered.
@@ -25,13 +26,6 @@ internal credentials and require minimal setup:
 - Limited customization options
 - Best for rapid prototyping and simple applications
 
-:::warning
-
-If you opt for prebuilt social login providers, migration to custom authentication will not be
-possible in the future.
-
-:::
-
 ### 2. Custom Authentication (Recommended)
 
 Custom Authentication offers more flexibility by allowing you to:
@@ -43,19 +37,10 @@ Custom Authentication offers more flexibility by allowing you to:
 - Create custom user experiences
 - Handle complex authentication requirements
 
-:::note
-
-Access to Custom Authentication is gated. The minimum
-[pricing plan](https://web3auth.io/pricing.html) to create custom
-[verifiers](/auth-provider-setup/verifiers) is the **Growth Plan**. However, you can use this
-feature for projects on `sapphire_devnet` for free.
-
-:::
-
 ### 3. Grouped Custom Authentication
 
 This method combines multiple authentication providers under a single
-[aggregate verifier](/auth-provider-setup/aggregate-verifier), enabling:
+[group connection](/authentication/group-connections), enabling:
 
 - Same private key generation across different login methods
 - User account linking across multiple providers
@@ -81,41 +66,23 @@ your custom authentication.
 - **Greater Control:** Own the authentication process, giving you flexibility to switch between SDKs
   and providers as needed.
 
-## Supported Login Providers
+## Supported Authentication Connections
 
-### Social
+### Basic Login
 
-<SocialTiles />
+<BasicConnections />
 
-### Authentication Service Providers
+### Social Login
 
-<FederatedTiles />
+<SocialConnections />
 
-### Bring your own Custom Login Providers
+### Custom Connections
 
-<BYOCustomJWTTiles />
+<CustomConnections />
+
+### Group Connections
+
+<GroupConnections />
 
 There are some nuances with certain login providers, so don't hesitate to get in touch with us on
 our [Community Portal](https://web3auth.io/community) and we will take care of things from there.
-
-## FAQs
-
-### Which logins should my application support?
-
-You can select from [this list](/auth-provider-setup/#supported-auth-providers) or use your own
-custom authentication. There are some nuances with certain login providers, so don't hesitate to get
-in touch with us.
-
-### Should different logins lead to the same key?
-
-You can choose to connect logins with the same `Verifier ID`. For example, if a user uses generic
-email logins and a Gmail login to log in on different occasions he/she can still retrieve the same
-key. This can only be done on logins that share a common unique identifier for a user.
-
-Read more about aggregating logins [here](/auth-provider-setup/aggregate-verifier).
-
-### Can XXXX authenticator/login be supported?
-
-Yes, If you'd like support for a particular login system do send your query over to
-hello@web3auth.io If you have any questions, please get in touch with us on
-[Community Portal](https://web3auth.io/community). We'll be happy to help you out!
