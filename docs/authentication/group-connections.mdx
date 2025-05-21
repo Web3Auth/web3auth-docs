@@ -11,7 +11,7 @@ import AuthenticationGroupConnectionsConfirm from "@site/static/images/dashboard
 
 Group Connections enable multiple login methods to be linked to the same on-chain user identity.
 This means that users logging in with different authentication providers (e.g., **_Google and Email
-Passwordless_**) can still access the same wallet address—ensuring a unified user experience.
+Passwordless_**) can still access the **same wallet address**—ensuring a unified user experience.
 
 > _Before setting up a group connection, developers must first configure individual login
 > connections that are eligible._
@@ -99,36 +99,60 @@ any additional parameters to the `Web3AuthProvider`.
 
 ```jsx
 import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
 
-const { connectTo } = useWeb3AuthConnect();
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
 
-const loginWithGoogle = async () => {
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "group-connection-id",
-    authConnectionId: "google-auth-connection-id",
-    authConnection: AUTH_CONNECTION.GOOGLE,
-  });
-};
+  const loginWithGoogle = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-start
+      groupedAuthConnectionId: "group-connection-id",
+      authConnectionId: "google-auth-connection-id",
+      authConnection: AUTH_CONNECTION.GOOGLE,
+      // highlight-end
+    });
+  };
 
-// Example: Login with Google
-<button onClick={() => loginWithGoogle()}>Login with Google</button>;
+  return (
+    <div>
+      <button onClick={() => loginWithGoogle()}>Login with Google</button>
+      <p>Address: {address}</p>
+      {/* 0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8 */}
+    </div>
+  );
+}
 ```
 
 ### Login with Email Passwordless
 
 ```jsx
 import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
 
-const { connectTo } = useWeb3AuthConnect();
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
 
-const loginWithEmailPasswordless = async () => {
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "group-connection-id",
-    authConnectionId: "email-passwordless-auth-connection-id",
-    authConnection: AUTH_CONNECTION.EMAIL_PASSWORDLESS,
-  });
-};
+  const loginWithEmailPasswordless = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-start
+      groupedAuthConnectionId: "group-connection-id",
+      authConnectionId: "email-passwordless-auth-connection-id",
+      authConnection: AUTH_CONNECTION.EMAIL_PASSWORDLESS,
+    });
+  };
 
-// Example: Login with Email Passwordless
-<button onClick={() => loginWithEmailPasswordless()}>Login with Email Passwordless</button>;
+  return (
+    <div>
+      <button onClick={() => loginWithEmailPasswordless()}>Login with Email Passwordless</button>
+      <p>Address: {address}</p>
+      {/* highlight-start */}
+      {/* User's address remains same as above */}
+      {/* 0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8 */}
+      {/* highlight-end */}
+    </div>
+  );
+}
 ```
