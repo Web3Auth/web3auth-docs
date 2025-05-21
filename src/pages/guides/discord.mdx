@@ -1,11 +1,9 @@
 ---
-title: Integrate Discord with Web3Auth Plug and Play No Modal SDK
+title: Integrate Discord with Web3Auth
 image: "guides-banners/discord.png"
-description:
-  Learn how to use Web3Auth Plug and Play No Modal SDK for Discord login using Custom
-  Authentication.
+description: Learn how to use Web3Auth for Discord login using Social Connections.
 type: guide
-tags: [plug and play, web, discord, evm]
+tags: [web, discord, evm]
 keywords: [discord login, discordapp login, discord, custom authentication, react, ethereum, solana]
 date: July 18, 2022
 author: Web3Auth Team
@@ -13,36 +11,28 @@ communityPortalTopicId: 48
 ---
 
 import DiscordSetup from "@site/src/common/guides/_discord-setup.mdx";
-import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
-import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
-import Installation from "@site/src/common/guides/_installation.mdx";
-import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
-import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import AuthConfigCodeDiscord from "@site/src/common/guides/_auth-config-code-discord.mdx";
-import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import SEO from "@site/src/components/SEO";
-// import TabItem from "@theme/TabItem";
-// import Tabs from "@theme/Tabs";
+import DiscordToggle from "@site/static/images/dashboard/authentication-social-connections.png";
+import DiscordConnection from "@site/static/images/dashboard/discord-connection.png";
 
 <SEO
-  title="Integrate Discord with Web3Auth Plug and Play No Modal SDK"
-  description="This guide will cover the basics of how to set up your Web3Auth Plug and Play No Modal SDK and Discord Login for the custom authentication and provide you the steps on how to develop a basic web application on the Ethereum blockchain."
+  title="Integrate Discord with Web3Auth"
+  description="This guide will cover the basics of how to set up Web3Auth with Discord Login and provide steps on how to develop a basic web application on the Ethereum blockchain."
   image="https://web3auth.io/docs/guides-banners/discord.png"
   slug="/guides/discord"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Discord Login for custom
-authentication and provide you the steps on how to develop a basic web application on the Ethereum
-blockchain.
+This guide will cover the basics of how to set up Web3Auth with Discord Login and provide steps on
+how to develop a basic web application on the Ethereum blockchain.
 
 **Live Demo:** https://web3auth-core-discord-demo.vercel.app
 
 ## Quick Start
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/discord-no-modal-example w3a-discord-demo && cd w3a-discord-demo && npm install && npm run start
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/custom-authentication/single-connection/discord-implicit-example w3a-discord-demo && cd w3a-discord-demo && npm install && npm run dev
 ```
 
 ## How it works?
@@ -54,16 +44,15 @@ When integrating Web3Auth with Discord Login the flow looks something like this:
 - When a user logs in with `Discord`, Discord sends a JWT `id_token` to the app. This JWT token is
   sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth Plug and Play No Modal SDK will
-  generate a private key for the user, in a self-custodial way, resulting in easy onboarding for
-  your user to the application.
+- Finally, on successful validation of the JWT token, Web3Auth will generate a private key for the
+  user, in a self-custodial way, resulting in easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
 - A [Discord Developer](https://discord.com/developers/applications) account to be used as Login
-  provider for Web3Auth Custom Authentication.
+  provider for Web3Auth authentication.
 
 ## Setup
 
@@ -75,20 +64,28 @@ When integrating Web3Auth with Discord Login the flow looks something like this:
 
 <SetupWeb3AuthDashboard />
 
-- Create a **Verifier** from the **Custom Auth** Section of the
-  [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following configuration:
+### Create a Discord Connection
 
-  - Choose a name of your choice for the verifier identifier. `eg. discord-core-verifier`
-  - Select environment: `Sapphire Devnet`, or `Sapphire Mainnet` as per your requirement.
-  - Select `Discord` from the **Login Provider**.
-    ![Discord - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier.png)
-  - Paste the **Client ID** from the Discord App(above) to the `Client ID` field.
-    ![Discord Client ID on Web3Auth Dashboard](/images/dashboard/create-verifier-discord.png)
-  - Click on the `Create` button to create your verifier. It may take up to 10 minutes to deploy the
-    verifier on _testnet_. You'll receive an email once it's complete.
+Follow these steps to create a Discord connection:
 
-- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and
-  Play Project.
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+2. Go to the `Social Connections` section.
+3. Click on the `Settings` icon near the Discord connection.
+4. Enter the `Auth Connection ID` (e.g., "w3a-discord-demo").
+5. Enter the `Discord Client ID` you obtained from the Discord Developer dashboard.
+6. Finally, click on the `Add Connection` button.
+
+<div style={{ display: "flex", margin: "20px 0" }}>
+  <img
+    src={DiscordConnection}
+    style={{
+      maxWidth: "600px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
+    alt="Discord Connection"
+  />
+</div>
 
 ## Using the Web3Auth SDK
 
@@ -96,83 +93,265 @@ To use the Web3Auth SDK, you need to add the dependency of the respective platfo
 to your project. To know more about the available SDKs, please have a look at this
 [documentation page](/sdk).
 
-For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/web/react)
-and using the [Auth Adapter](/sdk/web/react) alongside it to enable Custom Authentication through
-Twitch Login.
-
-<SetupBaseProject />
+For this guide, we will be using the Web3Auth Modal SDK with React hooks.
 
 ### Installation
 
-<Installation />
+Install the required Web3Auth packages:
 
-### Initialization
+```bash
+npm install @web3auth/modal
+```
 
-<InitializationIntro />
+For interacting with Ethereum blockchain:
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Auth Adapter (the
-default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know more
-about the other things you can do with Web3Auth, check out our [SDK Reference](/sdk/web/react).
+```bash
+npm install wagmi viem @tanstack/react-query
+```
 
-#### Instantiating Web3Auth
+### Setting up Web3Auth in React
 
-<InstantiationWeb3Auth />
+We need to set up the Web3Auth context configuration:
 
-#### Initializing the Auth Adapter
+```tsx title="src/web3authContext.tsx"
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 
-<AuthConfigCodeDiscord />
+// Get client ID from https://dashboard.web3auth.io
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
 
-Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
-Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
-Auth Adapter can connect to the correct verifier and AWS Cognito server.
+// Instantiate SDK
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  authBuildEnv: "testing",
+};
 
-<InitializationWeb3Auth />
+const web3AuthContextConfig = {
+  web3AuthOptions,
+};
+
+export default web3AuthContextConfig;
+```
+
+Then, wrap your application with the Web3Auth provider and Wagmi provider:
+
+```tsx title="src/index.tsx"
+import "./index.css";
+
+import ReactDOM from "react-dom/client";
+// Setup Web3Auth Provider
+import { Web3AuthProvider } from "@web3auth/modal/react";
+import web3AuthContextConfig from "./web3authContext";
+// Setup Wagmi Provider
+import { WagmiProvider } from "@web3auth/modal/react/wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import App from "./App";
+
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  // Setup Web3Auth Provider
+  <Web3AuthProvider config={web3AuthContextConfig}>
+    {/* Setup Wagmi Provider */}
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider>
+        <App />
+      </WagmiProvider>
+    </QueryClientProvider>
+  </Web3AuthProvider>,
+);
+```
 
 ### Authentication
 
-#### Logging in
+In your main application component, use Web3Auth hooks for authentication:
 
-Once initialized, you can use the `connectTo()` function to authenticate the user when they click
-the login button.
+```tsx title="src/App.tsx"
+import "./App.css";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { SwitchChain } from "./components/switchNetwork";
 
-```tsx
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+function App() {
+  const { connectTo, isConnected, connectorName } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
 
-await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-  loginProvider: "discord",
-});
+  const loginWithDiscord = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.DISCORD,
+      authConnectionId: "w3a-discord-demo",
+    });
+  };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
+    }
+  }
+
+  const loggedInView = (
+    <>
+      <h2>Connected to {connectorName}</h2>
+      <div>{address}</div>
+      <div className="flex-container">
+        <div>
+          <button onClick={() => uiConsole(userInfo)} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={() => disconnect()} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
+      <SendTransaction />
+      <Balance />
+      <SwitchChain />
+    </>
+  );
+
+  const unloggedInView = (
+    <div className="flex-container">
+      <button onClick={loginWithDiscord} className="card">
+        Login with Discord
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="container">
+      <h1 className="title">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/no-modal" rel="noreferrer">
+          Web3Auth{" "}
+        </a>
+        & React with Discord
+      </h1>
+
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
 ```
-
-When connecting, your `connectTo` function takes the arguments for the adapter you want to connect
-to and the `loginProvider` for the login.
-
-### Get the User Profile
-
-```tsx
-const user = await web3auth.getUserInfo();
-console.log("User info", user);
-```
-
-Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that
-these details are not stored anywhere in Web3Auth network, but are fetched from the id_token you
-received from AWS Cognito and live in the frontend context.
-
-### Logout
-
-```tsx
-await web3auth.logout();
-```
-
-Logging out your user is as simple as calling the `logout` function.
 
 ### Interacting with Blockchain
 
-<InteractingWithBlockchain />
+With the Web3Auth and Wagmi integration, you can easily interact with blockchain. Here are some
+examples:
+
+#### Getting Balance
+
+```tsx title="src/components/getBalance.tsx"
+import { useAccount, useBalance } from "wagmi";
+import { formatUnits } from "viem";
+
+export function Balance() {
+  const { address } = useAccount();
+
+  const { data, isLoading, error } = useBalance({ address });
+
+  return (
+    <div>
+      <h2>Balance</h2>
+      <div>
+        {data?.value !== undefined && `${formatUnits(data.value, data.decimals)} ${data.symbol}`}{" "}
+        {isLoading && "Loading..."} {error && "Error: " + error.message}
+      </div>
+    </div>
+  );
+}
+```
+
+#### Sending Transactions
+
+```tsx title="src/components/sendTransaction.tsx"
+import { FormEvent } from "react";
+import { useWaitForTransactionReceipt, useSendTransaction, BaseError } from "wagmi";
+import { Hex, parseEther } from "viem";
+
+export function SendTransaction() {
+  const { data: hash, error, isPending, sendTransaction } = useSendTransaction();
+
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const to = formData.get("address") as Hex;
+    const value = formData.get("value") as string;
+    sendTransaction({ to, value: parseEther(value) });
+  }
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  return (
+    <div>
+      <h2>Send Transaction</h2>
+      <form onSubmit={submit}>
+        <input name="address" placeholder="Address" required />
+        <input name="value" placeholder="Amount (ETH)" type="number" step="0.000000001" required />
+        <button disabled={isPending} type="submit">
+          {isPending ? "Confirming..." : "Send"}
+        </button>
+      </form>
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {isConfirming && "Waiting for confirmation..."}
+      {isConfirmed && "Transaction confirmed."}
+      {error && <div>Error: {(error as BaseError).shortMessage || error.message}</div>}
+    </div>
+  );
+}
+```
+
+#### Switching Networks
+
+```tsx title="src/components/switchNetwork.tsx"
+import { useChainId, useSwitchChain } from "wagmi";
+
+export function SwitchChain() {
+  const chainId = useChainId();
+  const { chains, switchChain, error } = useSwitchChain();
+
+  return (
+    <div>
+      <h2>Switch Chain</h2>
+      <h3>Connected to {chainId}</h3>
+      {chains.map((chain) => (
+        <button
+          disabled={chainId === chain.id}
+          key={chain.id}
+          onClick={() => switchChain({ chainId: chain.id })}
+          type="button"
+          className="card"
+        >
+          {chain.name}
+        </button>
+      ))}
+
+      {error?.message}
+    </div>
+  );
+}
+```
 
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Core Discord Login Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/discord-no-modal-example).
+[Web3Auth Discord Login Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/custom-authentication/single-connection/discord-implicit-example).
 Check it out and try running it locally yourself!
 
 ## Troubleshoot
@@ -181,14 +360,14 @@ Check it out and try running it locally yourself!
 
 :::warning
 
-Receiving `Could not get result from torus nodes Duplicate token found` error when using Custom
-verifier for Discord?
+Receiving `Could not get result from torus nodes Duplicate token found` error when using Discord for
+login?
 
 - This is because Discord issues the same token for 30 mins.
-- We revoke it for you for default verifiers( such as when using Web3Auth Modal `@webauth/modal`).
-- But when using Custom Verifier for Discord, the integrating dApps have to revoke the token
-  themself before attempting the next login by using discord clientId and secret to revoke the
-  token.
+- We revoke it for you for default integrations, but in some cases, your application may need to
+  handle this.
+- The integrating applications might need to revoke the token themselves before attempting the next
+  login by using Discord clientId and secret to revoke the token.
 
 :::
 
