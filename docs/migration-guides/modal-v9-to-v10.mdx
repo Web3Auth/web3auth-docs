@@ -449,17 +449,16 @@ const web3auth = new Web3Auth({
 
 ## 3. Remove Adapters & Update Login/Connection Logic
 
-Client-side adapter configuration (e.g., `AuthAdapter`, `OpenLoginAdapter`) is deprecated. Login
-methods and their specific configurations are now primarily managed on the Web3Auth Developer
-Dashboard under your Project > "Authentication" section, which includes "Social Connections" and
-"Custom Connections".
+Client-side adapter configuration (e.g., `AuthAdapter`) is deprecated. Login methods and their
+specific configurations are now primarily managed on the Web3Auth Developer Dashboard under your
+Project > "Authentication" section, which includes "Social Connections" and "Custom Connections".
 
 **Modal Flows:**
 
 If you are using the Web3Auth Modal UI:
 
 - **v9:** You might have configured adapters and passed them to `web3auth.configureAdapter()` or
-  initialized `Web3Auth` with an `OpenLoginAdapter` instance in `modalConfig`.
+  initialized `Web3Auth` with an `AuthAdapter` instance in `modalConfig`.
 - **v10:**
   1.  Remove all code related to `web3auth.configureAdapter()`.
   2.  Remove explicit adapter instantiation for `modalConfig`.
@@ -476,7 +475,7 @@ If you are using the Web3Auth Modal UI:
 Modal SDK):**
 
 - **v9 (`@web3auth/no-modal`):** You used
-  `web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, { loginProvider, ... })` or
+  `web3auth.connectTo(WALLET_ADAPTERS.AUTH, { loginProvider, ... })` or
   `web3auth.connectTo(WALLET_ADAPTERS.AUTH, { ... })` with detailed configurations for
   `loginProvider`, `verifier`, `clientId` (for social), `idToken` (for JWTs), etc.
 - **v10 (`@web3auth/modal`):**
