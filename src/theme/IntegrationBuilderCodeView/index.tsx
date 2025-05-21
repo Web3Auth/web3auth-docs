@@ -4,6 +4,7 @@ import rangeParser from "parse-numeric-range";
 import path from "path";
 import { FiFile } from "react-icons/fi";
 import { animated, useSpring } from "react-spring";
+import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 
@@ -23,7 +24,10 @@ const getDisplayName = (filename: string): string => {
 const getLanguage = (filename: string): string => {
   const ext = path.extname(filename).substr(1);
 
-  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml", "dart", "json", "cs"].includes(ext)) return `language-${ext}`;
+  if (
+    ["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml", "dart", "json", "cs"].includes(ext)
+  )
+    return `language-${ext}`;
   if (ext === "js") return "language-jsx";
   if (ext === "vue") return "language-ts";
   if (ext === "gradle") return "language-groovy";
@@ -34,13 +38,35 @@ const getLanguage = (filename: string): string => {
   return undefined;
 };
 
-export default function IntegrationBuilderCodeView({ selectedFilename, filenames, fileContents, highlight, onClickFilename }: Props) {
+export default function IntegrationBuilderCodeView({
+  selectedFilename,
+  filenames,
+  fileContents,
+  highlight,
+  onClickFilename,
+}: Props) {
   const highlightLines = rangeParser(highlight || "0");
-  const props = useSpring({ scroll: Math.max(highlightLines[0] * 15, 0) }); // 22 is line height, 64 is offset to scroll the line close to top
+  const [viewportHeight, setViewportHeight] = useState(800);
+
+  useEffect(() => {
+    setViewportHeight(window.innerHeight);
+
+    const handleResize = () => setViewportHeight(window.innerHeight);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const props = useSpring({
+    scroll: Math.max(highlightLines[0] * 15 - viewportHeight / 3, 0),
+  }); // 15 is line height, position at roughly 1/3 of the viewport
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <ul className={classNames("tabs", styles.codeTabs)} role="tablist" aria-orientation="horizontal">
+        <ul
+          className={classNames("tabs", styles.codeTabs)}
+          role="tablist"
+          aria-orientation="horizontal"
+        >
           {filenames.map((filename) => (
             <li
               key={filename}
@@ -58,7 +84,9 @@ export default function IntegrationBuilderCodeView({ selectedFilename, filenames
         </ul>
       </div>
       <animated.div className={styles.body} scrollTop={props.scroll}>
-        <CodeBlock className={getLanguage(selectedFilename)}>{fileContents[selectedFilename]}</CodeBlock>
+        <CodeBlock className={getLanguage(selectedFilename)}>
+          {fileContents[selectedFilename]}
+        </CodeBlock>
       </animated.div>
     </div>
   );
