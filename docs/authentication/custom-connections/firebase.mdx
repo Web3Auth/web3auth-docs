@@ -1,24 +1,32 @@
 ---
-title: Firebase Service Provider Set up
+title: Firebase Login with Web3Auth
 sidebar_label: Firebase
-description: "Firebase Service Provider Set up | Documentation - Web3Auth"
+description: "Firebase Login with Web3Auth | Documentation - Web3Auth"
 ---
 
 import Tiles from "@theme/Tiles";
 
-Firebase allows you to easily add authentication to your application. Web3Auth supports Firebase as
-a service provider. You can create a connection for Firebase and integrate it into your application.
-This page will help you set up Firebase as a service provider with Web3Auth.
+import CustomConnectionOptions from "@site/static/images/dashboard/authentication-custom-connections.png";
+import FirebaseConnection from "@site/static/images/dashboard/firebase-connection.png";
+
+Firebase is a popular backend platform that enables developers to seamlessly integrate
+authentication, databases, and other services into their applications. Web3Auth supports Firebase as
+an authentication provider, allowing developers to leverage Firebase Authentication within the
+Web3Auth framework for secure user login and key management.
 
 [Take a look at the supported social logins on Firebase](https://firebase.google.com/docs/auth)
 
 ## Create a Firebase Project
 
-If you haven't already, create a Firebase project. It is the mandatory step before we proceed
-further. After the basic setup, we'll learn how to create a Firebase connection for the Web3Auth
-project. You can follow the link below to set up Firebase for your project. For React native, you
-can set up Firebase for Android and iOS separately. If we are missing any platform/framework, you
-can always [check out Firebase documentation](https://firebase.google.com/docs/libraries).
+To get started, developers must first create a Firebase project in the Firebase Console. This is a
+required step before integrating Firebase with Web3Auth. Once the Firebase project is set up,
+developers can proceed to configure a Firebase connection in the Web3Auth Dashboard.
+
+Web3Auth’s Firebase integration enables the use of Firebase-issued ID tokens to authenticate users,
+combining Firebase’s authentication flexibility with Web3Auth’s decentralized key infrastructure.
+
+For detailed implementation steps and platform-specific instructions, developers can follow the
+[Firebase documentation](https://firebase.google.com/docs).
 
 export const FirebaseSetup = [
   {
@@ -63,4 +71,137 @@ export const FirebaseSetup = [
 
 ## Create a Firebase Connection
 
-{/* TODO: Add Firebase Connection Steps */}
+:::success Create Firebase Connection on Dashboard
+
+To use this feature, developers must go to the `Custom Connections` tab in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={CustomConnectionOptions}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Custom Connection Options"
+  />
+</div>
+
+:::
+
+Follow these steps to create a Firebase connection:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+1. Go to the `Custom Connections` section.
+1. Click on the `Settings` icon near the Firebase connection.
+1. Enter the `Firebase Connection ID`.
+1. Paste `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com`
+   as `JWKS Endpoint`.
+1. Paste a sample `JWT Token` to auto populate the best **JWT validations** possible.
+1. Select the `JWT user identifier`: `email`, `sub` or `custom`.
+1. Toggle the Case Sensitivity of `User Identifier`. (Optional)
+1. Click on `Add Custom Validations` to add validations manually.
+   1. Type iss as a field and `https://securetoken.google.com/FIREBASE-PROJECT-ID` as a value.
+   1. Next, type aud as a field and `FIREBASE-PROJECT-ID` as a value.
+1. Finally, click on the `Add Connection` button.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img
+    src={FirebaseConnection}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Firebase Connection"
+  />
+</div>
+
+## Usage
+
+### Initialize Web3Auth
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+Since, the `Firebase Connection` details are available from Dashboard, developers don't need to pass
+any additional parameters to the `Web3AuthProvider`.
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with Firebase
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+import { initializeApp } from "firebase/app";
+import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "get-your-firebase-api-key",
+  authDomain: "get-your-firebase-auth-domain",
+  projectId: "get-your-firebase-project-id",
+  storageBucket: "get-your-firebase-storage-bucket",
+  messagingSenderId: "get-your-firebase-messaging-sender-id",
+  appId: "get-your-firebase-app-id",
+};
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithFirebase = async () => {
+    try {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const githubProvider = new GithubAuthProvider();
+
+      // Using Github provider for demo purposes
+      const result = await signInWithPopup(auth, githubProvider);
+
+      const idToken = await result.user.getIdToken(true);
+
+      // highlight-start
+      await connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnectionId: "firebase-auth-connection-id",
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        idToken,
+        extraLoginOptions: {
+          isUserIdCaseSensitive: false,
+        },
+      });
+      // highlight-end
+    } catch (error) {
+      console.error("Firebase authentication error:", error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithFirebase()}>Login with Firebase</button>
+      <p>Address: {address}</p>
+      {/* 0x176513A0A18ad0502dEbd3108999D4D146cA23D2 */}
+    </div>
+  );
+}
+```

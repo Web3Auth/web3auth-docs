@@ -450,7 +450,7 @@ const sidebars: SidebarsConfig = {
             "authentication/custom-connections/firebase",
             {
               type: "category",
-              label: "Custom JWT",
+              label: "Custom Connection",
               items: [
                 "authentication/custom-connections/custom-jwt",
                 "authentication/custom-connections/custom/jsonwebtoken",

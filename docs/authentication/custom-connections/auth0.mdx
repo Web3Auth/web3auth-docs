@@ -1,24 +1,31 @@
 ---
-title: Auth0 Service Provider with Web3Auth
+title: Auth0 Login with Web3Auth
 sidebar_label: Auth0
-description: "Auth0 Service Provider Set up | Documentation - Web3Auth"
+description: "Auth0 Login with Web3Auth | Documentation - Web3Auth"
 ---
 
 import Tiles from "@theme/Tiles";
 
-Auth0 allows you to easily add authentication to your application. Web3Auth supports Auth0 as a
-service provider. You can create a connection for Auth0 and integrate it into your application. This
-page will help you set up Auth0 as a service provider with Web3Auth.
+import CustomConnectionOptions from "@site/static/images/dashboard/authentication-custom-connections.png";
+import Auth0Connection from "@site/static/images/dashboard/auth0-connection.png";
+
+Auth0 is a powerful authentication and authorization platform that enables developers to securely
+manage user identities. Web3Auth offers native support for integrating Auth0 as a service provider,
+allowing projects to leverage Auth0’s robust authentication mechanisms within the Web3Auth
+ecosystem.
 
 [Take a look at the supported social logins on Auth0](https://marketplace.auth0.com/categories/social-login)
 
 ## Create an Auth0 Application
 
-If you haven't already, create an Auth0 application for your project. It is the mandatory step
-before we proceed further. After the basic setup, we'll learn how to create an Auth0 connection for
-the Web3Auth project. You can follow the link below to set up Auth0 for your project. If we are
-missing any platform/framework, you can always
-[check out Auth0 documentation](https://auth0.com/docs/quickstart/native#webapp).
+To begin, developers must first create an Auth0 application specific to their project. This initial
+setup is essential before configuring the connection with Web3Auth. Once the Auth0 application is
+created, developers can proceed to establish an Auth0 connection within the Web3Auth Dashboard.
+
+This integration allows users to authenticate through Auth0, while still benefiting from Web3Auth’s
+key management and wallet abstraction features. For platform-specific implementation details or
+additional customization, developers are encouraged to refer to the
+[official Auth0 documentation](https://auth0.com/docs/quickstart/native#webapp).
 
 export const Auth0Setup = [
   {
@@ -63,4 +70,103 @@ export const Auth0Setup = [
 
 ## Create an Auth0 Connection
 
-{/* TODO: Add Auth0 Connection Steps */}
+:::success Create Auth0 Connection on Dashboard
+
+To use this feature, developers must go to the `Custom Connections` tab in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={CustomConnectionOptions}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Custom Connection Options"
+  />
+</div>
+
+:::
+
+Follow these steps to create an Auth0 connection:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+2. Go to the `Custom Connections` section.
+3. Click on the `Settings` icon near the Auth0 connection.
+4. Enter the `Auth Connection ID`.
+5. Select the `JWT user identifier`: `email`, `sub` or `custom`.
+6. Toggle the Case Sensitivity of `User Identifier`. (Optional)
+7. Enter `Auth0 Client ID`.
+8. Enter `Auth0 Domain`.
+9. Finally, click on the `Add Connection` button.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img
+    src={Auth0Connection}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Auth0 Connection"
+  />
+</div>
+
+## Usage
+
+### Initialize Web3Auth
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+Since, the `Auth0 Connection` details are available from Dashboard, developers don't need to pass
+any additional parameters to the `Web3AuthProvider`.
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with Auth0
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithAuth0 = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-start
+      authConnectionId: "auth0-auth-connection-id",
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      // highlight-end
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithAuth0()}>Login with Auth0</button>
+      <p>Address: {address}</p>
+      {/* 0xA8b29d40d0FE6a0c153A5759B1f0059d8b7654c5 */}
+    </div>
+  );
+}
+```
