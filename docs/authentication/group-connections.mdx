@@ -5,4 +5,130 @@ description: "Group Connections | Documentation - Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
 ---
 
-{/* TODO: Add Group Connections Steps */}
+import AuthenticationGroupConnectionsSelect from "@site/static/images/dashboard/authentication-group-connections-select.png";
+import AuthenticationGroupConnectionsCreate from "@site/static/images/dashboard/authentication-group-connections-create.png";
+import AuthenticationGroupConnectionsConfirm from "@site/static/images/dashboard/authentication-group-connections-confirm.png";
+
+Group Connections enable multiple login methods to be linked to the same on-chain user identity.
+This means that users logging in with different authentication providers (e.g., **_Google and Email
+Passwordless_**) can still access the same wallet address—ensuring a unified user experience.
+
+> _Before setting up a group connection, developers must first configure individual login
+> connections that are eligible._
+
+:::success Create Group Connection on Dashboard
+
+To use this feature, developers must go to the `Group Connections` tab in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={AuthenticationGroupConnectionsCreate}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Authentication Group Connections"
+  />
+</div>
+
+:::
+
+## Set Up a Group Connection
+
+Follow these steps:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+2. Go to the `Group Connections` section.
+3. Click on the `Create Group` button.
+4. Enter your custom `Group Name`.
+5. Select `1st social connection` and `2nd social connection`.
+6. Click `Create Group`.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={AuthenticationGroupConnectionsSelect}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Authentication Group Connections"
+  />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={AuthenticationGroupConnectionsConfirm}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Authentication Group Connections Confirm"
+  />
+</div>
+
+## Usage
+
+### Initialize Web3Auth in Your App
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "your-client-id", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+Since, the `Group Connections` details are available from Dashboard, developers don't need to pass
+any additional parameters to the `Web3AuthProvider`.
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with Google
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+
+const { connectTo } = useWeb3AuthConnect();
+
+const loginWithGoogle = async () => {
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    groupedAuthConnectionId: "group-connection-id",
+    authConnectionId: "google-auth-connection-id",
+    authConnection: AUTH_CONNECTION.GOOGLE,
+  });
+};
+
+// Example: Login with Google
+<button onClick={() => loginWithGoogle()}>Login with Google</button>;
+```
+
+### Login with Email Passwordless
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+
+const { connectTo } = useWeb3AuthConnect();
+
+const loginWithEmailPasswordless = async () => {
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    groupedAuthConnectionId: "group-connection-id",
+    authConnectionId: "email-passwordless-auth-connection-id",
+    authConnection: AUTH_CONNECTION.EMAIL_PASSWORDLESS,
+  });
+};
+
+// Example: Login with Email Passwordless
+<button onClick={() => loginWithEmailPasswordless()}>Login with Email Passwordless</button>;
+```
