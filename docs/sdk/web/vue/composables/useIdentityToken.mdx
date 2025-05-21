@@ -18,12 +18,12 @@ import { useIdentityToken } from "@web3auth/modal/vue";
 <script setup lang="ts">
   import { useIdentityToken } from "@web3auth/modal/vue";
 
-  const { authenticateUser, loading, error, token } = useIdentityToken();
+  const { getIdentityToken, loading, error, token } = useIdentityToken();
 </script>
 
 <template>
   <div>
-    <button @click="authenticateUser" :disabled="loading">
+    <button @click="getIdentityToken" :disabled="loading">
       {{ loading ? "Authenticating..." : "Get Identity Token" }}
     </button>
     <div v-if="token">Token: {{ token }}</div>
@@ -56,7 +56,7 @@ Error that occurred during the authentication process.
 
 The identity token returned after successful authentication.
 
-#### authenticateUser
+#### getIdentityToken
 
 `() => Promise<string | null>`
 

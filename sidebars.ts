@@ -739,9 +739,9 @@ const sidebars: SidebarsConfig = {
       label: "Functions",
       items: [
         "sdk/web/js/functions/functions",
-        "sdk/web/js/functions/authenticateUser",
         "sdk/web/js/functions/connect",
         "sdk/web/js/functions/enableMFA",
+        "sdk/web/js/functions/getIdentityToken",
         "sdk/web/js/functions/getUserInfo",
         "sdk/web/js/functions/logout",
         "sdk/web/js/functions/manageMFA",
