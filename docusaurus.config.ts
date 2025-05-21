@@ -301,27 +301,13 @@ const config: Config = {
             to: "/authentication/",
           },
           {
-            from: "/sdk/web/modal/multi-factor-authentication",
-            to: "/sdk/pnp/web/modal/mfa",
-          },
-          {
-            from: "/sdk/web/core/multi-factor-authentication",
-            to: "/sdk/pnp/web/no-modal/mfa",
-          },
-          {
-            from: "/sdk/web/web3auth/multi-factor-authentication",
-            to: "/sdk/pnp/web/modal/mfa",
-          },
-          {
             from: "/troubleshooting/different-wallet-address-issue",
             to: "/troubleshooting/different-private-key",
           },
-
           {
             to: "/features/smart-accounts",
             from: "/features/account-abstraction",
           },
-
           {
             from: "/pnp/going-live",
             to: "/resources/checklist",
