@@ -251,41 +251,10 @@ const config: Config = {
       {
         redirects: [
           {
-            from: "/examples/productionexamples",
-            to: "/examples",
-          },
-          {
             from: "/get-started",
             to: "/quick-start",
           },
-          {
-            from: "/developing-with-web3auth/understand-sdk",
-            to: "/quick-start",
-          },
-          {
-            from: "/developing-with-web3auth/",
-            to: "/quick-start",
-          },
-          {
-            from: "/sdk/web/choosesdk/",
-            to: "/sdk/pnp/web/",
-          },
-          {
-            from: "/sdk/android/setting-up",
-            to: "/sdk/pnp/android/",
-          },
-          {
-            from: "/sdk/ios/setting-up",
-            to: "/sdk/pnp/ios/",
-          },
-          {
-            from: "/sdk/flutter/setting-up",
-            to: "/sdk/pnp/flutter/",
-          },
-          {
-            from: "/product/wallet-ecosystems",
-            to: "/features/ecosystem-wallets",
-          },
+
           {
             from: "/features/blockchain-agnostic",
             to: "/features/compatible-blockchains",
@@ -294,194 +263,27 @@ const config: Config = {
             from: "/features/wallet-aggregation",
             to: "/features/external-wallets",
           },
-          {
-            from: "/sdk/react-native/choose-workflows",
-            to: "/sdk/pnp/react-native/",
-          },
-          {
-            from: "/overview/what-is-web3auth",
-            to: "/what-is-web3auth",
-          },
-          {
-            from: "/overview/how-web3auth-works",
-            to: "/how-web3auth-works",
-          },
-          {
-            from: "/overview/key-management/",
-            to: "/infrastructure/",
-          },
-          {
-            from: "/overview/key-management/technical-architecture/",
-            to: "/infrastructure/",
-          },
-          {
-            from: "/infrastructure/key-management",
-            to: "/infrastructure/",
-          },
-          {
-            from: "/infrastructure/technical-architecture/",
-            to: "/infrastructure/",
-          },
+
           {
             from: "/developer-dashboard/",
             to: "/dashboard-setup/",
           },
-          {
-            from: "/developer-dashboard/get-client-id",
-            to: "/dashboard-setup/projects-and-analytics",
-          },
-          {
-            from: "/developer-dashboard/enable-interoperability",
-            to: "/dashboard-setup/enable-interoperability",
-          },
-          {
-            from: "/developer-dashboard/setup-custom-authentication",
-            to: "/dashboard-setup/setup-custom-authentication",
-          },
-          {
-            from: "/developer-dashboard/billing-and-user-stats",
-            to: "/dashboard-setup/billing-and-usage",
-          },
+
           {
             from: "/customauth",
             to: "/auth-provider-setup/",
           },
-          {
-            from: "/customauth/verifiers",
-            to: "/auth-provider-setup/verifiers",
-          },
+
           {
             from: "/troubleshooting/different-wallet-address-issue",
             to: "/troubleshooting/different-private-key",
           },
+
           {
-            from: "/connect-blockchain/polygon/",
-            to: "/connect-blockchain/evm/polygon/",
+            to: "/features/smart-accounts",
+            from: "/features/account-abstraction",
           },
-          {
-            from: "/connect-blockchain/base/",
-            to: "/connect-blockchain/evm/base/",
-          },
-          {
-            from: "/connect-blockchain/bnb/",
-            to: "/connect-blockchain/evm/bnb/",
-          },
-          {
-            from: "/connect-blockchain/avalanche/",
-            to: "/connect-blockchain/evm/avalanche/",
-          },
-          {
-            from: "/connect-blockchain/arbitrum/",
-            to: "/connect-blockchain/evm/arbitrum/",
-          },
-          {
-            from: "/connect-blockchain/optimism/",
-            to: "/connect-blockchain/evm/optimism/",
-          },
-          {
-            from: "/connect-blockchain/cronos/",
-            to: "/connect-blockchain/evm/cronos/",
-          },
-          {
-            from: "/connect-blockchain/harmony/",
-            to: "/connect-blockchain/evm/harmony/",
-          },
-          {
-            from: "/connect-blockchain/celo/",
-            to: "/connect-blockchain/evm/celo/",
-          },
-          {
-            from: "/connect-blockchain/moonbeam/",
-            to: "/connect-blockchain/evm/moonbeam/",
-          },
-          {
-            from: "/connect-blockchain/moonriver/",
-            to: "/connect-blockchain/evm/moonriver/",
-          },
-          {
-            from: "/connect-blockchain/klaytn/",
-            to: "/connect-blockchain/evm/klaytn/",
-          },
-          {
-            from: "/connect-blockchain/flare/",
-            to: "/connect-blockchain/evm/flare/",
-          },
-          {
-            from: "/connect-blockchain/songbird/",
-            to: "/connect-blockchain/evm/songbird/",
-          },
-          {
-            from: "/connect-blockchain/skale/",
-            to: "/connect-blockchain/evm/skale/",
-          },
-          {
-            from: "/connect-blockcahin/tron/",
-            to: "/connect-blockchain/evm/tron/web",
-          },
-          {
-            from: "/connect-blockchain/starkex",
-            to: "/connect-blockchain/other/starkex",
-          },
-          {
-            from: "/connect-blockchain/starknet",
-            to: "/connect-blockchain/other/starknet",
-          },
-          {
-            from: "/connect-blockchain/tezos",
-            to: "/connect-blockchain/other/tezos",
-          },
-          {
-            from: "/connect-blockchain/algorand",
-            to: "/connect-blockchain/other/algorand",
-          },
-          {
-            from: "/connect-blockchain/immutablex",
-            to: "/connect-blockchain/other/immutablex",
-          },
-          {
-            from: "/connect-blockchain/aptos",
-            to: "/connect-blockchain/other/aptos",
-          },
-          {
-            from: "/connect-blockchain/cosmos",
-            to: "/connect-blockchain/other/cosmos",
-          },
-          {
-            from: "/connect-blockchain/other/near",
-            to: "/connect-blockchain/near/",
-          },
-          {
-            from: "/connect-blockchain/polkadot",
-            to: "/connect-blockchain/other/polkadot",
-          },
-          {
-            from: "/connect-blockchain/polymesh",
-            to: "/connect-blockchain/other/polymesh",
-          },
-          {
-            from: "/connect-blockchain/sui",
-            to: "/connect-blockchain/other/sui",
-          },
-          {
-            from: "/user-flow",
-            to: "/features/mfa",
-          },
-          {
-            from: "/features/smart-accounts",
-            to: "/features/account-abstraction",
-          },
-          {
-            from: "/features/nft-services",
-            to: "/features/nft-minting",
-          },
-          {
-            from: "/pnp/features/connect-external-wallets",
-            to: "/features/external-wallets",
-          },
-          {
-            from: "/pnp/features/dapp-share",
-            to: "/features/mfa",
-          },
+
           {
             from: "/pnp/going-live",
             to: "/resources/checklist",
@@ -511,14 +313,6 @@ const config: Config = {
             to: "/product-fit",
           },
           {
-            from: "/product-fit/partner-products",
-            to: "/features/ecosystem-wallets",
-          },
-          {
-            from: "/product-fit/enterprise",
-            to: "/features/ecosystem-wallets",
-          },
-          {
             from: "/product-fit/web3auth-for-wallets",
             to: "/product/#web3auth-for-wallets",
           },
@@ -539,8 +333,6 @@ const config: Config = {
           // Only create redirects if the path matches certain patterns
           if (
             existingPath.includes("/sdk/") ||
-            existingPath.includes("/sdk/sfa/sfa-js/") ||
-            existingPath.includes("/sdk/mpc-core-kit/mpc-core-kit-js/") ||
             existingPath.includes("/guides/") ||
             existingPath.includes("/features/") ||
             existingPath.includes("/product/")
@@ -548,25 +340,20 @@ const config: Config = {
             return [
               existingPath.replace("/sdk", "/api-reference"),
               existingPath.replace("/sdk", "/sdk-reference"),
-              existingPath.replace("/sdk/sfa/sfa-js/", "/sdk/sfa/sfa-web/"),
               existingPath.replace(
                 "/sdk/mpc-core-kit/mpc-core-kit-js/",
                 "/sdk/core-kit/mpc-core-kit/",
               ),
+              existingPath.replace("/sdk/pnp/web/", "/sdk/web/"),
+              existingPath.replace("/sdk/pnp/android/", "/sdk/mobile/pnp/android/"),
+              existingPath.replace("/sdk/pnp/ios/", "/sdk/mobile/pnp/ios/"),
+              existingPath.replace("/sdk/pnp/flutter/", "/sdk/mobile/pnp/flutter/"),
+              existingPath.replace("/sdk/pnp/react-native/", "/sdk/mobile/pnp/react-native/"),
+              existingPath.replace("/sdk/sfa/sfa-android/", "/sdk/mobile/sfa/android/"),
+              existingPath.replace("/sdk/sfa/sfa-ios/", "/sdk/mobile/sfa/ios/"),
+              existingPath.replace("/sdk/sfa/sfa-flutter/", "/sdk/mobile/sfa/flutter/"),
+              existingPath.replace("/sdk/sfa/sfa-react-native/", "/sdk/mobile/sfa/react-native/"),
               existingPath.replace("/guides/", "/content-hub/guides/"),
-              existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
-              existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
-              existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
-              existingPath.replace("/product/core-kit", "/core-kit/"),
-              existingPath.replace("/product/pnp", "/pnp/"),
-              existingPath.replace(
-                "/connect-blockchain/evm/astar-zkyoto/",
-                "/connect-blockchain/evm/zkyoto/",
-              ),
-              existingPath.replace(
-                "/connect-blockchain/evm/astar-zkevm/",
-                "/connect-blockchain/evm/zkevm/",
-              ),
             ].filter((redirect) => redirect !== existingPath); // Remove any redirects that point to the same path
           }
           return []; // Return empty array for paths that don't need redirects
