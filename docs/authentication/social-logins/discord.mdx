@@ -1,0 +1,123 @@
+---
+title: Discord Social Login with Web3Auth
+sidebar_label: Discord
+description: "Discord Social Login with Web3Auth | Documentation - Web3Auth"
+---
+
+import DiscordToggle from "@site/static/images/dashboard/authentication-social-connections.png";
+import DiscordConnection from "@site/static/images/dashboard/discord-connection.png";
+
+import DiscordSetup from "@site/src/common/guides/_discord-setup.mdx";
+
+Discord Login is a social login provider that allows users to sign in using their Discord
+credentials. Web3Auth supports Discord as a social login provider, allowing developers to offer a
+familiar and quick authentication method for users with Discord accounts.
+
+To integrate Discord with Web3Auth, developers must first create a Discord App via the
+[Discord Developer Portal](https://discord.com/developers/applications).
+
+:::success Enable on Dashboard
+
+To use this feature, please enable `Discord` from the Social Connections section in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={DiscordToggle}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Toggle Discord Connection on Dashboard"
+  />
+</div>
+
+> By default, Web3Auth uses its own pre-configured credentials for Discord login.
+
+:::
+
+## Create a Discord app
+
+<DiscordSetup />
+
+## Create a Discord Connection
+
+Follow these steps to create a Discord connection:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+1. Go to the `Social Connections` section.
+1. Click on the `Settings` icon near the Discord connection.
+1. Enter the `Auth Connection ID`.
+1. Enter the `Discord Client ID`.
+1. Finally, click on the `Add Connection` button.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img
+    src={DiscordConnection}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Discord Connection"
+  />
+</div>
+
+## Usage
+
+### Initialize Web3Auth
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+Since, the `Discord Connection` details are available from Dashboard, developers don't need to pass
+any additional parameters to the `Web3AuthProvider`.
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with Discord
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithDiscord = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      // highlight-start
+      authConnectionId: "discord-auth-connection-id",
+      authConnection: AUTH_CONNECTION.DISCORD,
+      // highlight-end
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithDiscord()}>Login with Discord</button>
+      <p>Address: {address}</p>
+      {/* 0xA8b29d40d0FE6a0c153A5759B1f0059d8b7654c5 */}
+    </div>
+  );
+}
+```

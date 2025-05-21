@@ -266,14 +266,52 @@ const config: Config = {
 
           {
             from: "/developer-dashboard/",
-            to: "/dashboard-setup/",
+            to: "/dashboard/",
           },
-
+          {
+            from: "/dashboard-setup/",
+            to: "/dashboard/",
+          },
+          {
+            from: "/developer-dashboard/get-client-id",
+            to: "/dashboard/",
+          },
+          {
+            from: "/developer-dashboard/enable-interoperability",
+            to: "/dashboard/",
+          },
+          {
+            from: "/developer-dashboard/setup-custom-authentication",
+            to: "/dashboard/configure-connections",
+          },
+          {
+            from: "/developer-dashboard/billing-and-user-stats",
+            to: "/dashboard/create-new-project",
+          },
           {
             from: "/customauth",
-            to: "/auth-provider-setup/",
+            to: "/authentication/",
           },
-
+          {
+            from: "/auth-provider-setup/",
+            to: "/authentication/",
+          },
+          {
+            from: "/customauth/verifiers",
+            to: "/authentication/",
+          },
+          {
+            from: "/sdk/web/modal/multi-factor-authentication",
+            to: "/sdk/pnp/web/modal/mfa",
+          },
+          {
+            from: "/sdk/web/core/multi-factor-authentication",
+            to: "/sdk/pnp/web/no-modal/mfa",
+          },
+          {
+            from: "/sdk/web/web3auth/multi-factor-authentication",
+            to: "/sdk/pnp/web/modal/mfa",
+          },
           {
             from: "/troubleshooting/different-wallet-address-issue",
             to: "/troubleshooting/different-private-key",
@@ -294,11 +332,11 @@ const config: Config = {
           },
           {
             from: "/auth-provider-setup/federated-identity-providers",
-            to: "/auth-provider-setup/authentication-service-providers/auth0-service-provider",
+            to: "/authentication/custom-connections/auth0",
           },
           {
             from: "/auth-provider-setup/byo-jwt-providers",
-            to: "/auth-provider-setup/byo-jwt-provider/",
+            to: "/authentication/custom-connections/custom-jwt",
           },
           {
             from: "/product/product-fit",

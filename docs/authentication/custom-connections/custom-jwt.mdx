@@ -1,0 +1,212 @@
+---
+title: Custom JWT Login with Web3Auth
+sidebar_label: Custom JWT
+description: "Custom JWT Login with Web3Auth | Documentation - Web3Auth"
+image: "images/docs-meta-cards/documentation-card.png"
+---
+
+import CustomConnectionOptions from "@site/static/images/dashboard/authentication-custom-connections.png";
+import CustomJWTConnection from "@site/static/images/dashboard/custom-connection.png";
+
+Web3Auth supports integration with custom login providers through JWT-based authentication schemes,
+allowing developers to maintain their existing authentication infrastructure while leveraging
+Web3Auth’s wallet and key management capabilities. Custom authentication can be implemented using
+industry-standard cryptographic algorithms such as RSA or ECDSA signatures.
+
+To use this feature, developers must ensure that their JWTs adhere to the
+[JWT specification](https://datatracker.ietf.org/doc/html/rfc7519). Each JWT must be signed using a
+private key, and its corresponding public key must be accessible via a
+[JWKS (JSON Web Key Set)](https://datatracker.ietf.org/doc/html/rfc7517) endpoint. Web3Auth will use
+this endpoint to verify the integrity and authenticity of incoming tokens during login.
+
+Once the Custom JWT login is working, developers can proceed to add it as a custom connection in the
+Web3Auth Dashboard.
+
+## Set up Custom JWT Connection
+
+:::success Create Custom Connection on Dashboard
+
+To use this feature, developers must go to the `Custom Connections` tab in the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={CustomConnectionOptions}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Custom Connection Options"
+  />
+</div>
+
+:::
+
+Follow these steps to create a AWS Cognito connection:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+1. Go to the `Custom Connections` section.
+1. Click on the `Settings` icon near the `Custom Connection`.
+1. Enter the `Auth Connection ID`.
+1. Paste the `JWKS Endpoint`.
+1. Paste a sample `JWT Token` to auto populate the best **JWT validations** possible.
+1. Select the `JWT user identifier`: `email`, `sub` or `custom`.
+1. Toggle the Case Sensitivity of `User Identifier`. (Optional)
+1. Click on `Add Custom Validations` to add validations manually.
+   1. Type iss as a field and `your-issuer` as a value.
+   1. Next, type aud as a field and `your-audience` as a value.
+1. Finally, click on the `Add Connection` button.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img
+    src={CustomJWTConnection}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Custom JWT Connection"
+  />
+</div>
+
+## Generate JWT
+
+To generate the JWT, you can choose package of your choice. We have documented few of the well known
+packages.
+
+- [Generate JWT using jsonwebtoken](/docs/authentication/custom-connections/custom/jsonwebtoken)
+- [Generate JWT using jose](/docs/authentication/custom-connections/custom/jose)
+
+  :::warning Facing issue with JWT?
+
+  Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors)
+
+  :::
+
+## Usage
+
+### Initialize Web3Auth
+
+Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
+React tree as possible.
+
+```js title="Example: React + Vite (main.tsx)"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+
+import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
+
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <Web3AuthProvider
+      config={{
+        web3AuthOptions: {
+          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+        },
+      }}
+    >
+      <App />
+    </Web3AuthProvider>
+  </StrictMode>
+);
+```
+
+Since, the `Firebase Connection` details are available from Dashboard, developers don't need to pass
+any additional parameters to the `Web3AuthProvider`.
+
+> Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
+
+### Login with JWT
+
+```jsx
+import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
+import { useAccount } from "wagmi";
+
+function LoginPage() {
+  const { connectTo } = useWeb3AuthConnect();
+  const { address } = useAccount();
+
+  const loginWithCustomJWT = async () => {
+    try {
+      // highlight-next-line
+      const idToken = await generateJWT();
+
+      // highlight-start
+      await connectTo(WALLET_CONNECTORS.AUTH, {
+        authConnectionId: "custom-jwt-auth-connection-id",
+        authConnection: AUTH_CONNECTION.CUSTOM,
+        idToken,
+        extraLoginOptions: {
+          isUserIdCaseSensitive: false,
+        },
+      });
+      // highlight-end
+    } catch (error) {
+      console.error("Custom JWT authentication error:", error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={() => loginWithCustomJWT()}>Login with Custom JWT</button>
+      <p>Address: {address}</p>
+      {/* 0x17A0d01D14D4e945843ad9e54D10551F02a6AE0B */}
+    </div>
+  );
+}
+```
+
+## What are JWKS?
+
+JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be used
+to verify any JSON Web Token (JWT) issued by the authorization server and signed using the RS256
+signing algorithm.
+
+### How to create JWKS?
+
+- Most of the login providers that support JWT-based login will provide you this URL, such as
+  Firebase, Google, Auth0, AWS Cognito etc.
+
+  - Firebase: `https://www.googleapis.com/service_accounts/v1/jwk/{your-project-id}`
+  - Auth0: `https://{your-domain}/.well-known/jwks.json`
+  - Google: `https://www.googleapis.com/oauth2/v3/certs`
+  - AWS Cognito: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`
+
+- If you are using your own custom JWT, you will need to convert your PEM file to JWKS.
+
+### How to convert PEM to JWKS?
+
+If you're using `jose` or `jsonwebtoken` library, you can use the following steps to convert your
+PEM file to JWKS.
+
+1. Create a Private Key using openssl.
+
+   ```bash
+   openssl genrsa -out privateKey.pem 2048
+   ```
+
+   This privateKey will be used to sign the token.
+
+2. Using the above privateKey.pem file, create a Public Key.
+
+   ```bash
+   openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+   ```
+
+   This publicKey.pem file will be converted to JWKS.
+
+3. Convert the publicKey.pem file to JWKS.
+
+   Now, look for a tool that converts `.pem` to `jwk(s)` format.
+
+   - One of the tools is https://pem2jwk.vercel.app/
+     - Select Signing Algorithm: `RS256`
+     - Select Public Key Use: `Signing`
+     - Key ID: `paste-yours` or leave it blank to generate a random one.
+     - PEM encoded key: `{paste-the-publicKey-pem-file-s-content-here}`
+   - Click on the `Convert to JWK` button.
+
+     ![JWKS Convert Tool](https://web3auth.io/community/uploads/default/optimized/2X/3/3e58a3b7378b9778b0b2d646ec2a3cf47c56ee5e_2_690x448.jpeg)
+
+4. To complete the process, you need to save the output as a `.json` file, host it on your server,
+   and make sure it's publicly accessible.
+
+   This will give you the `JWKS Endpoint`, which is required when setting up a `Custom JWT Verifier`
+   on the Web3Auth Dashboard.
