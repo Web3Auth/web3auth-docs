@@ -498,15 +498,7 @@ const sidebars: SidebarsConfig = {
             "authentication/custom-connections/auth0",
             "authentication/custom-connections/aws-cognito",
             "authentication/custom-connections/firebase",
-            {
-              type: "category",
-              label: "Custom Connection",
-              items: [
-                "authentication/custom-connections/custom-jwt",
-                "authentication/custom-connections/custom/jsonwebtoken",
-                "authentication/custom-connections/custom/jose",
-              ],
-            },
+            "authentication/custom-connections/custom-jwt",
           ],
           collapsible: true,
           collapsed: true,
