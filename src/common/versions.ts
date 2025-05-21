@@ -1,4 +1,4 @@
-export const pnpWebVersion = `9.3.x`;
+export const pnpWebVersion = `10.0.x`;
 export const pnpAndroidVersion = `9.1.2`;
 export const pnpIOSVersion = `11.1.0`;
 export const pnpRNVersion = `8.1.x`;
@@ -45,8 +45,8 @@ export function getPnPVersion(platform: string) {
 }
 
 export function getSFAVersion(platform: string) {
-  if (platform === js) {
-    return sfaWebVersion;
+  if (platform === reactnative) {
+    return sfaRNVersion;
   }
   if (platform === android) {
     return sfaAndroidVersion;
