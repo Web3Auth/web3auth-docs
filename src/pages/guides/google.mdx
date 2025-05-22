@@ -1,77 +1,99 @@
 ---
-title: How to use Google with Web3Auth Plug and Play No Modal SDK
+title: How to use Google with Web3Auth
 image: "guides-banners/google.png"
-description: Learn how to use Web3Auth Plug and Play No Modal SDK  for Google Custom Authentication.
+description: Learn how to use Web3Auth for Google authentication.
 type: guide
-tags: [web, plug and play, google, custom authentication, react, evm]
+tags: [web, google, authentication, react, evm]
 date: July 18, 2022
 author: Web3Auth Team
 communityPortalTopicId: 54
 ---
 
-import CreatingVerifiers from "@site/src/common/guides/_creating-verifiers.mdx";
 import GoogleAppSetup from "@site/src/common/guides/_google-app-setup.mdx";
-import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
-import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
-import Installation from "@site/src/common/guides/_installation.mdx";
-import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
-import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import AuthConfigCodeGoogle from "@site/src/common/guides/_auth-config-code-google.mdx";
-import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import SEO from "@site/src/components/SEO";
+import GoogleToggle from "@site/static/images/dashboard/authentication-social-connections.png";
+import GoogleConnection from "@site/static/images/dashboard/google-connection.png";
 
 <SEO
-  title="How to use Google with Web3Auth Plug and Play No Modal SDK"
-  description="Learn how to use Web3Auth Plug and Play No Modal SDK  for Google Custom Authentication."
+  title="How to use Google with Web3Auth"
+  description="Learn how to use Web3Auth for Google authentication."
   image="https://web3auth.io/docs/guides-banners/google.png"
   slug="/guides/google"
 />
 
-This guide will cover the basics of how to set up your Web3Auth Plug and Play No Modal SDK and
-Google Login for custom authentication and provide you the steps on how to develop a basic web
-application on the Ethereum blockchain.
+This guide will cover the basics of how to set up Web3Auth with Google Login and provide steps on
+how to develop a basic web application on the Ethereum blockchain.
 
 **Live Demo:** https://web3auth-core-google-demo.vercel.app
 
 ## Quick Start
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/google-no-modal-example w3a-google-demo && cd w3a-google-demo && npm install && npm run start
+npx degit Web3Auth/web3auth-pnp-examples/web-modal-sdk/custom-authentication/single-connection/google-implicit-example w3a-google-demo && cd w3a-google-demo && npm install && npm run dev
 ```
 
 ## How it works?
 
-When integrating Web3Auth Plug and Play No Modal SDK with Google Login the flow looks something like
-this:
+When integrating Web3Auth with Google Login the flow looks something like this:
 
 ![Web3Auth Core - Google Login Flow](/images/implicit-flow.svg)
 
 - When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is
   sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
-  the user, in a self-custodial way, resulting in easy onboarding for your user to the application.
+- Finally, on successful validation of the JWT token, Web3Auth will generate a private key for the
+  user, in a self-custodial way, resulting in easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
 - A [Google Developer](https://console.developers.google.com) account to be used as Login provider
-  for Web3Auth Custom Authentication.
+  for Web3Auth authentication.
 
 ## Setup
 
 ### Setup your Google App
 
-<GoogleAppSetup />
+1. Follow Google's instructions to
+   [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
+2. Paste the following URI as a redirect URI into the "Authorized redirect URIs" field.
+
+   - `https://auth.web3auth.io/auth`
+
+   ![Google OAuth2.0 App Dashboard](/guides/social-providers/google/google-app-redirect-uri.png)
+
+3. Obtain the OAuth `Client ID` from the
+   [App on the Google Developer dashboard](https://console.developers.google.com/)
 
 ### Setup your Web3Auth Dashboard
 
 <SetupWeb3AuthDashboard />
 
-<CreatingVerifiers />
+### Create a Google Connection
+
+Follow these steps to create a Google connection:
+
+1. Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+2. Go to the `Social Connections` section.
+3. Click on the `Settings` icon near the Google connection.
+4. Enter the `Auth Connection ID` (e.g., "w3a-google-demo").
+5. Enter the `Google Client ID` you obtained from the Google Developer dashboard.
+6. Finally, click on the `Add Connection` button.
+
+<div style={{ display: "flex", margin: "20px 0" }}>
+  <img
+    src={GoogleConnection}
+    style={{
+      maxWidth: "600px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
+    alt="Google Connection"
+  />
+</div>
 
 ## Using the Web3Auth SDK
 
@@ -79,83 +101,328 @@ To use the Web3Auth SDK, you need to add the dependency of the respective platfo
 to your project. To know more about the available SDKs, please have a look at this
 [documentation page](/sdk).
 
-For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/web/react)
-and using the [Auth Adapter](/sdk/web/react) alongside it to enable Custom Authentication through
-Google Login.
-
-<SetupBaseProject />
+For this guide, we will be using the Web3Auth Modal SDK with React hooks.
 
 ### Installation
 
-<Installation />
+Install the required Web3Auth packages:
 
-### Initialization
+```bash
+npm install @web3auth/modal
+```
 
-<InitializationIntro />
+For interacting with Ethereum blockchain:
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Auth Adapter (the
-default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know more
-about the other things you can do with Web3Auth, check out our [SDK Reference](/sdk/web/react).
+```bash
+npm install wagmi viem @tanstack/react-query
+```
 
-#### Instantiating Web3Auth
+### Setting up Web3Auth in React
 
-<InstantiationWeb3Auth />
+We need to set up the Web3Auth context configuration:
 
-#### Initializing the Auth Adapter
+```tsx title="src/web3authContext.tsx"
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 
-<AuthConfigCodeGoogle />
+// Get client ID from https://dashboard.web3auth.io
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
 
-Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
-Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
-Auth Adapter can connect to the correct verifier and AWS Cognito server.
+// Instantiate SDK
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+};
 
-<InitializationWeb3Auth />
+const web3AuthContextConfig = {
+  web3AuthOptions,
+};
+
+export default web3AuthContextConfig;
+```
+
+Then, wrap your application with the Web3Auth provider and Wagmi provider:
+
+```tsx title="src/index.tsx"
+import "./index.css";
+
+import ReactDOM from "react-dom/client";
+// Setup Web3Auth Provider
+import { Web3AuthProvider } from "@web3auth/modal/react";
+import web3AuthContextConfig from "./web3authContext";
+// Setup Wagmi Provider
+import { WagmiProvider } from "@web3auth/modal/react/wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import App from "./App";
+
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  // Setup Web3Auth Provider
+  <Web3AuthProvider config={web3AuthContextConfig}>
+    {/* Setup Wagmi Provider */}
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider>
+        <App />
+      </WagmiProvider>
+    </QueryClientProvider>
+  </Web3AuthProvider>,
+);
+```
 
 ### Authentication
 
-#### Logging in
+In your main application component, use Web3Auth hooks for authentication:
 
-Once initialized, you can use the `connectTo()` function to authenticate the user when they click
-the login button.
+```tsx title="src/App.tsx"
+import "./App.css";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { SwitchChain } from "./components/switchNetwork";
 
-```tsx
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+function App() {
+  const {
+    connectTo,
+    isConnected,
+    connectorName,
+    loading: connectLoading,
+    error: connectError,
+  } = useWeb3AuthConnect();
+  const {
+    disconnect,
+    loading: disconnectLoading,
+    error: disconnectError,
+  } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
 
-await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-  loginProvider: "google",
-});
+  const loginWithGoogle = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.GOOGLE,
+      authConnectionId: "w3a-google-demo",
+    });
+  };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
+    }
+  }
+
+  const loggedInView = (
+    <div className="grid">
+      <h2>Connected to {connectorName}</h2>
+      <div>{address}</div>
+      <div className="flex-container">
+        <div>
+          <button onClick={() => uiConsole(userInfo)} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={() => disconnect()} className="card">
+            Log Out
+          </button>
+          {disconnectLoading && <div className="loading">Disconnecting...</div>}
+          {disconnectError && <div className="error">{disconnectError.message}</div>}
+        </div>
+      </div>
+      <SendTransaction />
+      <Balance />
+      <SwitchChain />
+    </div>
+  );
+
+  const unloggedInView = (
+    <div className="grid">
+      <div className="flex-container">
+        <button onClick={loginWithGoogle} className="card">
+          Login with Google
+        </button>
+      </div>
+      {connectLoading && <div className="loading">Connecting...</div>}
+      {connectError && <div className="error">{connectError.message}</div>}
+    </div>
+  );
+
+  return (
+    <div className="container">
+      <h1 className="title">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/web" rel="noreferrer">
+          Web3Auth{" "}
+        </a>
+        & React with Google
+      </h1>
+
+      {isConnected ? loggedInView : unloggedInView}
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
 ```
 
-When connecting, your `connectTo` function takes the arguments for the adapter you want to connect
-to and the `loginProvider` for the login.
+### JWT Login with Google One Tap (Alternative Method)
 
-### Get the User Profile
-
-```tsx
-const user = await web3auth.getUserInfo();
-console.log("User info", user);
-```
-
-Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that
-these details are not stored anywhere in Web3Auth network, but are fetched from the id_token you
-received from AWS Cognito and live in the frontend context.
-
-### Logout
+You can also use Google One Tap for a more streamlined login experience:
 
 ```tsx
-await web3auth.logout();
-```
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
-Logging out your user is as simple as calling the `logout` function.
+function App() {
+  // ... other code from earlier example
+
+  // JWT Login with Google One Tap
+  const loginWithGoogleOneTap = async (response: CredentialResponse) => {
+    const idToken = response.credential;
+
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnectionId: "w3a-google-demo",
+      authConnection: AUTH_CONNECTION.GOOGLE,
+      idToken,
+      extraLoginOptions: {
+        isUserIdCaseSensitive: false,
+      },
+    });
+  };
+
+  return (
+    <div className="container">
+      {/* ... other UI components */}
+
+      {!isConnected && (
+        <div>
+          <button onClick={loginWithGoogle}>Login with Google</button>
+          <div className="or-divider">OR</div>
+          <GoogleLogin
+            onSuccess={loginWithGoogleOneTap}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+            useOneTap
+          />
+        </div>
+      )}
+
+      {/* ... rest of the UI */}
+    </div>
+  );
+}
+```
 
 ### Interacting with Blockchain
 
-<InteractingWithBlockchain />
+With the Web3Auth and Wagmi integration, you can easily interact with blockchain. Here are some
+examples:
+
+#### Getting Balance
+
+```tsx title="src/components/getBalance.tsx"
+import { useAccount, useBalance } from "wagmi";
+import { formatUnits } from "viem";
+
+export function Balance() {
+  const { address } = useAccount();
+
+  const { data, isLoading, error } = useBalance({ address });
+
+  return (
+    <div>
+      <h2>Balance</h2>
+      <div>
+        {data?.value !== undefined && `${formatUnits(data.value, data.decimals)} ${data.symbol}`}{" "}
+        {isLoading && "Loading..."} {error && "Error: " + error.message}
+      </div>
+    </div>
+  );
+}
+```
+
+#### Sending Transactions
+
+```tsx title="src/components/sendTransaction.tsx"
+import { FormEvent } from "react";
+import { useWaitForTransactionReceipt, useSendTransaction, BaseError } from "wagmi";
+import { Hex, parseEther } from "viem";
+
+export function SendTransaction() {
+  const { data: hash, error, isPending, sendTransaction } = useSendTransaction();
+
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const to = formData.get("address") as Hex;
+    const value = formData.get("value") as string;
+    sendTransaction({ to, value: parseEther(value) });
+  }
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  return (
+    <div>
+      <h2>Send Transaction</h2>
+      <form onSubmit={submit}>
+        <input name="address" placeholder="Address" required />
+        <input name="value" placeholder="Amount (ETH)" type="number" step="0.000000001" required />
+        <button disabled={isPending} type="submit">
+          {isPending ? "Confirming..." : "Send"}
+        </button>
+      </form>
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {isConfirming && "Waiting for confirmation..."}
+      {isConfirmed && "Transaction confirmed."}
+      {error && <div>Error: {(error as BaseError).shortMessage || error.message}</div>}
+    </div>
+  );
+}
+```
+
+#### Switching Networks
+
+```tsx title="src/components/switchNetwork.tsx"
+import { useChainId, useSwitchChain } from "wagmi";
+
+export function SwitchChain() {
+  const chainId = useChainId();
+  const { chains, switchChain, error } = useSwitchChain();
+
+  return (
+    <div>
+      <h2>Switch Chain</h2>
+      <h3>Connected to {chainId}</h3>
+      {chains.map((chain) => (
+        <button
+          disabled={chainId === chain.id}
+          key={chain.id}
+          onClick={() => switchChain({ chainId: chain.id })}
+          type="button"
+          className="card"
+        >
+          {chain.name}
+        </button>
+      ))}
+
+      {error?.message}
+    </div>
+  );
+}
+```
 
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Core Google Login Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/google-no-modal-example).
+[Web3Auth Google Login Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/custom-authentication/single-connection/google-implicit-example).
 Check it out and try running it locally yourself!
 
 ## Questions?
