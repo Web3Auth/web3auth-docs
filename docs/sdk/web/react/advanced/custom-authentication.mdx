@@ -7,6 +7,22 @@ description: "@web3auth/modal Custom Authentication | Documentation - Web3Auth"
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
+import SingleModalConnections from "./_custom-authentication-snippets/_single_modal_connections.mdx";
+import GroupedModalConnections from "./_custom-authentication-snippets/_grouped_modal_connections.mdx";
+import ImplicitLoginGoogle from "./_custom-authentication-snippets/_implicit_login_google.mdx";
+import ImplicitLoginFacebook from "./_custom-authentication-snippets/_implicit_login_facebook.mdx";
+import ImplicitLoginDiscord from "./_custom-authentication-snippets/_implicit_login_discord.mdx";
+import ImplicitLoginTwitch from "./_custom-authentication-snippets/_implicit_login_twitch.mdx";
+import ImplicitLoginAuth0Google from "./_custom-authentication-snippets/_implicit_login_auth0_google.mdx";
+import ImplicitLoginAuth0Spa from "./_custom-authentication-snippets/_implicit_login_auth0_spa.mdx";
+import ImplicitLoginAwsCognito from "./_custom-authentication-snippets/_implicit_login_aws_cognito.mdx";
+import JwtLoginGoogleOneTap from "./_custom-authentication-snippets/_jwt_login_google_one_tap.mdx";
+import JwtLoginAuth0 from "./_custom-authentication-snippets/_jwt_login_auth0.mdx";
+import JwtLoginFirebase from "./_custom-authentication-snippets/_jwt_login_firebase.mdx";
+import JwtLoginCustom from "./_custom-authentication-snippets/_jwt_login_custom.mdx";
+import GroupedAuthImplicitAuth0 from "./_custom-authentication-snippets/_grouped_auth_implicit_auth0.mdx";
+import GroupedAuthJwtAuth0 from "./_custom-authentication-snippets/_grouped_auth_jwt_auth0.mdx";
+import GroupedAuthFirebase from "./_custom-authentication-snippets/_grouped_auth_firebase.mdx";
 
 Custom Authentication is a way to authenticate users with your custom authentication service. For
 example, while authenticating with Google, you can use your own Google Client ID to authenticate
@@ -60,106 +76,10 @@ For the modal custom authentication, you need to pass the `modalConfig` object t
 
 <Tabs>
   <TabItem value="Single Connections">
-
-```tsx title="web3authContext.tsx"
-import { WALLET_CONNECTORS, WEB3AUTH_NETWORK } from "@web3auth/modal";
-import { type Web3AuthContextConfig } from "@web3auth/modal/react";
-
-const web3AuthContextConfig: Web3AuthContextConfig = {
-  web3AuthOptions: {
-    clientId: "YOUR_CLIENT_ID",
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    // focus-start
-    modalConfig: {
-      connectors: {
-        [WALLET_CONNECTORS.AUTH]: {
-          label: "auth",
-          loginMethods: {
-            google: {
-              name: "google login",
-              authConnectionId: "w3a-google-demo",
-            },
-            facebook: {
-              name: "facebook login",
-              authConnectionId: "w3a-facebook-demo",
-            },
-            discord: {
-              name: "discord login",
-              authConnectionId: "w3a-discord-demo",
-            },
-            twitch: {
-              name: "twitch login",
-              authConnectionId: "w3a-twitch-demo",
-            },
-            twitter: {
-              name: "twitter login",
-              // it will hide the twitter option from the Web3Auth modal.
-              showOnModal: false,
-            },
-            email_passwordless: {
-              name: "email passwordless login",
-              authConnectionId: "w3a-email_passwordless-demo",
-            },
-            sms_passwordless: {
-              name: "sms passwordless login",
-              authConnectionId: "w3a-sms_passwordless-demo",
-            },
-          },
-          // setting it to false will hide all social login methods from modal.
-          showOnModal: true,
-        },
-      },
-    },
-    // focus-end
-  },
-};
-
-export default web3AuthContextConfig;
-```
-
+    <SingleModalConnections />
   </TabItem>
   <TabItem value="Grouped Connections">
-
-```tsx title="web3authContext.tsx"
-import { WALLET_CONNECTORS, WEB3AUTH_NETWORK } from "@web3auth/modal";
-import { type Web3AuthContextConfig } from "@web3auth/modal/react";
-
-const web3AuthContextConfig: Web3AuthContextConfig = {
-  web3AuthOptions: {
-    clientId: "YOUR_CLIENT_ID",
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    // focus-start
-    modalConfig: {
-      connectors: {
-        [WALLET_CONNECTORS.AUTH]: {
-          label: "auth",
-          loginMethods: {
-            google: {
-              name: "google login",
-              authConnectionId: "w3a-google",
-              groupedAuthConnectionId: "aggregate-sapphire",
-            },
-            facebook: {
-              name: "facebook login",
-              authConnectionId: "w3a-facebook",
-              groupedAuthConnectionId: "aggregate-sapphire",
-            },
-            email_passwordless: {
-              name: "email passwordless login",
-              authConnectionId: "w3a-email-passwordless",
-              groupedAuthConnectionId: "aggregate-sapphire",
-            },
-          },
-        },
-      },
-    },
-    // focus-end
-  },
-};
-
-export default web3AuthContextConfig;
-```
-
+    <GroupedModalConnections />
   </TabItem>
 </Tabs>
 
@@ -394,70 +314,25 @@ providing the particular details of their login within the `extraLoginOptions` o
 
 <Tabs>
   <TabItem value="Google">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.GOOGLE,
-  authConnectionId: "w3a-google-demo",
-});
-```
+    <ImplicitLoginGoogle />
   </TabItem>
   <TabItem value="Facebook">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.FACEBOOK,
-  authConnectionId: "w3a-facebook-demo",
-});
-```
+    <ImplicitLoginFacebook />
   </TabItem>
   <TabItem value="Discord">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.DISCORD,
-  authConnectionId: "w3a-discord-demo",
-});
-```
+    <ImplicitLoginDiscord />
   </TabItem>
   <TabItem value="Twitch">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.TWITCH,
-  authConnectionId: "w3a-twitch-demo",
-});
-```
+    <ImplicitLoginTwitch />
   </TabItem>
   <TabItem value="Auth0 Google">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.CUSTOM,
-  authConnectionId: "w3a-auth0-demo",
-  extraLoginOptions: {
-    connection: "google-oauth2",
-  },
-});
-```
+    <ImplicitLoginAuth0Google />
   </TabItem>
   <TabItem value="Auth0 SPA">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.CUSTOM,
-  authConnectionId: "w3a-auth0-demo",
-});
-```
+    <ImplicitLoginAuth0Spa />
   </TabItem>
   <TabItem value="AWS Cognito">
-```ts
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.CUSTOM,
-  authConnectionId: "w3a-cognito-demo",
-  extraLoginOptions: {
-    clientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
-    domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
-    verifierIdField: "email",
-    response_type: "token",
-    scope: "email profile openid",
-  },
-});
-```
+    <ImplicitLoginAwsCognito />
   </TabItem>
 </Tabs>
 
@@ -479,132 +354,17 @@ need to pass the `isUserIdCaseSensitive` option to the `extraLoginOptions`.
 
 <Tabs>
   <TabItem value="Google One Tap">
-
-```ts
-const loginWithGoogle = async (response: CredentialResponse) => {
-  const idToken = response.credential;
-
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    authConnectionId: "w3a-google-demo",
-    authConnection: AUTH_CONNECTION.GOOGLE,
-    idToken,
-    extraLoginOptions: {
-      isUserIdCaseSensitive: false,
-    },
-  });
-  // focus-end
-};
-
-...
-
-<GoogleLogin
-  onSuccess={loginWithGoogle}
-  onError={() => {
-    console.log("Login Failed");
-  }}
-  useOneTap
-/>
-```
-
+    <JwtLoginGoogleOneTap />
   </TabItem>
   <TabItem value="Auth0 JWT Login">
-
-```ts
-const { getIdTokenClaims, loginWithPopup } = useAuth0();
-
-const loginWithAuth0 = async () => {
-  try {
-    await loginWithPopup();
-
-    const idToken = (await getIdTokenClaims())?.__raw.toString();
-    if (!idToken) {
-      throw new Error("No id token found");
-    }
-
-    // focus-start
-    await connectTo(WALLET_CONNECTORS.AUTH, {
-      authConnectionId: "w3a-auth0-demo",
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      idToken,
-      extraLoginOptions: {
-        isUserIdCaseSensitive: false,
-      },
-    });
-    // focus-end
-  } catch (err) {
-    console.error(err);
-  }
-};
-```
-
-</TabItem>
-<TabItem value="Firebase JWT Login">
-
-```ts
-const loginWithFirebaseGithub = async () => {
-  try {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const githubProvider = new GithubAuthProvider();
-
-    const result = await signInWithPopup(auth, githubProvider);
-
-    const idToken = await result.user.getIdToken(true);
-
-    // focus-start
-    connectTo(WALLET_CONNECTORS.AUTH, {
-      authConnectionId: "w3a-firebase-demo",
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      idToken,
-      extraLoginOptions: {
-        isUserIdCaseSensitive: false,
-      },
-    });
-    // focus-end
-  } catch (error) {
-    console.error("Firebase authentication error:", error);
-  }
-};
-```
-
-</TabItem>
-<TabItem value="Custom JWT Login">
-
-```ts
-const getIdToken = async () => {
-  // Get ID Token from server
-  const res = await fetch("http://localhost:8080/api/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  return data?.token;
-};
-
-const loginWithJWT = async () => {
-  try {
-    const idToken = await getIdToken();
-
-    // focus-start
-    await connectTo(WALLET_CONNECTORS.AUTH, {
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      authConnectionId: "w3a-node-demo",
-      idToken,
-      extraLoginOptions: {
-        isUserIdCaseSensitive: false,
-      },
-    });
-    // focus-end
-  } catch (err) {
-    console.error(err);
-  }
-};
-```
-
-</TabItem>
+    <JwtLoginAuth0 />
+  </TabItem>
+  <TabItem value="Firebase JWT Login">
+    <JwtLoginFirebase />
+  </TabItem>
+  <TabItem value="Custom JWT Login">
+    <JwtLoginCustom />
+  </TabItem>
 </Tabs>
 
 ### Grouped Auth Connections
@@ -626,128 +386,12 @@ Dashboard before using this feature.
 
 <Tabs>
   <TabItem value="Google [Implicit] + Auth0 [Implicit]">
-
-```ts
-const loginWithGoogle = async () => {
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "aggregate-sapphire",
-    authConnectionId: "w3a-google",
-    authConnection: AUTH_CONNECTION.GOOGLE,
-  });
-  // focus-end
-};
-
-const loginWithAuth0Google = async () => {
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "aggregate-sapphire",
-    authConnectionId: "w3a-a0-google",
-    authConnection: AUTH_CONNECTION.CUSTOM,
-    extraLoginOptions: {
-      connection: "google-oauth2",
-    },
-  });
-  // focus-end
-};
-
-const loginWithAuth0GitHub = async () => {
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "aggregate-sapphire",
-    authConnectionId: "w3a-a0-github",
-    authConnection: AUTH_CONNECTION.CUSTOM,
-    extraLoginOptions: {
-      connection: "github",
-    },
-  });
-  // focus-end
-};
-```
-
+    <GroupedAuthImplicitAuth0 />
   </TabItem>
   <TabItem value="Google One Tap [JWT] + Auth0 [JWT]">
-
-```ts
-const loginWithGoogle = async (response: CredentialResponse) => {
-  const idToken = response.credential;
-
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "aggregate-sapphire",
-    authConnectionId: "w3a-google",
-    authConnection: AUTH_CONNECTION.GOOGLE,
-    idToken,
-    extraLoginOptions: {
-      isUserIdCaseSensitive: false,
-      verifierIdField: "email",
-    },
-  });
-  // focus-end
-};
-
-const loginWithAuth0 = async () => {
-  try {
-    await loginWithPopup();
-    const idToken = (await getIdTokenClaims())?.__raw.toString();
-    if (!idToken) {
-      throw new Error("No id token found");
-    }
-
-    // focus-start
-    await connectTo(WALLET_CONNECTORS.AUTH, {
-      groupedAuthConnectionId: "aggregate-sapphire",
-      authConnectionId: "w3a-a0-github",
-      authConnection: AUTH_CONNECTION.CUSTOM,
-      idToken,
-      extraLoginOptions: {
-        isUserIdCaseSensitive: false,
-        verifierIdField: "email",
-      },
-    });
-    // focus-end
-  } catch (err) {
-    console.error(err);
-  }
-};
-```
-
-</TabItem>
-<TabItem value="Google [Implicit] + Firebase [JWT]">
-
-```ts
-const loginWithGoogle = async () => {
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "aggregate-sapphire",
-    authConnectionId: "w3a-google",
-    authConnection: AUTH_CONNECTION.GOOGLE,
-  });
-  // focus-end
-};
-
-const loginWithFirebaseGithub = async () => {
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const githubProvider = new GithubAuthProvider();
-
-  const result = await signInWithPopup(auth, githubProvider);
-
-  const idToken = await result.user.getIdToken(true);
-
-  // focus-start
-  connectTo(WALLET_CONNECTORS.AUTH, {
-    groupedAuthConnectionId: "aggregate-sapphire",
-    authConnectionId: "w3a-firebase",
-    authConnection: AUTH_CONNECTION.CUSTOM,
-    idToken,
-    extraLoginOptions: {
-      isUserIdCaseSensitive: false,
-    },
-  });
-  // focus-end
-};
-```
-
-</TabItem>
+    <GroupedAuthJwtAuth0 />
+  </TabItem>
+  <TabItem value="Google [Implicit] + Firebase [JWT]">
+    <GroupedAuthFirebase />
+  </TabItem>
 </Tabs>
