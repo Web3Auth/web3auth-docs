@@ -762,7 +762,6 @@ const sidebars: SidebarsConfig = {
     },
     "sdk/web/js/ethereum-integration",
     "sdk/web/js/examples",
-    "sdk/web/js/ethereum-integration",
     {
       type: "link",
       label: "Support Forum",
