@@ -8,6 +8,9 @@ description: "Integrate Web3Auth with the Tron Blockchain in JavaScript | Docume
 ---
 
 import Tabs from "@theme/Tabs";
+import JsBlockchainMethods from "@site/src/common/docs/_js-blockchain-methods.mdx";
+import ReactWagmiIntegration from "@site/src/common/docs/_react-wagmi-blockchain-methods.mdx";
+import VueWagmiIntegration from "@site/src/common/docs/_vue-wagmi-blockchain-methods.mdx";
 import TabItem from "@theme/TabItem";
 import ChainDetailsTron from "@site/src/common/docs/general-connect-blockchain/_tron.mdx";
 
@@ -65,52 +68,14 @@ console.log(user);
 
 ---
 
-## Get Account and Balance
+## React Wagmi Integration
 
-Once logged in, we can use `tronRpc.ts` to fetch the user's account and balance.
+<ReactWagmiIntegration />
 
-```typescript
-// tronRpc.ts should be implemented as per previous example
-const tronRpc = new TronRpc(provider);
-await tronRpc.init();
+## Vue Wagmi Integration
 
-// Get the user's Tron account address
-const accounts = await tronRpc.getAccounts();
-console.log("Account: ", accounts[0]);
+<VueWagmiIntegration />
 
-// Get the balance
-const balance = await tronRpc.getBalance();
-console.log("Balance: ", balance);
-```
+## For VanillaJS, Angular and other frameworks
 
----
-
-## Send Transaction
-
-You can send a transaction using the user's private key.
-
-```typescript
-const transaction = await tronRpc.sendTransaction();
-console.log("Transaction Hash: ", transaction);
-```
-
-This will send a transaction from the user's Tron account.
-
----
-
-## Sign a Message
-
-You can also sign a message using the private key of the logged-in user.
-
-```typescript
-const signedMessage = await tronRpc.signMessage("Hello Tron!");
-console.log("Signed Message: ", signedMessage);
-```
-
-This will return the signature of the message.
-
-## Conclusion
-
-With Web3Auth, you can easily integrate Tron blockchain capabilities into your application. By using
-the TronWeb library, you can perform various blockchain operations such as fetching accounts,
-sending transactions, signing messages, and interacting with smart contracts.
+<JsBlockchainMethods />
