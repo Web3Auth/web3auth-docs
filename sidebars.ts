@@ -519,6 +519,7 @@ const sidebars: SidebarsConfig = {
       items: [
         "connect-blockchain/connect-blockchain",
         "connect-blockchain/rpc-headers",
+        "connect-blockchain/custom-chains",
         // "connect-blockchain/built-in-chainconfigs",
         {
           type: "category",
