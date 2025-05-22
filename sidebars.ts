@@ -760,6 +760,7 @@ const sidebars: SidebarsConfig = {
         "sdk/web/js/functions/switchChain",
       ],
     },
+    "sdk/web/js/ethereum-integration",
     "sdk/web/js/examples",
     {
       type: "link",

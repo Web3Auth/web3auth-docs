@@ -7,7 +7,6 @@ keywords: [tezos, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Tezos Blockchain | Documentation - Web3Auth"
 ---
 
-import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -72,45 +71,6 @@ npm install --save @taquito/signer @taquito/taquito @taquito/utils @tezos-core-t
 
 </TabItem>
 </Tabs>
-
-### Initializing and instantiating the Web3Auth SDK
-
-<InitializeWeb3Auth />
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-
-const web3auth = new Web3Auth({
-  clientId:
-    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
-    rpcTarget: "https://rpc.tzbeta.net/",
-    displayName: "Tezos",
-    blockExplorerUrl: "https://tzstats.com",
-    ticker: "XTZ",
-    tickerName: "Tezos",
-  },
-});
-
-// "other" is supported through @web3auth/auth-adapter package.
-const authAdapter = new AuthAdapter({
-  adapterSettings: {
-    uxMode: "popup",
-  },
-});
-web3auth.configureAdapter(authAdapter);
-
-await web3auth.init();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
-```
-
-## Get User Info
-
-<GetUserInfoSnippet />
 
 ## Get Account, Balance and Key
 
