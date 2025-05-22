@@ -1,6 +1,6 @@
 ---
 title: Web3Auth Identity Token
-sidebar_label: Identity Token
+sidebar_label: Web3Auth Identity Token
 image: "images/docs-meta-cards/documentation-card.png"
 description: "Identity Token | Documentation - Web3Auth"
 ---
@@ -78,18 +78,62 @@ omitted from the token.
 To retrieve the ID token on the client-side, use the `getIdentityToken()` method. This is typically
 called after the user logs in.
 
-**Inside React context**:
+<Tabs>
+<TabItem value="React SDK">
 
-```js
-const { getIdentityToken } = useIdentityToken();
-const idToken = await getIdentityToken();
+```tsx
+import { useIdentityToken } from "@web3auth/modal/react";
+
+function IdentityTokenButton() {
+  const { getIdentityToken, loading, error, token } = useIdentityToken();
+
+  return (
+    <div>
+      <button onClick={() => getIdentityToken()} disabled={loading}>
+        {loading ? "Authenticating..." : "Get Identity Token"}
+      </button>
+      {token && <div>Token: {token}</div>}
+      {error && <div>Error: {error.message}</div>}
+    </div>
+  );
+}
 ```
 
-**Outside React context**:
+</TabItem>
+<TabItem value="Vue SDK">
 
-```js
-await web3auth.getIdentityToken();
+```html
+<script setup lang="ts">
+  import { useIdentityToken } from "@web3auth/modal/vue";
+
+  const { getIdentityToken, loading, error, token } = useIdentityToken();
+</script>
+
+<template>
+  <div>
+    <button @click="getIdentityToken" :disabled="loading">
+      {{ loading ? "Authenticating..." : "Get Identity Token" }}
+    </button>
+    <div v-if="token">Token: {{ token }}</div>
+    <div v-if="error">Error: {{ error.message }}</div>
+  </div>
+</template>
 ```
+
+</TabItem>
+<TabItem value="JavaScript SDK">
+
+```tsx
+try {
+  const idToken = await web3auth.getIdentityToken();
+  console.log(idToken);
+} catch (error) {
+  console.error("Error authenticating user:", error);
+}
+```
+
+</TabItem>
+</Tabs>
 
 ## Verifying the ID Token
 
@@ -148,13 +192,9 @@ values={[
 >
 <TabItem value="jose">
 
-#### Install jose
-
 ```bash
 npm install jose
 ```
-
-#### Verify the ID Token
 
 ```js title="Example (JWT Verification using jose)"
 const verificationKey = await jose.importSPKI("insert-your-web3auth-verification-key", "ES256");
@@ -174,17 +214,9 @@ try {
 
 </TabItem>
 <TabItem value="jsonwebtoken">
-
-#### Install jsonwebtoken
-
 ```bash
 npm install jsonwebtoken
 ```
-
-#### Verify the ID Token
-
-The replace operation above ensures that any instances of '\n' in the stringified public key are
-replaced with actual newlines, per the PEM-encoded format.
 
 ```js title="Example (JWT Verification using jsonwebtoken)"
 const verificationKey = "insert-your-privy-verification-key".replace(/\\n/g, "\n");
@@ -202,11 +234,18 @@ try {
 }
 ```
 
+> The replace operation above ensures that any instances of '\n' in the stringified public key are
+> replaced with actual newlines, per the PEM-encoded format.
+
 </TabItem>
 </Tabs>
 
-> If the token is valid, the payload will contain identity claims (e.g., userId). If invalid, an
-> error is thrown.
+:::info
+
+If the token is valid, the payload will contain identity claims (e.g., userId). If invalid, an error
+is thrown.
+
+:::
 
 ## Things to Remember
 

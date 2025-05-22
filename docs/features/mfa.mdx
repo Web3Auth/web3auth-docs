@@ -1,86 +1,72 @@
 ---
-title: Multi Factor Authentication
-sidebar_label: Multi Factor Authentication
-description: "Multi Factor Authentication | Documentation - Web3Auth"
+title: Multi-Factor Authentication
+sidebar_label: Multi-Factor Authentication
+image: "images/docs-meta-cards/documentation-card.png"
+description: "Multi-Factor Authentication | Documentation - Web3Auth"
 ---
 
-With Web3auth, you can enable you users to set users multi-factor authentication (MFA) for embedded
-wallets. This feature enhances wallet security by tying access to additional authentication factors
-such as social logins, devices, or recovery phrases. By requiring additional verification, MFA
-ensures users can securely control and recover their wallets while maintaining a self-custodial
-setup. The key recovery methods that we support out of the box are:
+Web3Auth offers robust Multi-Factor Authentication (MFA) to enhance the security and recoverability
+of user accounts. MFA acts as an additional layer of protection, requiring users to authenticate
+using two or more verification methods before gaining access to their accounts. This system is
+designed to ensure key ownership remains self-custodial while maintaining ease of access and
+recovery.
 
-## One-Click Login (Single Factor Auth)
+To activate MFA, users must configure at least one backup factor. Upon setup, Web3Auth splits the
+user’s private key into three shares using an off-chain threshold signature scheme. This
+cryptographic approach guarantees that even if one share is lost or compromised, access to the
+wallet can still be securely recovered using the remaining factors.
 
-This is the simplest flow for a user to onboard with Web3Auth. The user just needs to click on the
-login button, connect to their favorite social account (OAuth) or any passwordless flow, like
-email-passwordless, biometric authentication etc., and a wallet is generated for them. This flow has
-a 1/1 Key Share setup and the whole key via Web3Auth Auth Network key shares. This flow is still
-non-custodial since the nodes in the Web3Auth network have a 5/9 consensus mechanism to generate the
-key shares.
+Users can choose from various authentication methods including device-based shares, social logins,
+backup seed phrases, password factors, passkeys, and authenticator apps. These options offer
+flexibility for both account security and cross-device accessibility.
 
-:::warning
+![Backup MFA Options](/images/mfa-options.gif)
 
-While analyzing, one can claim that this flow is custodial to the OAuth Login provider, since this
-is directly generated using credentials provided by them. Also, since the Web3Auth Network handles
-this flow independently, even while being decentralized, **we can call this flow a semi-custodial
-flow.**
+## MFA Levels
 
-:::
+The `mfaLevel` parameter allows developers to configure the behavior and frequency of MFA prompts
+within their applications. This setting determines how and when users are prompted to configure or
+verify their backup factors.
 
-:::info technical insight
+Supported values for `mfaLevel` include:
 
-In our One Click Flow, we add a `nonce` value, stored in our encrypted metadata server, to the
-social login share to keep the threshold 2/2, while it feels like 1/1. This is done to ensure that
-the application has the flexibility to move to a 2/n MFA flow in the future if they want to. As the
-application triggers the creation of MFA Factors the nonce is automatically deleted.
+- `default`: Displays the MFA setup screen every third login. Ideal for balanced security and user
+  convenience.
+- `optional`: Shows the MFA screen on every login, but users can skip the setup if desired.
+- `mandatory`: Forces MFA setup immediately after login. This is recommended for applications
+  prioritizing strong user authentication.
+- `none`: Completely bypasses the MFA setup screen. Suitable for use cases where MFA is managed
+  externally or intentionally disabled.
 
-:::
+## MFA Settings
 
-:::tip
-
-- The [**Single Factor SDKs**](/sdk/sfa/sfa-js) help you directly achieve this flow.
-
-- For Plug and Play SDKs, this flow can be achieved by setting the
-  [`MFALevel` to `'none'`](/sdk/pnp/web/modal/initialize#multi-factor-authentication) within the
-  Web3Auth Login while logging a user in.
-
-:::
-
-## Adding Multi-Factor Authentication
-
-The Multi-Factor Authentication (MFA) feature refers to the ability of the user to create a backup
-share (recovery factor). This feature plays a key role in the Wallet Infrastructure of Web3Auth and
-a developer needs to properly understand it to be able to onboard users safely and effectively.
-
-The most interesting feature of adding a multi-factor authentication is that it makes the keys
-**self-custodial** to the user. This is achieved by associating a key share alongside the factor
-that the user chooses to create, hence making sure the key is further distributed and not just
-associated with the user's social account or the Web3Auth Network.
-
-:::tip
-
-Know the [best practices to implement MFA effectively](/resources/mfa-best-practices) to enhance
-security and user experience.
-
-:::
+The `mfaSettings` parameter provides granular control over which backup factors are available to
+users and the order in which they appear in the UI. This enables developers to tailor the MFA
+experience to match their application’s security requirements and user preferences.
 
 ![MFA Factors](/images/mfa-factors.png)
 
-### Types of MFA Flows
+| MFA Type                         | Ease of Access | Setup Custodiality                                                                      |
+| -------------------------------- | -------------- | --------------------------------------------------------------------------------------- |
+| **Recovery Mnemonic Phrase**     | Difficult      | Fully Non-Custodial                                                                     |
+| **Email Backup Share**           | Medium         | Non-Custodial / <br />Semi-Custodial _(if same email as first factor social login)_     |
+| **Backup Password**              | Medium         | Non-Custodial                                                                           |
+| **Secondary Social Login**       | Easy           | Non-Custodial / <br />Semi-Custodial _(if same social login provider for first factor)_ |
+| **Secondary SMS Passwordless**   | Easy           | Non-Custodial                                                                           |
+| **Secondary Email Passwordless** | Easy           | Non-Custodial / <br />Semi-Custodial _(if same email as first factor social login)_     |
+| **Passkeys**                     | Easy           | Non-Custodial                                                                           |
+| **Authenticator App**            | Easy           | Non-Custodial                                                                           |
 
-With Core Kit MFA and Plug and Play SDKs, you have the choice to use multiple types of multi-factor
-flows according to your needs. With Plug and Play, we expose various logins out of the box. For Core
-Kit SDKs, the developers can determine which flow suits them the most, with total freedom of
-managing key storage and access.
+## Benefits of MFA
 
-| MFA Type                     | Custodiality of MFA                             | Ease of Access | Setup Custodiality                                                                | Availability in Plug and Play SDKs                                     |
-| ---------------------------- | ----------------------------------------------- | -------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **Recovery Mnemonic Phrase** | Self Custodial to User                          | Difficult      | Fully Non-Custodial                                                               | Yes                                                                    |
-| **Email Backup Share**       | Potentially Custodial to Email Provider         | Medium         | Non-Custodial / Semi-Custodial _(if same email as first factor social login)_     | Yes, SMTP server for email can be customized for Enterprise Customers. |
-| **Backup Password**          | Semi Custodial to the Encrypted Metadata Server | Medium         | Non-Custodial                                                                     | Yes                                                                    |
-| **Secondary Social Login**   | Semi Custodial to Social Provider               | Easy           | Non-Custodial / Semi-Custodial _(if same social login provider for first factor)_ | Yes, with Default Social Providers                                     |
-| **SMS Passwordless**         | Semi Custodial to SMS Service                   | Easy           | Non-Custodial                                                                     | Yes, with Web3Auth SMS Server                                          |
-| **Email Passwordless**       | Semi Custodial to Email Provider                | Easy           | Non-Custodial / Semi-Custodial _(if same email as first factor social login)_     | Yes, with Web3Auth Email Passwordless Server                           |
-| **Passkeys**                 | Non Custodial                                   | Easy           | Non-Custodial                                                                     | Yes, with Web3Auth Passkeys Server                                     |
-| **Authenticator App**        | Non Custodial                                   | Easy           | Non-Custodial                                                                     | Yes, with Web3Auth Authenticator Server                                |
+- **Self-Custodial Security**: Key shares remain under user control without reliance on a
+  centralized entity.
+- **Cross-Device Recovery**: Users can regain access to their accounts even if they switch devices.
+- **Flexible Implementation**: Developers can choose the right balance between security and UX by
+  tuning MFA behavior and available factors.
+- **Threshold Signature Architecture**: Enhances resilience against loss or compromise of individual
+  factors.
+
+By integrating Web3Auth’s MFA, developers can provide a secure, user-friendly authentication system
+that aligns with the decentralized principles of web3 while delivering modern account recovery and
+protection features.

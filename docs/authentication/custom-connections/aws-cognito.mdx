@@ -6,6 +6,7 @@ description: "AWS Cognito Login with Web3Auth | Documentation - Web3Auth"
 
 import CustomConnectionOptions from "@site/static/images/dashboard/authentication-custom-connections.png";
 import AWSConnection from "@site/static/images/dashboard/aws-cognito-connection.png";
+import ImplicitLoginCognito from "../../sdk/web/react/advanced/_custom-authentication-snippets/_implicit_login_aws_cognito.mdx";
 
 AWS Cognito is a scalable authentication service provided by Amazon Web Services that enables
 developers to securely manage user sign-up, sign-in, and access control. Web3Auth supports AWS
@@ -32,15 +33,19 @@ in the Web3Auth Dashboard.
 To use this feature, developers must go to the `Custom Connections` tab in the
 [Web3Auth Dashboard](https://dashboard.web3auth.io).
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+:::
+
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={CustomConnectionOptions}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "800px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="Custom Connection Options"
   />
 </div>
-
-:::
 
 Follow these steps to create a AWS Cognito connection:
 
@@ -61,45 +66,19 @@ Follow these steps to create a AWS Cognito connection:
 
 > Note: Replace the `REGION`, `USER_POOL_ID` and `APP_CLIENT_ID` with your Cognito specific details.
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={AWSConnection}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "800px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="AWS Cognito Connection"
   />
 </div>
 
 ## Usage
-
-### Initialize Web3Auth
-
-Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
-React tree as possible.
-
-```js title="Example: React + Vite (main.tsx)"
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-
-import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
-
-import App from "./App.tsx";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Web3AuthProvider
-      config={{
-        web3AuthOptions: {
-          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        },
-      }}
-    >
-      <App />
-    </Web3AuthProvider>
-  </StrictMode>
-);
-```
 
 Since, the `AWS Cognito Connection` details are available from Dashboard, developers don't need to
 pass any additional parameters to the `Web3AuthProvider`.
@@ -108,40 +87,4 @@ pass any additional parameters to the `Web3AuthProvider`.
 
 ### Login with AWS Cognito
 
-```jsx
-import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
-import { useAccount } from "wagmi";
-
-function LoginPage() {
-  const { connectTo } = useWeb3AuthConnect();
-  const { address } = useAccount();
-
-  const loginWithCognito = async () => {
-    try {
-      // focus-start
-      await connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnection: AUTH_CONNECTION.CUSTOM,
-        authConnectionId: "cognito-auth-connection-id",
-        extraLoginOptions: {
-          clientId: "COGNITO_CLIENT_ID",
-          domain: "COGNITO_DOMAIN",
-          verifierIdField: "email",
-          response_type: "token",
-          scope: "email profile openid",
-        },
-      });
-      // focus-end
-    } catch (error) {
-      console.error("AWS Cognito authentication error:", error);
-    }
-  };
-
-  return (
-    <div>
-      <button onClick={() => loginWithCognito()}>Login with AWS Cognito</button>
-      <p>Address: {address}</p>
-      {/* 0x1e46c61f7F5B1D9B8505CEdED94AB1468dC28aa0 */}
-    </div>
-  );
-}
-```
+<ImplicitLoginCognito />

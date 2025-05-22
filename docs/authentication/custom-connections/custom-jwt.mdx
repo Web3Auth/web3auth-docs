@@ -10,6 +10,7 @@ import Tabs from "@theme/Tabs";
 
 import CustomConnectionOptions from "@site/static/images/dashboard/authentication-custom-connections.png";
 import CustomJWTConnection from "@site/static/images/dashboard/custom-connection.png";
+import JwtLoginCustom from "../../sdk/web/react/advanced/_custom-authentication-snippets/_jwt_login_custom.mdx";
 
 Web3Auth supports integration with custom login providers through JWT-based authentication schemes,
 allowing developers to maintain their existing authentication infrastructure while leveraging
@@ -32,7 +33,9 @@ Web3Auth Dashboard.
 To use this feature, developers must go to the `Custom Connections` tab in the
 [Web3Auth Dashboard](https://dashboard.web3auth.io).
 
-<div style={{ display: "flex", margin: "20px 0" }}>
+:::
+
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={CustomConnectionOptions}
     style={{
@@ -43,8 +46,6 @@ To use this feature, developers must go to the `Custom Connections` tab in the
     alt="Custom Connection Options"
   />
 </div>
-
-:::
 
 Follow these steps to create a AWS Cognito connection:
 
@@ -61,7 +62,7 @@ Follow these steps to create a AWS Cognito connection:
    1. Next, type aud as a field and `your-audience` as a value.
 1. Finally, click on the `Add Connection` button.
 
-<div style={{ display: "flex", margin: "20px 0" }}>
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={CustomJWTConnection}
     style={{
@@ -267,36 +268,6 @@ Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-err
 
 ## Usage
 
-### Initialize Web3Auth
-
-Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
-React tree as possible.
-
-```js title="Example: React + Vite (main.tsx)"
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-
-import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
-
-import App from "./App.tsx";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Web3AuthProvider
-      config={{
-        web3AuthOptions: {
-          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        },
-      }}
-    >
-      <App />
-    </Web3AuthProvider>
-  </StrictMode>
-);
-```
-
 Since, the `Custom Connection` details are available from Dashboard, developers don't need to pass
 any additional parameters to the `Web3AuthProvider`.
 
@@ -304,43 +275,7 @@ any additional parameters to the `Web3AuthProvider`.
 
 ### Login with JWT
 
-```jsx
-import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
-import { useAccount } from "wagmi";
-
-function LoginPage() {
-  const { connectTo } = useWeb3AuthConnect();
-  const { address } = useAccount();
-
-  const loginWithCustomJWT = async () => {
-    try {
-      // highlight-next-line
-      const idToken = await generateJWT();
-
-      // focus-start
-      await connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnectionId: "custom-jwt-auth-connection-id",
-        authConnection: AUTH_CONNECTION.CUSTOM,
-        idToken,
-        extraLoginOptions: {
-          isUserIdCaseSensitive: false,
-        },
-      });
-      // focus-end
-    } catch (error) {
-      console.error("Custom JWT authentication error:", error);
-    }
-  };
-
-  return (
-    <div>
-      <button onClick={() => loginWithCustomJWT()}>Login with Custom JWT</button>
-      <p>Address: {address}</p>
-      {/* 0x17A0d01D14D4e945843ad9e54D10551F02a6AE0B */}
-    </div>
-  );
-}
-```
+<JwtLoginCustom />
 
 ## What are JWKS?
 

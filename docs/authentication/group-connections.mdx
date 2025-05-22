@@ -9,6 +9,14 @@ import AuthenticationGroupConnectionsSelect from "@site/static/images/dashboard/
 import AuthenticationGroupConnectionsCreate from "@site/static/images/dashboard/authentication-group-connections-create.png";
 import AuthenticationGroupConnectionsConfirm from "@site/static/images/dashboard/authentication-group-connections-confirm.png";
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import GroupConnectionFirebase from "../sdk/web/react/advanced/_custom-authentication-snippets/_grouped_auth_firebase.mdx";
+import GroupConnectionAuth0Implicit from "../sdk/web/react/advanced/_custom-authentication-snippets/_grouped_auth_implicit_auth0.mdx";
+import GroupConnectionAuth0JWT from "../sdk/web/react/advanced/_custom-authentication-snippets/_grouped_auth_jwt_auth0.mdx";
+import GroupModal from "../sdk/web/react/advanced/_custom-authentication-snippets/_grouped_modal_connections.mdx";
+
 Group Connections enable multiple login methods to be linked to the same on-chain user identity.
 This means that users logging in with different authentication providers (e.g., **_Google and Email
 Passwordless_**) can still access the **same wallet address**—ensuring a unified user experience.
@@ -16,22 +24,26 @@ Passwordless_**) can still access the **same wallet address**—ensuring a unifi
 > _Before setting up a group connection, developers must first configure individual login
 > connections that are eligible._
 
+## Set Up a Group Connection
+
 :::success Create Group Connection on Dashboard
 
 To use this feature, developers must go to the `Group Connections` tab in the
 [Web3Auth Dashboard](https://dashboard.web3auth.io).
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+:::
+
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={AuthenticationGroupConnectionsCreate}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "800px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="Authentication Group Connections"
   />
 </div>
-
-:::
-
-## Set Up a Group Connection
 
 Follow these steps:
 
@@ -42,117 +54,48 @@ Follow these steps:
 5. Select `1st social connection` and `2nd social connection`.
 6. Click `Create Group`.
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={AuthenticationGroupConnectionsSelect}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "800px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="Authentication Group Connections"
   />
 </div>
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+<div style={{ display: "flex", margin: "20px 0", justifyContent: "center" }}>
   <img
     src={AuthenticationGroupConnectionsConfirm}
-    style={{ alignSelf: "center", maxWidth: "100%" }}
+    style={{
+      maxWidth: "800px",
+      borderRadius: "8px",
+      boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+    }}
     alt="Authentication Group Connections Confirm"
   />
 </div>
 
 ## Usage
 
-### Initialize Web3Auth
-
-Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
-React tree as possible.
-
-```js title="Example: React + Vite (main.tsx)"
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-
-import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
-
-import App from "./App.tsx";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Web3AuthProvider
-      config={{
-        web3AuthOptions: {
-          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        },
-      }}
-    >
-      <App />
-    </Web3AuthProvider>
-  </StrictMode>
-);
-```
-
 Since, the `Group Connections` details are available from Dashboard, developers don't need to pass
 any additional parameters to the `Web3AuthProvider`.
 
 > Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
 
-### Login with Google
-
-```jsx
-import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
-import { useAccount } from "wagmi";
-
-function LoginPage() {
-  const { connectTo } = useWeb3AuthConnect();
-  const { address } = useAccount();
-
-  const loginWithGoogle = async () => {
-    await connectTo(WALLET_CONNECTORS.AUTH, {
-      // focus-start
-      groupedAuthConnectionId: "group-connection-id",
-      authConnectionId: "google-auth-connection-id",
-      authConnection: AUTH_CONNECTION.GOOGLE,
-      // focus-end
-    });
-  };
-
-  return (
-    <div>
-      <button onClick={() => loginWithGoogle()}>Login with Google</button>
-      <p>Address: {address}</p>
-      {/* 0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8 */}
-    </div>
-  );
-}
-```
-
-### Login with Email Passwordless
-
-```jsx
-import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
-import { useAccount } from "wagmi";
-
-function LoginPage() {
-  const { connectTo } = useWeb3AuthConnect();
-  const { address } = useAccount();
-
-  const loginWithEmailPasswordless = async () => {
-    await connectTo(WALLET_CONNECTORS.AUTH, {
-      // focus-start
-      groupedAuthConnectionId: "group-connection-id",
-      authConnectionId: "email-passwordless-auth-connection-id",
-      authConnection: AUTH_CONNECTION.EMAIL_PASSWORDLESS,
-    });
-  };
-
-  return (
-    <div>
-      <button onClick={() => loginWithEmailPasswordless()}>Login with Email Passwordless</button>
-      <p>Address: {address}</p>
-      {/* focus-start */}
-      {/* User's address remains same as above */}
-      {/* 0xeaA8Af602b2eDE45922818AE5f9f7FdE50cFa1A8 */}
-      {/* focus-end */}
-    </div>
-  );
-}
-```
+<Tabs>
+  <TabItem value="modal" label="Modal Connection">
+    <GroupModal />
+  </TabItem>
+  <TabItem value="Google [Implicit] + Auth0 [Implicit]">
+    <GroupConnectionAuth0Implicit />
+  </TabItem>
+  <TabItem value="Google One Tap [JWT] + Auth0 [JWT]">
+    <GroupConnectionAuth0JWT />
+  </TabItem>
+  <TabItem value="Google [Implicit] + Firebase [JWT]">
+    <GroupConnectionFirebase />
+  </TabItem>
+</Tabs>
