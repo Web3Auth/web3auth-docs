@@ -623,7 +623,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "link",
       label: "Playground",
-      href: "https://w3a.link/pnp-playground",
+      href: "https://web3auth-playground.vercel.app/",
     },
     {
       type: "link",
