@@ -4,6 +4,37 @@ sidebar_label: Show Wallet Connect Scanner
 description: "@web3auth/modal Interoperability with WalletConnect | Documentation - Web3Auth"
 ---
 
-import ShowWCScannerDoc from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner-doc.mdx";
+For enabling interoperability with Wallet Connect, ie. connecting your W3A generated wallet to other
+dApps which have Wallet Connect integration, you can use the `showWalletConnectScanner()` method.
+This method uses the Wallet Connect `copy and paste` flow, in which you can directly copy the QR
+Code details from a dApp like [OpenSea](https://opensea.io) and paste in the modal.
 
-<ShowWCScannerDoc />
+:::note
+
+This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this
+SDK in a production environment is the **Scale Plan**. You can use this feature in Web3Auth Sapphire
+Devnet network for free.
+
+:::
+
+## Parameters
+
+| Name   | Description                                                                                                         |
+| ------ | ------------------------------------------------------------------------------------------------------------------- |
+| `show` | Determines whether the Wallet Connect UI is displayed. This can be used to programmatically control its visibility. |
+
+## Usage
+
+Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is
+useful for interoperability with dApps having Wallet Connect login option.
+
+```javascript
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const walletServicesPlugin = new WalletServicesPlugin();
+web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
+
+await walletServicesPlugin.showWalletConnectScanner({
+  show: true,
+});
+```

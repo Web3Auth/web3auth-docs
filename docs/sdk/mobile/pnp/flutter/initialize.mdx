@@ -4,8 +4,6 @@ sidebar_label: Initialize
 description: "Web3Auth PnP Flutter SDK - Initialization | Documentation - Web3Auth"
 ---
 
-import Initialization from "@site/src/common/sdk/pnp/flutter/_initialization.mdx";
-
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -105,7 +103,30 @@ class Web3AuthOptions {
 
 ### Configure Web3AuthFlutter
 
-<Initialization />
+```dart
+Future<void> initWeb3Auth() async {
+
+  late final Uri redirectUrl;
+
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else {
+    redirectUrl = Uri.parse('{bundleId}://auth');
+    // com.example.w3aflutter://auth
+  }
+
+  // focus-start
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: "WEB3AUTH_CLIENT_ID",
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+  ));
+
+  // focus-end
+}
+```
 
 ## Triggering Login exceptions
 

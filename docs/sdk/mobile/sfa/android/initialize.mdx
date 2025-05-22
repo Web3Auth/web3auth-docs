@@ -7,9 +7,6 @@ description: "Web3Auth Single Factor Auth Android SDK - Initialize | Documentati
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-import Instantiation from "@site/src/common/sdk/sfa/android/_sfa-android-instantiation.mdx";
-import Initialization from "@site/src/common/sdk/sfa/android/_sfa-android-initialization.mdx";
-
 Once you have installed the Web3Auth SDK, the next crucial step is to initialize it. This step
 requires passing various parameters that align with your project preferences. It's important to note
 that the initialization process is critical to the successful use of Web3Auth.
@@ -31,7 +28,22 @@ Web3Auth network, client id, and other parameters during initialization.
 
 ## Create Instance
 
-<Instantiation />
+```kotlin
+import android.content.Context
+import com.web3auth.singlefactorauth.SingleFactorAuth
+import com.web3auth.singlefactorauth.types.Web3AuthOptions
+import org.torusresearch.fetchnodedetails.types.Web3AuthNetwork
+
+// You can get the client id for your Web3Auth project from Web3Auth dashboard.
+val web3AuthOptions = Web3AuthOptions(
+    "YOUR_WEB3AUTH_CLIENT_ID",
+    Web3AuthNetwork.SAPPHIRE_MAINNET
+)
+
+val context: Context = "YOUR_APPLICATION_CONTEXT"
+
+val singleFactorAuth = SingleFactorAuth(web3AuthOptions, context)
+```
 
 ## Initialize
 
@@ -39,4 +51,19 @@ To initialize the SDK, you can use the `initialize` method. This method helps yo
 with existing session. After successful initialization, you can use the
 [getSessionData](./usage/#get-session-data) method to check if the user is logged in or not.
 
-<Initialization />
+```kotlin
+import android.content.Context
+
+val context: Context = "YOUR_APPLICATION_CONTEXT"
+val sessionDataCF = singleFactorAuth.initialize(context)
+
+sessionDataCF.whenComplete {sessionData, error ->
+    if(error != null) {
+        // Something went wrong
+        // Initiate the login flow again
+    } else {
+        // You can use the SessionData to check if the user is
+        //logged in or not
+    }
+}
+```

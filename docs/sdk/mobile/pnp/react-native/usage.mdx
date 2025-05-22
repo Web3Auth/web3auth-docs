@@ -4,9 +4,6 @@ sidebar_label: Usage
 description: "Web3Auth PnP React Native SDK - Usage | Documentation - Web3Auth"
 ---
 
-import RNResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
-import PrivateKey from "@site/src/common/sdk/pnp/react-native/_get-priv-key.mdx";
-import ED25519Key from "@site/src/common/sdk/pnp/react-native/_get-ed25519-priv-key.mdx";
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -247,7 +244,21 @@ in the web3auth instance.
 const userInfo = web3auth.userInfo();
 ```
 
-<RNResponse />
+```json
+{
+  "aggregateVerifier": "tkey-google",
+  "email": "john@gmail.com",
+  "name": "John Dash",
+  "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
+  "typeOfLogin": "google",
+  "verifier": "torus",
+  "verifierId": "john@gmail.com",
+  "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
+  "idToken": "<jwtToken issued by Web3Auth>",
+  "oAuthIdToken": "<jwtToken issued by OAuth Provider>", // will be sent only incase of custom verifiers
+  "oAuthAccessToken": "<accessToken issued by OAuth Provider>" // will be sent only incase of custom verifiers
+}
+```
 
 ## Getting the `secp256k1` private key
 
@@ -259,7 +270,9 @@ Using the `privKey()` method in the web3auth instance you can get the `secp256k1
 const privateKey = web3auth.privKey();
 ```
 
-<PrivateKey />
+```string
+"0ajjsdsd...."
+```
 
 ## Getting the `ed25519` private key
 
@@ -271,7 +284,9 @@ Using the `ed25519Key()` method in the web3auth instance you can get the `ed2551
 const ed25519Key = web3auth.ed25519Key();
 ```
 
-<ED25519Key />
+```string
+"666523652352635...."
+```
 
 ## Enabling MFA
 

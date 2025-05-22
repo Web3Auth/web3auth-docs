@@ -5,7 +5,6 @@ description: "Web3Auth PnP Android SDK - Initialize | Documentation - Web3Auth"
 ---
 
 import Initialization from "@site/src/common/sdk/pnp/android/_initialize.mdx";
-import SetResultUrl from "@site/src/common/sdk/pnp/android/_set-result-url.mdx";
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -82,7 +81,17 @@ data class Web3AuthOptions(
 
 ## Set Result URL
 
-<SetResultUrl />
+Whenever user initiates a login flow, a new intent of CustomTabs is launched. It's necessary step to
+use `setResultUrl` in `onNewIntent` method to successful track the login process.
+
+```kotlin
+override fun onNewIntent(intent: Intent?) {
+  super.onNewIntent(intent)
+
+  // Handle user signing in when app is active
+  web3Auth.setResultUrl(intent.data)
+}
+```
 
 ## Triggering Login exceptions
 

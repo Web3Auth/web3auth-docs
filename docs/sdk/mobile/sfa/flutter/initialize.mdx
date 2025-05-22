@@ -7,8 +7,6 @@ description: "Web3Auth Single Factor Auth Flutter SDK - Initialize | Documentati
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-import Initialization from "@site/src/common/sdk/sfa/flutter/_sfa-flutter-initialization.mdx";
-
 After installation, the next step to use Web3Auth SFA Flutter is to initialize the SDK and is
 achieved by `init` method. This step requires passing various parameters that align with your
 project preferences. It's important to note that the initialization process is critical to the
@@ -83,4 +81,28 @@ you can use the `getSessionData` method to check if the user is logged in or not
 Please note, the `initialize` method will throw an error if there is no active session present. You
 can swallow the error or handle it gracefully in your app.
 
-<Initialization />
+```dart
+import 'package:single_factor_auth_flutter/single_factor_auth_flutter.dart';
+import 'package:single_factor_auth_flutter/enums.dart';
+import 'package:single_factor_auth_flutter/input.dart';
+
+final web3authOptions = Web3AuthOptions(
+  network: Web3AuthNetwork.sapphire_devnet,
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+);
+
+final singleFactorAuthFlutter = SingleFactorAuthFlutter();
+
+await singleFactorAuthFlutter.init(
+  web3authOptions,
+);
+
+try {
+  await singleFactorAuthFlutter.initialize();
+} catch (e) {
+  // SDK will throw an error if there is no active session
+  // present in the storage.
+  //
+  // Handle the error gracefully in your app.
+}
+```
