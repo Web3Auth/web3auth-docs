@@ -35,6 +35,7 @@ import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-p
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
+import ChainDetailsChiliz from "@site/src/common/docs/general-connect-blockchain/_chiliz.mdx";
 
 <SEO
   title="Integrate Web3Auth with the Chiliz Blockchain in JavaScript"
@@ -52,6 +53,10 @@ This provider can be used with libraries like
 `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
 etc. We have highlighted a few examples to get you started.
 
+## Chain Details for Chiliz
+
+<ChainDetailsChiliz />
+
 ## Installation
 
 To interact with the Chiliz blockchain, you can use either library with Web3Auth.
@@ -63,58 +68,6 @@ To interact with the Chiliz blockchain, you can use either library with Web3Auth
 Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
 [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
 after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x15B38", // hex of 88888, Chiliz Mainnet
-  rpcTarget: "https://rpc.chiliz.com",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode, etc.
-  displayName: "Chiliz Mainnet",
-  blockExplorerUrl: "https://chiliscan.com",
-  ticker: "CHZ",
-  tickerName: "Chiliz",
-  logo: "https://cdn.chiliz.com/logo.png",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x15B42", // hex of 88882, Chiliz Spicy Testnet
-  rpcTarget: "https://spicy-rpc.chiliz.com/",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode, etc.
-  displayName: "Chiliz Spicy Testnet",
-  blockExplorerUrl: "https://testnet.chiliscan.com/",
-  ticker: "CHZ",
-  tickerName: "Chiliz (Testnet)",
-  logo: "https://cdn.chiliz.com/logo-testnet.png",
-};
-```
-
-</TabItem>
-</Tabs>
 
 ### Initializing and Instantiating the Web3Auth SDK
 

@@ -518,7 +518,9 @@ const sidebars: SidebarsConfig = {
       label: "Connect Blockchain",
       items: [
         "connect-blockchain/connect-blockchain",
-        "connect-blockchain/built-in-chainconfigs",
+        "connect-blockchain/rpc-headers",
+        "connect-blockchain/custom-chains",
+        // "connect-blockchain/built-in-chainconfigs",
         {
           type: "category",
           label: "EVM Based Chains",

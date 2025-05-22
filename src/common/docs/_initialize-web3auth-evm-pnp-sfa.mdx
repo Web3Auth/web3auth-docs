@@ -2,78 +2,23 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 <Tabs
-  defaultValue="modal"
+  defaultValue="web"
   values={[
-    { label: "PnP Modal SDK", value: "modal", },
-    { label: "PnP NoModal SDK", value: "no-modal", },
-    { label: "Single Factor Auth JS SDK", value: "sfa", },
+    { label: "PnP Web SDK", value: "web", },
     { label: "MPC CoreKit JS SDK", value: "mpc", },
   ]}
 >
 <TabItem
-  value="modal"
+  value="web"
 >
 
 ```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
+import { Web3Auth, WEB3AUTH_NETWORK } from "@web3auth/modal";
 
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig },
-});
-
-const web3auth = new Web3Auth({
-  // Get it from Web3Auth Dashboard
+const web3AuthOptions: Web3AuthOptions = {
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-});
-```
-
-</TabItem>
-<TabItem
-  value="no-modal"
->
-
-```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId, // Get it from Web3Auth Dashboard
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-});
-
-const authAdapter = new AuthAdapter({ privateKeyProvider });
-web3auth.configureAdapter(authAdapter);
-```
-
-</TabItem>
-<TabItem
-  value="sfa"
->
-
-```tsx
-import { Web3Auth } from "@web3auth/single-factor-auth";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3Auth({
-  clientId, // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider,
-});
+};
 ```
 
 </TabItem>

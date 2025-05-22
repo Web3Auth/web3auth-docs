@@ -32,6 +32,8 @@ import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-cont
 import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import ChainDetailsZircuit from "@site/src/common/docs/general-connect-blockchain/_zircuit.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -58,61 +60,9 @@ To interact with the Zircuit blockchain, you can use either library with Web3Aut
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Zircuit
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xBF04", // hex of 48900, Zircuit Mainnet
-  rpcTarget: "https://zircuit1-mainnet.p2pify.com/",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Zircuit Mainnet",
-  blockExplorerUrl: "https://explorer.zircuit.com",
-  ticker: "ETH",
-  tickerName: "ETH",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xBF03", // hex of 48899, Zircuit Testnet
-  rpcTarget: "https://zircuit1.p2pify.com/",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Zircuit Testnet",
-  blockExplorerUrl: "https://explorer.testnet.zircuit.com",
-  ticker: "ETH",
-  tickerName: "ETH",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsZircuit />
 
 ### Initializing and Instantiating the Web3Auth SDK
 

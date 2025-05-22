@@ -33,6 +33,8 @@ import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-cont
 import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import ChainDetailsAncient8 from "@site/src/common/docs/general-connect-blockchain/_ancient8.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -53,6 +55,10 @@ This provider can be used with libraries like
 `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
 etc. We have highlighted a few examples to get you started.
 
+## Chain Details for Ancient8
+
+<ChainDetailsAncient8 />
+
 ## Installation
 
 To interact with the Ancient8 blockchain, you can use either library with Web3Auth.
@@ -65,61 +71,13 @@ Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
 [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
 after successful authentication.
 
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x34BC6B8", // hex of 888888888, Ancient8 Mainnet
-  rpcTarget: "https://rpc.ancient8.gg",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Ancient8 Mainnet",
-  blockExplorerUrl: "https://scan.ancient8.gg",
-  ticker: "ETH",
-  tickerName: "ETH",
-  logo: "https://blog.ancient8.gg/content/images/2023/09/A8_PFP.png",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1AD4150", // hex of 28122024, Ancient8 Testnet V2
-  rpcTarget: "https://rpcv2-testnet.ancient8.gg",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura
-  displayName: "Ancient8 Testnet V2",
-  blockExplorerUrl: "https://scanv2-testnet.ancient8.gg",
-  ticker: "ETH",
-  tickerName: "ETH",
-  logo: "https://blog.ancient8.gg/content/images/2023/09/A8_PFP.png",
-};
-```
-
-</TabItem>
-</Tabs>
-
-### Initializing and Instantiating the Web3Auth SDK
+### Initializing and instantiating the Web3Auth SDK
 
 <InitializeWeb3Auth />
+
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
 
 ## Get User Info
 

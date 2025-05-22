@@ -21,6 +21,7 @@ import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-con
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
 import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import ChainDetailsNibiru from "@site/src/common/docs/general-connect-blockchain/_nibiru.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
@@ -47,55 +48,9 @@ To interact with the Nibiru blockchain, you can use either library with Web3Auth
 
 <InstallationSnippet />
 
-## Initializing Provider
+## Chain Details for Nibiru
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
-:::note
-
-Nibiru is EVM compatible only for localnet for now. Kindly refer to the
-[Nibiru documentation](https://nibiru.fi/docs/dev/evm/) and
-[Nibiru Networks](https://nibiru.fi/docs/dev/networks/#evm-network-configs) for the latest updates
-and EVM-related configs.
-
-:::
-
-:::info
-
-For Nibiru, the steps for creating a local block explorer are mentioned
-[here](https://nibiru.fi/docs/dev/evm/quickstart.html#_4-local-explorer-optional).
-
-:::
-
-<Tabs
- defaultValue="localnet"
-  values={[
-    { label: "Localnet", value: "localnet", },
-  ]}
->
-<TabItem
-  value="localnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x100", // 420 for Mainnet, 256 for Localnet
-  rpcTarget: "http://127.0.0.1:8545",
-  displayName: "Nibiru Localnet",
-  blockExplorerUrl: "http://localhost:8080", // See the info placard above
-  ticker: "NIBI",
-  tickerName: "Nibiru Chain",
-  logo: "https://nibiru.fi/_astro/nibi-logomark-profile-pic.DoOUhpoa.svg",
-};
-```
-
-</TabItem>
-</Tabs>
+<ChainDetailsNibiru />
 
 ### Initializing and instantiating the Web3Auth SDK
 
