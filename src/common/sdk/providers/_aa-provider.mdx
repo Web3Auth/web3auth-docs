@@ -8,11 +8,7 @@ import ConfigureBundler from "@site/src/common/sdk/pnp/web/_bundler-configuratio
 import ConfigureSponsoredPaymaster from "@site/src/common/sdk/pnp/web/_sponsored-paymaster-configuration.mdx";
 import ConfigureERC20Paymaster from "@site/src/common/sdk/pnp/web/_erc20-paymaster-configuration.mdx";
 import ConfigurePaymasterContext from "@site/src/common/sdk/pnp/web/_paymaster-context.mdx";
-import AANoModalSetup from "@site/src/common/sdk/pnp/web/_aa-no-modal-setup.mdx";
 import AAModalSetup from "@site/src/common/sdk/pnp/web/_aa-modal-setup.mdx";
-import AARNBareSetup from "@site/src/common/sdk/pnp/react-native/_aa-rn-setup.mdx";
-import AARNExpoSetup from "@site/src/common/sdk/pnp/react-native/_aa-rn-expo-setup.mdx";
-import AASFASetup from "@site/src/common/sdk/sfa/_aa-sfa-setup.mdx";
 import ConfigureSigners from "@site/src/common/sdk/pnp/web/_configure-aa-signers.mdx";
 import SmartAccountAddress from "@site/src/common/sdk/pnp/web/_aa-address.mdx";
 import SmartAccountSendTransaction from "@site/src/common/sdk/pnp/web/_aa-send-transaction.mdx";
@@ -93,37 +89,165 @@ and directly use the external wallet to sign the transactions.
 
 </TabItem>
 
-<TabItem value="no-modal">
-
-If you are using the external wallets like MetaMask, Coinbase, etc, you can define whether you want
-to use the AccountAbstractionProvider, or EthereumPrivateKeyProvider by setting the
-`useAAWithExternalWallet` in `IWeb3AuthCoreOptions`.
-
-If you are setting `useAAWithExternalWallet` to `true`, it'll create a new Smart Account for your
-user, where the signer/creator of the Smart Account would be the external wallet.
-
-If you are setting `useAAWithExternalWallet` to `false`, it'll skip creating a new Smart Account,
-and directly use the external wallet to sign the transactions.
-
-<AANoModalSetup />
-
-</TabItem>
-
 <TabItem value="rn-bare">
 
-<AARNBareSetup />
+```ts
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// focus-start
+import {
+  AccountAbstractionProvider,
+  SafeSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+//focus-end
+import Web3Auth, { WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.sepolia.org",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+// focus-start
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    smartAccountInit: new SafeSmartAccount(),
+  },
+});
+// focus-end
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  redirectUrl,
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider,
+  // focus-next-line
+  accountAbstractionProvider: aaProvider,
+});
+```
 
 </TabItem>
 
 <TabItem value="rn-expo">
 
-<AARNExpoSetup />
+```ts
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// focus-start
+import {
+  AccountAbstractionProvider,
+  SafeSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+//focus-end
+import Web3Auth, { WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
+import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.sepolia.org",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+// focus-start
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    smartAccountInit: new SafeSmartAccount(),
+  },
+});
+// focus-end
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
+  clientId,
+  redirectUrl,
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider,
+  // focus-next-line
+  accountAbstractionProvider: aaProvider,
+});
+```
 
 </TabItem>
 
 <TabItem value="sfa">
 
-<AASFASetup />
+```ts
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// focus-start
+import {
+  AccountAbstractionProvider,
+  SafeSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+// focus-end
+import { Web3Auth } from "@web3auth/single-factor-auth";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.sepolia.org",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+// focus-start
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    smartAccountInit: new SafeSmartAccount(),
+  },
+});
+// focus-end
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+  // focus-start
+  accountAbstractionProvider,
+  // focus-end
+});
+```
 
 </TabItem>
 </Tabs>

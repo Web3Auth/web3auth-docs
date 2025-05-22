@@ -21,9 +21,7 @@ description: "Integrate Web3Auth with the Bitcoin Blockchain | Documentation - W
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
-import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
-import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp.mdx";
 
 When using the Web3Auth Web SDK for non-EVM chains like [Bitcoin](https://developer.bitcoin.org/),
 you get a standard provider that allows you to access the user's private key. With this private key,
@@ -58,17 +56,14 @@ npm install --save bitcoinjs-lib ecpair axios
   value="mainnet"
 >
 
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
-  chainId: "Bitcoin", //
-  rpcTarget: "https://api.blockcypher.com/v1/btc/main", // Avoid using public rpcTarget in production.
-  displayName: "Bitcoin Mainnet",
-  blockExplorerUrl: "https://blockstream.info/",
-  ticker: "BTC",
-  tickerName: "Bitcoin",
-};
-```
+- Chain Namespace: OTHER
+- Chain ID: Bitcoin
+- Public RPC URL: https://api.blockcypher.com/v1/btc/main (Avoid using public rpcTarget in
+  production)
+- Display Name: Bitcoin Mainnet
+- Block Explorer Link: https://blockstream.info/
+- Ticker: BTC
+- Ticker Name: Bitcoin
 
 </TabItem>
 
@@ -76,30 +71,17 @@ const chainConfig = {
   value="testnet"
 >
 
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
-  chainId: "Bitcoin", //
-  rpcTarget: "https://api.blockcypher.com/v1/btc/test3", // Avoid using public rpcTarget in production.
-  displayName: "Bitcoin Testnet",
-  blockExplorerUrl: "https://blockstream.info/testnet/",
-  ticker: "tBTC",
-  tickerName: "Bitcoin Testnet",
-};
-```
+- Chain Namespace: OTHER
+- Chain ID: Bitcoin
+- Public RPC URL: https://api.blockcypher.com/v1/btc/test3 (Avoid using public rpcTarget in
+  production)
+- Display Name: Bitcoin Testnet
+- Block Explorer Link: https://blockstream.info/testnet/
+- Ticker: tBTC
+- Ticker Name: Bitcoin Testnet
 
 </TabItem>
 </Tabs>
-
-### Initializing and instantiating the Web3Auth SDK
-
-<InitializeWeb3Auth />
-
-## Getting the Web3Auth provider
-
-<GetWeb3AuthProvider />
-
-<GetUserInfoSnippet />
 
 ## Get Bitcoin Account and KeyPair
 

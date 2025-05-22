@@ -26,21 +26,21 @@ This guide will explain the basic steps of integrating the
 for authentication. In this guide, you will learn how to create a Telegram bot, generate a JWKS
 file, and establish a custom JWT verifier on Web3Auth. Finally, we will demonstrate how to implement
 the Telegram OAuth flow for user authentication and generate Ethereum/Solana keys using
-[Web3Auth Plug and Play](https://web3auth.io/docs/sdk/pnp/web/no-modal/install) and
+[Web3Auth Plug and Play](https://web3auth.io/docs/sdk/web/install) and
 [Single Factor Auth](https://web3auth.io/docs/sdk/sfa/sfa-js/install) SDKs.
 
 :::note TLDR;
 
 1. [Create a Telegram bot](https://core.telegram.org/bots/features#creating-a-new-bot) and
    [generate an API Token](https://core.telegram.org/bots/features#generating-an-authentication-token).
-2. [Create a JWKS file for your public key used for JWT signing](/docs/auth-provider-setup/byo-jwt-provider/#how-to-convert-pem-to-jwks)
+2. [Create a JWKS file for your public key used for JWT signing](/docs/authentication/custom-connections/custom-jwt/#how-to-convert-pem-to-jwks)
    and host it on a public endpoint.
-3. [Set up a Telegram custom JWT verifier](/docs/auth-provider-setup/social-providers/telegram) for
-   Telegram on the Web3Auth Dashboard.
+3. [Set up a Telegram custom JWT verifier](/docs/authentication/social-logins/oauth) for Telegram on
+   the Web3Auth Dashboard.
 4. Implement the Telegram OAuth flow for user authentication.
 5. Use user data from Telegram to generate the JWT token.
 6. Pass the JWT token to Web3Auth for generating Ethereum/Solana keys using the Web3Auth Plug and
-   Play and Single Factor Auth SDKs.
+   Play and Single Factor Auth Mobile SDKs.
 
 :::
 
@@ -70,7 +70,7 @@ Ethereum or Solana keys.
 
 1. [Telegram bot](https://core.telegram.org/bots/features#creating-a-new-bot) with
    [an API Token](https://core.telegram.org/bots/features#generating-an-authentication-token).
-2. [Custom JWT verifier for Telegram](https://web3auth.io/docs/auth-provider-setup/social-providers/telegram)
+2. [Custom JWT verifier for Telegram](https://web3auth.io/docs/authentication/social-logins/oauth)
 
 ## Express server for Telegram OAuth
 
@@ -260,8 +260,8 @@ the login process with Web3Auth.
 
 #### Set up the Web3Auth PnP SDK
 
-[Install the PnP packages](https://web3auth.io/docs/sdk/pnp/web/no-modal/install) and then import it
-and configure the Web3Auth PnP No Modal SDK with the Telegram verifier.
+[Install the PnP packages](https://web3auth.io/docs/sdk/web/install) and then import it and
+configure the Web3Auth PnP No Modal SDK with the Telegram verifier.
 
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";

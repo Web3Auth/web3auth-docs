@@ -1,144 +1,37 @@
 export const quickStartHostedLinks = {
   // PNP Modal SDK
-  PNP_MODAL_ANGULAR: "https://w3a.link/pnp-angular-modal-quick-start",
-  PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
-  PNP_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-modal-quick-start",
-  PNP_MODAL_REACT: "https://w3a.link/pnp-react-modal-quick-start",
-  PNP_MODAL_REACT_HOOKS: "https://w3a.link/pnp-react-hooks-modal-quick-start",
-  PNP_MODAL_VUE: "https://w3a.link/pnp-vue-modal-quick-start",
-  PNP_MODAL_VUE_COMPOSABLES: "https://w3a.link/pnp-vue-composables-modal-quick-start",
-  // PNP No Modal SDK
-  PNP_NO_MODAL_ANGULAR: "https://w3a.link/pnp-angular-no-modal-quick-start",
-  PNP_NO_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-no-modal-quick-start",
-  PNP_NO_MODAL_REACT: "https://w3a.link/pnp-react-no-modal-quick-start",
-  PNP_NO_MODAL_REACT_HOOKS: "https://w3a.link/pnp-react-hooks-no-modal-quick-start",
-  PNP_NO_MODAL_VUE: "https://w3a.link/pnp-vue-no-modal-quick-start",
-  PNP_NO_MODAL_VUE_COMPOSABLES: "https://w3a.link/pnp-vue-composables-no-modal-quick-start",
-  PNP_NO_MODAL_HTML: "https://w3a.link/pnp-vanillajs-no-modal-quick-start",
-  // PNP Android SDK
-  PNP_ANDROID_ANDROID: "https://w3a.link/pnp-android-quick-start",
-  // PNP iOS SDK
-  PNP_IOS_IOS: "https://w3a.link/pnp-ios-quick-start", // https://w3a.link/pnp-ios-quick-start",
-  // PNP React Native SDK
-  PNP_REACT_NATIVE_ANDROID: "https://w3a.link/pnp-react-native-android-quick-start",
-  PNP_REACT_NATIVE_IOS: "https://w3a.link/pnp-react-native-ios-quick-start",
-  // PNP Flutter SDK
-  PNP_FLUTTER_ANDROID: "https://w3a.link/pnp-flutter-android-quick-start",
-  PNP_FLUTTER_IOS: "https://w3a.link/pnp-flutter-ios-quick-start",
-  // PNP Unity SDK
-  PNP_UNITY_ANDROID: "https://w3a.link/pnp-unity-android-quick-start",
-  PNP_UNITY_IOS: "", // "https://w3a.link/pnp-unity-ios-quick-start"
-  PNP_UNITY_WEBGL: "https://w3a.link/pnp-unity-webgl-quick-start",
-  // SFA JS SDK
-  SFA_WEB_ANGULAR: "https://w3a.link/sfa-angular-quick-start",
-  SFA_WEB_NEXTJS: "https://w3a.link/sfa-nextjs-quick-start",
-  SFA_WEB_REACT: "https://w3a.link/sfa-react-quick-start",
-  SFA_WEB_VUE: "https://w3a.link/sfa-vue-quick-start",
-  SFA_WEB_HTML: "https://w3a.link/sfa-vanillajs-quick-start",
-  // SFA React Native SDK
-  SFA_REACT_NATIVE_ANDROID: "https://w3a.link/sfa-react-native-android-quick-start",
-  SFA_REACT_NATIVE_IOS: "https://w3a.link/sfa-react-native-ios-quick-start",
-  // SFA Android SDK
-  SFA_ANDROID_ANDROID: "https://w3a.link/sfa-android-quick-start",
-  // SFA iOS SDK
-  SFA_IOS_IOS: "", // "https://w3a.link/sfa-ios-quick-start",
-  // SFA Flutter SDK
-  SFA_FLUTTER_ANDROID: "https://w3a.link/sfa-flutter-android-quick-start",
-  SFA_FLUTTER_IOS: "", //"https://w3a.link/sfa-flutter-ios-quick-start",
-  // SFA Node SDK
-  SFA_NODE_NODE: "",
-  // MPC Core Kit SDK
-  MPC_CORE_KIT_WEB_ANGULAR: "https://w3a.link/mpc-core-kit-angular-quick-start",
-  MPC_CORE_KIT_WEB_NEXTJS: "https://w3a.link/mpc-core-kit-nextjs-quick-start",
-  MPC_CORE_KIT_WEB_REACT: "https://w3a.link/mpc-core-kit-react-quick-start",
-  MPC_CORE_KIT_WEB_VUE: "https://w3a.link/mpc-core-kit-vue-quick-start",
-  MPC_CORE_KIT_REACT_NATIVE_IOS: "",
-  MPC_CORE_KIT_REACT_NATIVE_ANDROID: "https://w3a.link/mpc-core-kit-rn-quick-start",
-  MPC_CORE_KIT_NODE_NODE: "",
+  ANGULAR: "https://w3a.link/pnp-angular-modal-quick-start",
+  HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
+  NEXTJS: "https://w3a.link/pnp-nextjs-modal-quick-start",
+  REACT: "https://w3a.link/pnp-react-modal-quick-start",
+  VUE: "https://w3a.link/pnp-vue-modal-quick-start",
+  ANDROID: "https://w3a.link/pnp-android-quick-start",
+  IOS: "https://w3a.link/pnp-ios-quick-start", // https://w3a.link/pnp-ios-quick-start",
+  REACT_NATIVE: "https://w3a.link/pnp-react-native-android-quick-start",
+  FLUTTER: "https://w3a.link/pnp-flutter-android-quick-start",
+  UNITY: "https://w3a.link/pnp-unity-android-quick-start",
 };
 
 export const quickStartSourceCode = {
-  // PNP Modal SDK
-  PNP_MODAL_REACT:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start",
-  PNP_MODAL_ANGULAR:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/angular-modal-quick-start",
-  PNP_MODAL_VUE:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start",
-  PNP_MODAL_NEXTJS:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nextjs-modal-quick-start",
-  PNP_MODAL_NUXTJS:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nuxt-modal-quick-start",
-  PNP_MODAL_HTML:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vanillajs-modal-quick-start",
-  // PNP No Modal SDK
-
-  PNP_NO_MODAL_REACT:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/react-no-modal-quick-start",
-  PNP_NO_MODAL_ANGULAR:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/angular-no-modal-quick-start",
-  PNP_NO_MODAL_VUE:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start",
-  PNP_NO_MODAL_NEXTJS:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/nextjs-no-modal-quick-start",
-  PNP_NO_MODAL_NUXTJS:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/nuxt-no-modal-quick-start",
-  PNP_NO_MODAL_HTML:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vanillajs-no-modal-quick-start",
-  // PNP Android SDK
-  PNP_ANDROID:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-quick-start",
-  // PNP iOS SDK
-  PNP_IOS: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-quick-start",
-  // PNP React Native SDK
-  PNP_REACT_NATIVE:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-quick-start",
-  // PNP Flutter SDK
-  PNP_FLUTTER:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-quick-start",
-  // PNP Unity SDK
-  PNP_UNITY: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity/unity-quick-start",
-  // PNP Unity SDK
-  PNP_UNREAL: "https://github.com/Web3Auth/web3auth-unreal-example/tree/master",
-  // SFA JS SDK
-  SFA_WEB_REACT:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-react-quick-start",
-  SFA_WEB_ANGULAR:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-angular-quick-start",
-  SFA_WEB_VUE:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-vue-quick-start",
-  SFA_WEB_NEXTJS:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-nextjs-quick-start",
-  SFA_WEB_HTML:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-vanillajs-quick-start",
-  // SFA React Native SDK
-  SFA_REACT_NATIVE:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-react-native/sfa-rn-bare-quick-start",
-  // SFA Android SDK
-  SFA_ANDROID:
-    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-quick-start",
-  // SFA iOS SDK
-  SFA_IOS:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-ios/sfa-ios-quick-start",
-  // SFA Flutter SDK
-  SFA_FLUTTER:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-flutter/sfa_flutter_quick_start",
-  // SFA Node SDK
-  SFA_NODE:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/sfa-node-quick-start",
-  // MPC Core Kit SDK
-  MPC_CORE_KIT_WEB_REACT:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-react-quick-start",
-  MPC_CORE_KIT_WEB_ANGULAR:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-angular-quick-start",
-  MPC_CORE_KIT_WEB_VUE:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-vue-quick-start",
-  MPC_CORE_KIT_WEB_NEXTJS:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-nextjs-quick-start",
-  MPC_CORE_KIT_REACT_NATIVE:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-quick-start",
-  MPC_CORE_KIT_NODE:
-    "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-node/mpc-core-kit-node-quick-start",
+  REACT:
+    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/react-quick-start",
+  REACT_SOLANA:
+    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/react-solana-quick-start",
+  ANGULAR:
+    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/angular-quick-start",
+  VUE: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/vue-quick-start",
+  VUE_SOLANA:
+    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/vue-solana-quick-start",
+  NEXTJS:
+    "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/nextjs-quick-start",
+  HTML: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/v10-testing/quick-starts/vanillajs-quick-start",
+  ANDROID: "https://github.com/Web3Auth/web3auth-android-examples/tree/main/android-quick-start",
+  IOS: "https://github.com/Web3Auth/web3auth-ios-examples/tree/main/ios-quick-start",
+  REACT_NATIVE:
+    "https://github.com/Web3Auth/web3auth-react-native-examples/tree/main/rn-bare-quick-start",
+  FLUTTER: "https://github.com/Web3Auth/web3auth-flutter-examples/tree/main/flutter-quick-start",
+  UNITY: "https://github.com/Web3Auth/web3auth-unity-examples/tree/main/unity-quick-start",
+  UNREAL: "https://github.com/Web3Auth/web3auth-unreal-example/tree/master",
 };
 
 export interface GuidesInterface {
@@ -175,13 +68,12 @@ export const tags = {
   pnp: "plug and play",
   mpcCoreKit: "mpc core kit",
   sfa: "single factor auth",
-  modal: "@web3auth/modal",
-  noModal: "@web3auth/no-modal",
   sfaJS: "@web3auth/single-factor-auth",
   mpcCoreKitJS: "@web3auth/mpc-core-kit",
   web: "web",
   android: "android",
   ios: "ios",
+  wagmi: "wagmi",
   reactNative: "react native",
   flutter: "flutter",
   node: "node",
@@ -294,10 +186,6 @@ export const pnpPlatformMap = [
 
 export const sfaPlatformMap = [
   {
-    label: "Web",
-    value: tags.web,
-  },
-  {
     label: "Android",
     value: tags.android,
   },
@@ -312,10 +200,6 @@ export const sfaPlatformMap = [
   {
     label: "Flutter",
     value: tags.flutter,
-  },
-  {
-    label: "Node.js",
-    value: tags.node,
   },
 ];
 
@@ -458,83 +342,82 @@ export const typeMap = [
   },
 ];
 
-export const pnpModalExamples: ExamplesInterface[] = [
+export const webExamples: ExamplesInterface[] = [
   {
-    title: "PnP Modal SDK React Quick Start",
-    description: "A quick integration of Plug and Play Modal SDK in React",
+    title: "React Quick Start",
+    description: "A quick integration of Web3Auth SDK in React",
     image: "banners/react.png",
     type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "react"],
-    link: quickStartHostedLinks.PNP_MODAL_REACT,
-    githubLink: quickStartSourceCode.PNP_MODAL_REACT,
-    id: "react-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0",
+    tags: [tags.pnp, tags.web, tags.evm, tags.wagmi, "react"],
+    link: quickStartHostedLinks.REACT,
+    githubLink: quickStartSourceCode.REACT,
+    id: "react-quick-start",
+    qsLink: "/quick-start?framework=REACT&stepIndex=0",
   },
   {
-    title: "PnP Modal SDK Angular Quick Start",
-    description: "A quick integration of Plug and Play Modal SDK in angular",
+    title: "React Solana Quick Start",
+    description: "A quick integration of Web3Auth SDK in React",
+    image: "banners/react.png",
+    type: QUICK_START,
+    tags: [tags.pnp, tags.web, tags.evm, tags.wagmi, "react"],
+    link: quickStartHostedLinks.REACT,
+    githubLink: quickStartSourceCode.REACT,
+    id: "react-quick-start",
+    qsLink: "/quick-start?framework=REACT&stepIndex=0",
+  },
+  {
+    title: "Angular Quick Start",
+    description: "A quick integration of Web3Auth SDK in angular",
     image: "banners/angular.png",
     type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "angular"],
-    link: quickStartHostedLinks.PNP_MODAL_ANGULAR,
-    githubLink: quickStartSourceCode.PNP_MODAL_ANGULAR,
-    id: "angular-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=ANGULAR&stepIndex=0",
+    tags: [tags.pnp, tags.web, tags.evm, "angular"],
+    link: quickStartHostedLinks.ANGULAR,
+    githubLink: quickStartSourceCode.ANGULAR,
+    id: "angular-quick-start",
+    qsLink: "/quick-start?framework=ANGULAR&stepIndex=0",
   },
   {
-    title: "PnP Modal SDK Vue Quick Start",
-    description: "A quick integration of Plug and Play Modal SDK in Vue",
+    title: "Vue Quick Start",
+    description: "A quick integration of Web3Auth SDK in Vue",
     image: "banners/vue.png",
     type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "vue"],
-    link: quickStartHostedLinks.PNP_MODAL_VUE,
-    githubLink: quickStartSourceCode.PNP_MODAL_VUE,
-    id: "vue-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=VUE&stepIndex=0",
+    tags: [tags.pnp, tags.web, tags.evm, tags.wagmi, "vue"],
+    link: quickStartHostedLinks.VUE,
+    githubLink: quickStartSourceCode.VUE,
+    id: "vue-quick-start",
+    qsLink: "/quick-start?framework=VUE&stepIndex=0",
   },
   {
-    title: "PnP Modal SDK NextJS Quick Start",
-    description: "A quick integration of Plug and Play Modal SDK in NextJS",
+    title: "NextJS Quick Start",
+    description: "A quick integration of Web3Auth SDK in NextJS",
     image: "banners/next.js.png",
     type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "nextjs"],
-    link: quickStartHostedLinks.PNP_MODAL_NEXTJS,
-    githubLink: quickStartSourceCode.PNP_MODAL_NEXTJS,
-    id: "nextjs-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=NEXTJS&stepIndex=0",
+    tags: [tags.pnp, tags.web, tags.evm, "nextjs"],
+    link: quickStartHostedLinks.NEXTJS,
+    githubLink: quickStartSourceCode.NEXTJS,
+    id: "nextjs-quick-start",
+    qsLink: "/quick-start?framework=NEXTJS&stepIndex=0",
   },
   {
-    title: "PnP Modal SDK Nuxt Quick Start",
-    description: "A quick integration of Plug and Play Modal SDK in Nuxt",
-    image: "banners/nuxt.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "nuxt"],
-    link: "https://nuxt-modal-quick-start.vercel.app/",
-    githubLink: quickStartSourceCode.PNP_MODAL_NUXTJS,
-    id: "nuxt-modal-quick-start",
-  },
-  {
-    title: "PnP Modal SDK Vanilla JS Quick Start",
-    description: "A quick integration of Plug and Play Modal SDK in Vanilla JS",
+    title: "Vanilla JS Quick Start",
+    description: "A quick integration of Web3Auth SDK in Vanilla JS",
     image: "banners/htmljs.png",
     type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.modal, tags.evm, "javascript"],
-    link: quickStartHostedLinks.PNP_MODAL_HTML,
-    githubLink: quickStartSourceCode.PNP_MODAL_HTML,
-    id: "vanillajs-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=HTML&stepIndex=0&stepIndex=0",
+    tags: [tags.pnp, tags.web, tags.evm],
+    link: quickStartHostedLinks.HTML,
+    githubLink: quickStartSourceCode.HTML,
+    id: "vanillajs-quick-start",
+    qsLink: "/quick-start?framework=HTML&stepIndex=0",
   },
   {
-    title: "Custom Authentication in PnP Modal SDK",
-    description:
-      "Implementing custom authentication in Plug and Play Modal SDK with Google, Facebook, Discord, Auth0 Twitter and Aggregate Verifier support",
-    image: "banners/auth0.png",
+    title: "Custom Authentication in Web3Auth Modal",
+    description: "Implementing custom authentication in Web3Auth Modal Logins",
+    image: "banners/react.png",
     type: SAMPLE_APP,
     tags: [
       tags.pnp,
       tags.web,
-      tags.modal,
-      "javascript",
+
       tags.evm,
       "custom authentication",
       "google",
@@ -551,591 +434,15 @@ export const pnpModalExamples: ExamplesInterface[] = [
     guideLink: "/sdk/pnp/web/modal/custom-authentication",
   },
   {
-    title: "Integrate PnP Modal SDK with EVM based chains",
-    description:
-      "Use any EVM Blockchain like Ethereum, Polygon, Arbitrum, Base etc. with Plug and Play Modal SDK",
-    image: "banners/ethereum.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm],
-    link: "https://evm-modal-example.vercel.app/",
-    id: "evm-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/evm-modal-example",
-    guideLink: "/connect-blockchain/evm/",
-  },
-  {
-    title: "Integrate PnP Modal SDK with Solana Blockchain",
-    description: "Use Solana with Plug and Play Modal SDK",
-    image: "banners/solana.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.solana, "ed25519"],
-    link: "https://solana-modal-example.vercel.app/",
-    id: "solana-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/solana-modal-example",
-    guideLink: "/connect-blockchain/solana/",
-  },
-  {
-    title: "Integrate PnP Modal SDK with XRP Ledger",
-    description: "Use XRP Ledger with Plug and Play Modal SDK",
-    image: "banners/xrpl.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.xrpl],
-    link: "https://xrpl-modal-example.vercel.app/",
-    id: "xrpl-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/xrpl-modal-example",
-    guideLink: "/connect-blockchain/xrpl/",
-  },
-  {
     title: "PnP Web SDK React Playground",
     description: "A playground to test all the features of Plug and Play SDKs in React",
     image: "banners/react.png",
     type: PLAYGROUND,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "react", "hooks"],
+    tags: [tags.pnp, tags.web, tags.evm, tags.wagmi, "react", "hooks"],
     link: "https://pnp-modal-playground.vercel.app/",
     id: "react-modal-playground",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground",
-  },
-  {
-    title: "Using PnP Modal SDK with WAGMI",
-    description: "Using Plug and Play Modal SDK with WAGMI Hooks",
-    image: "banners/wagmi.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "wagmi"],
-    link: "https://wagmi-modal-example.vercel.app/",
-    id: "wagmi-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/wagmi-modal-example",
-  },
-];
-export const pnpNoModalExamples: ExamplesInterface[] = [
-  {
-    title: "PnP No Modal SDK React Quick Start",
-    description: "A quick integration of Plug and Play No Modal SDK in React",
-    image: "banners/react.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "react"],
-    link: quickStartHostedLinks.PNP_NO_MODAL_REACT,
-    githubLink: quickStartSourceCode.PNP_NO_MODAL_REACT,
-    id: "react-no-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=REACT&stepIndex=0",
-  },
-  {
-    title: "PnP No Modal SDK Angular Quick Start",
-    description: "A quick integration of Plug and Play No Modal SDK in angular",
-    image: "banners/angular.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "angular"],
-    link: quickStartHostedLinks.PNP_NO_MODAL_ANGULAR,
-    githubLink: quickStartSourceCode.PNP_NO_MODAL_ANGULAR,
-    id: "angular-no-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=ANGULAR&stepIndex=0",
-  },
-  {
-    title: "PnP No Modal SDK Vue Quick Start",
-    description: "A quick integration of Plug and Play No Modal SDK in Vue",
-    image: "banners/vue.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "vue"],
-    link: quickStartHostedLinks.PNP_NO_MODAL_VUE,
-    githubLink: quickStartSourceCode.PNP_NO_MODAL_VUE,
-    id: "vue-no-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=VUE&stepIndex=0",
-  },
-  {
-    title: "PnP No Modal SDK NextJS Quick Start",
-    description: "A quick integration of Plug and Play No Modal SDK in NextJS",
-    image: "banners/next.js.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "nextjs"],
-    link: quickStartHostedLinks.PNP_NO_MODAL_NEXTJS,
-    githubLink: quickStartSourceCode.PNP_NO_MODAL_NEXTJS,
-    id: "nextjs-no-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=NEXTJS&stepIndex=0",
-  },
-  {
-    title: "PnP No Modal SDK Nuxt Quick Start",
-    description: "A quick integration of Plug and Play No Modal SDK in Nuxt",
-    image: "banners/nuxt.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "nuxt"],
-    link: "https://nuxt-no-modal-quick-start.vercel.app/",
-    githubLink: quickStartSourceCode.PNP_NO_MODAL_NUXTJS,
-    id: "nuxt-no-modal-quick-start",
-  },
-  {
-    title: "PnP No Modal SDK Vanilla JS Quick Start",
-    description: "A quick integration of Plug and Play No Modal SDK in Vanilla JS",
-    image: "banners/htmljs.png",
-    type: QUICK_START,
-    tags: [tags.pnp, tags.web, tags.noModal, tags.evm, "javascript"],
-    link: quickStartHostedLinks.PNP_NO_MODAL_HTML,
-    githubLink: quickStartSourceCode.PNP_NO_MODAL_HTML,
-    id: "vanillajs-no-modal-quick-start",
-    qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=HTML&stepIndex=0&stepIndex=0",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with EVM based chains",
-    description:
-      "Use any EVM Blockchain like Ethereum, Polygon, Arbitrum, Base etc. with Plug and Play No Modal SDK",
-    image: "banners/ethereum.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm],
-    link: "https://evm-no-modal-example.vercel.app/",
-    id: "evm-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/evm-no-modal-example",
-    guideLink: "/connect-blockchain/evm/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Solana Blockchain",
-    description: "Use Solana with Plug and Play No Modal SDK",
-    image: "banners/solana.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.solana, "ed25519"],
-    link: "https://solana-no-modal-example.vercel.app/",
-    id: "solana-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/solana-no-modal-example",
-    guideLink: "/connect-blockchain/solana/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with XRP Ledger",
-    description: "Use XRP Ledger with Plug and Play No Modal SDK",
-    image: "banners/xrpl.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.xrpl],
-    link: "https://xrpl-no-modal-example.vercel.app/",
-    id: "xrpl-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/xrpl-no-modal-example",
-    guideLink: "/connect-blockchain/xrpl/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Algorand",
-    description: "Use Algorand with Plug and Play No Modal SDK",
-    image: "banners/algorand.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.algorand],
-    link: "https://algorand-no-modal-example.vercel.app/",
-    id: "algorand-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/algorand-no-modal-example",
-    guideLink: "/connect-blockchain/other/algorand/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Aptos",
-    description: "Use Aptos with Plug and Play No Modal SDK",
-    image: "banners/aptos.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.aptos, "ed25519"],
-    link: "https://aptos-no-modal-example.vercel.app/",
-    id: "aptos-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/aptos-no-modal-example",
-    guideLink: "/connect-blockchain/other/aptos/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Cosmos",
-    description: "Use Cosmos with Plug and Play No Modal SDK",
-    image: "banners/cosmos.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.cosmos],
-    link: "https://cosmos-no-modal-example.vercel.app/",
-    id: "cosmos-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/cosmos-no-modal-example",
-    guideLink: "/connect-blockchain/other/cosmos/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with ImmutableX",
-    description: "Use ImmutableX with Plug and Play No Modal SDK",
-    image: "banners/immutablex.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.immutablex],
-    link: "https://immutablex-no-modal-example.vercel.app/",
-    id: "immutablex-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/immutablex-no-modal-example",
-    guideLink: "/connect-blockchain/other/immutablex/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Multiple Chains",
-    description: "Use Multiple Chains at once with Plug and Play No Modal SDK",
-    image: "banners/multichain.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.web,
-      tags.noModal,
-      "javascript",
-      tags.multiChain,
-      tags.evm,
-      tags.solana,
-      tags.tezos,
-      tags.starknet,
-      tags.polkadot,
-    ],
-    link: "https://multi-chain-no-modal-example.vercel.app/",
-    id: "multi-chain-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/multi-chain-no-modal-example",
-    guideLink: "/guides/pnp-no-modal-multichain",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Polkadot",
-    description: "Use Polkadot with Plug and Play No Modal SDK",
-    image: "banners/polkadot.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.polkadot],
-    link: "https://polkadot-no-modal-example.vercel.app/",
-    id: "polkadot-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/polkadot-no-modal-example",
-    guideLink: "/connect-blockchain/other/polkadot/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Polymesh",
-    description: "Use Polymesh with Plug and Play No Modal SDK",
-    image: "banners/polymesh.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.polymesh],
-    link: "https://polymesh-no-modal-example.vercel.app/",
-    id: "polymesh-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/polymesh-no-modal-example",
-    guideLink: "/connect-blockchain/other/polymesh/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with StarkEx",
-    description: "Use StarkEx with Plug and Play No Modal SDK",
-    image: "banners/starkex.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.starkex],
-    link: "https://starkex-no-modal-example.vercel.app/",
-    id: "starkex-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/starkex-no-modal-example",
-    guideLink: "/connect-blockchain/other/starkex/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with StarkNet",
-    description: "Use StarkNet with Plug and Play No Modal SDK",
-    image: "banners/starknet.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.starknet],
-    link: "https://starknet-no-modal-example.vercel.app/",
-    id: "starknet-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/starknet-no-modal-example",
-    guideLink: "/connect-blockchain/other/starknet/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Sui",
-    description: "Use Sui with Plug and Play No Modal SDK",
-    image: "banners/sui.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.sui],
-    link: "https://sui-no-modal-example.vercel.app/",
-    id: "sui-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/sui-no-modal-example",
-    guideLink: "/connect-blockchain/other/sui/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Tezos",
-    description: "Use Tezos with Plug and Play No Modal SDK",
-    image: "banners/tezos.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.tezos],
-    link: "https://tezos-no-modal-example.vercel.app/",
-    id: "tezos-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/tezos-no-modal-example",
-    guideLink: "/connect-blockchain/other/tezos/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with TON",
-    description: "Use TON with Plug and Play No Modal SDK",
-    image: "banners/ton.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.ton],
-    link: "https://ton-no-modal-example.vercel.app/",
-    id: "ton-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/ton-no-modal-example",
-    guideLink: "/connect-blockchain/other/ton/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with TRON",
-    description: "Use TRON with Plug and Play No Modal SDK",
-    image: "banners/tron.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.tron],
-    link: "https://tron-no-modal-example.vercel.app/",
-    id: "tron-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/tron-no-modal-example",
-    guideLink: "/connect-blockchain/evm/tron/",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with XMTP",
-    description: "Use XMTP with Plug and Play No Modal SDK",
-    image: "banners/xmtp.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", "xmtp", tags.evm],
-    link: "https://xmtp-no-modal-example.vercel.app/",
-    id: "xmtp-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/xmtp-no-modal-example",
-  },
-  {
-    title: "Integrate PnP No Modal SDK with Sign Protocol",
-    description: "Use Sign Protocol with Plug and Play No Modal SDK",
-    image: "banners/sign-protocol.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", "sign-protocol", tags.evm],
-    link: "https://sign-protocol-no-modal-example.vercel.app/",
-    id: "sign-protocol-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/sign-protocol-no-modal-example",
-  },
-  {
-    title: "Integrate PnP No Modal SDK in a Chrome Extension",
-    description: "Use Plug and Play No Modal SDK withih a Chrome Extension",
-    image: "banners/chrome-extension.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", tags.evm, "chrome extension"],
-    link: "/guides/browser-extension",
-    id: "chrome-extension-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example",
-    guideLink: "/guides/browser-extension",
-  },
-  {
-    title: "Use Aggregate Verifiers in PnP No Modal SDK [Firebase ID Token Example]",
-    description:
-      "Aggregate Google and ID token based Firebase GitHub login in Plug and Play No Modal SDK",
-    image: "banners/firebase.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.noModal,
-      "javascript",
-      "aggregate verifier",
-      "google",
-      "github",
-      "firebase",
-      "id token login",
-      tags.evm,
-    ],
-    link: "https://firebase-google-aggregate-no-modal-example.vercel.app/",
-    id: "firebase-google-aggregate-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/firebase-google-aggregate-no-modal-example",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
-  },
-  {
-    title: "Use Aggregate Verifiers in PnP No Modal SDK [Auth0 Implicit Mode Example]",
-    description:
-      "Aggregate Google, Auth0 GitHub, Facebook and Auth0 Email Passwordless in Plug and Play No Modal SDK, all in implicit mode",
-    image: "banners/auth0.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.noModal,
-      "javascript",
-      "aggregate verifier",
-      "google",
-      "github",
-      "facebook",
-      "auth0",
-      "email passwordless",
-      "implicit mode",
-      tags.evm,
-    ],
-    link: "https://auth0-google-aggregate-no-modal-example.vercel.app/",
-    id: "auth0-google-aggregate-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/auth0-google-aggregate-no-modal-example",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
-  },
-  {
-    title: "Integrate Auth0 SPA in PnP No Modal SDK",
-    description: "Use Auth0 Single Page App (Implicit Mode) with Plug and Play No Modal SDK",
-    image: "banners/auth0.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.noModal,
-      "javascript",
-      "auth0",
-      "email passwordless",
-      tags.evm,
-      "implicit mode",
-    ],
-    link: "https://auth0-no-modal-example.vercel.app/",
-    id: "auth0-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/auth0-no-modal-example",
-    guideLink: "/guides/auth0",
-  },
-  {
-    title: "Integrate AWS Cognito in PnP No Modal SDK",
-    description: "Use AWS Cognito (Implicit Mode) with Plug and Play No Modal SDK",
-    image: "banners/cognito.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.noModal,
-      "javascript",
-      "cognito",
-      "email passwordless",
-      tags.evm,
-      "implicit mode",
-    ],
-    link: "https://cognito-no-modal-example.vercel.app/",
-    id: "cognito-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example",
-    guideLink: "/guides/cognito",
-  },
-  {
-    title: "Integrate Custom JWT based Login in PnP No Modal SDK",
-    description: "Use your own Custom JWT Express Server Login with Plug and Play No Modal SDK",
-    image: "banners/jwt.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.noModal,
-      "javascript",
-      "jwt",
-      "id token login",
-      "react",
-      tags.evm,
-      "express",
-    ],
-    link: "https://custom-jwt-no-modal-example.vercel.app/",
-    id: "custom-jwt-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/custom-jwt-no-modal-example",
-    guideLink: "/auth-provider-setup/byo-jwt-provider",
-  },
-  {
-    title: "Integrate Discord Login in PnP No Modal SDK",
-    description: "Use Discord Custom Authentication with Plug and Play No Modal SDK",
-    image: "banners/discord.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "discord", tags.evm, "implicit mode"],
-    link: "https://discord-no-modal-example.vercel.app/",
-    id: "discord-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/discord-no-modal-example",
-    guideLink: "/guides/discord",
-  },
-  {
-    title: "Integrate Facebook Login in PnP No Modal SDK",
-    description: "Use Facebook Custom Authentication with Plug and Play No Modal SDK",
-    image: "banners/facebook.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "facebook", tags.evm, "implicit mode"],
-    link: "https://facebook-no-modal-example.vercel.app/",
-    id: "facebook-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/facebook-no-modal-example",
-    guideLink: "/guides/facebook",
-  },
-  {
-    title: "Integrate Google Login in PnP No Modal SDK",
-    description: "Use Google Custom Authentication with Plug and Play No Modal SDK",
-    image: "banners/google.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "google", tags.evm, "implicit mode"],
-    link: "https://google-no-modal-example.vercel.app/",
-    id: "google-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/google-no-modal-example",
-    guideLink: "/guides/google",
-  },
-  {
-    title: "Integrate Telegram Login in PnP No Modal SDK",
-    description: "Use Telegram Custom Authentication with Plug and Play No Modal SDK",
-    image: "banners/telegram.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "telegram", tags.evm, "implicit mode"],
-    link: "https://telegram-no-modal-example.vercel.app/",
-    id: "telegram-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/telegram-no-modal-example",
-    guideLink: "/guides/telegram",
-  },
-  {
-    title: "Integrate Twitch Login in PnP No Modal SDK",
-    description: "Use Twitch Custom Authentication with Plug and Play No Modal SDK",
-    image: "banners/twitch.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "twitch", tags.evm, "implicit mode"],
-    link: "https://twitch-no-modal-example.vercel.app/",
-    id: "twitch-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/twitch-no-modal-example",
-    guideLink: "/guides/twitch",
-  },
-  {
-    title: "Integrate WorldCoin ID in PnP No Modal SDK",
-    description: "Use WorldCoin ID with Plug and Play No Modal SDK",
-    image: "banners/worldcoin.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "worldcoin", tags.evm, "implicit mode"],
-    link: "https://worldcoin-no-modal-example.vercel.app/",
-    id: "worldcoin-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/worldcoin-no-modal-example",
-  },
-  {
-    title: "Integrate Firebase based Login in PnP No Modal SDK",
-    description: "Use your own Firebase ID Token based Login with Plug and Play No Modal SDK",
-    image: "banners/firebase.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.noModal, "javascript", "firebase", tags.evm, "id token login"],
-    link: "https://firebase-no-modal-example.vercel.app/",
-    id: "firebase-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example",
-    guideLink: "/guides/firebase",
-  },
-  {
-    title: "Using Server Side Verification with PnP No Modal SDK",
-    description: "Use the Server Side Verification Feature in Plug and Play No Modal SDK",
-    image: "banners/ssv.png",
-    type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      tags.noModal,
-      "javascript",
-      "google",
-      tags.evm,
-      "server side verification",
-      "nextjs",
-    ],
-    link: "https://server-side-verification-no-modal-example.vercel.app/",
-    id: "server-side-verification-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/server-side-verification-no-modal-example",
-    guideLink: "/features/server-side-verification",
-  },
-  {
-    title: "Using PnP No Modal SDK with WAGMI",
-    description: "Using Plug and Play No Modal SDK with WAGMI Hooks",
-    image: "banners/wagmi.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "wagmi", "react"],
-    link: "https://wagmi-no-modal-example.vercel.app/",
-    id: "wagmi-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example",
   },
 ];
 export const pnpiOSExamples: ExamplesInterface[] = [
@@ -1317,7 +624,7 @@ export const pnpReactNativeExamples: ExamplesInterface[] = [
       "A quick integration of Web3Auth Plug and Play React Native SDK in Android and iOS",
     image: "banners/react-native.png",
     type: QUICK_START,
-    tags: [tags.pnp, "javascript", tags.android, tags.ios, tags.evm, tags.reactNative],
+    tags: [tags.pnp, tags.android, tags.ios, tags.evm, tags.reactNative],
     link: quickStartHostedLinks.PNP_REACT_NATIVE_IOS,
     githubLink: quickStartSourceCode.PNP_REACT_NATIVE,
     id: "rn-bare-quick-start",
@@ -1329,16 +636,7 @@ export const pnpReactNativeExamples: ExamplesInterface[] = [
       "Using Auth0 Single Page App (Implicit Mode) in Web3Auth Plug and Play React Native SDK in Android and iOS",
     image: "banners/react-native-auth0.png",
     type: SAMPLE_APP,
-    tags: [
-      tags.pnp,
-      "javascript",
-      tags.android,
-      tags.ios,
-      tags.reactNative,
-      tags.evm,
-      "auth0",
-      "implicit mode",
-    ],
+    tags: [tags.pnp, tags.android, tags.ios, tags.reactNative, tags.evm, "auth0", "implicit mode"],
     link: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-auth0-example",
     id: "rn-bare-auth0-example",
     githubLink:
@@ -1353,7 +651,7 @@ export const pnpReactNativeExamples: ExamplesInterface[] = [
     type: SAMPLE_APP,
     tags: [
       tags.pnp,
-      "javascript",
+
       tags.android,
       tags.ios,
       tags.evm,
@@ -1376,7 +674,7 @@ export const pnpReactNativeExamples: ExamplesInterface[] = [
     description: "Using Web3Auth Plug and Play React Native SDK in an Expo App",
     image: "banners/expo.png",
     type: SAMPLE_APP,
-    tags: [tags.pnp, "javascript", tags.android, tags.ios, tags.evm, tags.reactNative, "expo"],
+    tags: [tags.pnp, tags.android, tags.ios, tags.evm, tags.reactNative, "expo"],
     link: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-example",
     id: "rn-expo-example",
     githubLink:
@@ -1617,16 +915,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     description: "A quick integration of Single Factor Auth SDK in React",
     image: "banners/react.png",
     type: QUICK_START,
-    tags: [
-      tags.mpcCoreKit,
-      "sfa",
-      tags.web,
-      tags.sfaJS,
-      tags.evm,
-      "javascript",
-      "react",
-      "id token login",
-    ],
+    tags: [tags.mpcCoreKit, "sfa", tags.web, tags.sfaJS, tags.evm, "react", "id token login"],
     link: quickStartHostedLinks.SFA_WEB_REACT,
     githubLink: quickStartSourceCode.SFA_WEB_REACT,
     id: "sfa-react-quick-start",
@@ -1637,16 +926,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     description: "A quick integration of Single Factor Auth SDK in angular",
     image: "banners/angular.png",
     type: QUICK_START,
-    tags: [
-      tags.sfa,
-      "sfa",
-      tags.web,
-      tags.sfaJS,
-      "javascript",
-      tags.evm,
-      "angular",
-      "id token login",
-    ],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.evm, "angular", "id token login"],
     link: quickStartHostedLinks.SFA_WEB_ANGULAR,
     githubLink: quickStartSourceCode.SFA_WEB_ANGULAR,
     id: "sfa-angular-quick-start",
@@ -1657,7 +937,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     description: "A quick integration of Single Factor Auth SDK in Vue",
     image: "banners/vue.png",
     type: QUICK_START,
-    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, "javascript", tags.evm, "vue", "id token login"],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.evm, "vue", "id token login"],
     link: quickStartHostedLinks.SFA_WEB_VUE,
     githubLink: quickStartSourceCode.SFA_WEB_VUE,
     id: "sfa-vue-quick-start",
@@ -1668,16 +948,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     description: "A quick integration of Single Factor Auth SDK in NextJS",
     image: "banners/next.js.png",
     type: QUICK_START,
-    tags: [
-      tags.sfa,
-      "sfa",
-      tags.web,
-      tags.sfaJS,
-      "javascript",
-      tags.evm,
-      "nextjs",
-      "id token login",
-    ],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.evm, "nextjs", "id token login"],
     link: quickStartHostedLinks.SFA_WEB_NEXTJS,
     githubLink: quickStartSourceCode.SFA_WEB_NEXTJS,
     id: "sfa-nextjs-quick-start",
@@ -1688,7 +959,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     description: "A quick integration of Single Factor Auth SDK in Vanilla JS",
     image: "banners/htmljs.png",
     type: QUICK_START,
-    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, "javascript", tags.evm, "id token login"],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.evm, "id token login"],
     link: quickStartHostedLinks.SFA_WEB_HTML,
     githubLink: quickStartSourceCode.SFA_WEB_HTML,
     id: "sfa-vanillajs-quick-start",
@@ -1704,7 +975,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
       "sfa",
       tags.web,
       tags.sfaJS,
-      "javascript",
+
       tags.evm,
       "aggregate verifier",
       "google",
@@ -1716,23 +987,14 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     id: "sfa-web-aggregate-verifier-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/single-factor-auth-web/sfa-web-aggregate-verifier-example",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
+    guideLink: "/authentication/group-connections",
   },
   {
     title: "Integrate Single Factor Auth SDK with Bitcoin",
     description: "Use Bitcoin with Single Factor Auth SDK",
     image: "banners/bitcoin.png",
     type: SAMPLE_APP,
-    tags: [
-      tags.sfa,
-      "sfa",
-      tags.web,
-      tags.sfaJS,
-      "javascript",
-      tags.bitcoin,
-      "id token login",
-      "secp256k1",
-    ],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.bitcoin, "id token login", "secp256k1"],
     link: "https://sfa-web-bitcoin-example.vercel.app/",
     id: "sfa-web-bitcoin-example",
     githubLink:
@@ -1750,7 +1012,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
       tags.web,
       tags.sfaJS,
       tags.evm,
-      "javascript",
+
       "jwt",
       "id token login",
       "react",
@@ -1760,23 +1022,14 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     id: "sfa-web-custom-jwt-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-custom-jwt-example",
-    guideLink: "/auth-provider-setup/byo-jwt-provider",
+    guideLink: "/authentication/custom-connections/custom-jwt",
   },
   {
     title: "Integrate Google Login in Single Factor Auth SDK",
     description: "Use Google with Single Factor Auth SDK",
     image: "banners/google.png",
     type: SAMPLE_APP,
-    tags: [
-      tags.sfa,
-      "sfa",
-      tags.web,
-      tags.sfaJS,
-      tags.evm,
-      "javascript",
-      "google",
-      "id token login",
-    ],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.evm, "google", "id token login"],
     link: "https://sfa-web-google-example.vercel.app/",
     id: "sfa-web-google-example",
     githubLink:
@@ -1788,16 +1041,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     description: "Use Farcaster with Single Factor Auth SDK",
     image: "banners/farcaster.png",
     type: SAMPLE_APP,
-    tags: [
-      tags.sfa,
-      "sfa",
-      tags.web,
-      tags.sfaJS,
-      tags.evm,
-      "javascript",
-      "farcaster",
-      "id token login",
-    ],
+    tags: [tags.sfa, "sfa", tags.web, tags.sfaJS, tags.evm, "farcaster", "id token login"],
     link: "https://sfa-web-farcaster.vercel.app/",
     id: "sfa-web-farcaster",
     githubLink:
@@ -1814,7 +1058,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
       "sfa",
       tags.web,
       tags.sfaJS,
-      "javascript",
+
       tags.evm,
       "email passwordless",
       "firebase",
@@ -1824,7 +1068,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     id: "sfa-web-passwordless-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-passwordless-example",
-    guideLink: "/auth-provider-setup/authentication-service-providers/firebase-service-provider",
+    guideLink: "/authentication/custom-connections/firebase",
   },
 ];
 export const coreKitSfaiOSExamples: ExamplesInterface[] = [
@@ -1907,7 +1151,7 @@ export const coreKitSfaReactNativeExamples: ExamplesInterface[] = [
       "A quick integration of Web3Auth Single Factor Auth React Native SDK in Android and iOS",
     image: "banners/react-native.png",
     type: QUICK_START,
-    tags: [tags.sfa, "sfa", "javascript", tags.android, tags.ios, tags.evm, tags.reactNative],
+    tags: [tags.sfa, "sfa", tags.android, tags.ios, tags.evm, tags.reactNative],
     link: quickStartHostedLinks.SFA_REACT_NATIVE_IOS,
     githubLink: quickStartSourceCode.SFA_REACT_NATIVE,
     qsLink: "/quick-start?product=SFA&sdk=SFA_REACT_NATIVE&framework=IOS&stepIndex=0",
@@ -1962,7 +1206,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
       tags.web,
       tags.mpcCoreKitJS,
       tags.evm,
-      "javascript",
+
       "react",
       "id token login",
     ],
@@ -1983,7 +1227,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
       tags.web,
       tags.mpcCoreKitJS,
       tags.evm,
-      "javascript",
+
       "angular",
       "id token login",
     ],
@@ -1998,16 +1242,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     description: "A quick integration of Multi Party Computation Core Kit SDK in Vue",
     image: "banners/vue.png",
     type: QUICK_START,
-    tags: [
-      tags.mpcCoreKit,
-      "mpc",
-      tags.web,
-      tags.mpcCoreKitJS,
-      tags.evm,
-      "javascript",
-      "vue",
-      "id token login",
-    ],
+    tags: [tags.mpcCoreKit, "mpc", tags.web, tags.mpcCoreKitJS, tags.evm, "vue", "id token login"],
     link: quickStartHostedLinks.MPC_CORE_KIT_WEB_VUE,
     githubLink: quickStartSourceCode.MPC_CORE_KIT_WEB_VUE,
     id: "mpc-core-kit-vue-quick-start",
@@ -2025,7 +1260,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
       tags.web,
       tags.mpcCoreKitJS,
       tags.evm,
-      "javascript",
+
       "nextjs",
       "id token login",
     ],
@@ -2047,7 +1282,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
       tags.web,
       tags.mpcCoreKitJS,
       tags.evm,
-      "javascript",
+
       "aggregate verifier",
       "google",
       "github",
@@ -2059,7 +1294,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     id: "mpc-core-kit-aggregate-verifier-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/mpc-core-kit-web/mpc-core-kit-aggregate-verifier-example/",
-    guideLink: "/auth-provider-setup/aggregate-verifier",
+    guideLink: "/authentication/group-connections",
   },
   {
     title: "Integrate Farcaster Login in MPC Core Kit SDK",
@@ -2072,7 +1307,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
       tags.web,
       tags.mpcCoreKitJS,
       tags.evm,
-      "javascript",
+
       "farcaster",
       "id token login",
     ],
@@ -2087,15 +1322,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     description: "Use Solana with MPC Core Kit SDK",
     image: "banners/solana.png",
     type: SAMPLE_APP,
-    tags: [
-      tags.mpcCoreKit,
-      tags.web,
-      tags.mpcCoreKitJS,
-      tags.evm,
-      "javascript",
-      tags.solana,
-      "ed25519",
-    ],
+    tags: [tags.mpcCoreKit, tags.web, tags.mpcCoreKitJS, tags.evm, tags.solana, "ed25519"],
     link: "https://mpc-core-kit-solana.vercel.app/",
     id: "mpc-core-kit-solana",
     githubLink:
@@ -2111,15 +1338,7 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
       "A quick integration of Web3Auth Multi Party Computation Core Kit in React Native for Android and iOS",
     image: "banners/react-native.png",
     type: QUICK_START,
-    tags: [
-      tags.mpcCoreKit,
-      "mpc",
-      "javascript",
-      tags.android,
-      tags.evm,
-      tags.ios,
-      tags.reactNative,
-    ],
+    tags: [tags.mpcCoreKit, "mpc", tags.android, tags.evm, tags.ios, tags.reactNative],
     link: quickStartHostedLinks.MPC_CORE_KIT_REACT_NATIVE_ANDROID,
     githubLink: quickStartSourceCode.MPC_CORE_KIT_REACT_NATIVE,
   },
@@ -2133,7 +1352,7 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
     tags: [
       tags.mpcCoreKit,
       "mpc",
-      "javascript",
+
       tags.android,
       tags.ios,
       tags.reactNative,
@@ -2154,7 +1373,7 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
     tags: [
       tags.mpcCoreKit,
       "mpc",
-      "javascript",
+
       tags.android,
       tags.ios,
       tags.reactNative,
@@ -2176,7 +1395,7 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
     tags: [
       tags.mpcCoreKit,
       "mpc",
-      "javascript",
+
       tags.android,
       tags.ios,
       tags.reactNative,
@@ -2191,8 +1410,7 @@ export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
 ];
 
 export const exampleMap: ExamplesInterface[] = [
-  ...pnpModalExamples,
-  ...pnpNoModalExamples,
+  ...webExamples,
   ...pnpiOSExamples,
   ...pnpAndroidExamples,
   ...pnpReactNativeExamples,
