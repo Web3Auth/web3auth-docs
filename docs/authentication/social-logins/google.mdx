@@ -4,8 +4,13 @@ sidebar_label: Google
 description: "Google Login with Web3Auth | Documentation - Web3Auth"
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 import GoogleToggle from "@site/static/images/dashboard/authentication-social-connections.png";
 import GoogleConnection from "@site/static/images/dashboard/google-connection.png";
+
+import JwtLoginGoogle from "../../sdk/web/react/advanced/_custom-authentication-snippets/_jwt_login_google_one_tap.mdx";
+import ImplicitLoginGoogle from "../../sdk/web/react/advanced/_custom-authentication-snippets/_implicit_login_google.mdx";
 
 Google Sign-In is a widely adopted authentication method that allows users to log in using their
 existing Google accounts. Web3Auth supports Google as a social login provider, enabling seamless
@@ -78,40 +83,11 @@ any additional parameters to the `Web3AuthProvider`.
 
 > Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
 
-### Implicit Login with Google
-
-```jsx
-await connectTo(WALLET_CONNECTORS.AUTH, {
-  authConnection: AUTH_CONNECTION.GOOGLE,
-  authConnectionId: "w3a-google-demo",
-});
-```
-
-### JWT Login with Google One Tap
-
-```jsx
-const loginWithGoogle = async (response: CredentialResponse) => {
-  const idToken = response.credential;
-
-  // focus-start
-  await connectTo(WALLET_CONNECTORS.AUTH, {
-    authConnectionId: "w3a-google-demo",
-    authConnection: AUTH_CONNECTION.GOOGLE,
-    idToken,
-    extraLoginOptions: {
-      isUserIdCaseSensitive: false,
-    },
-  });
-  // focus-end
-};
-
-...
-
-<GoogleLogin
-  onSuccess={loginWithGoogle}
-  onError={() => {
-    console.log("Login Failed");
-  }}
-  useOneTap
-/>
-```
+<Tabs>
+  <TabItem value="implicit" label="Implicit Login">
+    <ImplicitLoginGoogle />
+  </TabItem>
+  <TabItem value="jwt" label="JWT Login with Google SDK">
+    <JwtLoginGoogle />
+  </TabItem>
+</Tabs>

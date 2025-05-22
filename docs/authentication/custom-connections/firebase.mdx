@@ -8,6 +8,7 @@ import Tiles from "@theme/Tiles";
 
 import CustomConnectionOptions from "@site/static/images/dashboard/authentication-custom-connections.png";
 import FirebaseConnection from "@site/static/images/dashboard/firebase-connection.png";
+import JwtLoginFirebase from "../../sdk/web/react/advanced/_custom-authentication-snippets/_jwt_login_firebase.mdx";
 
 Firebase is a popular backend platform that enables developers to seamlessly integrate
 authentication, databases, and other services into their applications. Web3Auth supports Firebase as
@@ -112,96 +113,240 @@ Follow these steps to create a Firebase connection:
 
 ## Usage
 
-### Initialize Web3Auth
-
-Wrap your app with the `Web3AuthProvider`. This provider should be as close to the root of your
-React tree as possible.
-
-```js title="Example: React + Vite (main.tsx)"
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-
-import { Web3AuthProvider, WEB3AUTH_NETWORK } from "@web3auth/modal/react";
-
-import App from "./App.tsx";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Web3AuthProvider
-      config={{
-        web3AuthOptions: {
-          clientId: "WEB3AUTH_CLIENT_ID", // Replace with your Client ID
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        },
-      }}
-    >
-      <App />
-    </Web3AuthProvider>
-  </StrictMode>
-);
-```
-
 Since, the `Firebase Connection` details are available from Dashboard, developers don't need to pass
 any additional parameters to the `Web3AuthProvider`.
 
 > Follow our [Quickstart Guide](/quick-start) to setup the basic flow.
 
-### Login with Firebase
+### Web
 
-```jsx
-import { useWeb3AuthConnect, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal/react";
-import { useAccount } from "wagmi";
+<JwtLoginFirebase />
 
-import { initializeApp } from "firebase/app";
-import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+### Android
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "get-your-firebase-api-key",
-  authDomain: "get-your-firebase-auth-domain",
-  projectId: "get-your-firebase-project-id",
-  storageBucket: "get-your-firebase-storage-bucket",
-  messagingSenderId: "get-your-firebase-messaging-sender-id",
-  appId: "get-your-firebase-app-id",
-};
+##### Create Web3Auth Instance
 
-function LoginPage() {
-  const { connectTo } = useWeb3AuthConnect();
-  const { address } = useAccount();
+In your activity, create a `Web3Auth` instance with your Web3Auth project's configurations.
 
-  const loginWithFirebase = async () => {
-    try {
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const githubProvider = new GithubAuthProvider();
+```kotlin
+web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.SAPPHIRE_MAINNET
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // your app's redirect URL
+    // focus-start
+    loginConfig = hashMapOf("jwt" to LoginConfigItem(
+        verifier = "web3auth-firebase-examples",
+        typeOfLogin = TypeOfLogin.JWT,
+        name = "Firebase Login",
+        clientId = getString(R.string.web3auth_project_id)
+        )
+    )
+    // focus-end
+  )
+)
 
-      // Using Github provider for demo purposes
-      const result = await signInWithPopup(auth, githubProvider);
+// Handle user signing in when app is not alive
+web3Auth.setResultUrl(intent?.data)
+```
 
-      const idToken = await result.user.getIdToken(true);
+##### Logging in
 
-      // focus-start
-      await connectTo(WALLET_CONNECTORS.AUTH, {
-        authConnectionId: "firebase-auth-connection-id",
-        authConnection: AUTH_CONNECTION.CUSTOM,
-        idToken,
-        extraLoginOptions: {
-          isUserIdCaseSensitive: false,
-        },
-      });
-      // focus-end
-    } catch (error) {
-      console.error("Firebase authentication error:", error);
+Once initialized, you can use the `web3Auth.login(LoginParams("{selectedLoginProvider}"))` function
+to authenticate the user when they click the login button.
+
+```kotlin
+private fun signIn() {
+  // focus-start
+  auth = Firebase.auth
+  auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
+  // focus-end
+    .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d(TAG, "signInWithEmail:success")
+            val user = auth.currentUser
+            user!!.getIdToken(true).addOnSuccessListener { result ->
+                val idToken = result.token
+
+                Log.d(TAG, "GetTokenResult result = $idToken")
+                val selectedLoginProvider = Provider.JWT
+                // focus-start
+                val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+                  LoginParams(
+                    selectedLoginProvider,
+                    extraLoginOptions = ExtraLoginOptions(
+                      domain = "firebase", id_token = idToken
+                      )
+                    )
+                  )
+                  // focus-end
+
+                loginCompletableFuture.whenComplete { loginResponse, error ->
+                    if (error == null) {
+                        println(loginResponse)
+                        reRender(loginResponse)
+                    } else {
+                        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
+                    }
+                }
+            }
+        } else {
+            // If sign in fails, display a message to the user.
+            Log.w(TAG, "signInWithEmail:failure", task.exception)
+            Toast.makeText(baseContext, "Authentication failed.",
+                Toast.LENGTH_SHORT).show()
+
+        }
     }
-  };
+}
+```
 
-  return (
-    <div>
-      <button onClick={() => loginWithFirebase()}>Login with Firebase</button>
-      <p>Address: {address}</p>
-      {/* 0x176513A0A18ad0502dEbd3108999D4D146cA23D2 */}
-    </div>
+When connecting, the `login` function takes the LoginParams arguments for the login. See the
+[LoginParams](/sdk/mobile/pnp/android/usage#parameters) for more details.
+
+### Flutter
+
+##### Create Web3Auth Instance
+
+In your `main.dart` file, initialize the `Web3AuthFlutter` plugin at the very beginning such as in
+the overriden `initState` function
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  final Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://auth');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  // focus-start
+  final loginConfig = HashMap<String, LoginConfigItem>();
+
+  loginConfig['jwt'] = LoginConfigItem(
+    verifier: "VERIFIER_NAME", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.jwt,
+    name: "Firebase JWT Login",
+    clientId: "WEB3AUTH_CLIENT_ID", // web3auth's plug and play client id
   );
+
+  await Web3AuthFlutter.init(
+    Web3AuthOptions(
+      clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+      network: Network.cyan,
+      redirectUri: redirectUrl,
+      loginConfig: loginConfig,
+    )
+  );
+    // focus-end
+
+  await Web3AuthFlutter.initialize();
+}
+```
+
+##### Logging in
+
+Once initialized, you can use the
+`Web3AuthFlutter.login(LoginParams( loginProvider: Provider.google ))` function to authenticate the
+user when they click the login button.
+
+```dart
+Future<Web3AuthResponse> _withJWT() async {
+  String idToken = "";
+  try {
+    // focus-start
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: 'custom+id_token@firebase.login',
+      password: 'Welcome@W3A',
+    );
+
+    idToken = await credential.user?.getIdToken(true) ?? '';
+    // focus-end
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      log('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      log('Wrong password provided for that user.');
+    }
+  }
+
+  // focus-start
+  return Web3AuthFlutter.login(
+    LoginParams(
+      loginProvider: Provider.jwt,
+      extraLoginOptions: ExtraLoginOptions(
+        id_token: idToken,
+        domain: 'firebase',
+      ),
+    ),
+  );
+   // focus-end
+}
+```
+
+Read more about initializing the Flutter SDK [here](/sdk/mobile/pnp/flutter/initialize).
+
+### React Native
+
+```tsx
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
+  clientId,
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // SAPPHIRE_MAINNET or SAPPHIRE_DEVNET
+  loginConfig: {
+    // focus-start
+    jwt: {
+      verifier: "YOUR_JWT_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+      typeOfLogin: "jwt",
+    },
+    // focus-end
+  },
+});
+```
+
+```tsx
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
+async function signInWithFirebase() {
+  try {
+    GoogleSignin.configure({
+      webClientId: "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
+    });
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the user's ID token
+    const { idToken } = await GoogleSignin.signIn();
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    const res = await auth().signInWithCredential(googleCredential);
+
+    const idToken = await res.user.getIdToken(true);
+
+    // focus-start
+    await web3auth.login({
+      redirectUrl: resolvedRedirectUrl,
+      mfaLevel: "default", // Pass on the MFA level of your choice: default, optional, mandatory, none
+      loginProvider: "jwt",
+      extraLoginOptions: {
+        id_token: idToken,
+        verifierIdField: "sub", // same as your JWT Verifier ID on the dashboard
+      },
+    });
+    // focus-end
+  } catch (error) {
+    console.error(error);
+  }
 }
 ```
