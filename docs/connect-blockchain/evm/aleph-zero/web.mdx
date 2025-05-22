@@ -1,27 +1,35 @@
 ---
-title: Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications
+title: Integrate Web3Auth with the Aleph Zero Blockchain in JavaScript
 sidebar_label: Web
 image: "banners/aleph-zero.png"
 
-keywords: [web, aleph-zero, web3auth, authentication, blockchain]
+keywords: [aleph-zero, web3auth, authentication, blockchain]
 description:
-  "Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications | Documentation - Web3Auth"
+  "Integrate Web3Auth with the Aleph Zero Blockchain in JavaScript | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
+import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import GetAccountAndBalanceSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-get-account-n-balance.mdx";
 import SendTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-send-transaction.mdx";
 import SignTransactionSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-transaction.mdx";
 import SignPersonalMessageSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-personal-sign.mdx";
 import SignTypedDataV4Snippet from "@site/src/common/docs/web-connect-blockchain/_evm-sign-message-v4.mdx";
+import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
+import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockchain/_evm-fetch-user-private-key.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
+import ChainDetailsAlephZero from "@site/src/common/docs/general-connect-blockchain/_aleph-zero.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications"
-  description="Integrate Web3Auth with the Aleph Zero Blockchain in Web Applications | Documentation - Web3Auth"
+  title="Integrate Web3Auth with the Aleph Zero Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Aleph Zero Blockchain in JavaScript | Documentation - Web3Auth"
   image="https://web3auth.io/docs/banners/aleph-zero.png"
   slug="/connect-blockchain/evm/aleph-zero/web"
 />
@@ -31,61 +39,33 @@ provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethe
 This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
 [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Aleph Zero Blockchain](https://alephzero.org) calls like getting the user's `account`, fetching
+[Aleph Zero](https://alephzero.org/) blockchain calls like getting the user's `account`, fetching
 `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
-etc. We have highlighted a few examples to get you started.
-
-## Installation
-
-<InstallationSnippet />
+etc. We have highlighted a few here to get you started quickly on that.
 
 ## Chain Details for Aleph Zero
 
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
+<ChainDetailsAlephZero />
 
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xA1EF", // hex of 41455, Aleph Zero Mainnet
-  rpcTarget: "https://rpc.alephzero.raas.gelato.cloud",
-  displayName: "Aleph Zero Mainnet",
-  blockExplorerUrl: "https://evm-explorer.alephzero.org",
-  ticker: "AZERO",
-  tickerName: "Aleph Zero",
-  logo: "https://i.ibb.co/cYcFtr4/A0-mark-graphite.png",
-};
-```
+## Installation
 
-</TabItem>
+To interact with the Aleph Zero blockchain, you can use either library with Web3Auth.
 
-<TabItem
-  value="testnet"
->
+<InstallationSnippet />
 
-```typescript
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x7F7", // hex of 2039, Aleph Zero Testnet
-  rpcTarget: "https://rpc.alephzero-testnet.gelato.digital",
-  displayName: "Aleph Zero Testnet",
-  blockExplorerUrl: "https://evm-explorer-testnet.alephzero.org",
-  ticker: "tAZERO",
-  tickerName: "Aleph Zero Testnet",
-  logo: "https://i.ibb.co/cYcFtr4/A0-mark-graphite.png",
-};
-```
+## Initializing Provider
 
-</TabItem>
-</Tabs>
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
+## Getting the Web3Auth provider
+
+<GetWeb3AuthProvider />
 
 ## Initializing Web3Auth
 

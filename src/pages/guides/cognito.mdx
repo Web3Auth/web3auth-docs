@@ -1,7 +1,7 @@
 ---
 title: Integrate AWS Cognito with Web3Auth
 image: "guides-banners/cognito.png"
-description: Learn how to use Web3Auth Plug and Play No Modal SDK with AWS Cognito
+description: Learn how to use Web3Auth with AWS Cognito
 type: guide
 tags: [plug and play, web, aws cognito, react, evm]
 date: June 25, 2022
@@ -16,31 +16,23 @@ import SEO from "@site/src/components/SEO";
 
 import SetupAWSCognito from "@site/src/common/guides/_setup-aws-cognito.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
-import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
-import Installation from "@site/src/common/guides/_installation.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
-import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
-import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
-import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
-import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import AuthConfigCode from "@site/src/common/guides/_auth-config-code.mdx";
-import SetupAWSCognitoVerifier from "@site/src/common/guides/_setup-aws-cognito-verifier.mdx";
 
 <SEO
   title="Integrate AWS Cognito with Web3Auth"
-  description="Learn how to use Web3Auth Plug and Play SDK with AWS Cognito in your React Application."
+  description="Learn how to use Web3Auth with AWS Cognito in your React Application."
   image="https://web3auth.io/docs/guides-banners/cognito.png"
   slug="/guides/cognito"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK and AWS Cognito for the
-integration and provide you with the links on how to develop a basic web application on the Ethereum
-blockchain.
+This guide will cover how to integrate AWS Cognito with Web3Auth using the new Web3Auth v10
+hooks-based approach. You'll learn how to set up both services for seamless authentication and
+wallet creation.
 
 ## Quick Start
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example w3a-cognito-demo && cd w3a-cognito-demo && npm install && npm run start
+npx degit Web3Auth/web3auth-pnp-examples/custom-authentication/single-connection/cognito-example w3a-cognito-demo && cd w3a-cognito-demo && npm install && npm run dev
 ```
 
 ## How it works?
@@ -54,15 +46,14 @@ values={[
 >
 <TabItem value="implicit">
 
-When integrating Web3Auth with AWS Cognito the Implicit flow looks something like this:
+When integrating Web3Auth with AWS Cognito, the Implicit flow looks like this:
 
 ![AWS Cognito - Implicit Flow](/guides/cognito/cognito-implicit.png)
 
 </TabItem>
 <TabItem value="authcode">
 
-When integrating Web3Auth Plug and Play No Modal SDK with AWS Cognito the Authorization code flow
-looks something like this:
+When integrating Web3Auth with AWS Cognito, the Authorization code flow looks like this:
 
 ![AWS Cognito - Authorization Code Flow](/guides/cognito/cognito-authcode.png)
 
@@ -76,14 +67,14 @@ Cognito to get the `id_token` in exchange for `authorization_code` received.
 - When a user logs in with AWS Cognito, Cognito sends a JWT `id_token` to the app. This JWT token is
   sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
-  the user, in a self-custodial way, resulting in easy onboarding for your user to the application.
+- On successful validation of the JWT token, Web3Auth generates a private key for the user in a
+  self-custodial way, resulting in easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
-- An [AWS](https://aws.amazon.com/console) account to create an AWS Cognito User Poll.
+- An [AWS](https://aws.amazon.com/console) account to create an AWS Cognito User Pool.
 
 - A [Google Developer](https://console.developers.google.com) account to be used as an Identity
   provider for AWS Cognito.
@@ -96,196 +87,358 @@ Cognito to get the `id_token` in exchange for `authorization_code` received.
 
 ### Setup Web3Auth
 
-#### Setup Web3Auth Project
-
 <SetupWeb3AuthDashboard />
 
-#### Setup Firebase Custom Authentication Verifier
+#### Setup AWS Cognito Custom Connection
 
-<SetupAWSCognitoVerifier />
+To use AWS Cognito with Web3Auth, you need to create a custom connection:
 
-## Using the Web3Auth SDK
+1. Navigate to the **Custom Connections** tab in the
+   [Web3Auth Dashboard](https://dashboard.web3auth.io).
+2. Click on the **Settings** icon near the **AWS Cognito** connection.
+3. Enter a **Cognito Connection ID** (e.g., "w3a-cognito-demo").
+4. Paste the JWKS Endpoint URL:
+   `https://cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}/.well-known/jwks.json`
+5. Paste a sample JWT token to auto-populate the validations (optional).
+6. Select the JWT user identifier: `email`, `sub`, or `custom`.
+7. Add custom validations:
+   - Field: `iss`, Value: `https://cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}`
+   - Field: `aud`, Value: `{APP_CLIENT_ID}`
+8. Click on **Add Connection**.
 
-To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth
-to your project. To know more about the available SDKs, please have a look at this
-[documentation page](/sdk).
+> Note: Replace `{REGION}`, `{USER_POOL_ID}`, and `{APP_CLIENT_ID}` with your specific Cognito
+> details.
 
-For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/web/react)
-and using the [Auth Adapter](/sdk/web/react) alongside it to enable Custom Authentication through
-AWS Cognito.
-
-<SetupBaseProject />
+## Using Web3Auth with AWS Cognito
 
 ### Installation
 
-<Installation />
+Install the required dependencies:
 
-### Initialization
+```bash
+# Core Web3Auth packages
+npm install @web3auth/modal
 
-<InitializationIntro />
+# For blockchain interactions
+npm install wagmi viem @tanstack/react-query
+```
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Auth Adapter (the
-default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know more
-about the other things you can do with Web3Auth, check out our [SDK Reference](/sdk/web/react).
+### Setting up Web3Auth Provider
 
-#### Instantiating Web3Auth
-
-<InstantiationWeb3Auth />
-
-#### Initializing the Auth Adapter
-
-<AuthConfigCode />
-
-Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
-Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
-Auth Adapter can connect to the correct verifier and AWS Cognito server.
-
-<InitializationWeb3Auth />
-
-### Authentication
-
-#### Logging in
-
-Once initialized, you can use the `connectTo()` function to authenticate the user when they click
-the login button.
+First, create a configuration file for Web3Auth (e.g., `web3authContext.tsx`):
 
 ```tsx
-import { WALLET_ADAPTERS } from "@web3auth/base";
+import { WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
 
-await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-  loginProvider: "jwt",
-  extraLoginOptions: {
-    domain: "https://YOUR-AWS-COGNITO-DOMAIN",
-    verifierIdField: "email",
-    response_type: "token",
-    scope: "email profile openid",
-  },
-});
+// Get your client ID from https://dashboard.web3auth.io
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID || "";
+
+// Instantiate SDK
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+};
+
+const web3AuthContextConfig = {
+  web3AuthOptions,
+};
+
+export default web3AuthContextConfig;
 ```
 
-When connecting, your `connectTo` function takes the arguments for the adapter you want to connect
-to and the options for the login. The major thing to note here is the `domain` option in the
-`extraLoginOptions` object. This is the domain of your AWS Cognito pool so that you can be
-redirected to log in there directly from the Web3Auth Plug and Play No Modal SDK.
-
-### Get the User Profile
+Then set up the Web3Auth provider in your application:
 
 ```tsx
-const user = await web3auth.getUserInfo();
-console.log("User info", user);
+import React from "react";
+import ReactDOM from "react-dom/client";
+// Setup Web3Auth Provider
+import { Web3AuthProvider } from "@web3auth/modal/react";
+import web3AuthContextConfig from "./web3authContext";
+// Setup Wagmi Provider for blockchain interactions
+import { WagmiProvider } from "@web3auth/modal/react/wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import App from "./App";
+
+const queryClient = new QueryClient();
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <Web3AuthProvider config={web3AuthContextConfig}>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider>
+          <App />
+        </WagmiProvider>
+      </QueryClientProvider>
+    </Web3AuthProvider>
+  </React.StrictMode>,
+);
 ```
 
-Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that
-these details are not stored anywhere in Web3Auth network, but are fetched from the id_token you
-received from AWS Cognito and live in the frontend context.
+### Implementing Cognito Authentication
 
-### Logout
+In your main application component, use Web3Auth hooks for authentication:
 
 ```tsx
-await web3auth.logout();
-```
+import "./App.css";
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+import { WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+import { useAccount } from "wagmi";
+import { SendTransaction } from "./components/sendTransaction";
+import { Balance } from "./components/getBalance";
+import { SwitchChain } from "./components/switchNetwork";
 
-Logging out your user is as simple as calling the `logout` function.
+function App() {
+  const { connectTo, isConnected, connectorName } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { address } = useAccount();
 
-> Note: Currently, Web3Auth Plug and Play SDKs don't log out a user from AWS Cognito, so you can try
-> calling this below endpoint to log out a user.
+  const loginWithCognito = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      authConnectionId: "w3a-cognito-demo", // Your Connection ID from Web3Auth Dashboard
+      extraLoginOptions: {
+        clientId: import.meta.env.VITE_COGNITO_CLIENT_ID,
+        domain: "https://your-cognito-domain.auth.region.amazoncognito.com",
+        verifierIdField: "email",
+        response_type: "token",
+        scope: "email profile openid",
+      },
+    });
+  };
 
-```
-window.open("
-    YOUR-COGNITO-DOMAIN/logout?
-    client_id=YOUR-CLIENTID-FROM-AWS-COGNITO-DASHBOARD&
-    logout_uri=LOGOUT_URI&
-    redirect_uri=REDIRECT_URI
-");
-```
-
-### Interacting with Blockchain
-
-<InteractingWithBlockchain />
-
-## Additional Reading: Setup Custom Authentication using AWS Cognito Authorization code flow
-
-### Difference between Implicit and Authorization code flow
-
-In the **Implicit** flow, the frontend gets the JWT `id_token` from AWS Cognito directly. This flow
-is leveraged by the Web3Auth SDK, which handles all the callbacks by itself and the user just needs
-to set the `AuthAdapter` and connect to the Web3Auth SDK, adding the AWS Cognito `client_id` in it.
-Hence, this is the implicit flow and is the most suitable flow for setting up your authentication
-via AWS Cognito and Web3Auth.
-
-In the **Authorization code** flow, you have to spin up a server on your own where you'll receive
-the `authorisation code` from AWS Cognito. For Web3Auth, still requires an `id_token` to be sent to
-the AuthAdapter to log the user in the frontend context. This is where you need to make another call
-from the backend server to AWS Cognito to get the `id_token` and pass it over to your frontend where
-you can send it to the Web3Auth SDK.
-
-### Setting up your application with Authorization code Flow
-
-- In addition to the steps above, select `Authorization code grant` from **Allowed OAuth Flows** on
-  your AWS Cognito Console's App client settings page and add callback URLs for both your backend
-  and frontend
-- On the frontend, your login button should hit on the following URL
-
-```url
-https://{YOUR_DOMAIN}.auth.{region}.amazoncognito.com/oauth2/authorize?
-  response_type=code&
-  client_id={CLIENT_ID_FROM_AWS}&
-  redirect_uri=https://{YOUR_APP}/redirect_uri&
-  state=STATE&
-  scope=openid+profile+aws.cognito.signin.user.admin
-```
-
-- This is where the user is redirected to a login screen by AWS Cognito.
-- On successful login, the user will be redirected to your backend server with authorization `code`
-  as a query parameter.
-- In the backend server, you can use the `code` to get the `id_token` from AWS Cognito and redirect
-  the user to the frontend with `id_token` as a query parameter
-
-```tsx
-app.get('/callback', (req, res) => {
-  var options = {
-    method: 'POST',
-    url: 'https://{YOUR_DOMAIN}.auth.{REGION}.amazoncognito.com/oauth2/token',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + Buffer.from(CLIENT_ID_FROM_AWS + ':' + CLIENT_SECRET_FROM_AWS).toString('base64')
-     },
-    form:{
-      grant_type: 'authorization_code',
-      client_id: 'CLIENT_ID_FROM_AWS',
-      code: req.query.code, // the authorisation code you got from AWS Cognito
-      redirect_uri: 'https://{YOUR_FRONTEND_URL}',
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+      console.log(...args);
     }
-   };
+  }
 
-   var id_token = "";
+  const loggedInView = (
+    <>
+      <h2>Connected to {connectorName}</h2>
+      <div>Address: {address}</div>
+      <div className="flex-container">
+        <div>
+          <button onClick={() => uiConsole(userInfo)} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={() => disconnect()} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
+      <SendTransaction />
+      <Balance />
+      <SwitchChain />
+    </>
+  );
 
-   request(options, function (error, response, data) {
-    id_token = JSON.parse(data)["id_token"];
-    redirect_url = "http://{YOUR_FRONTEND_URL}?token=%22+id_token;
-    // Redirection URL to frontend with `id_token` as a query parameter
-    res.redirect(redirect_url);
-  });
-})
+  const unloggedInView = (
+    <div className="flex-container">
+      <button onClick={loginWithCognito} className="card">
+        Login with Cognito
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="container">
+      <h1 className="title">
+        <a target="_blank" href="https://web3auth.io/docs" rel="noreferrer">
+          Web3Auth{" "}
+        </a>
+        & AWS Cognito Integration
+      </h1>
+
+      <div className="grid">{isConnected ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
+
+      <footer className="footer">
+        <a
+          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/custom-authentication/single-connection/cognito-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source code
+        </a>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
 ```
 
-- In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
+### Interacting with the Blockchain
+
+With Web3Auth v10, blockchain interactions are simplified using the wagmi hooks. Here are examples
+of components you can use:
+
+#### Getting Balance
 
 ```tsx
-await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
-  loginProvider: "jwt",
-  extraLoginOptions: {
-    id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",
-    domain: "https://YOUR-AWS-COGNITO-DOMAIN",
-    verifierIdField: "sub",
-  },
-});
+// components/getBalance.tsx
+import { useAccount, useBalance } from "wagmi";
+import { formatUnits } from "viem";
+
+export function Balance() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useBalance({ address });
+
+  return (
+    <div>
+      <h2>Balance</h2>
+      <div>
+        {data?.value !== undefined && `${formatUnits(data.value, data.decimals)} ${data.symbol}`}
+        {isLoading && "Loading..."}
+        {error && "Error: " + error.message}
+      </div>
+    </div>
+  );
+}
 ```
+
+#### Sending Transactions
+
+```tsx
+// components/sendTransaction.tsx
+import { FormEvent } from "react";
+import { useWaitForTransactionReceipt, useSendTransaction, BaseError } from "wagmi";
+import { Hex, parseEther } from "viem";
+
+export function SendTransaction() {
+  const { data: hash, error, isPending, sendTransaction } = useSendTransaction();
+
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const to = formData.get("address") as Hex;
+    const value = formData.get("value") as string;
+    sendTransaction({ to, value: parseEther(value) });
+  }
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  return (
+    <div>
+      <h2>Send Transaction</h2>
+      <form onSubmit={submit}>
+        <input name="address" placeholder="Address" required />
+        <input name="value" placeholder="Amount (ETH)" type="number" step="0.000000001" required />
+        <button disabled={isPending} type="submit">
+          {isPending ? "Confirming..." : "Send"}
+        </button>
+      </form>
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {isConfirming && "Waiting for confirmation..."}
+      {isConfirmed && "Transaction confirmed."}
+      {error && <div>Error: {(error as BaseError).shortMessage || error.message}</div>}
+    </div>
+  );
+}
+```
+
+#### Switching Networks
+
+```tsx
+// components/switchNetwork.tsx
+import { useChainId, useSwitchChain } from "wagmi";
+
+export function SwitchChain() {
+  const chainId = useChainId();
+  const { chains, switchChain, error } = useSwitchChain();
+
+  return (
+    <div>
+      <h2>Switch Chain</h2>
+      <h3>Connected to {chainId}</h3>
+      {chains.map((chain) => (
+        <button
+          disabled={chainId === chain.id}
+          key={chain.id}
+          onClick={() => switchChain({ chainId: chain.id })}
+          type="button"
+        >
+          {chain.name}
+        </button>
+      ))}
+      {error?.message}
+    </div>
+  );
+}
+```
+
+## Authorization Code Flow Setup (Advanced)
+
+For the Authorization code flow, you need a backend server to exchange the authorization code for an
+ID token:
+
+1. Select `Authorization code grant` from **Allowed OAuth Flows** in your AWS Cognito Console's App
+   client settings.
+2. Add callback URLs for both your backend and frontend.
+3. For login, direct users to:
+   ```
+   https://{YOUR_DOMAIN}.auth.{region}.amazoncognito.com/oauth2/authorize?
+     response_type=code&
+     client_id={CLIENT_ID_FROM_AWS}&
+     redirect_uri=https://{YOUR_BACKEND}/callback&
+     state=STATE&
+     scope=openid+profile+aws.cognito.signin.user.admin
+   ```
+4. In your backend server, exchange the code for tokens:
+
+   ```js
+   app.get("/callback", (req, res) => {
+     const options = {
+       method: "POST",
+       url: "https://{YOUR_DOMAIN}.auth.{REGION}.amazoncognito.com/oauth2/token",
+       headers: {
+         "content-type": "application/x-www-form-urlencoded",
+         Authorization:
+           "Basic " +
+           Buffer.from(CLIENT_ID_FROM_AWS + ":" + CLIENT_SECRET_FROM_AWS).toString("base64"),
+       },
+       form: {
+         grant_type: "authorization_code",
+         client_id: "CLIENT_ID_FROM_AWS",
+         code: req.query.code,
+         redirect_uri: "https://{YOUR_FRONTEND_URL}",
+       },
+     };
+
+     request(options, function (error, response, data) {
+       const id_token = JSON.parse(data)["id_token"];
+       const redirect_url = "http://{YOUR_FRONTEND_URL}?token=" + id_token;
+       res.redirect(redirect_url);
+     });
+   });
+   ```
+
+5. In your frontend, connect to Web3Auth with the ID token:
+   ```js
+   await connectTo(WALLET_CONNECTORS.AUTH, {
+     authConnection: AUTH_CONNECTION.CUSTOM,
+     authConnectionId: "w3a-cognito-demo",
+     idToken: "YOUR_ID_TOKEN_FROM_QUERY_PARAM",
+     extraLoginOptions: {
+       verifierIdField: "sub",
+     },
+   });
+   ```
 
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Cognito Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example).
+[Web3Auth Cognito Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/custom-authentication/single-connection/cognito-example).
 Check it out and try running it locally yourself!
 
 ## Questions?
