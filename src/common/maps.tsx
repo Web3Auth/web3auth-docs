@@ -1105,7 +1105,8 @@ export const pnpFlutterExamples: ExamplesInterface[] = [
     ],
     link: "https://github.com/Web3Auth/web3auth-flutter-examples/tree/main/flutter-firebase-example",
     id: "flutter-firebase-example",
-    githubLink: "flutter-firebase-example",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-flutter-examples/tree/main/flutter-firebase-example",
   },
   {
     title: "Integrate Auth0 SPA in PnP Flutter SDK",

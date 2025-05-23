@@ -293,10 +293,6 @@ const config: Config = {
             to: "/authentication/",
           },
           {
-            from: "/auth-provider-setup/",
-            to: "/authentication/",
-          },
-          {
             from: "/customauth/verifiers",
             to: "/authentication/",
           },
@@ -317,11 +313,11 @@ const config: Config = {
             to: "/resources/checklist",
           },
           {
-            from: "/auth-provider-setup/federated-identity-providers",
+            from: "/authentication/federated-identity-providers",
             to: "/authentication/custom-connections/auth0",
           },
           {
-            from: "/auth-provider-setup/byo-jwt-providers",
+            from: "/authentication/byo-jwt-providers",
             to: "/authentication/custom-connections/custom-jwt",
           },
           {
