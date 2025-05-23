@@ -30,7 +30,7 @@ export default function QuickNavigation() {
             <p>Create an integration from scratch within seconds.</p>
           </div>
         </Link>
-        <Link className={styles.card} to={`${baseUrl}auth-provider-setup/`}>
+        <Link className={styles.card} to={`${baseUrl}authentication/`}>
           <div className={styles.cardIconContainer}>
             <svg
               className={styles.cardIcon}
@@ -47,7 +47,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Auth Provider Setup</h5>
+            <h5>Authentication</h5>
             <p>Configure authentication providers for secure Web3Auth integration.</p>
           </div>
         </Link>

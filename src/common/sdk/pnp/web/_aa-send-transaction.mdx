@@ -1,38 +1,46 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-You can use your signer to submit on-chain transactions, while the Account Abstraction Provider
-handles the creation and submission of the UserOperation. You only need to pass `to`, `data`, and
-`value`; other parameters will be discarded and overridden by the provider.
+Developers can use their preferred signer or Wagmi hooks to initiate on-chain transactions, while
+Web3Auth manages the creation and submission of the UserOperation. Only the `to`, `data`, and
+`value` fields need to be provided. Any additional parameters will be ignored and automatically
+overridden.
 
-The bundler client determines `maxFeePerGas` and `maxPriorityFeePerGas` to prevent transaction
-rejections. If you'd like to specify custom values, you can use
-`AccountAbstractionProvider.bundlerClient` to create and send the transaction.
+To ensure reliable execution, the bundler client sets maxFeePerGas and maxPriorityFeePerGas values.
+If custom values are required, developers can use the
+[Viem's BundlerClient](https://viem.sh/account-abstraction/clients/bundler#bundler-client) to
+manually construct and send the user operation.
 
-Smart Accounts are basically smart contract deployed on chain. Therefore, the user's first
-transaction also deploys the smart contract for their wallet.
+Since Smart Accounts are deployed smart contracts, the user's first transaction also triggers the
+on-chain deployment of their wallet.
 
 <Tabs
   defaultValue="viem"
   values={[
     { label: "Viem", value: "viem" },
     { label: "Ethers", value: "ethers" },
-    { label: "Web3", value: "web3" },
+    { label: "Wagmi", value: "wagmi" },
   ]}
 >
 
-<TabItem value="web3">
+<TabItem value="wagmi">
 
 ```tsx
-// Convert 1 ether to WEI format
-const amount = web3.utils.toWei(1);
+import { useSendTransaction } from "wagmi";
 
-// Submits a user operation to the blockchain
-const receipt = await web3.eth.sendTransaction({
-  to: "DESTINATION_ADDRESS",
-  value: amount,
-  // This will perform the transfer of ETH
-  data: "0x",
+const { data: hash, sendTransaction } = useSendTransaction();
+
+// Convert 1 ether to WEI format
+const value = web3.utils.toWei(1);
+
+sendTransaction({ to: "DESTINATION_ADDRESS", value, data: "0x" });
+
+const {
+  data: receipt,
+  isLoading: isConfirming,
+  isSuccess: isConfirmed,
+} = useWaitForTransactionReceipt({
+  hash,
 });
 ```
 

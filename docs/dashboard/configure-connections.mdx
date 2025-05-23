@@ -1,0 +1,119 @@
+---
+title: Configure login connections
+image: "images/docs-meta-cards/documentation-card.png"
+description: "Configure login connections | Documentation - Web3Auth"
+---
+
+import AuthenticationSocialConnections from "@site/static/images/dashboard/authentication-social-connections.png";
+import AuthenticationCustomConnections from "@site/static/images/dashboard/authentication-custom-connections.png";
+import AuthenticationGroupConnectionsSelect from "@site/static/images/dashboard/authentication-group-connections-select.png";
+
+import BasicConnections from "@site/src/common/docs/_basic-connections.mdx";
+import SocialConnections from "@site/src/common/docs/_social-connections.mdx";
+import CustomConnections from "@site/src/common/docs/_custom-connections.mdx";
+import GroupConnections from "@site/src/common/docs/_group-connections.mdx";
+
+To use Web3Auth for user onboarding, developers must first configure the login methods that their
+application will support. All Web3Auth client SDKs require at least one login method to be enabled
+for authentication to function. This configuration ensures that users can authenticate securely and
+reliably across various platforms and environments.
+
+:::note
+
+A thoughtfully configured set of login options improves accessibility, enhances security, and
+provides flexibility for future scalability.
+
+:::
+
+## Social Connections
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={AuthenticationSocialConnections}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Authentication Social Connections"
+  />
+</div>
+
+### Basic Logins
+
+Basic Logins refer to standard authentication methods such as passwordless email or phone number
+login. These options are particularly useful for users who may not wish to use social accounts or
+external wallets.
+
+For most applications, it is recommended to either pair Basic Logins with alternative methods (such
+as social or external logins) or enable **Multi-Factor Authentication (MFA)**. This ensures users
+can retain access to their accounts even if they lose access to a primary login method. Supporting
+multiple login types also improves reach across various regions where certain providers may be
+limited.
+
+<BasicConnections />
+
+### Social Logins
+
+Social Logins allow users to authenticate using their existing accounts from widely adopted
+platforms, offering a seamless and familiar experience. Web3Auth supports a wide range of social
+identity providers, including:
+
+Each social login method can be configured individually through the Web3Auth Dashboard. Developers
+can follow platform-specific guides to obtain necessary credentials (e.g., client IDs, secrets) and
+enable the desired providers.
+
+<SocialConnections />
+
+## Custom Connections
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={AuthenticationCustomConnections}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Authentication Custom Connections"
+  />
+</div>
+
+Custom Connections allow developers to integrate Web3Auth with third-party or self-hosted identity
+providers. Supported platforms include:
+
+<CustomConnections />
+
+These integrations offer advanced flexibility, enabling projects to maintain existing identity
+infrastructure while benefiting from Web3Auth’s non-custodial key management. Developers can
+authenticate users using their preferred systems while still supporting seamless blockchain wallet
+access.
+
+:::note TIP
+
+Custom connections are ideal for enterprises or apps with an existing authentication backend who
+want to integrate Web3 capabilities without compromising on their current identity solutions.
+
+:::
+
+## Group Connections
+
+Group Connections enable multiple login methods to be linked to the same on-chain user identity.
+This means that users logging in with different authentication providers (e.g., **_Google and Email
+Passwordless_**) can still access the same wallet address—ensuring a unified user experience.
+
+Before setting up a group connection, developers must first configure individual login connections
+that are eligible to be grouped. Once eligible connections are established, they can be grouped
+together under a single Group Connection.
+
+<GroupConnections />
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img
+    src={AuthenticationGroupConnectionsSelect}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Authentication Group Connections"
+  />
+</div>
+
+:::note
+
+Group Keys differ from standard individual connection keys. Ensure that each login method intended
+for grouping is properly configured beforehand.
+
+:::
+
+> Group Connections are especially useful in scenarios where users may switch or alternate between
+> login methods, allowing for continuous access to the same digital identity without fragmentation.

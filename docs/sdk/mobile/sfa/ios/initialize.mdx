@@ -1,0 +1,49 @@
+---
+title: Initializing SFA Swift SDK
+sidebar_label: Initialize
+description: "Web3Auth SFA Swift SDK - Initialization | Documentation - Web3Auth"
+---
+
+After Installation, the next step to use Web3Auth is to create an instance, and initialize the SDK.
+Please note that these are the most critical steps where you need to pass on different parameters
+according to the preference of your project.
+
+## Parameters
+
+The `SingleFactoreAuth` constructor takes an object called `Web3AuthOptions` as input. The
+constructor parameters are listed below
+
+| Parameter           | Description                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`          | Your Web3Auth Client Id from [Web3Auth Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                                                                                                                          |
+| `web3AuthNetwork`   | The Web3auth network to be used by the SDK. Supported values are `.SAPPHIRE_MAINNET`, `.SAPPHIRE_DEVNET`, `.MAINNET`, `.TESTNET`, `.CYAN`, and `.AQUA`                                                                                                                                                                                                      |
+| `sessionTime`       | Specifies the session duration in seconds. By default, the value is set to 86400 seconds (1 day), with a maximum session duration of up to 30 days.                                                                                                                                                                                                         |
+| `serverTimeOffset`  | Specifies the server time offset in seconds. This parameter is used to adjust the server time to the local time. The default value is 0 seconds.                                                                                                                                                                                                            |
+| `storageServerUrl?` | Specifies the storage server URL. The default value is `https://session.web3auth.io`.                                                                                                                                                                                                                                                                       |
+| `whiteLabel?`       | You can pass the white labeling options for Web3Auth. It helps you define your brand app's custom UI, and branding for the Wallet Services and request signature feature. The recommended way to configure the `whiteLabel` is through the Web3Auth Dashboard. [Learn how to configure the `whiteLabel` via Web3Auth Dashboard](/docs/features/whitelabel). |
+| `redirectUrl?`      | URL that Web3Auth will redirect API responses upon successful `request` method call. Please note, that it's mandatory to configure the `redirectUrl` if you are using the `request` method. Redirect Url shoudl be your bundle identifier.                                                                                                                  |
+
+## Create instance
+
+The `initialize` method is responsible for authorizing the existing sessions, and initializing the
+SDK. If the existing session is not valid, it'll throw an error.
+
+```swift
+import SingleFactorAuth
+
+let options = Web3AuthOptions(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: .SAPPHIRE_MAINNET,
+  // Sets a session for 2 days, takes the input
+  // in seconds.
+  sessionTime: 172800
+)
+
+do {
+  let singleFactoreAuth = try SingleFactorAuth(params: options)
+
+  try await singleFactoreAuth.initialize()
+} catch {
+  // Handle error
+}
+```
