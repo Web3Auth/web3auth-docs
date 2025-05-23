@@ -54,8 +54,8 @@ export const pnpweb = (
             <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0`}>
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/web/react`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}>
+            <a href={`${baseUrl}sdk/web/react`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=web&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -82,11 +82,11 @@ export const pnpweb = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Vue SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=VUE&stepIndex=0`}>
+            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0`}>
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/web/vue`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}>
+            <a href={`${baseUrl}sdk/web/vue`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=web&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -112,8 +112,8 @@ export const pnpweb = (
             <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=VUE&stepIndex=0`}>
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/web/vue`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}>
+            <a href={`${baseUrl}sdk/web/js`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=web&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -154,12 +154,12 @@ export const pnpmobile = (
           <h3 className={styles.title}>Android SDK</h3>
           <div className={styles.links}>
             <a
-              href={`${baseUrl}quick-start?product=PNP&sdk=PNP_ANDROID&framework=ANDROID&stepIndex=0`}
+              href={`${baseUrl}quick-start?framework=ANDROID&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
             >
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/android`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK`}>
+            <a href={`${baseUrl}sdk/mobile/pnp/android`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=android&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -184,11 +184,13 @@ export const pnpmobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>iOS SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_IOS&framework=IOS&stepIndex=0`}>
+            <a
+              href={`${baseUrl}quick-start?framework=IOS&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
+            >
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/ios`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK`}>
+            <a href={`${baseUrl}sdk/mobile/pnp/ios`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=ios&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -211,11 +213,13 @@ export const pnpmobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Flutter SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_FLUTTER&framework=IOS&stepIndex=0`}>
+            <a
+              href={`${baseUrl}quick-start?framework=FLUTTER&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
+            >
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/flutter`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK`}>
+            <a href={`${baseUrl}sdk/mobile/pnp/flutter`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=flutter&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -239,12 +243,12 @@ export const pnpmobile = (
           <h3 className={styles.title}>React Native SDK</h3>
           <div className={styles.links}>
             <a
-              href={`${baseUrl}quick-start?product=PNP&sdk=PNP_REACT_NATIVE&framework=IOS&stepIndex=0`}
+              href={`${baseUrl}quick-start?framework=REACT_NATIVE&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
             >
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/pnp/react-native`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK`}>
+            <a href={`${baseUrl}sdk/mobile/pnp/react-native`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=react+native&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -290,11 +294,11 @@ export const pnpgaming = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Unity SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_UNITY&framework=IOS&stepIndex=0`}>
+            {/* <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_UNITY&framework=IOS&stepIndex=0`}>
               Quick Start{chevron}
-            </a>
-            <a href={`${baseUrl}sdk/pnp/unity`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK`}>
+            </a> */}
+            <a href={`${baseUrl}sdk/gaming/unity`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=unity&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
@@ -320,8 +324,8 @@ export const pnpgaming = (
           </div>
           <div className={styles.links}>
             {/* <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK`}>Quick Start{chevron}</a> */}
-            <a href={`${baseUrl}sdk/pnp/unreal`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK`}>
+            <a href={`${baseUrl}sdk/gaming/unreal`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=plug+and+play&platform=unreal+engine&blockchain=`}>
               Examples{chevron}
             </a>
           </div>
