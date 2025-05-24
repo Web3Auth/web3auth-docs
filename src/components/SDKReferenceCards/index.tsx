@@ -51,13 +51,9 @@ export const pnpweb = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>React SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0`}>
-              Quick Start{chevron}
-            </a>
+            <a href={`${baseUrl}quick-start?framework=REACT&stepIndex=0`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/web/react`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=web&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/web/react/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -82,13 +78,9 @@ export const pnpweb = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Vue SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0`}>
-              Quick Start{chevron}
-            </a>
+            <a href={`${baseUrl}quick-start?framework=VUE&stepIndex=0`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/web/vue`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=web&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/web/vue/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -109,13 +101,9 @@ export const pnpweb = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Javascript SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=VUE&stepIndex=0`}>
-              Quick Start{chevron}
-            </a>
+            <a href={`${baseUrl}quick-start?framework=ANGULAR&stepIndex=0`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/web/js`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=web&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/web/js/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -153,15 +141,9 @@ export const pnpmobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Android SDK</h3>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?framework=ANDROID&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
-            >
-              Quick Start{chevron}
-            </a>
+            <a href={`${baseUrl}quick-start?framework=ANDROID&stepIndex=0`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/mobile/pnp/android`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=android&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/pnp/android/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -184,15 +166,9 @@ export const pnpmobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>iOS SDK</h3>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?framework=IOS&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
-            >
-              Quick Start{chevron}
-            </a>
+            <a href={`${baseUrl}quick-start?framework=IOS&stepIndex=0`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/mobile/pnp/ios`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=ios&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/pnp/ios/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -213,15 +189,9 @@ export const pnpmobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Flutter SDK</h3>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?framework=FLUTTER&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
-            >
-              Quick Start{chevron}
-            </a>
+            <a href={`${baseUrl}quick-start?framework=FLUTTER&stepIndex=0`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/mobile/pnp/flutter`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=flutter&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/pnp/flutter/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -242,15 +212,11 @@ export const pnpmobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>React Native SDK</h3>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?framework=REACT_NATIVE&product=PNP&sdk=PNP_REACT_NATIVE&stepIndex=0`}
-            >
+            <a href={`${baseUrl}quick-start?framework=REACT_NATIVE&stepIndex=0`}>
               Quick Start{chevron}
             </a>
             <a href={`${baseUrl}sdk/mobile/pnp/react-native`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=react+native&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/pnp/react-native/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -294,13 +260,8 @@ export const pnpgaming = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Unity SDK</h3>
           <div className={styles.links}>
-            {/* <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_UNITY&framework=IOS&stepIndex=0`}>
-              Quick Start{chevron}
-            </a> */}
             <a href={`${baseUrl}sdk/gaming/unity`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=unity&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/gaming/unity/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -323,11 +284,8 @@ export const pnpgaming = (
             <h3 className={styles.title}>Unreal SDK</h3>
           </div>
           <div className={styles.links}>
-            {/* <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK`}>Quick Start{chevron}</a> */}
             <a href={`${baseUrl}sdk/gaming/unreal`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=plug+and+play&platform=unreal+engine&blockchain=`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/gaming/unreal/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -365,15 +323,8 @@ export const sfamobile = (
             <h3 className={styles.title}>Single Factor Auth Android SDK</h3>
           </div>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?product=SFA&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0&stepIndex=0`}
-            >
-              Quick Start{chevron}
-            </a>
-            <a href={`${baseUrl}sdk/sfa/sfa-android`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/sfa/android`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mobile/sfa/android/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -398,15 +349,8 @@ export const sfamobile = (
             <h3 className={styles.title}>Single Factor Auth iOS SDK</h3>
           </div>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?product=SFA&sdk=SFA_IOS&framework=IOS&stepIndex=0&stepIndex=0`}
-            >
-              Quick Start{chevron}
-            </a>
-            <a href={`${baseUrl}sdk/sfa/sfa-ios`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+iOS+SDK`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/sfa/ios`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mobile/sfa/ios/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -427,15 +371,8 @@ export const sfamobile = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Single Factor Auth Flutter SDK</h3>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?product=SFA&sdk=SFA_FLUTTER&framework=IOS&stepIndex=0&stepIndex=0`}
-            >
-              Quick Start{chevron}
-            </a>
-            <a href={`${baseUrl}sdk/sfa/sfa-flutter`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Flutter+SDK`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/sfa/flutter`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mobile/sfa/flutter/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -456,15 +393,10 @@ export const sfamobile = (
           </svg>
         </div>
         <div className={styles.cardContentText}>
-          <h3 className={styles.title}>Single Factor Auth JS SDK</h3>
+          <h3 className={styles.title}>Single Factor Auth React Native SDK</h3>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=SFA&sdk=SFA_WEB&framework=REACT&stepIndex=0`}>
-              Quick Start{chevron}
-            </a>
-            <a href={`${baseUrl}sdk/sfa/sfa-js`}>SDK Reference{chevron}</a>
-            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+JS+SDK`}>
-              Examples{chevron}
-            </a>
+            <a href={`${baseUrl}sdk/mobile/sfa/react-native`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mobile/sfa/react-native/examples`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
