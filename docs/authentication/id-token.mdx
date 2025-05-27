@@ -143,40 +143,196 @@ with.
 
 ### Using JWKS Endpoint
 
-JWKS Endpoint: `https://api-auth.web3auth.io/.well-known/jwks.json`
+<Tabs>
+<TabItem value="Social Login">
 
-```js title="Example (Node.js with jose)"
+JWKS Endpoint: `https://api-auth.web3auth.io/jwks`
+
+```ts title="login/route.ts"
 import * as jose from "jose";
+import { NextRequest, NextResponse } from "next/server";
 
-const idToken = req.headers.authorization?.split(" ")[1];
-const app_pub_key = req.body.appPubKey;
+export async function POST(req: NextRequest) {
+  try {
+    //focus-start
+    // Extract JWT token from Authorization header
+    const authHeader = req.headers.get("authorization");
+    const idToken = authHeader?.split(" ")[1];
+    // Get public key from request body
+    const { appPubKey } = await req.json();
+    //focus-end
 
-const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/.well-known/jwks.json"));
-const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+    if (!idToken) {
+      return NextResponse.json({ error: "No token provided" }, { status: 401 });
+    }
 
-// Verify wallet key match
-if (
-  jwtDecoded.payload.wallets.find((w) => w.type === "web3auth_app_key").public_key.toLowerCase() ===
-  app_pub_key.toLowerCase()
-) {
-  res.status(200).json({ name: "Verification Successful" });
-} else {
-  res.status(400).json({ name: "Verification Failed" });
+    if (!appPubKey) {
+      return NextResponse.json({ error: "No appPubKey provided" }, { status: 400 });
+    }
+
+    //focus-start
+    // Verify JWT using Web3Auth JWKS
+    // highlight-next-line
+    const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"));
+    const { payload } = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
+    // Find matching wallet in JWT
+    const wallets = (payload as any).wallets || [];
+    const normalizedAppKey = appPubKey.toLowerCase().replace(/^0x/, "");
+
+    const isValid = wallets.some((wallet: any) => {
+      if (wallet.type !== "web3auth_app_key") return false;
+
+      const walletKey = wallet.public_key.toLowerCase();
+
+      // Direct key comparison for ed25519 keys
+      if (walletKey === normalizedAppKey) return true;
+
+      // Handle compressed secp256k1 keys
+      if (
+        wallet.curve === "secp256k1" &&
+        walletKey.length === 66 &&
+        normalizedAppKey.length === 128
+      ) {
+        const compressedWithoutPrefix = walletKey.substring(2);
+        return normalizedAppKey.startsWith(compressedWithoutPrefix);
+      }
+
+      return false;
+      //focus-end
+    });
+
+    if (isValid) {
+      return NextResponse.json({ name: "Verification Successful" }, { status: 200 });
+    } else {
+      return NextResponse.json({ name: "Verification Failed" }, { status: 400 });
+    }
+  } catch (error) {
+    console.error("Social login verification error:", error);
+    return NextResponse.json({ error: "Verification error" }, { status: 500 });
+  }
 }
 ```
 
-#### For External Wallets:
+</TabItem>
+<TabItem value="External Wallets">
 
-```js
-if (
-  jwtDecoded.payload.wallets.find((w) => w.type === "ethereum").address.toLowerCase() ===
-  publicAddress.toLowerCase()
-) {
-  res.status(200).json({ name: "Verification Successful" });
-} else {
-  res.status(400).json({ name: "Verification Failed" });
+JWKS Endpoint: `https://authjs.web3auth.io/jwks`
+
+```ts title="login-external/route.ts"
+import * as jose from "jose";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(req: NextRequest) {
+  try {
+    //focus-start
+    // Extract JWT token from Authorization header
+    const authHeader = req.headers.get("authorization");
+    const idToken = authHeader?.split(" ")[1];
+    // Get address from request body
+    const { address } = await req.json();
+    //focus-end
+
+    if (!idToken) {
+      return NextResponse.json({ error: "No token provided" }, { status: 401 });
+    }
+
+    if (!address) {
+      return NextResponse.json({ error: "No address provided" }, { status: 400 });
+    }
+
+    //focus-start
+    // Verify JWT using AuthJS JWKS
+    // highlight-next-line
+    const jwks = jose.createRemoteJWKSet(new URL("https://authjs.web3auth.io/jwks"));
+    const { payload } = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
+    // Find matching wallet in JWT
+    const wallets = (payload as any).wallets || [];
+    const addressToCheck = Array.isArray(address) ? address[0] : address;
+    const normalizedAddress = addressToCheck.toLowerCase();
+
+    const isValid = wallets.some((wallet: any) => {
+      return (
+        wallet.type === "ethereum" &&
+        wallet.address &&
+        wallet.address.toLowerCase() === normalizedAddress
+      );
+    });
+    //focus-end
+
+    if (isValid) {
+      return NextResponse.json({ name: "Verification Successful" }, { status: 200 });
+    } else {
+      return NextResponse.json({ name: "Verification Failed" }, { status: 400 });
+    }
+  } catch (error) {
+    console.error("External wallet verification error:", error);
+    return NextResponse.json({ error: "Verification error" }, { status: 500 });
+  }
 }
 ```
+
+</TabItem>
+<TabItem value="Frontend Call">
+
+```ts title="App.tsx"
+const {
+  token,
+  getIdentityToken,
+  loading: idTokenLoading,
+  error: idTokenError,
+} = useIdentityToken();
+
+const validateIdToken = async () => {
+  //focus-next-line
+  const idToken = await getIdentityToken();
+
+  let res;
+  if (connectorName === "auth") {
+    //focus-start
+    // Social login: send public key
+    const pubKey = await web3Auth?.provider?.request({ method: "public_key" });
+    console.log("pubKey:", pubKey);
+    res = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify({ appPubKey: pubKey }),
+    });
+    //focus-end
+  } else {
+    //focus-start
+    // External wallet: send address
+    const address = await web3Auth?.provider?.request({ method: "eth_accounts" });
+    res = await fetch("/api/login-external", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify({ address }),
+    });
+    //focus-end
+  }
+
+  // Handle response
+  if (res.status === 200) {
+    toast.success("JWT Verification Successful");
+    uiConsole(`Logged in Successfully!`, userInfo);
+  } else {
+    toast.error("JWT Verification Failed");
+    await disconnect();
+  }
+
+  return res.status;
+};
+```
+
+</TabItem>
+</Tabs>
 
 ### Using Verification Key
 
@@ -219,7 +375,7 @@ npm install jsonwebtoken
 ```
 
 ```js title="Example (JWT Verification using jsonwebtoken)"
-const verificationKey = "insert-your-privy-verification-key".replace(/\\n/g, "\n");
+const verificationKey = "insert-your-web3auth-verification-key".replace(/\\n/g, "\n");
 
 const idToken = "insert-the-users-id-token";
 
