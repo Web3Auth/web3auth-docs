@@ -7,8 +7,6 @@ export default function SearchBar() {
     siteConfig: { themeConfig },
   } = useDocusaurusContext();
 
-  const apiKey = typeof window !== "undefined" ? (window as any).OPENAI_API_KEY || "" : "";
-
   const systemPrompt =
     "You are a helpful Web3Auth expert assistant. Your goal is to provide detailed, accurate information about Web3Auth's authentication solutions, SDKs, and integrations to developers.\n\n" +
     "RESPONSE GUIDELINES:\n" +
@@ -30,7 +28,7 @@ export default function SearchBar() {
   const aiConfig = {
     // OpenAI API settings
     openAI: {
-      apiKey,
+      proxyUrl: "https://docusaurus-openai-search-backend.vercel.app",
       model: "gpt-4.1-nano",
       maxTokens: 32768,
       temperature: 0.3,
