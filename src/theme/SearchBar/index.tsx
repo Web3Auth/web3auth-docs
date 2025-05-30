@@ -43,8 +43,9 @@ export default function SearchBar() {
     prompts: {
       siteName: "Web3Auth",
       systemPrompt,
-      useSummarization: false,
+      useSummarization: true,
     },
+    enableLogging: true,
   };
   // @ts-ignore
   return <DocusaurusAISearch themeConfig={themeConfig} aiConfig={aiConfig} />;
