@@ -4,6 +4,8 @@ sidebar_label: Nodes and DKG
 description: "DKG Nodes in Wallet Management | Documentation - Web3Auth"
 ---
 
+import CommonQuestions from "@site/src/components/CommonQuestions";
+
 The Web3Auth Auth Network Nodes run a Distributed Key Generation protocol amongst themselves to
 assign, store and return secrets/keys to users. In general within Auth Network, nodes manage a share
 retrieved via conventional OAuth flows.
@@ -108,9 +110,9 @@ The fundamental flow for Torus sign-in is as follows:
    assign a key to the user depending on User Verifier ID from ID Token.
 3. The key is retrieved from the Torus network and exposed to Web3 provider \(DApp\) to complete
    user sign-in request.
-4. Torus uses this ID Token to check if the user’s profile information exists in the DApp.
+4. Torus uses this ID Token to check if the user's profile information exists in the DApp.
    1. If it does, the user will be signed in to the DApp with their preferred login.
-   2. If it doesn’t, the user can create a new account on the DApp with their preferred login.
+   2. If it doesn't, the user can create a new account on the DApp with their preferred login.
 
 In order to allow for general verifiers to be used instead of only allowing OAuth, we typically need
 at least two of these APIs to be implemented by the external verifier:‌
@@ -158,3 +160,18 @@ before a front-runner receives the commitment request.
 Since a public key is already associated with the token in the commitment request, nodes will only
 respond with encrypted shares. Even if a front-runner intercepts the encrypted shares, they will be
 unable to decrypt it.
+
+<CommonQuestions
+  questions={[
+    "What are Web3Auth Auth Network Nodes and how do they work?",
+    "What is Distributed Key Generation (DKG) in Web3Auth?",
+    "How does the node lifecycle work in Web3Auth?",
+    "What are the trust assumptions for the Torus Network?",
+    "How are keys assigned to users in Web3Auth?",
+    "What is the front-running protection mechanism?",
+    "How do verifiers work in the key retrieval process?",
+    "What happens during node migration in Web3Auth?",
+    "How does the BFT network operate between nodes?",
+    "What are the threshold requirements for key generation and retrieval?",
+  ]}
+/>
