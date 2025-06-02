@@ -87,8 +87,8 @@ const config: Config = {
       title: "Documentation",
       logo: {
         alt: "Web3Auth's Logo",
-        src: "images/documentation-logo.svg",
-        srcDark: "images/documentation-logo-dark.svg",
+        src: "images/logo.svg",
+        srcDark: "images/logo-dark.svg",
         target: "_self",
       },
       items: [

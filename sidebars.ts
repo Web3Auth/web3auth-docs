@@ -373,23 +373,7 @@ const sidebars: SidebarsConfig = {
       label: "Troubleshooting",
       href: "/troubleshooting",
     },
-    {
-      type: "category",
-      label: "Contribute",
-      items: ["contribute/contribute", "contribute/bug-bounty"],
-    },
-    {
-      Legal: [
-        "legal/cookie-policy",
-        "legal/privacy-policy",
-        "legal/terms-and-conditions",
-        {
-          type: "link",
-          label: "Trust Center",
-          href: "https://trust.web3auth.io",
-        },
-      ],
-    },
+    "change-of-ownership",
   ],
   resources: [
     {
