@@ -33,7 +33,7 @@ can test the SDK with all features enabled in the `sapphire_devnet`.
 
 The Web3Auth infrastructure is designed to ensure the security of user keys. Instead of being stored
 in a single location, the key is divided into multiple parts and distributed across the user's
-devices and our Auth Network. This means that the key is always available and never in danger of
+devices and our Web3Auth Network. This means that the key is always available and never in danger of
 being compromised.
 
 The traditional Web3Auth SDK uses Shamir Secret Sharing (SSS) to dynamically reconstruct the key in
@@ -47,8 +47,8 @@ secure and user-friendly authentication process that helps to protect against ke
 types of security breaches.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and
-signing. The use of TSS in Web3Auth's Auth Network is a new paradigm that can provide numerous
-benefits, especially in terms of security.
+signing. The use of TSS in Web3Auth Network is a new paradigm that can provide numerous benefits,
+especially in terms of security.
 
 <picture>
   <source srcset={TkeyMpcFlowLight} media="(prefers-color-scheme: light)" />
@@ -71,12 +71,12 @@ transactions on the blockchain. Let's understand each of these stages in detail.
 
 This is the primary way for a user to access their account. This step involves authentication of
 user using a preferred social login provider. The `idToken` received from the social login provider
-here is passed to the Web3Auth Auth Network to generate the TSS Shares in the Nodes.
+here is passed to the Web3Auth Network to generate the TSS Shares in the Nodes.
 
 By default, these nodes have a threshold of 3/5 that can be customized according to requirements.
-When a user logs in, the Auth Network generates signatures corresponding to the TSS Shares in the
-nodes and returns them to the user's end. These signatures are then used alongside other shares to
-generate the final TSS Account signatures.
+When a user logs in, the Web3Auth Network generates signatures corresponding to the TSS Shares in
+the nodes and returns them to the user's end. These signatures are then used alongside other shares
+to generate the final TSS Account signatures.
 
 ### Hashed Cloud Factor
 
@@ -109,18 +109,18 @@ backup factor of your choice like social recovery, Email OTP, SMS OTP, Authentic
 ## Threshold
 
 The threshold is the minimum number of shares required to generate a final signature for the TSS
-Account. By default, the Auth Network requires 3 out of 5 shares (3/5) to generate a signature. This
-means that out of the 5 shares distributed across different nodes, any 3 shares can be combined to
-create the final signature. This setup ensures high availability and security, as it allows for some
-shares to be unavailable or compromised without affecting the overall system.
+Account. By default, the Web3Auth Network requires 3 out of 5 shares (3/5) to generate a signature.
+This means that out of the 5 shares distributed across different nodes, any 3 shares can be combined
+to create the final signature. This setup ensures high availability and security, as it allows for
+some shares to be unavailable or compromised without affecting the overall system.
 
 On the user's device front, the default threshold is set to 2 out of 3 shares (2/3). This means that
 out of the 3 shares available on the user's device, any 2 shares can be used to generate the final
 signature. This setup provides a balance between security and ease of access, ensuring that the user
 can still access their account even if one share is unavailable.
 
-Only the user level threshold can can be customized according to the requirements. The Auth Network
-threshold is fixed at 3/5.
+Only the user level threshold can can be customized according to the requirements. The Web3Auth
+Network threshold is fixed at 3/5.
 
 Please note that when a user logs in for the first time, the threshold is set to 2 out of 2 shares
 (2/2). This means that both shares are required to generate the final signature. After the user
@@ -133,7 +133,7 @@ of security.
 
 The TSS Shares are the main component needed for the generation of the final working signature of
 the user. These shares are generated using distributed key generation(DKG) and are stored in the
-Auth Network and the user's device. Since these shares are generated using MPC, they are **never
+Web3Auth Network and the user's device. Since these shares are generated using MPC, they are **never
 reconstructed** and always stay decentralized and secure.
 
 We've included a function in the SDK that lets you reconstruct the TSS Key from the shares. Just a

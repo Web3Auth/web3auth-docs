@@ -153,7 +153,7 @@ export default function LookupSCWAPIPage() {
               <td>
                 <code>web3AuthNetwork</code>
               </td>
-              <td>Name of the Web3Auth network your project is deployed on.</td>
+              <td>Name of the Web3Auth Network your project is deployed on.</td>
               <td>
                 <select
                   name="web3AuthNetwork"
