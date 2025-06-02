@@ -348,6 +348,18 @@ const config: Config = {
             from: "/pnp/features/mfa",
             to: "/features/mfa",
           },
+          {
+            from: "/legal/cookie-policy",
+            to: "/change-of-ownership",
+          },
+          {
+            from: "/legal/privacy-policy",
+            to: "/change-of-ownership",
+          },
+          {
+            from: "/legal/terms-and-conditions",
+            to: "/change-of-ownership",
+          },
         ],
         createRedirects(existingPath) {
           // Only create redirects if the path matches certain patterns
@@ -355,7 +367,8 @@ const config: Config = {
             existingPath.includes("/sdk/") ||
             existingPath.includes("/guides/") ||
             existingPath.includes("/features/") ||
-            existingPath.includes("/product/")
+            existingPath.includes("/product/") ||
+            existingPath.includes("/legal/")
           ) {
             return [
               existingPath.replace("/sdk", "/api-reference"),
@@ -374,6 +387,7 @@ const config: Config = {
               existingPath.replace("/sdk/sfa/sfa-flutter/", "/sdk/mobile/sfa/flutter/"),
               existingPath.replace("/sdk/sfa/sfa-react-native/", "/sdk/mobile/sfa/react-native/"),
               existingPath.replace("/guides/", "/content-hub/guides/"),
+              existingPath.replace("/legal/", "/change-of-ownership"),
             ].filter((redirect) => redirect !== existingPath); // Remove any redirects that point to the same path
           }
           return []; // Return empty array for paths that don't need redirects
