@@ -73,7 +73,7 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
           </div>
-          <div className="col col--1" />
+          <div className="col col--4" />
           <div className="col col--2" style={{ padding: 10 }}>
             <div className="footer__item">
               <strong>Product</strong>
@@ -84,18 +84,13 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/product/core-kit">
-                Core Kit
+              <a className="footer__link-item" href="/docs/product/sfa">
+                Single Factor Auth
               </a>
             </div>
             <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://calendly.com/web3auth/meeting-with-web3auth"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Enterprise Demo
+              <a className="footer__link-item" href="/docs/product/mpc-core-kit">
+                Enterprise
               </a>
             </div>
             <div className="footer__item">
@@ -131,11 +126,6 @@ export default function FooterComponent(): JSX.Element {
                 rel="noreferrer"
               >
                 Dashboard
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs">
-                Documentation
               </a>
             </div>
             <div className="footer__item">
@@ -181,56 +171,11 @@ export default function FooterComponent(): JSX.Element {
             <div className="footer__item">
               <a
                 className="footer__link-item"
-                href="https://jobs.lever.co/TorusLabs"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Career
-              </a>
-            </div>
-            <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://web3auth.io/media-kit.html"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Media Kit
-              </a>
-            </div>
-            <div className="footer__item">
-              <a
-                className="footer__link-item"
                 href="https://web3auth.io/contact-us.html"
                 target="_blank"
                 rel="noreferrer"
               >
                 Contact Us
-              </a>
-            </div>
-          </div>
-          <div className="col col--2" style={{ padding: 10 }}>
-            <div className="footer__item">
-              <strong>Community</strong>
-            </div>
-            <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://web3auth.io/community/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Community Forum
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/contribute">
-                Contribute
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/contribute/bug-bounty">
-                Bug Bounty
               </a>
             </div>
           </div>
