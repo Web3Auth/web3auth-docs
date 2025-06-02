@@ -31,12 +31,12 @@ export default function ModalAnim() {
   const { width } = useWindowDimensions();
   let style = {};
 
-  if (width > 500) {
+  if (width > 700) {
     style = {
-      width: 400,
+      width: 600,
     };
   }
-  if (width < 500) {
+  if (width < 700) {
     style = {
       width: width - 50,
     };
@@ -44,7 +44,7 @@ export default function ModalAnim() {
 
   return (
     <div>
-      <Player loop autoplay controls={false} src={useBaseUrl("/lottie/modalanim.json")} style={style} />
+      <Player loop autoplay controls={false} src={useBaseUrl("/lottie/hero.json")} style={style} />
     </div>
   );
 }

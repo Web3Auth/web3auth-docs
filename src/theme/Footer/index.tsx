@@ -3,7 +3,6 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Discord from "@site/static/images/social/discord.svg";
 import GitHub from "@site/static/images/social/github.svg";
 import LinkedIn from "@site/static/images/social/linkedin.svg";
-import Medium from "@site/static/images/social/medium.svg";
 import Twitter from "@site/static/images/social/twitter.svg";
 import YouTube from "@site/static/images/social/youtube.svg";
 import ThemedImage from "@theme/ThemedImage";
@@ -36,7 +35,7 @@ export default function FooterComponent(): JSX.Element {
             borderBottomColor: colorMode === "dark" ? "#5C6C7F" : "#E7E7E7",
           }}
         >
-          <div className="col col--3" style={{ padding: 10 }}>
+          <div className="col col--2" style={{ padding: 10 }}>
             <ThemedImage
               alt="Logo"
               sources={{
@@ -44,14 +43,10 @@ export default function FooterComponent(): JSX.Element {
                 dark: `${baseUrl}images/logo-dark.svg`,
               }}
             />
-            <p>
-              Web3Auth is where passwordless auth meets non-custodial wallet infrastructure for Web3
-              apps and wallets.
-            </p>
             <div style={{ flexDirection: "row" }}>
               <a
                 href="https://github.com/web3auth/web3auth-web"
-                style={{ marginRight: 8 }}
+                style={{ marginRight: 18 }}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -59,39 +54,26 @@ export default function FooterComponent(): JSX.Element {
               </a>
               <a
                 href="https://twitter.com/web3auth"
-                style={{ marginRight: 8 }}
+                style={{ marginRight: 18 }}
                 target="_blank"
                 rel="noreferrer"
               >
                 <Twitter />
               </a>
               <a
-                href="http://discord.gg/web3auth"
-                style={{ marginRight: 8 }}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Discord />
-              </a>
-              <a
                 href="https://youtube.com/c/web3auth"
-                style={{ marginRight: 8 }}
+                style={{ marginRight: 15 }}
                 target="_blank"
                 rel="noreferrer"
               >
                 <YouTube />
               </a>
-              <a
-                href="https://www.linkedin.com/company/web3auth"
-                style={{ marginRight: 8 }}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="https://www.linkedin.com/company/web3auth" target="_blank" rel="noreferrer">
                 <LinkedIn />
               </a>
             </div>
           </div>
-          <div className="col col--1" />
+          <div className="col col--4" />
           <div className="col col--2" style={{ padding: 10 }}>
             <div className="footer__item">
               <strong>Product</strong>
@@ -102,18 +84,13 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/product/core-kit">
-                Core Kit
+              <a className="footer__link-item" href="/docs/product/sfa">
+                Single Factor Auth
               </a>
             </div>
             <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://calendly.com/web3auth/meeting-with-web3auth"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Enterprise Demo
+              <a className="footer__link-item" href="/docs/product/mpc-core-kit">
+                Enterprise
               </a>
             </div>
             <div className="footer__item">
@@ -149,11 +126,6 @@ export default function FooterComponent(): JSX.Element {
                 rel="noreferrer"
               >
                 Dashboard
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs">
-                Documentation
               </a>
             </div>
             <div className="footer__item">
@@ -199,26 +171,6 @@ export default function FooterComponent(): JSX.Element {
             <div className="footer__item">
               <a
                 className="footer__link-item"
-                href="https://jobs.lever.co/TorusLabs"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Career
-              </a>
-            </div>
-            <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://web3auth.io/media-kit.html"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Media Kit
-              </a>
-            </div>
-            <div className="footer__item">
-              <a
-                className="footer__link-item"
                 href="https://web3auth.io/contact-us.html"
                 target="_blank"
                 rel="noreferrer"
@@ -227,47 +179,37 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
           </div>
-          <div className="col col--2" style={{ padding: 10 }}>
-            <div className="footer__item">
-              <strong>Community</strong>
-            </div>
-            <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://web3auth.io/community/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Community Forum
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/contribute">
-                Contribute
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/contribute/bug-bounty">
-                Bug Bounty
-              </a>
-            </div>
-          </div>
         </div>
         <div className="row">
-          <div className="col col-6">Copyright © Torus Labs Pte Ltd 2024</div>
+          <div className="col col-6">© 2025 MetaMask • A Consensys Formation</div>
           <div className="col col-3" />
           <div className="col col-3">
             {" "}
-            <a className="footer__link-item" href="/docs/legal/cookie-policy">
+            <a
+              className="footer__link-item"
+              href="https://consensys.io/privacy-notice/cookies"
+              target="_blank"
+              rel="noreferrer"
+            >
               Cookie Policy
             </a>{" "}
             |{" "}
-            <a className="footer__link-item" href="/docs/legal/privacy-policy">
+            <a
+              className="footer__link-item"
+              href="https://consensys.io/privacy-notice"
+              target="_blank"
+              rel="noreferrer"
+            >
               Privacy Policy
             </a>{" "}
             |{" "}
-            <a className="footer__link-item" href="/docs/legal/terms-and-conditions">
-              Terms and Conditions
+            <a
+              className="footer__link-item"
+              href="https://consensys.io/terms-of-use"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Terms of Use
             </a>
           </div>
         </div>
