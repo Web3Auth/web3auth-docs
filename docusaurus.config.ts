@@ -43,10 +43,10 @@ const config: Config = {
       },
     },
     announcementBar: {
-      id: "sign_up_for_wallets_ux_unconference",
+      id: "web3auth_is_now_part_of_consensys",
       content:
-        '<a href="https://web3auth.io/community/t/web3auth-developer-office-hours/8777" target="_blank">Stuck somewhere in the integration? Join the biweekly Web3Auth Office Hours →</a>',
-      isCloseable: true,
+        '<a href="https://blog.web3auth.io/web3auth-is-now-part-of-consensys/" target="_blank">Web3Auth is now a part of ConsenSys!</a>',
+      isCloseable: false,
     },
     colorMode: {
       defaultMode: "dark",
