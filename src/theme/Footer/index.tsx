@@ -42,11 +42,21 @@ export default function FooterComponent(): JSX.Element {
                 light: `${baseUrl}images/logo.svg`,
                 dark: `${baseUrl}images/logo-dark.svg`,
               }}
+              style={{
+                width: "160px",
+                height: "auto",
+              }}
             />
-            <div style={{ flexDirection: "row" }}>
+            <div
+              style={{
+                flexDirection: "row",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <a
                 href="https://github.com/web3auth/web3auth-web"
-                style={{ marginRight: 18 }}
+                style={{ marginRight: 8 }}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -54,7 +64,7 @@ export default function FooterComponent(): JSX.Element {
               </a>
               <a
                 href="https://twitter.com/web3auth"
-                style={{ marginRight: 18 }}
+                style={{ marginRight: 8 }}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -62,7 +72,7 @@ export default function FooterComponent(): JSX.Element {
               </a>
               <a
                 href="https://youtube.com/c/web3auth"
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 8 }}
                 target="_blank"
                 rel="noreferrer"
               >
