@@ -1,0 +1,830 @@
+---
+title: Migrating from Web3Auth SFA SDK v9 to Web3Auth v10
+description:
+  Learn how to migrate from the Single Factor Auth (SFA) SDK v9 to the unified Web3Auth PnP Web SDK
+  v10 with minimal code changes and improved functionality.
+sidebar_label: SFA v9 to v10
+---
+
+import CommonQuestions from "@site/src/components/CommonQuestions";
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Web3Auth SFA SDK v9 to Web3Auth v10 Migration Guide
+
+This guide will help you upgrade your Web3Auth Single Factor Auth (SFA) SDK v9 integration to the
+**unified Web3Auth PnP Web SDK v10**.
+
+## Overview
+
+The Web3Auth Single Factor Auth (SFA) SDK has been **merged into the unified Web3Auth v10 SDK**.
+This consolidation brings several advantages:
+
+- **Unified SDK**: All Web3Auth functionality (Modal, No-Modal, and SFA) is now available in a
+  single powerful SDK
+- **Dashboard-Centric Configuration**: Verifiers and connection settings are now managed through the
+  Web3Auth Developer Dashboard
+- **Modern React Experience**: Full embrace of hooks-based architecture with automatic SDK
+  initialization
+- **Improved Blockchain Integration**: Native support for Wagmi and Solana with streamlined
+  configuration
+- **No Chain Configuration Required**: Automatic blockchain setup based on your dashboard settings
+
+The SFA SDK was previously housed in the `@web3auth/single-factor-auth` package and separate example
+repositories. With v10, all functionality is consolidated into `@web3auth/modal` with examples in
+the main [web3auth-examples](https://github.com/Web3Auth/web3auth-examples) repository.
+
+## Why Migrate to v10?
+
+### Key Benefits
+
+- **Simplified Architecture**: Single SDK for all use cases eliminates the need to choose between
+  multiple packages
+- **Enhanced Developer Experience**: React hooks provide cleaner state management and better
+  TypeScript support
+- **Future-Proof**: All new features and improvements will be focused on the v10 SDK
+- **Better Blockchain Support**: Native Wagmi integration for Ethereum and enhanced Solana support
+- **Centralized Management**: Dashboard configuration reduces client-side complexity
+
+## Installation
+
+### Remove Old SFA Packages
+
+First, remove the deprecated SFA packages:
+
+```bash
+npm uninstall @web3auth/single-factor-auth
+npm uninstall @web3auth/ethereum-provider
+npm uninstall @web3auth/solana-provider
+```
+
+### Install Web3Auth v10
+
+Install the new unified SDK based on your framework:
+
+<Tabs>
+<TabItem value="react" label="React" default>
+
+```bash
+npm install @web3auth/modal @web3auth/modal/react
+```
+
+</TabItem>
+
+<TabItem value="vue" label="Vue">
+
+```bash
+npm install @web3auth/modal @web3auth/modal/vue
+```
+
+</TabItem>
+
+<TabItem value="vanilla" label="Vanilla JS / Other Frameworks">
+
+```bash
+npm install @web3auth/modal
+```
+
+</TabItem>
+</Tabs>
+
+## Migration Steps
+
+### 1. Package Imports Update
+
+**Previously (SFA v9):**
+
+```typescript
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+```
+
+**Now (v10):**
+
+<Tabs>
+<TabItem value="react" label="React" default>
+
+```typescript
+import { Web3AuthProvider, useWeb3Auth, useWeb3AuthConnect } from "@web3auth/modal/react";
+import { WEB3AUTH_NETWORK, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+```
+
+</TabItem>
+
+<TabItem value="vanilla" label="Vanilla JS">
+
+```typescript
+import { Web3Auth, WEB3AUTH_NETWORK, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+```
+
+</TabItem>
+</Tabs>
+
+### 2. Configuration Changes
+
+#### No More Chain Configuration Required
+
+**Previously (SFA v9):** You needed to manually configure chain settings and private key providers:
+
+```typescript
+// v9: Manual chain and provider configuration
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://mainnet.infura.io/v3/YOUR_INFURA_KEY",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  decimals: 18,
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+**Now (v10):** Chain configuration is handled automatically from the dashboard:
+
+![Chains on Dashboard](https://i.ibb.co/4nCD2GTJ/chains.gif)
+
+<Tabs>
+<TabItem value="react" label="React" default>
+
+```typescript
+// v10: Simplified configuration
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  // No chain config or private key provider needed!
+};
+
+const web3AuthContextConfig: Web3AuthContextConfig = {
+  web3AuthOptions,
+};
+
+// In your app
+<Web3AuthProvider config={web3AuthContextConfig}>
+  <App />
+</Web3AuthProvider>
+```
+
+</TabItem>
+
+<TabItem value="vanilla" label="Vanilla JS">
+
+```typescript
+// v10: Simplified configuration
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  // No chain config or private key provider needed!
+});
+
+await web3auth.init();
+```
+
+</TabItem>
+</Tabs>
+
+### 3. Verifiers to Connections Migration
+
+This is one of the most significant changes. The concept of **verifiers** in SFA v9 has been
+replaced with **connections** in v10, and configuration is now primarily done on the dashboard.
+
+#### Single Verifier → Single Connection
+
+**Previously (SFA v9):** Single verifiers were configured and used as follows:
+
+```typescript
+// v9: Single verifier usage
+const web3authProvider = await web3auth.connect({
+  verifier: "YOUR_VERIFIER_NAME", // Verifier name from dashboard
+  verifierId: "user@example.com",
+  idToken: "YOUR_JWT_TOKEN",
+});
+```
+
+**Now (v10):** Single verifiers become "Connections" with `authConnectionId`:
+
+<Tabs>
+<TabItem value="react" label="React" default>
+
+```typescript
+// v10: Single connection with React hooks
+const { connectTo } = useWeb3AuthConnect();
+
+const handleLogin = async () => {
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    authConnection: AUTH_CONNECTION.CUSTOM, // For custom JWT
+    authConnectionId: "YOUR_CONNECTION_ID", // Connection ID from dashboard
+    idToken: "YOUR_JWT_TOKEN",
+  });
+};
+
+// OR using Google:
+const handleGoogleLogin = async () => {
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    authConnection: AUTH_CONNECTION.GOOGLE,
+    authConnectionId: "YOUR_GOOGLE_CONNECTION_ID",
+  });
+};
+```
+
+</TabItem>
+
+<TabItem value="vanilla" label="Vanilla JS">
+
+```typescript
+// v10: Single connection with vanilla JS
+await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.CUSTOM,
+  authConnectionId: "YOUR_CONNECTION_ID",
+  idToken: "YOUR_JWT_TOKEN",
+});
+
+// OR using Google:
+await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+  authConnectionId: "YOUR_GOOGLE_CONNECTION_ID",
+});
+```
+
+</TabItem>
+</Tabs>
+
+#### Aggregate Verifier → Grouped Connection
+
+**Previously (SFA v9):** Aggregate verifiers allowed linking multiple auth providers:
+
+```typescript
+// v9: Aggregate verifier usage
+const web3authProvider = await web3auth.connect({
+  verifier: "MY_AGGREGATE_VERIFIER_NAME", // Main aggregate verifier
+  verifierId: "user@example.com",
+  idToken: "YOUR_JWT_TOKEN",
+  subVerifierInfoArray: [
+    {
+      verifier: "google-sub-verifier",
+      idToken: "GOOGLE_JWT_TOKEN",
+    },
+    {
+      verifier: "custom-jwt-sub-verifier",
+      idToken: "CUSTOM_JWT_TOKEN",
+    },
+  ],
+});
+```
+
+**Now (v10):** Aggregate verifiers become "Grouped Connections":
+
+<Tabs>
+<TabItem value="react" label="React" default>
+
+```typescript
+// v10: Grouped connection with React hooks
+const { connectTo } = useWeb3AuthConnect();
+
+// For Google login within the group
+const handleGoogleLogin = async () => {
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    authConnection: AUTH_CONNECTION.GOOGLE,
+    authConnectionId: "YOUR_GOOGLE_CONNECTION_ID",
+    groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID",
+  });
+};
+
+// For custom JWT login within the group
+const handleCustomLogin = async () => {
+  await connectTo(WALLET_CONNECTORS.AUTH, {
+    authConnection: AUTH_CONNECTION.CUSTOM,
+    authConnectionId: "YOUR_CUSTOM_JWT_CONNECTION_ID",
+    groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID",
+    idToken: "YOUR_JWT_TOKEN",
+  });
+};
+```
+
+</TabItem>
+
+<TabItem value="vanilla" label="Vanilla JS">
+
+```typescript
+// v10: Grouped connection with vanilla JS
+// For Google login within the group
+await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.GOOGLE,
+  authConnectionId: "YOUR_GOOGLE_CONNECTION_ID",
+  groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID",
+});
+
+// For custom JWT login within the group
+await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
+  authConnection: AUTH_CONNECTION.CUSTOM,
+  authConnectionId: "YOUR_CUSTOM_JWT_CONNECTION_ID",
+  groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID",
+  idToken: "YOUR_JWT_TOKEN",
+});
+```
+
+</TabItem>
+</Tabs>
+
+### 4. Dashboard Configuration
+
+Your existing v9 verifiers will be automatically migrated to v10 as "Connections" on the new
+dashboard. However, you need to:
+
+1. **Log in to the new [Web3Auth Developer Dashboard](https://dashboard.web3auth.io)**
+2. **Verify your migrated connections** - Your v9 verifiers should appear as "Connections"
+3. **Note the Connection IDs** - Each connection now has an `authConnectionId` that you'll use in
+   your code
+4. **Configure Chains** - Enable the blockchain networks you want to support
+
+   ![Chains on Dashboard](https://i.ibb.co/4nCD2GTJ/chains.gif)
+
+5. **Set up Grouped Connections** - If you used aggregate verifiers, these will be migrated as
+   "Grouped Connections"
+
+### 5. React Hooks Migration
+
+If you were using React with SFA v9, the v10 hooks provide a much cleaner experience:
+
+**Previously (SFA v9):** Manual state management and initialization:
+
+```typescript
+// v9: Manual React integration
+import { useEffect, useState } from "react";
+import { Web3Auth } from "@web3auth/single-factor-auth";
+
+function App() {
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      const web3authInstance = new Web3Auth({
+        clientId: "YOUR_CLIENT_ID",
+        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        privateKeyProvider,
+      });
+
+      await web3authInstance.init();
+      setWeb3auth(web3authInstance);
+
+      if (web3authInstance.connected) {
+        setProvider(web3authInstance.provider);
+        setLoggedIn(true);
+      }
+    };
+    init();
+  }, []);
+
+  const login = async () => {
+    if (!web3auth) return;
+    const provider = await web3auth.connect({
+      verifier: "YOUR_VERIFIER_NAME",
+      verifierId: "user@example.com",
+      idToken: "YOUR_JWT_TOKEN",
+    });
+    setProvider(provider);
+    setLoggedIn(true);
+  };
+}
+```
+
+**Now (v10):** Clean hooks-based approach:
+
+```typescript
+// v10: Modern React hooks
+import { useWeb3Auth, useWeb3AuthConnect, useWeb3AuthUser } from "@web3auth/modal/react";
+
+function App() {
+  const { isConnected, provider } = useWeb3Auth();
+  const { connectTo } = useWeb3AuthConnect();
+  const { user } = useWeb3AuthUser();
+
+  const handleLogin = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      authConnectionId: "YOUR_CONNECTION_ID",
+      idToken: "YOUR_JWT_TOKEN",
+    });
+  };
+
+  return (
+    <div>
+      {isConnected ? (
+        <div>Welcome {user?.name}!</div>
+      ) : (
+        <button onClick={handleLogin}>Login</button>
+      )}
+    </div>
+  );
+}
+```
+
+### 6. Blockchain Integration Changes
+
+#### Wagmi Integration for Ethereum
+
+**Previously (SFA v9):** Manual provider setup and RPC calls:
+
+```typescript
+// v9: Manual provider usage
+const web3 = new Web3(provider as any);
+const accounts = await web3.eth.getAccounts();
+const balance = await web3.eth.getBalance(accounts[0]);
+```
+
+**Now (v10):** Native Wagmi integration:
+
+```typescript
+// v10: Wagmi hooks integration
+import { useAccount, useBalance } from "@web3auth/modal/react/wagmi";
+import { WagmiProvider } from "@web3auth/modal/react/wagmi";
+
+function App() {
+  return (
+    <Web3AuthProvider config={web3AuthContextConfig}>
+      <WagmiProvider>
+        <AccountInfo />
+      </WagmiProvider>
+    </Web3AuthProvider>
+  );
+}
+
+function AccountInfo() {
+  const { address, isConnected } = useAccount();
+  const { data: balance } = useBalance({ address });
+
+  return (
+    <div>
+      {isConnected && (
+        <>
+          <p>Address: {address}</p>
+          <p>Balance: {balance?.formatted} {balance?.symbol}</p>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+#### Solana Integration
+
+**Previously (SFA v9):** Manual Solana provider setup:
+
+```typescript
+// v9: Manual Solana setup
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+const solanaProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  privateKeyProvider: solanaProvider,
+});
+```
+
+**Now (v10):** Native Solana hooks integration:
+
+```typescript
+// v10: Native Solana hooks
+import { useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
+import { useSolanaWallet } from "@web3auth/modal/react/solana";
+
+function SolanaApp() {
+  const { connect, isConnected } = useWeb3AuthConnect();
+  const { disconnect } = useWeb3AuthDisconnect();
+  const { userInfo } = useWeb3AuthUser();
+  const { accounts } = useSolanaWallet();
+
+  const loggedInView = (
+    <div>
+      <h2>Connected to Solana</h2>
+      <div>Address: {accounts?.[0]}</div>
+      <button onClick={() => disconnect()}>Log Out</button>
+      {/* Add your Solana components here */}
+    </div>
+  );
+
+  const unloggedInView = (
+    <button onClick={() => connect()}>Login</button>
+  );
+
+  return (
+    <div>
+      {isConnected ? loggedInView : unloggedInView}
+    </div>
+  );
+}
+```
+
+For complete Solana functionality, you can add components for:
+
+- Balance checking
+- Message signing
+- Transaction signing
+- Versioned transactions
+- Network switching
+
+See the complete example in the
+[React Solana Quick Start](https://github.com/Web3Auth/web3auth-examples/tree/main/quick-starts/react-solana-quick-start).
+
+### 7. Method Name Changes
+
+Some method names have been updated for consistency:
+
+| SFA v9 Method        | Web3Auth v10 Method         | Description                        |
+| -------------------- | --------------------------- | ---------------------------------- |
+| `authenticateUser()` | `getIdentityToken()`        | Get user's ID token                |
+| `connect()`          | `connectTo()`               | Connect to authentication provider |
+| `getUserInfo()`      | `useWeb3AuthUser()` (React) | Get user information               |
+
+### 8. Additional Features in v10
+
+#### Wallet Services Integration
+
+Web3Auth v10 includes built-in wallet services:
+
+```typescript
+// v10: Built-in wallet services
+import { useWalletUI, useCheckout, useSwap } from "@web3auth/modal/react";
+
+function WalletServices() {
+  const { showWalletUI } = useWalletUI();
+  const { showCheckout } = useCheckout();
+  const { showSwap } = useSwap();
+
+  return (
+    <div>
+      <button onClick={() => showWalletUI()}>Open Wallet</button>
+      <button onClick={() => showCheckout()}>Buy Crypto</button>
+      <button onClick={() => showSwap()}>Swap Tokens</button>
+    </div>
+  );
+}
+```
+
+#### Multi-Factor Authentication (MFA)
+
+MFA configuration is now streamlined:
+
+```typescript
+// v10: MFA configuration
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  mfaLevel: MFA_LEVELS.MANDATORY,
+  mfaSettings: {
+    [MFA_FACTOR.DEVICE]: {
+      enable: true,
+      priority: 1,
+      mandatory: true,
+    },
+  },
+};
+```
+
+## Complete Migration Examples
+
+### Single Connection (Single Verifier) Example
+
+Here's a complete example showing the migration from SFA v9 single verifier to v10 single
+connection:
+
+<Tabs>
+<TabItem value="v9" label="SFA v9 (Before)">
+
+```typescript
+// SFA v9 - Single Verifier Example
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://mainnet.infura.io/v3/YOUR_INFURA_KEY",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  decimals: 18,
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+
+await web3auth.init();
+
+// Login with Firebase JWT
+const provider = await web3auth.connect({
+  verifier: "firebase-jwt-verifier",
+  verifierId: "firebase|user123",
+  idToken: "firebase_jwt_token_here",
+});
+```
+
+</TabItem>
+
+<TabItem value="v10" label="Web3Auth v10 (After)">
+
+```typescript
+// Web3Auth v10 - Single Connection Example (React)
+import { Web3AuthProvider, useWeb3AuthConnect } from "@web3auth/modal/react";
+import { WEB3AUTH_NETWORK, WALLET_CONNECTORS, AUTH_CONNECTION } from "@web3auth/modal";
+
+// Configuration
+const web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+};
+
+// Provider setup
+function MyApp() {
+  return (
+    <Web3AuthProvider config={{ web3AuthOptions }}>
+      <LoginComponent />
+    </Web3AuthProvider>
+  );
+}
+
+// Login component
+function LoginComponent() {
+  const { connectTo } = useWeb3AuthConnect();
+
+  const handleFirebaseLogin = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      authConnectionId: "firebase-connection-id", // From dashboard
+      idToken: "firebase_jwt_token_here",
+    });
+  };
+
+  return <button onClick={handleFirebaseLogin}>Login with Firebase</button>;
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Grouped Connection (Aggregate Verifier) Example
+
+<Tabs>
+<TabItem value="v9" label="SFA v9 (Before)">
+
+```typescript
+// SFA v9 - Aggregate Verifier Example
+import { Web3Auth } from "@web3auth/single-factor-auth";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+
+await web3auth.init();
+
+// Login with Auth0 + Google aggregate verifier
+const provider = await web3auth.connect({
+  verifier: "auth0-google-aggregate",
+  verifierId: "user@example.com",
+  idToken: "auth0_jwt_token",
+  subVerifierInfoArray: [
+    {
+      verifier: "auth0-sub-verifier",
+      idToken: "auth0_jwt_token",
+    },
+  ],
+});
+```
+
+</TabItem>
+
+<TabItem value="v10" label="Web3Auth v10 (After)">
+
+```typescript
+// Web3Auth v10 - Grouped Connection Example (React)
+import { Web3AuthProvider, useWeb3AuthConnect } from "@web3auth/modal/react";
+
+function LoginComponent() {
+  const { connectTo } = useWeb3AuthConnect();
+
+  const handleAuth0Login = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.CUSTOM,
+      authConnectionId: "auth0-connection-id", // Individual Auth0 connection ID
+      groupedAuthConnectionId: "auth0-google-group-id", // Grouped connection ID
+      idToken: "auth0_jwt_token",
+    });
+  };
+
+  const handleGoogleLogin = async () => {
+    await connectTo(WALLET_CONNECTORS.AUTH, {
+      authConnection: AUTH_CONNECTION.GOOGLE,
+      authConnectionId: "google-connection-id", // Individual Google connection ID
+      groupedAuthConnectionId: "auth0-google-group-id", // Same grouped connection ID
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={handleAuth0Login}>Login with Auth0</button>
+      <button onClick={handleGoogleLogin}>Login with Google</button>
+    </div>
+  );
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Troubleshooting
+
+### Common Migration Issues
+
+1. **Missing Connection IDs**: Ensure you've noted the `authConnectionId` values from your migrated
+   connections on the dashboard.
+
+2. **Chain Configuration Errors**: Remove any manual chain configuration code - it's now handled
+   automatically.
+
+3. **Import Errors**: Make sure you've updated all import statements to use the new v10 packages.
+
+4. **React Hook Errors**: Ensure your components are wrapped with `Web3AuthProvider` before using
+   hooks.
+
+### Bundle Size Optimization
+
+The v10 SDK is more modular. You can optimize bundle size by importing only what you need:
+
+```typescript
+// Import only specific hooks instead of the entire package
+import { useWeb3Auth } from "@web3auth/modal/react";
+import { useAccount } from "@web3auth/modal/react/wagmi";
+```
+
+## Examples Repository
+
+Find complete working examples in our
+[examples repository](https://github.com/Web3Auth/web3auth-examples):
+
+- **Single Connection Examples**: `custom-authentication/single-connection/`
+- **Grouped Connection Examples**: `custom-authentication/grouped-connection/`
+- **React Quick Start**: `quick-starts/react-quick-start/`
+- **Vanilla JS Examples**: `quick-starts/vanilla-js-quick-start/`
+
+## Next Steps
+
+After migrating to v10, consider exploring these additional features:
+
+1. **Smart Accounts**: Configure account abstraction from the dashboard
+
+   ![Smart Accounts Section](https://i.ibb.co/gZYNwVyy/smart-accounts.gif)
+
+2. **Wallet Services**: Integrate checkout, swap, and wallet UI features
+3. **MFA Configuration**: Set up multi-factor authentication for enhanced security
+4. **Custom UI**: Build custom authentication flows using direct connections
+
+## Need Help?
+
+If you encounter issues during migration:
+
+- Check our [troubleshooting guide](/docs/troubleshooting)
+- Visit our [community forum](https://web3auth.io/community/)
+- Review the [Web3Auth v10 documentation](/docs/sdk/web)
+
+<CommonQuestions
+  questions={[
+    "How do I migrate from SFA v9 to Web3Auth v10?",
+    "What happened to the SFA SDK in Web3Auth v10?",
+    "How do verifiers work in Web3Auth v10?",
+    "What are connections in Web3Auth v10?",
+    "How do I configure aggregate verifiers in v10?",
+    "Do I need to configure chains manually in v10?",
+    "How do React hooks work in Web3Auth v10?",
+    "How is Wagmi integrated with Web3Auth v10?",
+    "What packages should I remove when migrating from SFA?",
+    "Where can I find Web3Auth v10 examples?",
+  ]}
+/>
