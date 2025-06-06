@@ -627,6 +627,7 @@ const sidebars: SidebarsConfig = {
           label: "Plug and Play Modal SDK",
           items: [
             "migration-guides/modal-v9-to-v10",
+            "migration-guides/sfa-to-web3auth-v10",
             "migration-guides/modal-v8-to-v9",
             "migration-guides/modal-v7-to-v8",
             "migration-guides/modal-v6-to-v7",
@@ -638,6 +639,7 @@ const sidebars: SidebarsConfig = {
           label: "Plug and Play No Modal SDK",
           items: [
             "migration-guides/modal-v9-to-v10",
+            "migration-guides/sfa-to-web3auth-v10",
             "migration-guides/no-modal-v8-to-v9",
             "migration-guides/no-modal-v7-to-v8",
             "migration-guides/no-modal-v6-to-v7",
