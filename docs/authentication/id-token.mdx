@@ -247,6 +247,7 @@ export async function POST(req: NextRequest) {
     // Verify JWT using AuthJS JWKS
     // highlight-next-line
     const jwks = jose.createRemoteJWKSet(new URL("https://authjs.web3auth.io/jwks"));
+contracts/LinkReward.sol
     const { payload } = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
 
     // Find matching wallet in JWT
