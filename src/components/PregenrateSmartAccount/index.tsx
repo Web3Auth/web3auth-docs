@@ -4,8 +4,8 @@ import styles from "@site/src/components/PregenerateWallet/styles.module.css";
 
 export default function LookupSCWAPIPage() {
   const networkOptions = ["sapphire_mainnet", "sapphire_devnet"];
-  const smartAccountTypeOptions = ["safe", "biconomy", "nexus", "kernel", "trust"];
-  const entryPointVersionOptions = ["0.7", "0.6"];
+  const smartAccountTypeOptions = ["metamask"];
+  const entryPointVersionOptions = ["0.7"];
   const constructURL = () => {
     const baseUrl = "https://lookup.web3auth.io/lookup/scw";
     const filteredFormData = Object.fromEntries(
@@ -37,7 +37,7 @@ export default function LookupSCWAPIPage() {
     clientId:
       "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainId: "0x1",
-    smartAccountType: "safe",
+    smartAccountType: "metamask",
     smartAccountVersion: "",
     nonceKey: "",
     saltNonce: "",
