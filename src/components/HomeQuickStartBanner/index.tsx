@@ -41,7 +41,13 @@ export default function Web3AuthOverview() {
         <p>Build your customized Web3Auth integration in the platform of your choice</p>
         <Link to="/quick-start" className={styles.btnContainer}>
           Quick start with Integration Builder
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               fillRule="evenodd"
               clipRule="evenodd"
@@ -54,17 +60,74 @@ export default function Web3AuthOverview() {
       <div className={styles.imageContainer}>
         {colorMode === "dark" ? (
           <div className={styles.image}>
-            <svg width="472" height="321" viewBox="0 0 472 321" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              width="472"
+              height="321"
+              viewBox="0 0 472 321"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <g opacity="0.2" filter="url(#filter0_b_2464_9028)">
-                <rect x="0.554688" y="83.5345" width="263.49" height="53.6519" rx="9.53811" fill="white" fill-opacity="0.9" />
-                <rect x="0.554688" y="83.5345" width="263.49" height="53.6519" rx="9.53811" fill="url(#paint0_linear_2464_9028)" />
+                <rect
+                  x="0.554688"
+                  y="83.5345"
+                  width="263.49"
+                  height="53.6519"
+                  rx="9.53811"
+                  fill="white"
+                  fill-opacity="0.9"
+                />
+                <rect
+                  x="0.554688"
+                  y="83.5345"
+                  width="263.49"
+                  height="53.6519"
+                  rx="9.53811"
+                  fill="url(#paint0_linear_2464_9028)"
+                />
               </g>
-              <rect x="22.0156" y="100.226" width="39.3447" height="15.4994" rx="7.74972" fill="#3F83F8" />
-              <rect x="47.0527" y="101.418" width="13.1149" height="13.1149" rx="6.55745" fill="white" />
-              <rect opacity="0.32" x="85.2051" y="97.8417" width="95.3811" height="9.53811" rx="4.76906" fill="#3F83F8" />
-              <rect x="85.2051" y="110.957" width="46.4983" height="9.53811" rx="4.76906" fill="#3F83F8" />
+              <rect
+                x="22.0156"
+                y="100.226"
+                width="39.3447"
+                height="15.4994"
+                rx="7.74972"
+                fill="#3F83F8"
+              />
+              <rect
+                x="47.0527"
+                y="101.418"
+                width="13.1149"
+                height="13.1149"
+                rx="6.55745"
+                fill="white"
+              />
+              <rect
+                opacity="0.32"
+                x="85.2051"
+                y="97.8417"
+                width="95.3811"
+                height="9.53811"
+                rx="4.76906"
+                fill="#3F83F8"
+              />
+              <rect
+                x="85.2051"
+                y="110.957"
+                width="46.4983"
+                height="9.53811"
+                rx="4.76906"
+                fill="#3F83F8"
+              />
               <g opacity="0.2" filter="url(#filter1_b_2464_9028)">
-                <rect width="263.49" height="53.6519" rx="9.53811" transform="matrix(-1 0 0 1 471.5 144.34)" fill="white" fill-opacity="0.3" />
+                <rect
+                  width="263.49"
+                  height="53.6519"
+                  rx="9.53811"
+                  transform="matrix(-1 0 0 1 471.5 144.34)"
+                  fill="white"
+                  fill-opacity="0.3"
+                />
                 <rect
                   x="-1.19226"
                   y="1.19226"
@@ -76,13 +139,46 @@ export default function Web3AuthOverview() {
                   stroke-width="2.38453"
                 />
               </g>
-              <rect width="39.3447" height="15.4994" rx="7.74972" transform="matrix(-1 0 0 1 450.039 161.628)" fill="#76A9FA" />
-              <rect width="13.1149" height="13.1149" rx="6.55745" transform="matrix(-1 0 0 1 448.848 162.82)" fill="#E1EFFE" />
-              <rect opacity="0.2" width="95.3811" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 386.85 159.243)" fill="#3F83F8" />
-              <rect width="46.4983" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 386.85 172.358)" fill="#76A9FA" />
+              <rect
+                width="39.3447"
+                height="15.4994"
+                rx="7.74972"
+                transform="matrix(-1 0 0 1 450.039 161.628)"
+                fill="#76A9FA"
+              />
+              <rect
+                width="13.1149"
+                height="13.1149"
+                rx="6.55745"
+                transform="matrix(-1 0 0 1 448.848 162.82)"
+                fill="#E1EFFE"
+              />
+              <rect
+                opacity="0.2"
+                width="95.3811"
+                height="9.53811"
+                rx="4.76906"
+                transform="matrix(-1 0 0 1 386.85 159.243)"
+                fill="#3F83F8"
+              />
+              <rect
+                width="46.4983"
+                height="9.53811"
+                rx="4.76906"
+                transform="matrix(-1 0 0 1 386.85 172.358)"
+                fill="#76A9FA"
+              />
               <g filter="url(#filter2_f_2464_9028)">
                 <g opacity="0.2" filter="url(#filter3_b_2464_9028)">
-                  <rect x="23.209" y="163.416" width="194.339" height="53.6519" rx="9.53811" fill="white" fill-opacity="0.3" />
+                  <rect
+                    x="23.209"
+                    y="163.416"
+                    width="194.339"
+                    height="53.6519"
+                    rx="9.53811"
+                    fill="white"
+                    fill-opacity="0.3"
+                  />
                   <rect
                     x="24.4012"
                     y="164.609"
@@ -93,14 +189,50 @@ export default function Web3AuthOverview() {
                     stroke-width="2.38453"
                   />
                 </g>
-                <rect x="44.6699" y="180.704" width="39.3447" height="15.4994" rx="7.74972" fill="#76A9FA" />
-                <rect x="45.8613" y="181.896" width="13.1149" height="13.1149" rx="6.55745" fill="#E1EFFE" />
-                <rect opacity="0.2" x="100.707" y="178.32" width="95.3811" height="9.53811" rx="4.76906" fill="#3F83F8" />
-                <rect x="100.707" y="191.434" width="46.4983" height="9.53811" rx="4.76906" fill="#76A9FA" />
+                <rect
+                  x="44.6699"
+                  y="180.704"
+                  width="39.3447"
+                  height="15.4994"
+                  rx="7.74972"
+                  fill="#76A9FA"
+                />
+                <rect
+                  x="45.8613"
+                  y="181.896"
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  opacity="0.2"
+                  x="100.707"
+                  y="178.32"
+                  width="95.3811"
+                  height="9.53811"
+                  rx="4.76906"
+                  fill="#3F83F8"
+                />
+                <rect
+                  x="100.707"
+                  y="191.434"
+                  width="46.4983"
+                  height="9.53811"
+                  rx="4.76906"
+                  fill="#76A9FA"
+                />
               </g>
               <g filter="url(#filter4_f_2464_9028)">
                 <g opacity="0.2" filter="url(#filter5_b_2464_9028)">
-                  <rect width="194.339" height="53.6519" rx="9.53811" transform="matrix(-1 0 0 1 410.693 251.644)" fill="white" fill-opacity="0.3" />
+                  <rect
+                    width="194.339"
+                    height="53.6519"
+                    rx="9.53811"
+                    transform="matrix(-1 0 0 1 410.693 251.644)"
+                    fill="white"
+                    fill-opacity="0.3"
+                  />
                   <rect
                     x="-1.19226"
                     y="1.19226"
@@ -112,14 +244,46 @@ export default function Web3AuthOverview() {
                     stroke-width="2.38453"
                   />
                 </g>
-                <rect width="39.3447" height="15.4994" rx="7.74972" transform="matrix(-1 0 0 1 389.232 268.932)" fill="#76A9FA" />
-                <rect width="13.1149" height="13.1149" rx="6.55745" transform="matrix(-1 0 0 1 388.041 270.124)" fill="#E1EFFE" />
-                <rect opacity="0.2" width="95.3811" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 333.195 266.547)" fill="#3F83F8" />
-                <rect width="46.4983" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 333.195 279.662)" fill="#76A9FA" />
+                <rect
+                  width="39.3447"
+                  height="15.4994"
+                  rx="7.74972"
+                  transform="matrix(-1 0 0 1 389.232 268.932)"
+                  fill="#76A9FA"
+                />
+                <rect
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  transform="matrix(-1 0 0 1 388.041 270.124)"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  opacity="0.2"
+                  width="95.3811"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 333.195 266.547)"
+                  fill="#3F83F8"
+                />
+                <rect
+                  width="46.4983"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 333.195 279.662)"
+                  fill="#76A9FA"
+                />
               </g>
               <g filter="url(#filter6_f_2464_9028)">
                 <g opacity="0.2" filter="url(#filter7_b_2464_9028)">
-                  <rect width="194.339" height="53.6519" rx="9.53811" transform="matrix(-1 0 0 1 388.039 65.6506)" fill="white" fill-opacity="0.3" />
+                  <rect
+                    width="194.339"
+                    height="53.6519"
+                    rx="9.53811"
+                    transform="matrix(-1 0 0 1 388.039 65.6506)"
+                    fill="white"
+                    fill-opacity="0.3"
+                  />
                   <rect
                     x="-1.19226"
                     y="1.19226"
@@ -131,13 +295,45 @@ export default function Web3AuthOverview() {
                     stroke-width="2.38453"
                   />
                 </g>
-                <rect width="39.3447" height="15.4994" rx="7.74972" transform="matrix(-1 0 0 1 366.578 82.9384)" fill="#76A9FA" />
-                <rect width="13.1149" height="13.1149" rx="6.55745" transform="matrix(-1 0 0 1 365.385 84.1307)" fill="#E1EFFE" />
-                <rect opacity="0.2" width="95.3811" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 310.541 80.554)" fill="#3F83F8" />
-                <rect width="46.4983" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 310.541 93.6688)" fill="#76A9FA" />
+                <rect
+                  width="39.3447"
+                  height="15.4994"
+                  rx="7.74972"
+                  transform="matrix(-1 0 0 1 366.578 82.9384)"
+                  fill="#76A9FA"
+                />
+                <rect
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  transform="matrix(-1 0 0 1 365.385 84.1307)"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  opacity="0.2"
+                  width="95.3811"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 310.541 80.554)"
+                  fill="#3F83F8"
+                />
+                <rect
+                  width="46.4983"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 310.541 93.6688)"
+                  fill="#76A9FA"
+                />
               </g>
               <g filter="url(#filter8_b_2464_9028)">
-                <rect x="147.203" y="53.728" width="189.57" height="230.107" rx="23.8453" fill="url(#paint5_radial_2464_9028)" />
+                <rect
+                  x="147.203"
+                  y="53.728"
+                  width="189.57"
+                  height="230.107"
+                  rx="23.8453"
+                  fill="url(#paint5_radial_2464_9028)"
+                />
                 <rect
                   x="147.799"
                   y="54.3242"
@@ -147,10 +343,18 @@ export default function Web3AuthOverview() {
                   stroke="url(#paint6_linear_2464_9028)"
                   stroke-width="1.19226"
                 />
-                <rect x="162.697" y="125.817" width="157.088" height="20.5946" rx="10.2973" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="162.697"
+                  y="125.817"
+                  width="157.088"
+                  height="20.5946"
+                  rx="10.2973"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M201.673 133.927C201.177 133.452 200.514 133.194 199.829 133.205C198.575 133.205 197.51 134.052 197.13 135.194C196.928 135.792 196.928 136.44 197.13 137.038H197.132C197.513 138.177 198.577 139.025 199.831 139.025C200.478 139.025 201.034 138.859 201.465 138.566V138.565C201.972 138.229 202.318 137.7 202.426 137.101H199.829V135.247H204.363C204.42 135.569 204.446 135.898 204.446 136.225C204.446 137.69 203.924 138.929 203.015 139.767L203.016 139.768C202.219 140.504 201.126 140.931 199.829 140.931C198.011 140.931 196.349 139.904 195.533 138.278C194.851 136.917 194.851 135.314 195.533 133.953C196.349 132.325 198.011 131.299 199.829 131.299C201.023 131.285 202.177 131.734 203.046 132.552L201.673 133.927Z"
                   fill="white"
                 />
@@ -223,17 +427,41 @@ export default function Web3AuthOverview() {
                   d="M285.177 138.282C284.763 138.282 284.407 138.193 284.109 138.016C283.812 137.838 283.582 137.587 283.42 137.264C283.26 136.939 283.18 136.559 283.18 136.123C283.18 135.692 283.26 135.313 283.42 134.984C283.582 134.656 283.808 134.4 284.098 134.216C284.389 134.031 284.729 133.939 285.119 133.939C285.356 133.939 285.585 133.978 285.808 134.057C286.03 134.135 286.229 134.258 286.406 134.426C286.582 134.594 286.722 134.812 286.824 135.08C286.926 135.347 286.977 135.67 286.977 136.052V136.342H283.641V135.729H286.176C286.176 135.513 286.133 135.323 286.045 135.157C285.958 134.989 285.835 134.857 285.676 134.76C285.52 134.663 285.336 134.615 285.125 134.615C284.895 134.615 284.695 134.672 284.524 134.785C284.354 134.896 284.223 135.042 284.13 135.223C284.039 135.401 283.994 135.596 283.994 135.805V136.284C283.994 136.565 284.043 136.804 284.141 137.001C284.241 137.198 284.381 137.349 284.559 137.453C284.738 137.555 284.946 137.606 285.185 137.606C285.34 137.606 285.481 137.584 285.608 137.54C285.736 137.495 285.846 137.427 285.939 137.338C286.032 137.248 286.103 137.138 286.152 137.007L286.925 137.146C286.863 137.374 286.752 137.574 286.591 137.745C286.433 137.915 286.234 138.047 285.993 138.142C285.755 138.235 285.482 138.282 285.177 138.282Z"
                   fill="white"
                 />
-                <rect x="162.697" y="151.744" width="49.4743" height="20.5946" rx="10.2973" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="162.697"
+                  y="151.744"
+                  width="49.4743"
+                  height="20.5946"
+                  rx="10.2973"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
                   d="M185.406 166.319C189.039 166.319 191.026 163.027 191.026 160.173C191.026 160.081 191.024 159.986 191.021 159.894C191.407 159.588 191.741 159.209 192.006 158.775C191.646 158.951 191.264 159.065 190.872 159.115C191.284 158.844 191.593 158.42 191.741 157.92C191.353 158.171 190.929 158.349 190.487 158.444C190.189 158.098 189.795 157.869 189.366 157.792C188.937 157.715 188.497 157.795 188.113 158.019C187.73 158.244 187.425 158.6 187.245 159.032C187.065 159.465 187.021 159.951 187.119 160.414C186.334 160.371 185.566 160.148 184.864 159.759C184.163 159.371 183.544 158.825 183.048 158.159C182.796 158.634 182.719 159.197 182.832 159.732C182.946 160.268 183.242 160.736 183.659 161.041C183.346 161.03 183.039 160.938 182.764 160.772V160.799C182.764 161.297 182.922 161.781 183.211 162.167C183.5 162.553 183.902 162.818 184.349 162.917C184.059 163.004 183.754 163.016 183.458 162.954C183.584 163.383 183.83 163.758 184.161 164.027C184.491 164.296 184.891 164.446 185.303 164.455C184.603 165.056 183.739 165.382 182.849 165.38C182.691 165.38 182.534 165.37 182.377 165.349C183.281 165.983 184.332 166.32 185.406 166.319Z"
                   fill="white"
                 />
-                <rect x="216.501" y="151.744" width="49.4743" height="20.096" rx="10.048" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="216.501"
+                  y="151.744"
+                  width="49.4743"
+                  height="20.096"
+                  rx="10.048"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
                   d="M244.335 158.439C243.721 158.131 243.063 157.904 242.375 157.774C242.362 157.771 242.35 157.777 242.343 157.79C242.259 157.955 242.165 158.17 242.099 158.339C241.359 158.218 240.623 158.218 239.898 158.339C239.832 158.166 239.735 157.955 239.65 157.79C239.644 157.778 239.631 157.771 239.619 157.774C238.931 157.903 238.273 158.13 237.659 158.439C237.653 158.442 237.649 158.446 237.646 158.451C236.398 160.494 236.056 162.486 236.223 164.454C236.224 164.463 236.229 164.472 236.236 164.478C237.06 165.141 237.857 165.543 238.64 165.809C238.653 165.814 238.666 165.809 238.674 165.797C238.859 165.52 239.024 165.228 239.166 164.921C239.174 164.903 239.166 164.882 239.149 164.875C238.887 164.766 238.638 164.633 238.398 164.482C238.379 164.47 238.378 164.441 238.395 164.426C238.446 164.385 238.496 164.342 238.544 164.298C238.553 164.29 238.565 164.289 238.575 164.294C240.151 165.082 241.857 165.082 243.414 164.294C243.425 164.288 243.437 164.29 243.446 164.298C243.494 164.341 243.545 164.385 243.596 164.426C243.613 164.441 243.612 164.47 243.593 164.482C243.353 164.636 243.104 164.766 242.841 164.874C242.824 164.881 242.817 164.903 242.825 164.921C242.97 165.228 243.135 165.52 243.317 165.797C243.324 165.809 243.338 165.814 243.35 165.809C244.137 165.543 244.935 165.141 245.759 164.478C245.766 164.472 245.77 164.464 245.771 164.454C245.972 162.179 245.435 160.203 244.347 158.452C244.345 158.446 244.34 158.442 244.335 158.439ZM239.401 163.256C238.927 163.256 238.536 162.779 238.536 162.193C238.536 161.607 238.919 161.13 239.401 161.13C239.887 161.13 240.274 161.611 240.267 162.193C240.267 162.779 239.883 163.256 239.401 163.256ZM242.601 163.256C242.126 163.256 241.735 162.779 241.735 162.193C241.735 161.607 242.119 161.13 242.601 161.13C243.087 161.13 243.474 161.611 243.466 162.193C243.466 162.779 243.087 163.256 242.601 163.256Z"
                   fill="white"
                 />
-                <rect x="270.312" y="151.744" width="49.4743" height="20.5946" rx="10.2973" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="270.312"
+                  y="151.744"
+                  width="49.4743"
+                  height="20.5946"
+                  rx="10.2973"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
                   d="M299.621 162.07C299.621 159.403 297.466 157.241 294.807 157.241C292.148 157.241 289.992 159.403 289.992 162.07C289.992 164.481 291.753 166.479 294.054 166.841V163.466H292.832V162.07H294.054V161.006C294.054 159.796 294.773 159.127 295.873 159.127C296.399 159.127 296.951 159.222 296.951 159.222V160.41H296.344C295.745 160.41 295.559 160.782 295.559 161.165V162.07H296.894L296.681 163.466H295.559V166.841C297.861 166.479 299.621 164.481 299.621 162.07Z"
                   fill="white"
@@ -394,8 +622,23 @@ export default function Web3AuthOverview() {
                 />
               </g>
               <g filter="url(#filter10_b_2464_9028)">
-                <rect x="64.9375" y="214.684" width="103.727" height="41.7292" rx="9.53811" fill="url(#paint7_radial_2464_9028)" />
-                <rect x="64.9375" y="214.684" width="103.727" height="41.7292" rx="9.53811" fill="white" fill-opacity="0.2" />
+                <rect
+                  x="64.9375"
+                  y="214.684"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="url(#paint7_radial_2464_9028)"
+                />
+                <rect
+                  x="64.9375"
+                  y="214.684"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="white"
+                  fill-opacity="0.2"
+                />
                 <rect
                   x="65.5336"
                   y="215.28"
@@ -412,12 +655,41 @@ export default function Web3AuthOverview() {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
-                <rect x="120.977" y="227.799" width="30.9989" height="15.4994" rx="7.74972" fill="#E1EFFE" />
-                <rect x="137.668" y="228.991" width="13.1149" height="13.1149" rx="6.55745" fill="#3F83F8" />
+                <rect
+                  x="120.977"
+                  y="227.799"
+                  width="30.9989"
+                  height="15.4994"
+                  rx="7.74972"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  x="137.668"
+                  y="228.991"
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  fill="#3F83F8"
+                />
               </g>
               <g filter="url(#filter11_bf_2464_9028)">
-                <rect x="321.273" y="9.61426" width="103.727" height="41.7292" rx="9.53811" fill="url(#paint9_radial_2464_9028)" />
-                <rect x="321.273" y="9.61426" width="103.727" height="41.7292" rx="9.53811" fill="white" fill-opacity="0.2" />
+                <rect
+                  x="321.273"
+                  y="9.61426"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="url(#paint9_radial_2464_9028)"
+                />
+                <rect
+                  x="321.273"
+                  y="9.61426"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="white"
+                  fill-opacity="0.2"
+                />
                 <rect
                   x="321.87"
                   y="10.2104"
@@ -428,13 +700,27 @@ export default function Web3AuthOverview() {
                   stroke-width="1.19226"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M344.224 40.9113C345.586 40.9113 346.746 40.0404 347.175 38.8249H356.221C358.814 38.8249 360.915 36.723 360.915 34.1303C360.915 31.5376 358.814 29.4358 356.221 29.4358H344.745C343.305 29.4358 342.137 28.2681 342.137 26.8277C342.137 25.3873 343.305 24.2196 344.745 24.2196H347.965L346.616 25.5684L348.091 27.0438L351.958 23.1764L348.091 19.309L346.616 20.7844L347.965 22.1332H344.745C342.153 22.1332 340.051 24.235 340.051 26.8277C340.051 29.4204 342.153 31.5222 344.745 31.5222H356.221C357.661 31.5222 358.829 32.6899 358.829 34.1303C358.829 35.5707 357.661 36.7384 356.221 36.7384H347.175C346.746 35.5228 345.586 34.6519 344.224 34.6519C342.495 34.6519 341.094 36.0531 341.094 37.7816C341.094 39.5101 342.495 40.9113 344.224 40.9113ZM343.18 37.7815C343.18 37.2054 343.648 36.7383 344.224 36.7383C344.8 36.7383 345.267 37.2054 345.267 37.7815C345.267 38.3577 344.8 38.8248 344.224 38.8248C343.648 38.8248 343.18 38.3577 343.18 37.7815ZM356.742 20.0466C358.471 20.0466 359.872 21.4478 359.872 23.1763C359.872 24.9048 358.471 26.306 356.742 26.306C355.014 26.306 353.613 24.9048 353.613 23.1763C353.613 21.4478 355.014 20.0466 356.742 20.0466ZM355.699 23.1763C355.699 22.6001 356.167 22.133 356.743 22.133C357.319 22.133 357.786 22.6001 357.786 23.1763C357.786 23.7524 357.319 24.2195 356.743 24.2195C356.167 24.2195 355.699 23.7524 355.699 23.1763Z"
                   fill="white"
                 />
-                <rect x="377.311" y="22.7292" width="30.9989" height="15.4994" rx="7.74972" fill="#E1EFFE" />
-                <rect x="394.002" y="23.9214" width="13.1149" height="13.1149" rx="6.55745" fill="#3F83F8" />
+                <rect
+                  x="377.311"
+                  y="22.7292"
+                  width="30.9989"
+                  height="15.4994"
+                  rx="7.74972"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  x="394.002"
+                  y="23.9214"
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  fill="#3F83F8"
+                />
               </g>
               <defs>
                 <filter
@@ -448,8 +734,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter1_b_2464_9028"
@@ -462,8 +757,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter2_f_2464_9028"
@@ -475,8 +779,16 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                  <feGaussianBlur stdDeviation="7.74972" result="effect1_foregroundBlur_2464_9028" />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="7.74972"
+                    result="effect1_foregroundBlur_2464_9028"
+                  />
                 </filter>
                 <filter
                   id="filter3_b_2464_9028"
@@ -489,8 +801,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter4_f_2464_9028"
@@ -502,8 +823,16 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                  <feGaussianBlur stdDeviation="7.74972" result="effect1_foregroundBlur_2464_9028" />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="7.74972"
+                    result="effect1_foregroundBlur_2464_9028"
+                  />
                 </filter>
                 <filter
                   id="filter5_b_2464_9028"
@@ -516,8 +845,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter6_f_2464_9028"
@@ -529,8 +867,16 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                  <feGaussianBlur stdDeviation="7.74972" result="effect1_foregroundBlur_2464_9028" />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="7.74972"
+                    result="effect1_foregroundBlur_2464_9028"
+                  />
                 </filter>
                 <filter
                   id="filter7_b_2464_9028"
@@ -543,8 +889,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter8_b_2464_9028"
@@ -557,8 +912,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.2298" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter9_d_2464_9028"
@@ -570,12 +934,29 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
                   <feOffset dx="1.86087" dy="1.86087" />
                   <feGaussianBlur stdDeviation="5.58262" />
-                  <feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.392157 0 0 0 0 1 0 0 0 0.05 0" />
-                  <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2464_9028" result="shape" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0.0117647 0 0 0 0 0.392157 0 0 0 0 1 0 0 0 0.05 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter10_b_2464_9028"
@@ -588,8 +969,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.2298" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter11_bf_2464_9028"
@@ -602,31 +992,78 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.2298" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_9028" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_9028" result="shape" />
-                  <feGaussianBlur stdDeviation="4.76906" result="effect2_foregroundBlur_2464_9028" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_9028"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_9028"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="4.76906"
+                    result="effect2_foregroundBlur_2464_9028"
+                  />
                 </filter>
-                <linearGradient id="paint0_linear_2464_9028" x1="67.397" y1="69.4137" x2="74.7975" y2="166.503" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint0_linear_2464_9028"
+                  x1="67.397"
+                  y1="69.4137"
+                  x2="74.7975"
+                  y2="166.503"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint1_linear_2464_9028" x1="32.5662" y1="1.39356e-06" x2="49.3194" y2="91.5063" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint1_linear_2464_9028"
+                  x1="32.5662"
+                  y1="1.39356e-06"
+                  x2="49.3194"
+                  y2="91.5063"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint2_linear_2464_9028" x1="47.2284" y1="163.416" x2="69.3416" y2="252.501" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint2_linear_2464_9028"
+                  x1="47.2284"
+                  y1="163.416"
+                  x2="69.3416"
+                  y2="252.501"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint3_linear_2464_9028" x1="24.0194" y1="1.39356e-06" x2="46.1326" y2="89.0844" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint3_linear_2464_9028"
+                  x1="24.0194"
+                  y1="1.39356e-06"
+                  x2="46.1326"
+                  y2="89.0844"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint4_linear_2464_9028" x1="24.0194" y1="1.39356e-06" x2="46.1326" y2="89.0844" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint4_linear_2464_9028"
+                  x1="24.0194"
+                  y1="1.39356e-06"
+                  x2="46.1326"
+                  y2="89.0844"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -644,7 +1081,14 @@ export default function Web3AuthOverview() {
                   <stop offset="0.651042" stop-color="#2C9BEC" stop-opacity="0.36" />
                   <stop offset="0.848431" stop-color="#6E8EE0" stop-opacity="0.6" />
                 </radialGradient>
-                <linearGradient id="paint6_linear_2464_9028" x1="140.023" y1="252.829" x2="399.877" y2="266.125" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint6_linear_2464_9028"
+                  x1="140.023"
+                  y1="252.829"
+                  x2="399.877"
+                  y2="266.125"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -662,7 +1106,14 @@ export default function Web3AuthOverview() {
                   <stop offset="0.651042" stop-color="#2C9BEC" stop-opacity="0.36" />
                   <stop offset="0.848431" stop-color="#6E8EE0" stop-opacity="0.6" />
                 </radialGradient>
-                <linearGradient id="paint8_linear_2464_9028" x1="61.0087" y1="250.79" x2="200.246" y2="272.287" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint8_linear_2464_9028"
+                  x1="61.0087"
+                  y1="250.79"
+                  x2="200.246"
+                  y2="272.287"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -680,7 +1131,14 @@ export default function Web3AuthOverview() {
                   <stop offset="0.651042" stop-color="#2C9BEC" stop-opacity="0.36" />
                   <stop offset="0.848431" stop-color="#6E8EE0" stop-opacity="0.6" />
                 </radialGradient>
-                <linearGradient id="paint10_linear_2464_9028" x1="317.345" y1="45.7206" x2="456.582" y2="67.2177" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint10_linear_2464_9028"
+                  x1="317.345"
+                  y1="45.7206"
+                  x2="456.582"
+                  y2="67.2177"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -690,17 +1148,74 @@ export default function Web3AuthOverview() {
           </div>
         ) : (
           <div className={styles.image}>
-            <svg width="472" height="321" viewBox="0 0 472 321" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              width="472"
+              height="321"
+              viewBox="0 0 472 321"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <g opacity="0.2" filter="url(#filter0_b_2464_8401)">
-                <rect x="0.554688" y="83.5345" width="263.49" height="53.6519" rx="9.53811" fill="white" fill-opacity="0.9" />
-                <rect x="0.554688" y="83.5345" width="263.49" height="53.6519" rx="9.53811" fill="url(#paint0_linear_2464_8401)" />
+                <rect
+                  x="0.554688"
+                  y="83.5345"
+                  width="263.49"
+                  height="53.6519"
+                  rx="9.53811"
+                  fill="white"
+                  fill-opacity="0.9"
+                />
+                <rect
+                  x="0.554688"
+                  y="83.5345"
+                  width="263.49"
+                  height="53.6519"
+                  rx="9.53811"
+                  fill="url(#paint0_linear_2464_8401)"
+                />
               </g>
-              <rect x="22.0156" y="100.226" width="39.3447" height="15.4994" rx="7.74972" fill="#3F83F8" />
-              <rect x="47.0527" y="101.418" width="13.1149" height="13.1149" rx="6.55745" fill="white" />
-              <rect opacity="0.32" x="85.2051" y="97.8417" width="95.3811" height="9.53811" rx="4.76906" fill="#3F83F8" />
-              <rect x="85.2051" y="110.957" width="46.4983" height="9.53811" rx="4.76906" fill="#3F83F8" />
+              <rect
+                x="22.0156"
+                y="100.226"
+                width="39.3447"
+                height="15.4994"
+                rx="7.74972"
+                fill="#3F83F8"
+              />
+              <rect
+                x="47.0527"
+                y="101.418"
+                width="13.1149"
+                height="13.1149"
+                rx="6.55745"
+                fill="white"
+              />
+              <rect
+                opacity="0.32"
+                x="85.2051"
+                y="97.8417"
+                width="95.3811"
+                height="9.53811"
+                rx="4.76906"
+                fill="#3F83F8"
+              />
+              <rect
+                x="85.2051"
+                y="110.957"
+                width="46.4983"
+                height="9.53811"
+                rx="4.76906"
+                fill="#3F83F8"
+              />
               <g opacity="0.2" filter="url(#filter1_b_2464_8401)">
-                <rect width="263.49" height="53.6519" rx="9.53811" transform="matrix(-1 0 0 1 471.5 144.34)" fill="white" fill-opacity="0.3" />
+                <rect
+                  width="263.49"
+                  height="53.6519"
+                  rx="9.53811"
+                  transform="matrix(-1 0 0 1 471.5 144.34)"
+                  fill="white"
+                  fill-opacity="0.3"
+                />
                 <rect
                   x="-1.19226"
                   y="1.19226"
@@ -712,13 +1227,46 @@ export default function Web3AuthOverview() {
                   stroke-width="2.38453"
                 />
               </g>
-              <rect width="39.3447" height="15.4994" rx="7.74972" transform="matrix(-1 0 0 1 450.039 161.628)" fill="#76A9FA" />
-              <rect width="13.1149" height="13.1149" rx="6.55745" transform="matrix(-1 0 0 1 448.848 162.82)" fill="#E1EFFE" />
-              <rect opacity="0.2" width="95.3811" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 386.85 159.243)" fill="#3F83F8" />
-              <rect width="46.4983" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 386.85 172.358)" fill="#76A9FA" />
+              <rect
+                width="39.3447"
+                height="15.4994"
+                rx="7.74972"
+                transform="matrix(-1 0 0 1 450.039 161.628)"
+                fill="#76A9FA"
+              />
+              <rect
+                width="13.1149"
+                height="13.1149"
+                rx="6.55745"
+                transform="matrix(-1 0 0 1 448.848 162.82)"
+                fill="#E1EFFE"
+              />
+              <rect
+                opacity="0.2"
+                width="95.3811"
+                height="9.53811"
+                rx="4.76906"
+                transform="matrix(-1 0 0 1 386.85 159.243)"
+                fill="#3F83F8"
+              />
+              <rect
+                width="46.4983"
+                height="9.53811"
+                rx="4.76906"
+                transform="matrix(-1 0 0 1 386.85 172.358)"
+                fill="#76A9FA"
+              />
               <g filter="url(#filter2_f_2464_8401)">
                 <g opacity="0.2" filter="url(#filter3_b_2464_8401)">
-                  <rect x="23.209" y="163.416" width="194.339" height="53.6519" rx="9.53811" fill="white" fill-opacity="0.3" />
+                  <rect
+                    x="23.209"
+                    y="163.416"
+                    width="194.339"
+                    height="53.6519"
+                    rx="9.53811"
+                    fill="white"
+                    fill-opacity="0.3"
+                  />
                   <rect
                     x="24.4012"
                     y="164.609"
@@ -729,14 +1277,50 @@ export default function Web3AuthOverview() {
                     stroke-width="2.38453"
                   />
                 </g>
-                <rect x="44.6699" y="180.704" width="39.3447" height="15.4994" rx="7.74972" fill="#76A9FA" />
-                <rect x="45.8613" y="181.896" width="13.1149" height="13.1149" rx="6.55745" fill="#E1EFFE" />
-                <rect opacity="0.2" x="100.707" y="178.32" width="95.3811" height="9.53811" rx="4.76906" fill="#3F83F8" />
-                <rect x="100.707" y="191.434" width="46.4983" height="9.53811" rx="4.76906" fill="#76A9FA" />
+                <rect
+                  x="44.6699"
+                  y="180.704"
+                  width="39.3447"
+                  height="15.4994"
+                  rx="7.74972"
+                  fill="#76A9FA"
+                />
+                <rect
+                  x="45.8613"
+                  y="181.896"
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  opacity="0.2"
+                  x="100.707"
+                  y="178.32"
+                  width="95.3811"
+                  height="9.53811"
+                  rx="4.76906"
+                  fill="#3F83F8"
+                />
+                <rect
+                  x="100.707"
+                  y="191.434"
+                  width="46.4983"
+                  height="9.53811"
+                  rx="4.76906"
+                  fill="#76A9FA"
+                />
               </g>
               <g filter="url(#filter4_f_2464_8401)">
                 <g opacity="0.2" filter="url(#filter5_b_2464_8401)">
-                  <rect width="194.339" height="53.6519" rx="9.53811" transform="matrix(-1 0 0 1 410.693 251.644)" fill="white" fill-opacity="0.3" />
+                  <rect
+                    width="194.339"
+                    height="53.6519"
+                    rx="9.53811"
+                    transform="matrix(-1 0 0 1 410.693 251.644)"
+                    fill="white"
+                    fill-opacity="0.3"
+                  />
                   <rect
                     x="-1.19226"
                     y="1.19226"
@@ -748,14 +1332,46 @@ export default function Web3AuthOverview() {
                     stroke-width="2.38453"
                   />
                 </g>
-                <rect width="39.3447" height="15.4994" rx="7.74972" transform="matrix(-1 0 0 1 389.232 268.932)" fill="#76A9FA" />
-                <rect width="13.1149" height="13.1149" rx="6.55745" transform="matrix(-1 0 0 1 388.041 270.124)" fill="#E1EFFE" />
-                <rect opacity="0.2" width="95.3811" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 333.195 266.547)" fill="#3F83F8" />
-                <rect width="46.4983" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 333.195 279.662)" fill="#76A9FA" />
+                <rect
+                  width="39.3447"
+                  height="15.4994"
+                  rx="7.74972"
+                  transform="matrix(-1 0 0 1 389.232 268.932)"
+                  fill="#76A9FA"
+                />
+                <rect
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  transform="matrix(-1 0 0 1 388.041 270.124)"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  opacity="0.2"
+                  width="95.3811"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 333.195 266.547)"
+                  fill="#3F83F8"
+                />
+                <rect
+                  width="46.4983"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 333.195 279.662)"
+                  fill="#76A9FA"
+                />
               </g>
               <g filter="url(#filter6_f_2464_8401)">
                 <g opacity="0.2" filter="url(#filter7_b_2464_8401)">
-                  <rect width="194.339" height="53.6519" rx="9.53811" transform="matrix(-1 0 0 1 388.039 65.6506)" fill="white" fill-opacity="0.3" />
+                  <rect
+                    width="194.339"
+                    height="53.6519"
+                    rx="9.53811"
+                    transform="matrix(-1 0 0 1 388.039 65.6506)"
+                    fill="white"
+                    fill-opacity="0.3"
+                  />
                   <rect
                     x="-1.19226"
                     y="1.19226"
@@ -767,13 +1383,45 @@ export default function Web3AuthOverview() {
                     stroke-width="2.38453"
                   />
                 </g>
-                <rect width="39.3447" height="15.4994" rx="7.74972" transform="matrix(-1 0 0 1 366.578 82.9384)" fill="#76A9FA" />
-                <rect width="13.1149" height="13.1149" rx="6.55745" transform="matrix(-1 0 0 1 365.385 84.1307)" fill="#E1EFFE" />
-                <rect opacity="0.2" width="95.3811" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 310.541 80.554)" fill="#3F83F8" />
-                <rect width="46.4983" height="9.53811" rx="4.76906" transform="matrix(-1 0 0 1 310.541 93.6688)" fill="#76A9FA" />
+                <rect
+                  width="39.3447"
+                  height="15.4994"
+                  rx="7.74972"
+                  transform="matrix(-1 0 0 1 366.578 82.9384)"
+                  fill="#76A9FA"
+                />
+                <rect
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  transform="matrix(-1 0 0 1 365.385 84.1307)"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  opacity="0.2"
+                  width="95.3811"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 310.541 80.554)"
+                  fill="#3F83F8"
+                />
+                <rect
+                  width="46.4983"
+                  height="9.53811"
+                  rx="4.76906"
+                  transform="matrix(-1 0 0 1 310.541 93.6688)"
+                  fill="#76A9FA"
+                />
               </g>
               <g filter="url(#filter8_b_2464_8401)">
-                <rect x="147.203" y="53.728" width="189.57" height="230.107" rx="23.8453" fill="url(#paint5_radial_2464_8401)" />
+                <rect
+                  x="147.203"
+                  y="53.728"
+                  width="189.57"
+                  height="230.107"
+                  rx="23.8453"
+                  fill="url(#paint5_radial_2464_8401)"
+                />
                 <rect
                   x="147.799"
                   y="54.3242"
@@ -783,10 +1431,18 @@ export default function Web3AuthOverview() {
                   stroke="url(#paint6_linear_2464_8401)"
                   stroke-width="1.19226"
                 />
-                <rect x="162.697" y="125.817" width="157.088" height="20.5946" rx="10.2973" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="162.697"
+                  y="125.817"
+                  width="157.088"
+                  height="20.5946"
+                  rx="10.2973"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M201.673 133.927C201.177 133.452 200.514 133.194 199.829 133.205C198.575 133.205 197.51 134.052 197.13 135.194C196.928 135.792 196.928 136.44 197.13 137.038H197.132C197.513 138.177 198.577 139.025 199.831 139.025C200.478 139.025 201.034 138.859 201.465 138.566V138.565C201.972 138.229 202.318 137.7 202.426 137.101H199.829V135.247H204.363C204.42 135.569 204.446 135.898 204.446 136.225C204.446 137.69 203.924 138.929 203.015 139.767L203.016 139.768C202.219 140.504 201.126 140.931 199.829 140.931C198.011 140.931 196.349 139.904 195.533 138.278C194.851 136.917 194.851 135.314 195.533 133.953C196.349 132.325 198.011 131.299 199.829 131.299C201.023 131.285 202.177 131.734 203.046 132.552L201.673 133.927Z"
                   fill="white"
                 />
@@ -859,17 +1515,41 @@ export default function Web3AuthOverview() {
                   d="M285.177 138.282C284.763 138.282 284.407 138.193 284.109 138.016C283.812 137.838 283.582 137.587 283.42 137.264C283.26 136.939 283.18 136.559 283.18 136.123C283.18 135.692 283.26 135.313 283.42 134.984C283.582 134.656 283.808 134.4 284.098 134.216C284.389 134.031 284.729 133.939 285.119 133.939C285.356 133.939 285.585 133.978 285.808 134.057C286.03 134.135 286.229 134.258 286.406 134.426C286.582 134.594 286.722 134.812 286.824 135.08C286.926 135.347 286.977 135.67 286.977 136.052V136.342H283.641V135.729H286.176C286.176 135.513 286.133 135.323 286.045 135.157C285.958 134.989 285.835 134.857 285.676 134.76C285.52 134.663 285.336 134.615 285.125 134.615C284.895 134.615 284.695 134.672 284.524 134.785C284.354 134.896 284.223 135.042 284.13 135.223C284.039 135.401 283.994 135.596 283.994 135.805V136.284C283.994 136.565 284.043 136.804 284.141 137.001C284.241 137.198 284.381 137.349 284.559 137.453C284.738 137.555 284.946 137.606 285.185 137.606C285.34 137.606 285.481 137.584 285.608 137.54C285.736 137.495 285.846 137.427 285.939 137.338C286.032 137.248 286.103 137.138 286.152 137.007L286.925 137.146C286.863 137.374 286.752 137.574 286.591 137.745C286.433 137.915 286.234 138.047 285.993 138.142C285.755 138.235 285.482 138.282 285.177 138.282Z"
                   fill="white"
                 />
-                <rect x="162.697" y="151.744" width="49.4743" height="20.5946" rx="10.2973" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="162.697"
+                  y="151.744"
+                  width="49.4743"
+                  height="20.5946"
+                  rx="10.2973"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
                   d="M185.406 166.319C189.039 166.319 191.026 163.027 191.026 160.173C191.026 160.081 191.024 159.986 191.021 159.894C191.407 159.588 191.741 159.209 192.006 158.775C191.646 158.951 191.264 159.065 190.872 159.115C191.284 158.844 191.593 158.42 191.741 157.92C191.353 158.171 190.929 158.349 190.487 158.444C190.189 158.098 189.795 157.869 189.366 157.792C188.937 157.715 188.497 157.795 188.113 158.019C187.73 158.244 187.425 158.6 187.245 159.032C187.065 159.465 187.021 159.951 187.119 160.414C186.334 160.371 185.566 160.148 184.864 159.759C184.163 159.371 183.544 158.825 183.048 158.159C182.796 158.634 182.719 159.197 182.832 159.732C182.946 160.268 183.242 160.736 183.659 161.041C183.346 161.03 183.039 160.938 182.764 160.772V160.799C182.764 161.297 182.922 161.781 183.211 162.167C183.5 162.553 183.902 162.818 184.349 162.917C184.059 163.004 183.754 163.016 183.458 162.954C183.584 163.383 183.83 163.758 184.161 164.027C184.491 164.296 184.891 164.446 185.303 164.455C184.603 165.056 183.739 165.382 182.849 165.38C182.691 165.38 182.534 165.37 182.377 165.349C183.281 165.983 184.332 166.32 185.406 166.319Z"
                   fill="white"
                 />
-                <rect x="216.501" y="151.744" width="49.4743" height="20.096" rx="10.048" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="216.501"
+                  y="151.744"
+                  width="49.4743"
+                  height="20.096"
+                  rx="10.048"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
                   d="M244.335 158.439C243.721 158.131 243.063 157.904 242.375 157.774C242.362 157.771 242.35 157.777 242.343 157.79C242.259 157.955 242.165 158.17 242.099 158.339C241.359 158.218 240.623 158.218 239.898 158.339C239.832 158.166 239.735 157.955 239.65 157.79C239.644 157.778 239.631 157.771 239.619 157.774C238.931 157.903 238.273 158.13 237.659 158.439C237.653 158.442 237.649 158.446 237.646 158.451C236.398 160.494 236.056 162.486 236.223 164.454C236.224 164.463 236.229 164.472 236.236 164.478C237.06 165.141 237.857 165.543 238.64 165.809C238.653 165.814 238.666 165.809 238.674 165.797C238.859 165.52 239.024 165.228 239.166 164.921C239.174 164.903 239.166 164.882 239.149 164.875C238.887 164.766 238.638 164.633 238.398 164.482C238.379 164.47 238.378 164.441 238.395 164.426C238.446 164.385 238.496 164.342 238.544 164.298C238.553 164.29 238.565 164.289 238.575 164.294C240.151 165.082 241.857 165.082 243.414 164.294C243.425 164.288 243.437 164.29 243.446 164.298C243.494 164.341 243.545 164.385 243.596 164.426C243.613 164.441 243.612 164.47 243.593 164.482C243.353 164.636 243.104 164.766 242.841 164.874C242.824 164.881 242.817 164.903 242.825 164.921C242.97 165.228 243.135 165.52 243.317 165.797C243.324 165.809 243.338 165.814 243.35 165.809C244.137 165.543 244.935 165.141 245.759 164.478C245.766 164.472 245.77 164.464 245.771 164.454C245.972 162.179 245.435 160.203 244.347 158.452C244.345 158.446 244.34 158.442 244.335 158.439ZM239.401 163.256C238.927 163.256 238.536 162.779 238.536 162.193C238.536 161.607 238.919 161.13 239.401 161.13C239.887 161.13 240.274 161.611 240.267 162.193C240.267 162.779 239.883 163.256 239.401 163.256ZM242.601 163.256C242.126 163.256 241.735 162.779 241.735 162.193C241.735 161.607 242.119 161.13 242.601 161.13C243.087 161.13 243.474 161.611 243.466 162.193C243.466 162.779 243.087 163.256 242.601 163.256Z"
                   fill="white"
                 />
-                <rect x="270.312" y="151.744" width="49.4743" height="20.5946" rx="10.2973" stroke="white" stroke-width="0.596132" />
+                <rect
+                  x="270.312"
+                  y="151.744"
+                  width="49.4743"
+                  height="20.5946"
+                  rx="10.2973"
+                  stroke="white"
+                  stroke-width="0.596132"
+                />
                 <path
                   d="M299.621 162.07C299.621 159.403 297.466 157.241 294.807 157.241C292.148 157.241 289.992 159.403 289.992 162.07C289.992 164.481 291.753 166.479 294.054 166.841V163.466H292.832V162.07H294.054V161.006C294.054 159.796 294.773 159.127 295.873 159.127C296.399 159.127 296.951 159.222 296.951 159.222V160.41H296.344C295.745 160.41 295.559 160.782 295.559 161.165V162.07H296.894L296.681 163.466H295.559V166.841C297.861 166.479 299.621 164.481 299.621 162.07Z"
                   fill="white"
@@ -1031,8 +1711,23 @@ export default function Web3AuthOverview() {
                 />
               </g>
               <g filter="url(#filter10_b_2464_8401)">
-                <rect x="64.9375" y="214.684" width="103.727" height="41.7292" rx="9.53811" fill="url(#paint7_radial_2464_8401)" />
-                <rect x="64.9375" y="214.684" width="103.727" height="41.7292" rx="9.53811" fill="white" fill-opacity="0.2" />
+                <rect
+                  x="64.9375"
+                  y="214.684"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="url(#paint7_radial_2464_8401)"
+                />
+                <rect
+                  x="64.9375"
+                  y="214.684"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="white"
+                  fill-opacity="0.2"
+                />
                 <rect
                   x="65.5336"
                   y="215.28"
@@ -1049,12 +1744,41 @@ export default function Web3AuthOverview() {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
-                <rect x="120.977" y="227.799" width="30.9989" height="15.4994" rx="7.74972" fill="#E1EFFE" />
-                <rect x="137.668" y="228.991" width="13.1149" height="13.1149" rx="6.55745" fill="#3F83F8" />
+                <rect
+                  x="120.977"
+                  y="227.799"
+                  width="30.9989"
+                  height="15.4994"
+                  rx="7.74972"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  x="137.668"
+                  y="228.991"
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  fill="#3F83F8"
+                />
               </g>
               <g filter="url(#filter11_bf_2464_8401)">
-                <rect x="321.273" y="9.61426" width="103.727" height="41.7292" rx="9.53811" fill="url(#paint9_radial_2464_8401)" />
-                <rect x="321.273" y="9.61426" width="103.727" height="41.7292" rx="9.53811" fill="white" fill-opacity="0.2" />
+                <rect
+                  x="321.273"
+                  y="9.61426"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="url(#paint9_radial_2464_8401)"
+                />
+                <rect
+                  x="321.273"
+                  y="9.61426"
+                  width="103.727"
+                  height="41.7292"
+                  rx="9.53811"
+                  fill="white"
+                  fill-opacity="0.2"
+                />
                 <rect
                   x="321.87"
                   y="10.2104"
@@ -1065,13 +1789,27 @@ export default function Web3AuthOverview() {
                   stroke-width="1.19226"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M344.224 40.9113C345.586 40.9113 346.746 40.0404 347.175 38.8249H356.221C358.814 38.8249 360.915 36.723 360.915 34.1303C360.915 31.5376 358.814 29.4358 356.221 29.4358H344.745C343.305 29.4358 342.137 28.2681 342.137 26.8277C342.137 25.3873 343.305 24.2196 344.745 24.2196H347.965L346.616 25.5684L348.091 27.0438L351.958 23.1764L348.091 19.309L346.616 20.7844L347.965 22.1332H344.745C342.153 22.1332 340.051 24.235 340.051 26.8277C340.051 29.4204 342.153 31.5222 344.745 31.5222H356.221C357.661 31.5222 358.829 32.6899 358.829 34.1303C358.829 35.5707 357.661 36.7384 356.221 36.7384H347.175C346.746 35.5228 345.586 34.6519 344.224 34.6519C342.495 34.6519 341.094 36.0531 341.094 37.7816C341.094 39.5101 342.495 40.9113 344.224 40.9113ZM343.18 37.7815C343.18 37.2054 343.648 36.7383 344.224 36.7383C344.8 36.7383 345.267 37.2054 345.267 37.7815C345.267 38.3577 344.8 38.8248 344.224 38.8248C343.648 38.8248 343.18 38.3577 343.18 37.7815ZM356.742 20.0466C358.471 20.0466 359.872 21.4478 359.872 23.1763C359.872 24.9048 358.471 26.306 356.742 26.306C355.014 26.306 353.613 24.9048 353.613 23.1763C353.613 21.4478 355.014 20.0466 356.742 20.0466ZM355.699 23.1763C355.699 22.6001 356.167 22.133 356.743 22.133C357.319 22.133 357.786 22.6001 357.786 23.1763C357.786 23.7524 357.319 24.2195 356.743 24.2195C356.167 24.2195 355.699 23.7524 355.699 23.1763Z"
                   fill="white"
                 />
-                <rect x="377.311" y="22.7292" width="30.9989" height="15.4994" rx="7.74972" fill="#E1EFFE" />
-                <rect x="394.002" y="23.9214" width="13.1149" height="13.1149" rx="6.55745" fill="#3F83F8" />
+                <rect
+                  x="377.311"
+                  y="22.7292"
+                  width="30.9989"
+                  height="15.4994"
+                  rx="7.74972"
+                  fill="#E1EFFE"
+                />
+                <rect
+                  x="394.002"
+                  y="23.9214"
+                  width="13.1149"
+                  height="13.1149"
+                  rx="6.55745"
+                  fill="#3F83F8"
+                />
               </g>
               <defs>
                 <filter
@@ -1085,8 +1823,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter1_b_2464_8401"
@@ -1099,8 +1846,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter2_f_2464_8401"
@@ -1112,8 +1868,16 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                  <feGaussianBlur stdDeviation="7.74972" result="effect1_foregroundBlur_2464_8401" />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="7.74972"
+                    result="effect1_foregroundBlur_2464_8401"
+                  />
                 </filter>
                 <filter
                   id="filter3_b_2464_8401"
@@ -1126,8 +1890,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter4_f_2464_8401"
@@ -1139,8 +1912,16 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                  <feGaussianBlur stdDeviation="7.74972" result="effect1_foregroundBlur_2464_8401" />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="7.74972"
+                    result="effect1_foregroundBlur_2464_8401"
+                  />
                 </filter>
                 <filter
                   id="filter5_b_2464_8401"
@@ -1153,8 +1934,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter6_f_2464_8401"
@@ -1166,8 +1956,16 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                  <feGaussianBlur stdDeviation="7.74972" result="effect1_foregroundBlur_2464_8401" />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="7.74972"
+                    result="effect1_foregroundBlur_2464_8401"
+                  />
                 </filter>
                 <filter
                   id="filter7_b_2464_8401"
@@ -1180,8 +1978,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="5.96132" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter8_b_2464_8401"
@@ -1194,8 +2001,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.2298" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter9_d_2464_8401"
@@ -1207,12 +2023,29 @@ export default function Web3AuthOverview() {
                   color-interpolation-filters="sRGB"
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                  <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                  <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                  />
                   <feOffset dx="1.86087" dy="1.86087" />
                   <feGaussianBlur stdDeviation="5.58262" />
-                  <feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.392157 0 0 0 0 1 0 0 0 0.05 0" />
-                  <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2464_8401" result="shape" />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0.0117647 0 0 0 0 0.392157 0 0 0 0 1 0 0 0 0.05 0"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter10_b_2464_8401"
@@ -1225,8 +2058,17 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.2298" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
                 </filter>
                 <filter
                   id="filter11_bf_2464_8401"
@@ -1239,31 +2081,78 @@ export default function Web3AuthOverview() {
                 >
                   <feFlood flood-opacity="0" result="BackgroundImageFix" />
                   <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.2298" />
-                  <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_2464_8401" />
-                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_2464_8401" result="shape" />
-                  <feGaussianBlur stdDeviation="4.76906" result="effect2_foregroundBlur_2464_8401" />
+                  <feComposite
+                    in2="SourceAlpha"
+                    operator="in"
+                    result="effect1_backgroundBlur_2464_8401"
+                  />
+                  <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_backgroundBlur_2464_8401"
+                    result="shape"
+                  />
+                  <feGaussianBlur
+                    stdDeviation="4.76906"
+                    result="effect2_foregroundBlur_2464_8401"
+                  />
                 </filter>
-                <linearGradient id="paint0_linear_2464_8401" x1="67.397" y1="69.4137" x2="74.7975" y2="166.503" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint0_linear_2464_8401"
+                  x1="67.397"
+                  y1="69.4137"
+                  x2="74.7975"
+                  y2="166.503"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint1_linear_2464_8401" x1="32.5662" y1="1.39356e-06" x2="49.3194" y2="91.5063" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint1_linear_2464_8401"
+                  x1="32.5662"
+                  y1="1.39356e-06"
+                  x2="49.3194"
+                  y2="91.5063"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint2_linear_2464_8401" x1="47.2284" y1="163.416" x2="69.3416" y2="252.501" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint2_linear_2464_8401"
+                  x1="47.2284"
+                  y1="163.416"
+                  x2="69.3416"
+                  y2="252.501"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint3_linear_2464_8401" x1="24.0194" y1="1.39356e-06" x2="46.1326" y2="89.0844" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint3_linear_2464_8401"
+                  x1="24.0194"
+                  y1="1.39356e-06"
+                  x2="46.1326"
+                  y2="89.0844"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
                 </linearGradient>
-                <linearGradient id="paint4_linear_2464_8401" x1="24.0194" y1="1.39356e-06" x2="46.1326" y2="89.0844" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint4_linear_2464_8401"
+                  x1="24.0194"
+                  y1="1.39356e-06"
+                  x2="46.1326"
+                  y2="89.0844"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.466425" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -1281,7 +2170,14 @@ export default function Web3AuthOverview() {
                   <stop offset="0.651042" stop-color="#2C9BEC" stop-opacity="0.36" />
                   <stop offset="0.848431" stop-color="#6E8EE0" stop-opacity="0.6" />
                 </radialGradient>
-                <linearGradient id="paint6_linear_2464_8401" x1="140.023" y1="252.829" x2="399.877" y2="266.125" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint6_linear_2464_8401"
+                  x1="140.023"
+                  y1="252.829"
+                  x2="399.877"
+                  y2="266.125"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -1299,7 +2195,14 @@ export default function Web3AuthOverview() {
                   <stop offset="0.651042" stop-color="#2C9BEC" stop-opacity="0.36" />
                   <stop offset="0.848431" stop-color="#6E8EE0" stop-opacity="0.6" />
                 </radialGradient>
-                <linearGradient id="paint8_linear_2464_8401" x1="61.0087" y1="250.79" x2="200.246" y2="272.287" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint8_linear_2464_8401"
+                  x1="61.0087"
+                  y1="250.79"
+                  x2="200.246"
+                  y2="272.287"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />
@@ -1317,7 +2220,14 @@ export default function Web3AuthOverview() {
                   <stop offset="0.651042" stop-color="#2C9BEC" stop-opacity="0.36" />
                   <stop offset="0.848431" stop-color="#6E8EE0" stop-opacity="0.6" />
                 </radialGradient>
-                <linearGradient id="paint10_linear_2464_8401" x1="317.345" y1="45.7206" x2="456.582" y2="67.2177" gradientUnits="userSpaceOnUse">
+                <linearGradient
+                  id="paint10_linear_2464_8401"
+                  x1="317.345"
+                  y1="45.7206"
+                  x2="456.582"
+                  y2="67.2177"
+                  gradientUnits="userSpaceOnUse"
+                >
                   <stop stop-color="#66D4F7" />
                   <stop offset="0.322917" stop-color="#4D92FF" />
                   <stop offset="1" stop-color="#BB65FF" />

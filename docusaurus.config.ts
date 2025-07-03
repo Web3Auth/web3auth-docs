@@ -184,10 +184,6 @@ const config: Config = {
       defer: false,
     },
     {
-      src: "https://polyfill.io/v3/polyfill.min.js?features=MutationObserver",
-      async: true,
-    },
-    {
       src: baseUrl + "js/code-focus.js",
       async: false,
       defer: true,
