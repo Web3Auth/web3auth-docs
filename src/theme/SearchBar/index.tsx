@@ -31,10 +31,48 @@ export default function SearchBar() {
       showSearchButtonShortcut: false,
       useCustomSearchButton: true,
     },
-    enableLogging: true,
+    enableLogging: false,
     enableCaching: true,
     recaptcha: {
       siteKey: "6LeotlkrAAAAAEREf2umQgDoO2l3zfqUdJR599LV",
+    },
+    features: {
+      // Conversational memory for context-aware follow-up questions
+      conversationalMemory: {
+        enabled: true,
+        sessionDuration: 3600, // Session duration in seconds (default: 1 hour)
+      },
+
+      // Multi-source search (GitHub, blog, changelog integration)
+      multiSource: {
+        enabled: true,
+        // GitHub integration for issues and discussions
+        github: {
+          repo: "Web3Auth/web3auth-web", // Your GitHub repository
+          // Note: GitHub Personal Access Token should be configured in the backend environment
+          // as GITHUB_TOKEN for security reasons
+          searchTypes: ["issues", "discussions"], // What to search
+          maxResults: 5, // Max results from GitHub (default: 5)
+        },
+        // Blog search integration
+        blog: {
+          url: "https://blog.web3auth.io",
+          platform: "ghost", // 'wordpress', 'ghost', 'medium', or 'generic'
+          maxResults: 3, // Max blog posts to include (default: 3)
+        },
+        // Source weighting for result aggregation
+        aggregationWeights: {
+          documentation: 0.8, // Primary weight for docs
+          github: 0.1, // Secondary weight for GitHub
+          blog: 0.1, // Tertiary weight for blog
+        },
+      },
+
+      // Other advanced features
+      queryUnderstanding: true, // Enhanced query analysis (default: true)
+      intelligentRanking: true, // Smart result ranking (default: true)
+      followUpSuggestions: true, // Generate follow-up questions (default: true)
+      qualityScoring: true, // Answer quality assessment (default: true)
     },
   };
   // @ts-ignore
