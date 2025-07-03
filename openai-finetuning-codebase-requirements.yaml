@@ -1,0 +1,253 @@
+# Codebase Information Requirements for OpenAI Fine-Tuning
+# Questions and Data Needs for the Other Agent
+
+critical_information_needed:
+  documentation_structure:
+    questions_for_agent:
+      - "What is the complete structure of MDX components used in the documentation?"
+      - "Are there any custom React components that contain important documentation content?"
+      - "How are code examples structured and validated in the documentation?"
+      - "What is the format of the CommonQuestions component and how is it used?"
+      - "Are there any auto-generated documentation sections?"
+
+    specific_locations_to_examine:
+      - /src/common/sdk/: "Common SDK documentation patterns"
+      - /src/components/CommonQuestions/: "Q&A component structure"
+      - /src/common/docs/: "Shared documentation components"
+      - /docs/**/examples.mdx: "All example files across SDKs"
+
+  code_examples_extraction:
+    requirements:
+      - all_sdk_initialization_patterns:
+          description: "Need initialization code for every SDK variant"
+          locations:
+            - "PnP Web SDKs (React, Vue, JS)"
+            - "PnP Mobile SDKs (Android, iOS, Flutter, React Native)"
+            - "SFA SDKs (all platforms)"
+            - "MPC Core Kit SDKs"
+            - "Gaming SDKs (Unity, Unreal)"
+
+      - authentication_implementations:
+          description: "Code for all authentication methods"
+          needed_examples:
+            - "Social logins (Google, Facebook, Discord, etc.)"
+            - "Custom JWT authentication"
+            - "Passwordless authentication"
+            - "External wallet connections"
+            - "MFA implementations"
+
+      - blockchain_connections:
+          description: "Connection code for all supported chains"
+          priorities:
+            - "EVM chains (all 43+ variants)"
+            - "Solana integration"
+            - "Near protocol"
+            - "Other chains (Bitcoin, Algorand, etc.)"
+            - "Custom chain configuration"
+
+  api_specifications:
+    questions_for_agent:
+      - "Where are all the API method signatures documented?"
+      - "How are function parameters and return types specified?"
+      - "Are there TypeScript type definitions we should extract?"
+      - "What is the versioning strategy for APIs?"
+
+    specific_needs:
+      - method_signatures: "Complete list of all SDK methods"
+      - parameter_types: "TypeScript/Flow types for all parameters"
+      - return_values: "Expected return values and error types"
+      - deprecated_methods: "List of deprecated APIs and migration paths"
+
+  troubleshooting_content:
+    data_extraction_needs:
+      - error_messages:
+          description: "All possible error messages and codes"
+          format_needed:
+            - error_code: "Unique identifier"
+            - error_message: "User-facing message"
+            - causes: "Common causes"
+            - solutions: "Step-by-step fixes"
+
+      - common_issues:
+          description: "Frequently encountered problems"
+          categories:
+            - "Authentication failures"
+            - "Network/connection issues"
+            - "Configuration problems"
+            - "Integration errors"
+            - "Platform-specific issues"
+
+  configuration_patterns:
+    questions_for_agent:
+      - "What are all the configuration options for each SDK?"
+      - "How is the Web3Auth Dashboard configuration related to SDK config?"
+      - "What are the environment-specific configurations?"
+      - "Are there any configuration validation rules?"
+
+    needed_information:
+      - initialization_options: "All possible init parameters"
+      - chain_configurations: "Chain-specific settings"
+      - auth_provider_configs: "Provider-specific settings"
+      - advanced_options: "MPC, whitelabel, custom UI settings"
+
+data_quality_requirements:
+  code_validation:
+    - syntax_correctness: "All code must be syntactically valid"
+    - import_completeness: "All necessary imports included"
+    - version_compatibility: "Code matches documented SDK versions"
+    - runnable_examples: "Examples should be immediately executable"
+
+  content_accuracy:
+    - technical_accuracy: "All technical details must be correct"
+    - up_to_date: "Content reflects latest SDK versions"
+    - consistency: "Terminology used consistently"
+    - completeness: "No partial or incomplete examples"
+
+extraction_priorities:
+  high_priority:
+    - "Complete SDK initialization examples"
+    - "Authentication flow implementations"
+    - "Error handling patterns"
+    - "Common troubleshooting solutions"
+    - "Migration guides for recent versions"
+
+  llms_txt_usage:
+    extraction_guidance:
+      - "Use llms.txt as a checklist to ensure complete coverage"
+      - "Reference the documentation structure to organize extracted data"
+      - "Follow the 'For AI/LLM Training' section for key extraction areas"
+      - "Validate extracted content against the feature inventory in llms.txt"
+
+  medium_priority:
+    - "Advanced configuration options"
+    - "Custom authentication setups"
+    - "Blockchain-specific integrations"
+    - "Platform-specific considerations"
+
+  low_priority:
+    - "Historical migration guides (very old versions)"
+    - "Experimental features"
+    - "Internal implementation details"
+
+specific_file_analysis_needed:
+  component_files:
+    - /src/components/CommonQuestions/:
+        purpose: "Understand Q&A structure"
+        extract: "Question patterns and categorization"
+
+    - /src/common/sdk/:
+        purpose: "Common SDK patterns"
+        extract: "Shared code examples and patterns"
+
+    - /src/common/docs/:
+        purpose: "Documentation templates"
+        extract: "Reusable documentation components"
+
+  documentation_files:
+    - authentication_docs:
+        files: "/docs/authentication/**/*.mdx"
+        extract: "All auth provider configurations"
+
+    - sdk_usage_docs:
+        files: "/docs/sdk/**/usage.mdx"
+        extract: "SDK-specific usage patterns"
+
+    - troubleshooting_docs:
+        files: "/docs/troubleshooting/*.mdx"
+        extract: "Problem-solution pairs"
+
+questions_for_other_agent:
+  technical_questions:
+    - "How can we programmatically extract all code blocks from MDX files while preserving context?"
+    - "What's the best way to parse the CommonQuestions component to extract Q&A pairs?"
+    - "Are there any build scripts that generate documentation we should be aware of?"
+    - "How can we ensure extracted code examples maintain their proper imports and dependencies?"
+    - "Can we use the llms.txt file to guide our extraction process for better coverage?"
+    - "Should we create additional context files beyond llms.txt for specific domains?"
+
+  content_questions:
+    - "Is there a canonical list of all supported authentication providers and their configurations?"
+    - "Where are the most up-to-date API references stored?"
+    - "Are there any undocumented features or beta features we should exclude?"
+    - "What's the relationship between different SDK versions and their documentation?"
+
+  validation_questions:
+    - "How can we validate that extracted code examples are correct?"
+    - "Is there a test suite we can reference for expected behaviors?"
+    - "What are the most critical use cases we must ensure are covered?"
+    - "How do we handle platform-specific code variations?"
+
+data_format_requirements:
+  training_data_structure:
+    ideal_format:
+      system_prompt: "You are a Web3Auth integration expert assistant."
+      user_prompt_patterns:
+        - "How do I {action} with Web3Auth {sdk}?"
+        - "Fix this error: {error_message}"
+        - "Write code to {task}"
+        - "Migrate from {old_version} to {new_version}"
+
+      assistant_response_requirements:
+        - include_explanation: true
+        - include_code: true
+        - include_references: true
+        - version_specific: true
+
+  example_training_instance:
+    messages:
+      - role: "system"
+        content: "You are a Web3Auth integration expert assistant."
+      - role: "user"
+        content: "How do I initialize Web3Auth in a React application with Ethereum mainnet?"
+      - role: "assistant"
+        content: |
+          To initialize Web3Auth in a React application with Ethereum mainnet, follow these steps:
+
+          1. First, install the required packages:
+          ```bash
+          npm install @web3auth/modal @web3auth/base
+          ```
+
+          2. Initialize Web3Auth with your configuration:
+          ```javascript
+          import { Web3Auth } from "@web3auth/modal";
+          import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+          const web3auth = new Web3Auth({
+            clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get from dashboard
+            chainConfig: {
+              chainNamespace: CHAIN_NAMESPACES.EIP155,
+              chainId: "0x1", // Ethereum Mainnet
+              rpcTarget: "https://rpc.ankr.com/eth", // or your preferred RPC
+            },
+            web3AuthNetwork: "sapphire_mainnet", // or "sapphire_devnet" for testing
+          });
+
+          // Initialize the modal
+          await web3auth.initModal();
+          ```
+
+          3. Connect when user clicks login:
+          ```javascript
+          const web3authProvider = await web3auth.connect();
+          ```
+
+          Make sure to replace "YOUR_WEB3AUTH_CLIENT_ID" with your actual client ID from the Web3Auth Dashboard.
+
+preservation_considerations:
+  backwards_compatibility:
+    - "Include version numbers in training data"
+    - "Maintain knowledge of deprecated methods"
+    - "Include migration paths in responses"
+
+  feature_completeness:
+    - "Cover all authentication methods"
+    - "Include all supported blockchains"
+    - "Document all SDK variants"
+    - "Preserve platform-specific nuances"
+
+  accuracy_maintenance:
+    - "Regular retraining schedule"
+    - "Version update tracking"
+    - "Deprecation handling"
+    - "New feature integration"
