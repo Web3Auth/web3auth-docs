@@ -352,10 +352,6 @@ const config: Config = {
             from: "/legal/privacy-policy",
             to: "/change-of-ownership",
           },
-          {
-            from: "/legal/terms-and-conditions",
-            to: "/change-of-ownership",
-          },
         ],
         createRedirects(existingPath) {
           // Only create redirects if the path matches certain patterns
