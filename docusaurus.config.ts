@@ -344,14 +344,6 @@ const config: Config = {
             from: "/pnp/features/mfa",
             to: "/features/mfa",
           },
-          {
-            from: "/legal/cookie-policy",
-            to: "/change-of-ownership",
-          },
-          {
-            from: "/legal/privacy-policy",
-            to: "/change-of-ownership",
-          },
         ],
         createRedirects(existingPath) {
           // Only create redirects if the path matches certain patterns
