@@ -11,7 +11,12 @@ export default function QuickNavigation() {
       <div className={styles.cardContainer}>
         <Link className={styles.card} to={`${baseUrl}auth-provider-setup/`}>
           <div className={styles.cardIconContainer}>
-            <svg className={styles.cardIcon} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className={styles.cardIcon}
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -22,12 +27,20 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Auth Provider Setup</h5>
-            <p>Guidance on configuring authentication providers to integrate seamlessly with Web3Auth for secure user verification.</p>
+            <p>
+              Guidance on configuring authentication providers to integrate seamlessly with Web3Auth
+              for secure user verification.
+            </p>
           </div>
         </Link>
         <Link className={styles.card} to={`${baseUrl}connect-blockchain/`}>
           <div className={styles.cardIconContainer}>
-            <svg className={styles.cardIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className={styles.cardIcon}
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -38,14 +51,22 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Connect any blockchain</h5>
-            <p>Detailed instructions for integrating Web3Auth with various blockchains, ensuring seamless connectivity for your dApp.</p>
+            <p>
+              Detailed instructions for integrating Web3Auth with various blockchains, ensuring
+              seamless connectivity for your dApp.
+            </p>
           </div>
         </Link>
       </div>
       <div className={styles.cardContainer}>
         <Link className={styles.card} to={`${baseUrl}examples`}>
           <div className={styles.cardIconContainer}>
-            <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
+            <svg
+              viewBox="0 0 67 67"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.cardIcon}
+            >
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -56,15 +77,25 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Examples</h5>
-            <p>Discover our collection of examples and sample applications to see our SDKs in action across various use cases.</p>
+            <p>
+              Discover our collection of examples and sample applications to see our SDKs in action
+              across various use cases.
+            </p>
           </div>
         </Link>
         <Link className={styles.card} to={`${baseUrl}infrastructure`}>
           <div className={styles.cardIconContainer}>
-            <svg width="67" height="68" viewBox="0 0 67 68" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
+            <svg
+              width="67"
+              height="68"
+              viewBox="0 0 67 68"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.cardIcon}
+            >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M6.69922 16.8479C6.69922 15.0709 7.40511 13.3668 8.6616 12.1103C9.9181 10.8538 11.6223 10.1479 13.3992 10.1479H53.5992C55.3762 10.1479 57.0803 10.8538 58.3368 12.1103C59.5933 13.3668 60.2992 15.0709 60.2992 16.8479V23.5479C60.2992 25.3248 59.5933 27.029 58.3368 28.2855C57.0803 29.542 55.3762 30.2479 53.5992 30.2479H13.3992C11.6223 30.2479 9.9181 29.542 8.6616 28.2855C7.40511 27.029 6.69922 25.3248 6.69922 23.5479V16.8479ZM53.5992 20.1979C53.5992 21.0864 53.2463 21.9384 52.618 22.5667C51.9898 23.1949 51.1377 23.5479 50.2492 23.5479C49.3607 23.5479 48.5087 23.1949 47.8804 22.5667C47.2522 21.9384 46.8992 21.0864 46.8992 20.1979C46.8992 19.3094 47.2522 18.4573 47.8804 17.8291C48.5087 17.2008 49.3607 16.8479 50.2492 16.8479C51.1377 16.8479 51.9898 17.2008 52.618 17.8291C53.2463 18.4573 53.5992 19.3094 53.5992 20.1979ZM6.69922 43.6479C6.69922 41.8709 7.40511 40.1668 8.6616 38.9103C9.9181 37.6538 11.6223 36.9479 13.3992 36.9479H53.5992C55.3762 36.9479 57.0803 37.6538 58.3368 38.9103C59.5933 40.1668 60.2992 41.8709 60.2992 43.6479V50.3479C60.2992 52.1248 59.5933 53.829 58.3368 55.0855C57.0803 56.342 55.3762 57.0479 53.5992 57.0479H13.3992C11.6223 57.0479 9.9181 56.342 8.6616 55.0855C7.40511 53.829 6.69922 52.1248 6.69922 50.3479V43.6479ZM53.5992 46.9979C53.5992 47.8864 53.2463 48.7384 52.618 49.3667C51.9898 49.9949 51.1377 50.3479 50.2492 50.3479C49.3607 50.3479 48.5087 49.9949 47.8804 49.3667C47.2522 48.7384 46.8992 47.8864 46.8992 46.9979C46.8992 46.1094 47.2522 45.2573 47.8804 44.6291C48.5087 44.0008 49.3607 43.6479 50.2492 43.6479C51.1377 43.6479 51.9898 44.0008 52.618 44.6291C53.2463 45.2573 53.5992 46.1094 53.5992 46.9979Z"
                 fill="currentColor"
               />
@@ -72,7 +103,10 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Infrastructure</h5>
-            <p>Comprehensive documentation detailing the architecture and setup managing Web3Auth's infrastructure.</p>
+            <p>
+              Comprehensive documentation detailing the architecture and setup managing Web3Auth's
+              infrastructure.
+            </p>
           </div>
         </Link>
       </div>

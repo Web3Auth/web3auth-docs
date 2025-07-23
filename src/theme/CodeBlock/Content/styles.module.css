@@ -1,0 +1,299 @@
+.codeBlockContent {
+    position: relative;
+    /* rtl:ignore */
+    direction: ltr;
+    border-radius: inherit;
+}
+
+.codeBlockTitle {
+    border-bottom: 1px solid var(--ifm-color-emphasis-300);
+    font-size: var(--ifm-code-font-size);
+    font-weight: 500;
+    padding: 0.75rem var(--ifm-pre-padding);
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.codeBlock {
+    --ifm-pre-background: var(--prism-background-color);
+    margin: 0;
+    padding: 0;
+}
+
+.codeBlockTitle+.codeBlockContent .codeBlock {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.codeBlockStandalone {
+    padding: 0;
+}
+
+.codeBlockLines {
+    font: inherit;
+    /* rtl:ignore */
+    float: left;
+    min-width: 100%;
+    padding: var(--ifm-pre-padding);
+}
+
+.codeBlockLinesWithNumbering {
+    display: table;
+    padding: var(--ifm-pre-padding) 0;
+}
+
+@media print {
+    .codeBlockLines {
+        white-space: pre-wrap;
+    }
+}
+
+.buttonGroup {
+    color: var(--prism-color);
+    display: flex;
+    column-gap: 0.2rem;
+    position: absolute;
+    top: calc(var(--ifm-pre-padding) / 2);
+    /* rtl:ignore */
+    right: calc(var(--ifm-pre-padding) / 2);
+}
+
+.codeButton {
+    display: flex;
+    align-items: center;
+    background: var(--prism-background-color);
+    color: var(--prism-color);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: var(--ifm-global-border-radius);
+    padding: 0.4rem;
+    line-height: 0;
+    transition: all var(--ifm-transition-fast) ease;
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.codeButton:focus-visible,
+.codeButton:hover {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.codeBlockContent:hover .codeButton {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Twoslash-specific styles */
+.codeBlockContainer {
+    position: relative;
+}
+
+.twoslashBlock {
+    position: relative;
+}
+
+.twoslashLineContainer {
+    position: relative;
+    display: block;
+}
+
+.twoslashToken {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted var(--ifm-color-primary);
+}
+
+.twoslashToken:hover {
+    background-color: var(--ifm-color-primary-lightest);
+    border-radius: 2px;
+}
+
+.twoslashPopup {
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    background: var(--ifm-background-surface-color);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 4px;
+    box-shadow: var(--ifm-global-shadow-md);
+    padding: 8px 12px;
+    margin-top: 4px;
+    max-width: 400px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    pointer-events: none;
+}
+
+.twoslashLineContainer:hover .twoslashPopup {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.twoslashPopupContent {
+    color: var(--ifm-color-content);
+}
+
+.twoslashPopupContent code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+.twoslashError {
+    position: absolute;
+    bottom: -2px;
+    height: 2px;
+    background: repeating-linear-gradient(45deg,
+            var(--ifm-color-danger),
+            var(--ifm-color-danger) 2px,
+            transparent 2px,
+            transparent 4px);
+    cursor: help;
+    pointer-events: auto;
+}
+
+.twoslashError::after {
+    content: attr(title);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--ifm-color-danger-darkest);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 1001;
+    max-width: 300px;
+    word-break: break-word;
+    white-space: normal;
+    pointer-events: none;
+}
+
+.twoslashError:hover::after {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.errorLine {
+    background-color: rgba(244, 63, 94, 0.1);
+}
+
+.highlightLine {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .twoslashPopup {
+    background: var(--ifm-background-surface-color);
+    border-color: var(--ifm-color-emphasis-600);
+}
+
+[data-theme='dark'] .twoslashToken:hover {
+    background-color: var(--ifm-color-primary-darkest);
+}
+
+[data-theme='dark'] .errorLine {
+    background-color: rgba(244, 63, 94, 0.15);
+}
+
+[data-theme='dark'] .highlightLine {
+    background-color: rgba(59, 130, 246, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .twoslashPopup {
+        max-width: 280px;
+        font-size: 0.8rem;
+    }
+
+    .twoslashError::after {
+        max-width: 200px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Add Twoslash styles to the existing CSS file */
+
+/* Twoslash hover indicators - subtle styling that matches theme */
+.codeBlockLines .token.twoslash-hover,
+.codeBlock .token.twoslash-hover {
+    border-bottom: 1px dotted currentColor !important;
+    cursor: default !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+}
+
+.codeBlockLines .token.twoslash-hover:hover,
+.codeBlock .token.twoslash-hover:hover {
+    border-bottom: 1px solid currentColor !important;
+    background-color: rgba(128, 128, 128, 0.1) !important;
+}
+
+/* Global styles as fallback */
+:global(.token.twoslash-hover) {
+    border-bottom: 1px dotted currentColor !important;
+    cursor: default !important;
+    background-color: transparent !important;
+}
+
+:global(.token.twoslash-hover:hover) {
+    border-bottom: 1px solid currentColor !important;
+    background-color: rgba(128, 128, 128, 0.1) !important;
+}
+
+/* Theme-aware selection colors */
+[data-theme='light'] .token.twoslash-hover:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme='dark'] .token.twoslash-hover:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Twoslash block styling */
+.twoslash-block .codeBlock {
+    position: relative;
+}
+
+/* Twoslash tooltip styling */
+.twoslashTooltip {
+    background-color: var(--ifm-background-color);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: var(--ifm-font-family-monospace);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    max-width: 400px;
+    white-space: pre-wrap;
+    pointer-events: none;
+}
+
+.twoslashTooltip .twoslash-type {
+    color: var(--ifm-color-success);
+}
+
+.twoslashTooltip .twoslash-docs {
+    color: var(--ifm-color-emphasis-700);
+    margin-top: 4px;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .twoslashTooltip {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

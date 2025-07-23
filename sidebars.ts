@@ -889,6 +889,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     "examples",
+    "examples/twoslash-demo",
     {
       type: "category",
       label: "Web3Auth Infrastructure",

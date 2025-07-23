@@ -1,0 +1,255 @@
+---
+title: Enhanced Twoslash Usage Guide
+description:
+  Complete guide for using Twoslash with Docusaurus for interactive TypeScript code examples
+---
+
+# Enhanced Twoslash Usage Guide
+
+This guide explains how to use the enhanced Twoslash integration in this documentation site, which
+provides interactive TypeScript code examples with type information, error highlighting, and more.
+
+## What is Twoslash?
+
+Twoslash is a markup format for TypeScript code that leverages the TypeScript compiler to provide:
+
+- **Type inference visualization** with hover effects
+- **Error detection and highlighting**
+- **Magic comments** for compiler configuration
+- **Multi-language support** (TypeScript, JavaScript, JSX, TSX)
+- **Dynamic import handling**
+
+## Basic Usage
+
+### TypeScript Code Blocks
+
+Simply add `twoslash` to your code block meta string:
+
+````mdx
+```typescript twoslash
+const message: string = "Hello, Web3Auth!";
+const user = {
+  name: "Alice",
+  age: 30,
+};
+//  ^? - Hover to see the inferred type
+```
+````
+
+### Automatic Detection
+
+Code blocks with TypeScript/JavaScript languages are automatically processed:
+
+````mdx
+```typescript
+// This will be processed automatically
+const value = 42;
+//    ^? - Shows: const value: number
+```
+````
+
+## Advanced Features
+
+### 1. Magic Comments
+
+Configure TypeScript compiler options inline:
+
+````mdx
+```typescript twoslash
+// @strict: true
+// @target: es2020
+// @lib: es2020,dom
+
+interface UserConfig {
+  apiKey: string;
+  timeout?: number;
+}
+
+const config: UserConfig = {
+  apiKey: "abc123",
+  // timeout is optional
+};
+```
+````
+
+### 2. Error Handling
+
+Show expected errors with the `@errors` magic comment:
+
+````mdx
+```typescript twoslash
+// @errors: 2322
+const wrongType: string = 42; // Type 'number' is not assignable to type 'string'
+```
+````
+
+### 3. Dynamic Imports
+
+Properly handle dynamic imports with enhanced module resolution:
+
+````mdx
+```typescript twoslash
+// @module: esnext
+// @target: esnext
+
+async function loadWeb3Auth() {
+  const { Web3Auth } = await import("@web3auth/modal");
+  //      ^? - Shows the imported type
+  return new Web3Auth(config);
+}
+```
+````
+
+### 4. Multi-file Support
+
+Create virtual files for complex examples:
+
+````mdx
+```typescript twoslash
+// @filename: config.ts
+export interface Config {
+  clientId: string;
+  network: "mainnet" | "testnet";
+}
+
+// @filename: main.ts
+import type { Config } from "./config";
+
+const appConfig: Config = {
+  clientId: "your-client-id",
+  network: "mainnet",
+};
+//        ^? - Shows: const appConfig: Config
+```
+````
+
+## Language Support
+
+### JavaScript with JSDoc
+
+````mdx
+```javascript twoslash
+/**
+ * @param {string} name
+ * @param {number} age
+ * @returns {{ name: string, age: number, isAdult: boolean }}
+ */
+function createUser(name, age) {
+  return {
+    name,
+    age,
+    isAdult: age >= 18,
+  };
+}
+
+const user = createUser("Bob", 25);
+//    ^? - Shows inferred JSDoc type
+```
+````
+
+### React/JSX Components
+
+````mdx
+```tsx twoslash
+import React from "react";
+
+interface Props {
+  title: string;
+  onClick?: () => void;
+}
+
+function Button({ title, onClick }: Props) {
+  return <button onClick={onClick}>{title}</button>;
+}
+
+const MyButton = <Button title="Click me" />;
+//    ^? - Shows: const MyButton: JSX.Element
+```
+````
+
+## Web3Auth Examples
+
+### Basic Integration
+
+````mdx
+```typescript twoslash
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  clientId: "your-client-id",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+  },
+});
+
+// Initialize the modal
+await web3auth.initModal();
+//             ^? - Shows the method signature
+```
+````
+
+### Provider Usage
+
+````mdx
+```typescript twoslash
+// @module: esnext
+import type { SafeEventEmitterProvider } from "@web3auth/base";
+
+async function getAccounts(provider: SafeEventEmitterProvider) {
+  const accounts = await provider.request({
+    method: "eth_accounts",
+  });
+  //       ^? - Shows: const accounts: unknown
+
+  return accounts as string[];
+}
+```
+````
+
+## Magic Comments Reference
+
+| Comment     | Description            | Example                  |
+| ----------- | ---------------------- | ------------------------ |
+| `@strict`   | Enable strict mode     | `// @strict: true`       |
+| `@target`   | Set compilation target | `// @target: es2020`     |
+| `@module`   | Set module system      | `// @module: esnext`     |
+| `@lib`      | Include type libraries | `// @lib: es2020,dom`    |
+| `@errors`   | Expect specific errors | `// @errors: 2322,2345`  |
+| `@filename` | Create virtual files   | `// @filename: types.ts` |
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Import errors**: Use `// @module: esnext` for dynamic imports
+2. **Library types missing**: Add `// @lib: dom,es2020`
+3. **Strict mode errors**: Add `// @strict: false`
+4. **Module resolution**: Ensure packages are installed in the project
+
+### Debugging
+
+If Twoslash processing fails, the code block will show a `twoslash-error` class and the original
+code will be displayed with syntax highlighting only.
+
+## Best Practices
+
+1. **Keep examples focused**: Don't include unnecessary complexity
+2. **Use meaningful variable names**: They appear in hover information
+3. **Add context comments**: Explain what the code demonstrates
+4. **Test your examples**: Ensure they compile correctly
+5. **Use magic comments sparingly**: Only when needed for the example
+
+## Performance Notes
+
+- Twoslash processing happens at build time, not runtime
+- Large code blocks may slow down the build process
+- Consider splitting complex examples into smaller chunks
+- Virtual files are cached for better performance
+
+---
+
+For more advanced Twoslash features, see the
+[official Twoslash documentation](https://www.typescriptlang.org/dev/twoslash/).

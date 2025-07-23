@@ -164,6 +164,7 @@ const config: Config = {
             remarkMath,
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
             RehypePlugin,
+            require("./plugins/remark-twoslash"),
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
@@ -188,6 +189,7 @@ const config: Config = {
             remarkMath,
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
             RehypePlugin,
+            require("./plugins/remark-twoslash"),
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
@@ -198,12 +200,6 @@ const config: Config = {
           priority: 0.8,
         },
       } satisfies Preset.Options,
-    ],
-    [
-      "docusaurus-preset-shiki-twoslash",
-      {
-        themes: ["nord"],
-      },
     ],
   ],
   plugins: [
