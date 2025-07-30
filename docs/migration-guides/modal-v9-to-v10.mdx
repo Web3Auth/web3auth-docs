@@ -16,51 +16,33 @@ import TabItem from "@theme/TabItem";
 This guide will help you upgrade your Web3Auth PnP SDK integration from v9 (whether you were using
 the Modal or the `@web3auth/no-modal` SDK) to the **unified Web3Auth PnP Web SDK v10**.
 
-Version 10 significantly simplifies your Web3Auth integration by consolidating into a single
-powerful SDK. It centralizes configuration in the Web3Auth Developer Dashboard and removes the
-complexity of managing separate adapters, connections (previously verifiers), and manual blockchain
-configuration from your frontend code. React integrations now exclusively use a hooks-based
-approach. Direct connections (for developers implementing a custom UI, a capability previously
-prominent in the No-Modal SDK) are now seamlessly available within this unified Modal SDK. Now, our
-web SDK is divided into three parts:
-
-- `@web3auth/modal/react` - The Web SDK for React
-- `@web3auth/modal/vue` - The Web SDK for Vue
-- `@web3auth/modal` - The Web SDK for JS for any frontend library or framework using vanilla JS
+Version 10 consolidates into a single powerful SDK that centralizes configuration in the Dashboard,
+eliminates frontend adapter complexity, and provides seamless custom UI support.
 
 ## Why these changes?
 
-Web3Auth v9 provided developers with distinct SDKs for modal and non-modal integrations, offering
-targeted solutions and flexibility. As the Web3 landscape evolves and to further enhance the
-developer experience, Web3Auth v10 introduces significant refinements aimed at simplifying common
-integration patterns, reducing boilerplate, and centralizing configuration.
+Web3Auth v9 offered separate modal and non-modal SDKs for flexibility. V10 consolidates these into a
+unified SDK that simplifies integration patterns, reduces boilerplate, and centralizes
+configuration.
 
 Building on the foundation of v9, key areas of evolution in v10 include:
 
-- **A Unified & Versatile SDK (`@web3auth/modal`):** To offer greater versatility and simplify the
-  initial SDK choice, v10 consolidates all functionalities into a single `@web3auth/modal` SDK. This
-  powerful SDK allows developers to seamlessly implement pre-built modal UIs or create custom user
-  interfaces with direct connections to authentication providers, all using one consistent API.
-- **Dashboard-Centric Configuration:** Many configurations, such as login methods, connection
-  details (formerly verifiers), Smart Account settings, and chain specifics, are now managed through
-  the Web3Auth Developer Dashboard. This shift centralizes control, reduces client-side code, and
-  makes updates across projects more straightforward.
-- **Streamlined Login & Connection Management:** V10 moves towards a more declarative approach.
-  Manual client-side adapter registration and configuration are minimized, with login methods
-  primarily defined on the dashboard and client-side connection calls becoming more direct and
-  intuitive.
-- **Automated Blockchain Setup:** For standard blockchains, v10 reduces the need for manual
-  `chainConfig` and `privateKeyProvider` setup in the client by handling these configurations
-  automatically based on your dashboard settings.
-- **Integrated Smart Account Functionality:** Smart Account integration is now more cohesive. The
-  primary configuration is managed on the dashboard, and the functionality is built directly into
-  the main SDK, removing the need for a separate Smart Account provider package for most common use
-  cases.
-- **Simplified Multi-Factor Authentication (MFA):** MFA setup is streamlined, with key settings now
+- **A Unified & Versatile SDK (`@web3auth/modal`):** Consolidates all functionalities into a single
+  SDK supporting both pre-built modal UIs and custom user interfaces with one consistent API.
+- **Dashboard-Centric Configuration:** Login methods, connections (formerly verifiers), Smart
+  Account settings, and chain configurations are now managed through the Web3Auth Developer
+  Dashboard.
+- **Streamlined Login & Connection Management:** Moves to a declarative approach with login methods
+  defined on the dashboard and more direct client-side connection calls.
+- **Automated Blockchain Setup:** Standard blockchains no longer require manual `chainConfig` and
+  `privateKeyProvider` setup as these are handled automatically via dashboard settings.
+- **Integrated Smart Account Functionality:** Smart Account configuration is managed on the
+  dashboard with functionality built directly into the main SDK, eliminating separate provider
+  packages.
+- **Simplified Multi-Factor Authentication (MFA):** MFA setup is streamlined with key settings
   configured directly during SDK initialization.
-- **Modernized React Experience:** For React applications, v10 fully embraces a hooks-based
-  architecture, with the `Web3AuthProvider` automatically handling SDK initialization for a cleaner
-  development workflow.
+- **Modernized Framework Support:** React and Vue applications now use streamlined hooks/composables
+  with automatic SDK initialization.
 
 The result is a cleaner, more declarative, and more maintainable integration experience—especially
 for teams maintaining apps across multiple auth flows and chains, all using one SDK.
@@ -70,40 +52,34 @@ for teams maintaining apps across multiple auth flows and chains, all using one 
 Install the latest v10 unified SDK package. Depending on your framework, you'll primarily use one of
 the following:
 
-- **React:** `npm install @web3auth/modal @web3auth/modal/react` (or just `@web3auth/modal/react`
-  which should pull in `@web3auth/modal` as a peer dependency)
-- **Vue:** `npm install @web3auth/modal @web3auth/modal/vue` (or just `@web3auth/modal/vue`)
-- **Vanilla JS / Other Frameworks:** `npm install @web3auth/modal`
-
-```bash
-# For React and Vue, you can use @web3auth/modal/react and @web3auth/modal/vue respectively.
+```bash npm2yarn
 npm install @web3auth/modal
 ```
-
-Remove deprecated and now-consolidated packages if present:
-
-- `@web3auth/no-modal` (if migrating from v9 No-Modal)
-- `@web3auth/base`
-- `@web3auth/auth-adapter` (especially if used for custom social auth config on client-side)
-- `@web3auth/account-abstraction-provider`
-- `@web3auth/ethereum-provider` (and other specific chain providers if you were using them directly
-  with Web3Auth initialization for standard EVM chains)
-- `@web3auth/modal-react-hooks` (for React users)
-- `@web3auth/modal-vue-composables` (for Vue users)
-
-:::warning Important
-
-Ensure these packages are fully removed to avoid unexpected behavior and to leverage the unified v10
-architecture.
-
-:::
 
 ## General Migration Points (Applicable to All Frameworks)
 
 ### 1. Centralized Chain Configuration
 
-Previously (v9), you often had to pass `chainConfig` (sometimes with `getEvmChainConfig`) and an
-instance of a `privateKeyProvider` (like `EthereumPrivateKeyProvider`) during SDK initialization.
+```typescript
+import { Web3Auth } from "@web3auth/modal";
+// remove-start
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { getEvmChainConfig } from "@web3auth/base";
+
+const chainConfig = getEvmChainConfig(1, WEB3AUTH_CLIENT_ID);
+
+const ethereumPrivateKeyProvider = EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+// remove-end
+
+const web3auth = new Web3Auth({
+  clientId: WEB3AUTH_CLIENT_ID, // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  // remove-next-line
+  privateKeyProvider: ethereumPrivateKeyProvider,
+});
+```
 
 **In v10, chain configurations for standard EVM chains and passing of private key providers are not
 needed anymore. You will be able to switch chains in your dapp among the chains you've toggled on
@@ -116,418 +92,79 @@ for v10 if you're using standard chains configured on your dashboard.
 
 You can also add custom chains on the dashboard and use them in your dapp.
 
-### 2. Whitelabeling and UI Customization Simplified
-
-Whitelabeling and UI customization have been significantly streamlined in v10, focusing on dashboard
-configurations and a more direct approach to modal customization.
-
-- **1. Branding (v9 `uiConfig`): Moves to Dashboard**
-
-  - Most general branding settings previously in the client-side `uiConfig` (e.g., `appName`,
-    `logoLight`, `logoDark`, `theme` colors) are **now primarily configured on the
-    [Web3Auth Developer Dashboard](https://dashboard.web3auth.io)**.
-    ![Branding customizations on Web3Auth Dashboard](/images/whitelabel/modal/branding.gif)
-  - **Action:** Transfer v9 `uiConfig` branding to the dashboard. Client-side `uiConfig` in v10
-    `Web3AuthOptions` is minimal, for overrides not covered by the dashboard.
-
-- **2. Modal Login Method Display (v9 `modalConfig` in `initModal()`): New Structure in
-  `Web3AuthOptions`**
-
-  - **Previously (v9):** Customizing which login methods appear in the modal (and their
-    appearance/order) was done via `modalConfig` in `initModal()` in v9.
-  - **Now (v10):** This moves to `modalConfig` within `Web3AuthOptions` (at SDK instantiation). The
-    structure is new, utilizing `connectors` (e.g., `WALLET_CONNECTORS.AUTH` for social/email,
-    `WALLET_CONNECTORS.WALLET` for external wallets) and a `loginMethods` object within each
-    connector.
-  - Each login method (e.g., `google`, `email_passwordless`, `metamask`) is an object conforming to
-    `LoginMethodConfig`, allowing you to set `name`, `showOnModal`, `authConnectionId` (for custom
-    auth), etc.
-    ```typescript
-    // v10: modalConfig in Web3AuthOptions
-    const web3AuthOptions: Web3AuthOptions = {
-      // ... other options
-      modalConfig: {
-        connectors: {
-          [WALLET_CONNECTORS.AUTH]: {
-            /* ... config for social/email ... */
-          },
-          [WALLET_CONNECTORS.WALLET]: {
-            /* ... config for external wallets ... */
-          },
-        },
-      },
-    };
-    ```
-  - **Action:** Rebuild your modal display logic using the new `modalConfig` structure in
-    `Web3AuthOptions`. Refer to the v10 `LoginMethodConfig` type definition for all properties.
-    Deprecated v9 `WALLET_ADAPTERS` enum is replaced by `WALLET_CONNECTORS` and specific login
-    method keys.
-
-- **3. Auth Adapter Whitelabeling in v9: No longer supported**
-  - In v9, `whiteLabel` settings in an `@web3auth/auth-adapter` instance could customize
-    intermediate auth screens (e.g., social login pop-ups).
-  - **In v10, passing this `whiteLabel` configuration is no longer supported since there is no way
-    to configure auth adapter settings.**
-  - **Action:** Remove v9 `AuthAdapter` `whiteLabel` configurations. Ensure your dashboard branding
-    is comprehensive.
-
-This shift centralizes UI control on the dashboard and simplifies client-side SDK configuration for
-whitelabeling.
-
-### 3. Smart Account Functionality
-
-- **Previously (v9):** Configuring the adapter required installing the
-  `@web3auth/account-abstraction-provider` package and using the `AccountAbstractionProvider` to set
-  up the bundler, paymaster, and Smart Account Provider.
-
-  ```typescript
-  import {
-    AccountAbstractionProvider,
-    SafeSmartAccount,
-  } from "@web3auth/account-abstraction-provider";
-
-  const chainConfig = {
-    // Chain config
-  };
-
-  const accountAbstractionProvider = new AccountAbstractionProvider({
-    config: {
-      chainConfig,
-      smartAccountInit: new SafeSmartAccount(),
-      bundlerConfig: {
-        // Get the pimlico API Key from dashboard.pimlico.io
-        url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
-      },
-    },
-  });
-
-  const web3auth = new Web3Auth({
-    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    privateKeyProvider,
-    accountAbstractionProvider,
-  });
-  ```
-
-- **Now (v10):** The `@web3auth/account-abstraction-provider` has been deprecated. You can now
-  enable Smart Accounts and configure the bundler and paymaster directly from the Web3Auth
-  Dashboard. See Smart Accounts dashboard configuration, to learn more.
-  [Web3Auth React Smart Accounts](/docs/sdk/web/react/advanced/smart-accounts)
-
-      ![Smart Accounts Section](https://i.ibb.co/gZYNwVyy/smart-accounts.gif)
-
-      If you want to override the Smart Account provider, bundler, paymaster, or paymaster context, you
-      can now pass the custom configuration directly to Web3AuthOptions.
-
-      ```typescript
-      import { WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal";
-
-      const web3AuthOptions: Web3AuthOptions = {
-        clientId: "YOUR_CLIENT_ID",
-        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        // focus-start
-        accountAbstractionConfig: {
-          smartAccountType: "SMART_ACCOUNT_TYPE",
-          chains: [
-            {
-              chainId: "0x1",
-              bundlerConfig: {
-                url: "YOUR_BUNDLER_URL",
-                // This is just an example of how you can configure the paymaster context.
-                // Please refer to the documentation of the paymaster you are using
-                // to understand the required parameters.
-                paymasterContext: {
-                  token: "SUPPORTED_TOKEN_CONTRACT_ADDRESS",
-                  sponsorshipPolicyId: "sp_my_policy_id",
-                },
-              },
-              paymasterConfig: {
-                url: "YOUR_PAYMASTER_URL",
-              },
-            },
-          ],
-        },
-        // focus-end
-      };
-      ```
-
-### 4. Custom Authentication: From Verifiers to Connections
-
-In v9, custom authentication, if one wanted to incorporate a self managed login then they made use
-of `verifier` and `aggregate verifier` configurations for linking accounts from different social
-providers to the same underlying user wallet (often based on a shared identifier like email).
-
-In v10, this system is streamlined with "Connections" and "Grouped Connections" configured on the
-Web3Auth Developer Dashboard, significantly reducing client-side code complexity.
-
-**Key Changes & Mapping:**
-
-1.  **Single Verifiers (v9) to Single Connections (v10):**
-
-    - **In v9:** You defined a "Verifier" on the dashboard (e.g., for Google) and referenced its
-      `verifier` name in your `AuthAdapter`'s `loginConfig` or when calling `connectTo`.
-      ```typescript
-      // v9: AuthAdapter with a single verifier
-      const authAdapter = new AuthAdapter({
-        adapterSettings: {
-          loginConfig: {
-            google: {
-              verifier: "YOUR_GOOGLE_VERIFIER_NAME", // v9 verifier name
-              typeOfLogin: "google",
-              clientId: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-            },
-          },
-        },
-      });
-      // OR when using connectTo:
-      // await web3auth.connectTo("auth", {
-      //   verifier: "YOUR_GOOGLE_VERIFIER_NAME",
-      //   // ...
-      // });
-      ```
-    - **In v10:** You create a "Connection" on the dashboard (e.g., for Google). This connection
-      will have an `authConnectionId`. You use this `authConnectionId` in `modalConfig` (within
-      `Web3AuthOptions`) to customize the modal, or directly with the `connectTo` method.
-
-      ```typescript
-      // v10: modalConfig with a single connection
-      const web3AuthOptions: Web3AuthOptions = {
-        clientId: "YOUR_V10_CLIENT_ID",
-        // ...
-        modalConfig: {
-          connectors: {
-            [WALLET_CONNECTORS.AUTH]: {
-              loginMethods: {
-                google: {
-                  name: "Google Login",
-                  authConnectionId: "YOUR_GOOGLE_AUTH_CONNECTION_ID", // v10 connection ID
-                },
-              },
-            },
-          },
-        },
-      };
-
-      // OR v10: connectTo with a single connection
-      // await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      //   authConnection: AUTH_CONNECTION.GOOGLE,
-      //   authConnectionId: "YOUR_GOOGLE_AUTH_CONNECTION_ID",
-      // });
-      ```
-
-    - **Action:** Your existing v9 single verifiers will be automatically migrated to "Connections"
-      on the new Web3Auth Developer Dashboard. Locate your migrated Connection, note its
-      `authConnectionId`, and use this ID in your v10 client code (`modalConfig` or `connectTo`).
-      Remove any v9 `AuthAdapter` configuration previously used for this verifier.
-
-2.  **Aggregate Verifiers (v9) to Grouped Connections (v10):**
-
-    - **In v9:** To link accounts from different providers (e.g., Google and a custom JWT, both
-      using the same email) to the same wallet, you used an "Aggregate Verifier". This involved a
-      main `verifier` name and a `verifierSubIdentifier` for each specific login method, where the
-      sub-identifier typically mapped to a common field in the JWT (like `email`).
-      ```typescript
-      // v9: AuthAdapter with an aggregate verifier
-      const authAdapter = new AuthAdapter({
-        adapterSettings: {
-          loginConfig: {
-            google: {
-              // Part of an aggregate verifier
-              verifier: "MY_AGGREGATE_VERIFIER_NAME", // Main aggregate verifier name
-              verifierSubIdentifier: "google-sub-verifier", // Specific sub-verifier for Google
-              typeOfLogin: "google",
-              clientId: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-            },
-            jwt_email: {
-              // Another part of the same aggregate verifier
-              verifier: "MY_AGGREGATE_VERIFIER_NAME",
-              verifierSubIdentifier: "custom-jwt-sub-verifier",
-              typeOfLogin: "jwt",
-              clientId: "YOUR_CUSTOM_JWT_CLIENT_ID", // Not always applicable for JWT
-              jwtParameters: {
-                /* ... JWT specific params like domain, verifierIdField ... */
-              },
-            },
-          },
-        },
-      });
-      ```
-    - **In v10:** You first create individual "Connections" on the dashboard for each auth provider
-      (e.g., one for Google, one for your custom JWT). Then, you create a "Grouped Connection" on
-      the dashboard, selecting the individual connections you want to group (e.g., group the Google
-      and custom JWT connections). This Grouped Connection will have its own
-      `groupedAuthConnectionId`. When a user logs in, you provide both the `groupedAuthConnectionId`
-      and the specific `authConnectionId` of the login method being used. This allows Web3Auth to
-      link accounts if the JWT from the chosen provider contains the same verifier ID field (e.g.,
-      email) that the group is configured to use.
-
-      ```typescript
-      // v10: modalConfig with a grouped connection
-      const web3AuthOptions: Web3AuthOptions = {
-        clientId: "YOUR_V10_CLIENT_ID",
-        // ...
-        modalConfig: {
-          connectors: {
-            [WALLET_CONNECTORS.AUTH]: {
-              loginMethods: {
-                google: {
-                  name: "Google Login",
-                  authConnectionId: "YOUR_INDIVIDUAL_GOOGLE_CONNECTION_ID", // ID of the individual Google connection
-                  groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID_FROM_DASHBOARD", // ID of the group
-                },
-                myCustomJWT: {
-                  name: "Login with Corp Email",
-                  authConnectionId: "YOUR_INDIVIDUAL_CUSTOM_JWT_CONNECTION_ID",
-                  groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID_FROM_DASHBOARD",
-                },
-              },
-            },
-          },
-        },
-      };
-
-      // OR v10: connectTo with a grouped connection
-      // For Google login part of the group:
-      // await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      //   authConnection: AUTH_CONNECTION.GOOGLE,
-      //   authConnectionId: "YOUR_INDIVIDUAL_GOOGLE_CONNECTION_ID",
-      //   groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID_FROM_DASHBOARD",
-      // });
-
-      // For Custom JWT login part of the group:
-      // const idToken = await getMyIdToken();
-      // await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
-      //   authConnection: AUTH_CONNECTION.CUSTOM,
-      //   idToken: idToken,
-      //   authConnectionId: "YOUR_INDIVIDUAL_CUSTOM_JWT_CONNECTION_ID",
-      //   groupedAuthConnectionId: "YOUR_GROUPED_CONNECTION_ID_FROM_DASHBOARD",
-      // });
-      ```
-
-    - **Action:**
-      1.  Your existing v9 Aggregate Verifiers (and their sub-verifiers) will be automatically
-          migrated to the new v10 dashboard. They will appear as individual "Connections" that are
-          part of a "Grouped Connection".
-      2.  On the v10 dashboard, locate your migrated Grouped Connection. Note its
-          `groupedAuthConnectionId`.
-      3.  For each login method within that group, find the corresponding individual migrated
-          Connection and note its specific `authConnectionId`.
-      4.  Update your v10 client code to use both the `groupedAuthConnectionId` (for the group) and
-          the specific `authConnectionId` (for the particular login method being invoked) in
-          `modalConfig` or `connectTo` calls. The v9 `verifierSubIdentifier` is no longer used in
-          the client.
-
-**General Steps for Migration:**
-
-1.  **Remove `@web3auth/auth-adapter`**: If it was primarily used for client-side custom auth
-    configuration, this package is no longer needed for this purpose.
-2.  **Verify Migrated Dashboard Configuration**: Log in to the new Web3Auth Developer Dashboard.
-    Your v9 verifiers (single and aggregate) should be migrated and visible as "Connections" and
-    "Grouped Connections".
-    - Familiarize yourself with their new structure and ensure they reflect your intended setup.
-    - Identify the `authConnectionId` for each individual Connection and the
-      `groupedAuthConnectionId` for your Grouped Connections.
-3.  **Update Client Code**: Modify your `Web3AuthOptions` (for `modalConfig`) or `connectTo` calls
-    to use the new `authConnectionId` and `groupedAuthConnectionId` obtained from your migrated
-    dashboard configurations, as shown in the examples above.
-
-This dashboard-centric approach, with automatic migration of existing verifiers, simplifies
-client-side logic and provides a more robust way to manage authentication methods.
-
-### 5. Multi-Factor Authentication (MFA)
+### 2. Multi-Factor Authentication (MFA)
 
 MFA configuration has been streamlined. In v9, both `mfaLevel` and detailed factor configurations
 (`mfaSettings`) were set within the `@web3auth/auth-adapter`. This has changed in v10.
 
-- **Previously (v9):** MFA was configured via `AuthAdapter`: `loginSettings.mfaLevel` controlled the
-  overall MFA experience, and `adapterSettings.mfaSettings` (with keys like `deviceShareFactor`)
-  configured individual factors.
+MFA factor settings and level configuration have moved from `AuthAdapter` to `Web3AuthOptions`:
 
-  ```typescript
-  // v9: MFA configuration in AuthAdapter
-  import { AuthAdapter } from "@web3auth/auth-adapter";
+```typescript
+// remove-start
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-  const authAdapter = new AuthAdapter({
-    loginSettings: {
-      mfaLevel: "mandatory", // e.g., default, optional, mandatory, none
+const authAdapter = new AuthAdapter({
+  loginSettings: {
+    mfaLevel: "mandatory", // e.g., default, optional, mandatory, none
+  },
+  adapterSettings: {
+    mfaSettings: {
+      deviceShareFactor: { enable: true, priority: 1, mandatory: true },
+      // ... other factors
     },
-    adapterSettings: {
-      mfaSettings: {
-        deviceShareFactor: { enable: true, priority: 1, mandatory: true },
-        // ... other factors
-      },
+  },
+});
+// remove-end
+
+// add-start
+import { MFA_FACTOR, MFA_LEVELS, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  mfaLevel: MFA_LEVELS.MANDATORY,
+  mfaSettings: {
+    // Configure individual factors here
+    [MFA_FACTOR.DEVICE]: {
+      enable: true,
+      priority: 1,
+      mandatory: true,
     },
-  });
-  ```
+    [MFA_FACTOR.BACKUP_SHARE]: {
+      enable: true,
+      priority: 2,
+      mandatory: true,
+    },
+    // ... other factors
+  },
+};
+// add-end
+```
 
-- **Now (v10) - Key Changes:**
+**Key Changes:**
 
-  - **Individual MFA Factor Settings (`mfaSettings`):** Configuration of individual MFA factors
-    (enabling, priority, mandatory status) moves from the v9 `AuthAdapter`'s
-    `adapterSettings.mfaSettings` to the **`mfaSettings` object directly within `Web3AuthOptions`**
-    (passed at SDK instantiation). The keys identifying MFA factors have also changed from
-    descriptive string names (e.g., `deviceShareFactor`) to **enum values from `MFA_FACTOR`** (e.g.,
-    `[MFA_FACTOR.DEVICE]`). If you previously configured individual factors, you must now transfer
-    these settings to `Web3AuthOptions.mfaSettings` and update the factor keys.
+- **Individual MFA Factor Settings:** Move from `AuthAdapter.adapterSettings.mfaSettings` to
+  `Web3AuthOptions.mfaSettings`
+- **Factor Keys:** Change from descriptive strings (e.g., `deviceShareFactor`) to enum values (e.g.,
+  `[MFA_FACTOR.DEVICE]`)
+- **MFA Level:** Move from `AuthAdapter.loginSettings.mfaLevel` to `Web3AuthOptions.mfaLevel`
 
-    ```typescript
-    // v10: mfaSettings in Web3AuthOptions
-    import { MFA_FACTOR, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
-
-    const web3AuthOptions: Web3AuthOptions = {
-      clientId: "YOUR_CLIENT_ID",
-      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-      mfaSettings: {
-        // Configure individual factors here
-        [MFA_FACTOR.DEVICE]: {
-          enable: true,
-          priority: 1,
-          mandatory: true,
-        },
-        [MFA_FACTOR.BACKUP_SHARE]: {
-          enable: true,
-          priority: 2,
-          mandatory: true,
-        },
-        // ... other factors
-      },
-    };
-    ```
-
-  - **MFA Level (`mfaLevel`):** Setting `mfaLevel` via the v9 `AuthAdapter`'s `loginSettings` is
-    **deprecated**. In v10, `mfaLevel` is specified as a parameter to the Web3AuthOptions object
-    sent to the constructor.
-
-    ```typescript
-    // v10: mfaLevel in Web3AuthOptions
-    import { MFA_LEVELS, WEB3AUTH_NETWORK, type Web3AuthOptions } from "@web3auth/modal";
-
-    const web3AuthOptions: Web3AuthOptions = {
-      clientId: "YOUR_CLIENT_ID",
-      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-      mfaLevel: MFA_LEVELS.MANDATORY,
-    };
-    ```
-
-### 6. `useCoreKitKey` Renamed to `useSFAKey`
+### 3. `useCoreKitKey` Renamed to `useSFAKey`
 
 Note that the parameter `useCoreKitKey` (v9) has been renamed to `useSFAKey` (v10). This is a
 breaking change if you were using it to get CoreKit keys. This parameter is part of the
 `Web3AuthOptions` object.
 
 ```typescript
-// v9: useCoreKitKey
 const web3AuthOptions: Web3AuthOptions = {
+  // remove-next-line
   useCoreKitKey: true,
-};
-
-// v10: useSFAKey
-const web3AuthOptions: Web3AuthOptions = {
+  // add-next-line
   useSFAKey: true,
 };
 ```
 
-### 7. `authenticateUser()` Renamed to `getIdentityToken()`
+### 4. `authenticateUser()` Renamed to `getIdentityToken()`
 
 In v9, the method `web3auth.authenticateUser()` was used to retrieve the user's ID token. In v10,
 this method has been renamed to `web3auth.getIdentityToken()`.
@@ -536,192 +173,15 @@ The purpose and the structure of the returned ID token (a JWT containing user in
 the same. This is primarily a naming convention change.
 
 ```typescript
-// v9: authenticateUser()
+// remove-next-line
 const userAuthInfo = await web3auth.authenticateUser();
-const idTokenV9 = userAuthInfo.idToken;
+// add-next-line
+const userAuthInfo = await web3auth.getIdentityToken(); // Returns { idToken: string }
 
-// v10: getIdentityToken()
-const userAuthInfoV10 = await web3auth.getIdentityToken(); // Returns { idToken: string }
-const idTokenV10 = userAuthInfoV10.idToken;
+const idToken = userAuthInfo.idToken;
 ```
 
 ---
-
-## Migrating a React Application
-
-This section focuses on changes specific to migrating a Web3Auth v9 React application to v10 using
-`@web3auth/modal/react`.
-
-### React Hooks Path and WalletServicesPlugin Updates
-
-Previously, React hooks were at `@web3auth/modal-react-hooks`. Now, they are consolidated and
-imported from `@web3auth/modal/react`. Even WalletServicesPlugin is now integrated into the hooks.
-Previously, it was a separate package named `@web3auth/wallet-services-plugin-react-hooks`.
-
-The `Web3AuthProvider` component remains essential for initializing the Web3Auth SDK and providing
-its context. Key changes include:
-
-- **Import Path**: `Web3AuthProvider` is imported from `@web3auth/modal/react`.
-- **Configuration Prop**: `Web3AuthProvider` in v10 typically takes a single `config` prop. This
-  `config` object (e.g., `web3AuthContextConfig`) will contain your `web3AuthOptions` and any
-  client-side SDK configurations.
-- **Dashboard Configuration**: Many configurations (like chain details for standard EVM chains, and
-  verifier/connection settings) are now primarily managed through the Web3Auth Developer Dashboard.
-
-**v10 `Web3AuthProvider` and Hook Usage:**
-
-`Web3AuthProvider` is configured with a `config` object, and all hooks are streamlined under
-`@web3auth/modal/react`.
-
-```typescript title="main.tsx / index.tsx"
-import ReactDOM from "react-dom/client";
-import { Web3AuthProvider } from "@web3auth/modal/react"; // v10 import
-import web3AuthContextConfig from "./web3authContext"; // see context file below
-import App from "./App";
-
-// Example with Wagmi, though not strictly necessary for Web3AuthProvider
-import { WagmiProvider } from "@web3auth/modal/react/wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-const queryClient = new QueryClient();
-
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Web3AuthProvider config={web3AuthContextConfig}>
-    <QueryClientProvider client={queryClient}>
-      <WagmiProvider>
-        <App />
-      </WagmiProvider>
-    </QueryClientProvider>
-  </Web3AuthProvider>
-);
-```
-
-```typescript title="web3authContext.ts"
-import { WEB3AUTH_NETWORK, Web3AuthOptions } from "@web3auth/modal"; // v10 modal options
-import { type Web3AuthContextConfig } from "@web3auth/modal/react"; // v10 context config type
-
-const clientId = "YOUR_V10_CLIENT_ID"; // Get from https://dashboard.web3auth.io
-
-const web3AuthContextConfig: Web3AuthContextConfig = {
-  web3AuthOptions: {
-    clientId,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  },
-};
-
-export default web3AuthContextConfig;
-```
-
-All hooks are now streamlined under `@web3auth/modal/react`:
-
-```typescript title="App.tsx"
-import {
-  useWeb3Auth,
-  useWeb3AuthConnect,
-  useWeb3AuthDisconnect,
-  useIdentityToken,
-  useWeb3AuthUser,
-  useSwitchChain,
-  useEnableMFA,
-  useManageMFA,
-  useWalletConnectScanner, // Wallet Services
-  useWalletUI, // Wallet Services
-  useCheckout, // Wallet Services
-  useSwap, // Wallet Services
-  useWalletServicesPlugin, // Wallet Services
-} from "@web3auth/modal/react";
-```
-
-The new hook structure is more granular:
-
-- **Core Web3Auth:**
-  - `useWeb3Auth`: Core hook for initialization status and overall SDK state.
-- **Authentication:**
-  - `useWeb3AuthConnect`: Handles connection.
-  - `useWeb3AuthDisconnect`: Manages disconnection.
-- **Identity:**
-  - `useIdentityToken`: Retrieves identity tokens.
-  - `useWeb3AuthUser`: Accesses authenticated user's information.
-- **Blockchain:**
-  - `useSwitchChain`: Allows switching networks.
-- **MFA:**
-  - `useEnableMFA`: Enables MFA.
-  - `useManageMFA`: Manages MFA settings.
-- **Wallet Services Plugin (now integrated):**
-  - `useWalletServicesPlugin`: Hook to access the Wallet Services Plugin context.
-    - `isPluginConnected`: `boolean`
-    - `showWalletConnectScanner(params?)`: `Promise<void>`
-    - `showCheckout(params?)`: `Promise<void>`
-    - `showWalletUI(params?)`: `Promise<void>`
-    - `showSwap(params?)`: `Promise<void>`
-
-Refer to the [React Modal SDK Hooks documentation](/docs/sdk/web/react/hooks) for the detailed SDK
-reference.
-
-## Migrating a Vue Application
-
-This section focuses on changes specific to migrating a Web3Auth v9 Vue application to v10 using
-`@web3auth/modal/vue`.
-
-### Vue Composables Path and WalletServicesPlugin Updates
-
-Previously, Vue composables were at `@web3auth/modal-vue-composables`. Now, they are consolidated
-and imported from `@web3auth/modal/vue`. WalletServicesPlugin functionality is also integrated into
-these composables, whereas previously with v9 it was imported via
-`@web3auth/wallet-services-plugin-vue-composables`.
-
-**v10 Vue Composables Usage:**
-
-All composables are now streamlined under `@web3auth/modal/vue`:
-
-```typescript
-import {
-  useWeb3Auth,
-  useWeb3AuthConnect,
-  useWeb3AuthDisconnect,
-  useIdentityToken,
-  useWeb3AuthUser,
-  useSwitchChain,
-  useEnableMFA,
-  useManageMFA,
-  useWalletConnectScanner, // Wallet Services
-  useWalletUI, // Wallet Services
-  useCheckout, // Wallet Services
-  useSwap, // Wallet Services
-  useWalletServicesPlugin, // Wallet Services
-} from "@web3auth/modal/vue";
-```
-
-The new composable structure is more granular:
-
-- **Core Web3Auth:**
-  - `useWeb3Auth`: Core composable for Web3Auth initialization and state management.
-- **Authentication:**
-  - `useWeb3AuthConnect`: Handles Web3Auth connection processes.
-  - `useWeb3AuthDisconnect`: Manages disconnection from Web3Auth.
-- **Identity:**
-  - `useIdentityToken`: Retrieves and manages identity tokens.
-  - `useWeb3AuthUser`: Provides access to the authenticated user's information.
-- **Blockchain:**
-  - `useSwitchChain`: Allows switching between different blockchain networks.
-- **MFA:**
-  - `useEnableMFA`: Enables Multi-Factor Authentication (MFA) for enhanced security.
-  - `useManageMFA`: Provides functionality to manage MFA settings.
-- **Wallet Services Plugin (now integrated):**
-  - `useWalletServicesPlugin`: Composable to access the Wallet Services Plugin context and its
-    functions.
-  - `useWalletConnectScanner`: Integrates WalletConnect scanner functionality.
-  - `useWalletUI`: Manages wallet UI components and user interactions.
-  - `useCheckout`: Facilitates cryptocurrency checkout processes.
-  - `useSwap`: Enables token swapping capabilities.
-
-Please refer to the [Vue Modal SDK documentation](/docs/sdk/web/vue/) for the SDK reference.
-
-## Migrating a Vanilla JS or Angular (or other frameworks) Application
-
-This section does not have any path changes. Please refer to the
-[General Migration Points](#general-migration-points-applicable-to-all-frameworks) for the migration
-points applicable to all frameworks.
 
 ### Wallet Services Plugin Integration
 
@@ -735,14 +195,13 @@ required importing the `@web3auth/wallet-services-plugin` package, instantiating
 - Wallet Services functions are now **directly available as methods on the `web3auth` SDK instance**
   itself.
 
-**Previously (v9):**
-
 ```javascript
+// remove-start
 import { Web3Auth } from "@web3auth/modal";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin"; // v9 import
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 const web3auth = new Web3Auth({
-  // ... your v9 Web3Auth options
+  // ... your Web3Auth options
 });
 
 const walletServicesPlugin = new WalletServicesPlugin({
@@ -756,51 +215,55 @@ await web3auth.initModal();
 // await walletServicesPlugin.showWalletUi();
 // To show checkout:
 // await walletServicesPlugin.showCheckout();
-// etc.
-```
+// remove-end
 
-**Now (v10):**
-
-```javascript
-import { Web3Auth } from "@web3auth/modal"; // v10 import
+// add-start
+import { Web3Auth, EVM_PLUGINS } from "@web3auth/modal";
 
 const web3auth = new Web3Auth({
-  // ... your v10 Web3AuthOptions
-  // No separate plugin initialization or adding needed for Wallet Services
+  // ... your Web3Auth options
+  // No need to manually add walletServicesPlugin! It's auto-added for EVM/Solana chains
 });
 
 await web3auth.init();
 
-// To show wallet UI:
-// await web3auth.showWalletUI();
-// To show checkout:
-// await web3auth.showCheckout({ /* options */ });
-// To show swap:
-// await web3auth.showSwap({ /* options */ });
-// To show WalletConnect Scanner:
-// await web3auth.showWalletConnectScanner();
+// After connection, get the wallet services plugin
+const walletServicesPlugin = web3auth.getPlugin(EVM_PLUGINS.WALLET_SERVICES);
+
+// Use wallet services methods
+await walletServicesPlugin.showWalletUi({ show: true });
+await walletServicesPlugin.showCheckout({ show: true });
+await walletServicesPlugin.showSwap({ show: true });
+await walletServicesPlugin.showWalletConnectScanner({ show: true });
+// add-end
 ```
 
 Refer to the v10 documentation for a
 [function overview](/docs/sdk/web/js/functions/#wallet-services-plugin-functions).
+
+## Additional Migration Guides
+
+For specific functionality or frameworks, refer to these dedicated migration guides:
+
+**📋 Whitelabeling and UI Customization:** If you had whitelabeling configurations (`uiConfig`,
+`modalConfig`, or `AuthAdapter` whitelabel settings) in v9, see the
+**[Whitelabeling Migration Guide](./modal-v9-to-v10-whitelabeling.mdx)** for detailed steps.
+
+**🔧 Smart Account Functionality:** If you used Smart Accounts in v9 with
+`@web3auth/account-abstraction-provider`, see the
+**[Smart Account Migration Guide](./modal-v9-to-v10-smart-accounts.mdx)** for the new
+dashboard-centric approach.
+
+**🔐 Custom Authentication:** If you used custom verifiers or aggregate verifiers in v9, see the
+**[Custom Authentication Migration Guide](./modal-v9-to-v10-custom-authentication.mdx)** for
+migrating to the new Connections system.
+
+**⚛️ React & Vue Applications:** If you're using React or Vue with Web3Auth, see the
+**[React & Vue Migration Guide](./modal-v9-to-v10-react-vue.mdx)** for framework-specific migration
+steps including hooks, composables, and provider configurations.
 
 ## Further Reading
 
 - [Web3Auth Documentation - PnP Web SDK v10](https://web3auth.io/docs/sdk/web)
 - [Web3Auth v10 Examples on GitHub](https://github.com/Web3Auth/web3auth-pnp-examples)
 - [Join the Community](https://web3auth.io/community)
-
-<CommonQuestions
-  questions={[
-    "What are the major changes in Web3Auth v10 compared to v9?",
-    "How do I migrate from v9 to v10 of Web3Auth's Web SDK?",
-    "What packages should I remove when upgrading to v10?",
-    "How has chain configuration changed in v10?",
-    "How do I configure UI customization in v10?",
-    "How has Smart Account functionality changed in v10?",
-    "What are the differences between v9 verifiers and v10 connections?",
-    "How do I migrate MFA configuration to v10?",
-    "How has authentication configuration changed in v10?",
-    "What dashboard configurations are required for v10?",
-  ]}
-/>
