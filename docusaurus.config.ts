@@ -7,9 +7,14 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
+const npm2yarn = require("@docusaurus/remark-plugin-npm2yarn");
 const fs = require("fs");
 const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 const { themes } = require("prism-react-renderer");
+
+// Import the Twoslash remark plugin
+const twoslashPlugin = require("docusaurus-twoslash");
+const twoslashRemark = twoslashPlugin.remarkPlugin;
 
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
@@ -162,9 +167,22 @@ const config: Config = {
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [
             remarkMath,
-            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+            [npm2yarn, { sync: true }],
             RehypePlugin,
-            require("./plugins/remark-twoslash"),
+            [
+              twoslashRemark,
+              {
+                typescript: {
+                  compilerOptions: {
+                    strict: true,
+                    target: "es2022",
+                    lib: ["es2022", "dom"],
+                  },
+                },
+                themes: ["typescript", "javascript", "jsx", "tsx"],
+                cache: true,
+              },
+            ],
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
@@ -187,9 +205,22 @@ const config: Config = {
           mdxPageComponent: "@theme/MDXPage",
           remarkPlugins: [
             remarkMath,
-            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+            [npm2yarn, { sync: true }],
             RehypePlugin,
-            require("./plugins/remark-twoslash"),
+            [
+              twoslashRemark,
+              {
+                typescript: {
+                  compilerOptions: {
+                    strict: true,
+                    target: "es2022",
+                    lib: ["es2022", "dom"],
+                  },
+                },
+                themes: ["typescript", "javascript", "jsx", "tsx"],
+                cache: true,
+              },
+            ],
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
@@ -203,6 +234,20 @@ const config: Config = {
     ],
   ],
   plugins: [
+    [
+      "docusaurus-twoslash",
+      {
+        typescript: {
+          compilerOptions: {
+            strict: true,
+            target: "es2022",
+            lib: ["es2022", "dom"],
+          },
+        },
+        themes: ["typescript", "javascript", "jsx", "tsx"],
+        cache: true,
+      },
+    ],
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [
       path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
