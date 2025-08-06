@@ -181,65 +181,9 @@ const userAuthInfo = await web3auth.getIdentityToken(); // Returns { idToken: st
 const idToken = userAuthInfo.idToken;
 ```
 
----
-
-### Wallet Services Plugin Integration
-
-In v9, using Wallet Services (like Checkout, Swap, WalletConnect Scanner, or Embedded Wallet UI)
-required importing the `@web3auth/wallet-services-plugin` package, instantiating
-`WalletServicesPlugin`, and adding it to your Web3Auth instance via `web3auth.addPlugin()`.
-
-**In v10, this integration is significantly streamlined:**
-
-- The `@web3auth/wallet-services-plugin` package is **deprecated and should be removed**.
-- Wallet Services functions are now **directly available as methods on the `web3auth` SDK instance**
-  itself.
-
-```javascript
-// remove-start
-import { Web3Auth } from "@web3auth/modal";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-
-const web3auth = new Web3Auth({
-  // ... your Web3Auth options
-});
-
-const walletServicesPlugin = new WalletServicesPlugin({
-  // ... wallet services plugin options
-});
-web3auth.addPlugin(walletServicesPlugin);
-
-await web3auth.initModal();
-
-// To show wallet UI:
-// await walletServicesPlugin.showWalletUi();
-// To show checkout:
-// await walletServicesPlugin.showCheckout();
-// remove-end
-
-// add-start
-import { Web3Auth, EVM_PLUGINS } from "@web3auth/modal";
-
-const web3auth = new Web3Auth({
-  // ... your Web3Auth options
-  // No need to manually add walletServicesPlugin! It's auto-added for EVM/Solana chains
-});
-
-await web3auth.init();
-
-// After connection, get the wallet services plugin
-const walletServicesPlugin = web3auth.getPlugin(EVM_PLUGINS.WALLET_SERVICES);
-
-// Use wallet services methods
-await walletServicesPlugin.showWalletUi({ show: true });
-await walletServicesPlugin.showCheckout({ show: true });
-await walletServicesPlugin.showSwap({ show: true });
-await walletServicesPlugin.showWalletConnectScanner({ show: true });
-// add-end
-```
-
-Refer to the v10 documentation for a
-[function overview](/docs/sdk/web/js/functions/#wallet-services-plugin-functions).
+**Wallet Services:** If you used the `@web3auth/wallet-services-plugin` in v9, see the 🛠️
+**[Wallet Services Migration Guide](./modal-v9-to-v10-wallet-services.mdx)** for migrating to the
+built-in integration.
 
 ## Additional Migration Guides
 
