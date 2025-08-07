@@ -25,12 +25,14 @@ function UserInfo() {
   if (!userInfo) return <div>No user info available.</div>;
 
   return (
+    <>
     <div>
       <pre>{JSON.stringify(userInfo, null, 2)}</pre>
       <div>MFA Enabled: {isMFAEnabled ? "Yes" : "No"}</div>
       <button onClick={() => getUserInfo()}>Refresh User Info</button>
     </div>
     {error && <div>{error.message}</div>}
+    </>
   );
 }
 ```
