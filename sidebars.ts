@@ -634,7 +634,11 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Plug and Play No Modal SDK",
-          items: ["migration-guides/no-modal-v8-to-v10"],
+          items: [
+            "migration-guides/no-modal-v9-to-v10",
+            "migration-guides/no-modal-v8-to-v10",
+            "migration-guides/no-modal-v7-to-v10",
+          ],
         },
       ],
     },
@@ -692,7 +696,11 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Plug and Play No Modal SDK",
-          items: ["migration-guides/no-modal-v8-to-v10"],
+          items: [
+            "migration-guides/no-modal-v9-to-v10",
+            "migration-guides/no-modal-v8-to-v10",
+            "migration-guides/no-modal-v7-to-v10",
+          ],
         },
       ],
     },
@@ -759,7 +767,11 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Plug and Play No Modal SDK",
-          items: ["migration-guides/no-modal-v8-to-v10"],
+          items: [
+            "migration-guides/no-modal-v9-to-v10",
+            "migration-guides/no-modal-v8-to-v10",
+            "migration-guides/no-modal-v7-to-v10",
+          ],
         },
       ],
     },

@@ -1,15 +1,15 @@
 ---
-title: Migrating to the Web3Auth PnP Web SDK v10 from v9 (No-Modal)
+title: Migrating to the Web3Auth PnP Web SDK v10 from v7 (No-Modal)
 description:
-  Learn how to migrate from Web3Auth No-Modal v9 to the unified v10 SDK with connectTo functionality
+  Learn how to migrate from Web3Auth No-Modal v7 to the unified v10 SDK with connectTo functionality
   for custom UI implementations.
-sidebar_label: v9 to v10
+sidebar_label: v7 to v10
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Web3Auth No-Modal v9 to v10 Migration Guide
+# Web3Auth No-Modal v7 to v10 Migration Guide
 
 :::info Recommended: Switch to Modal SDK
 
@@ -23,7 +23,7 @@ examples, and community support.
 
 :::
 
-This guide will help you upgrade your Web3Auth No-Modal SDK integration from v9 to the **unified
+This guide will help you upgrade your Web3Auth No-Modal SDK integration from v7 to the **unified
 Web3Auth PnP Web SDK v10**, which consolidates both modal and no-modal functionality into a single
 package.
 
@@ -33,11 +33,11 @@ Web3Auth v10 unifies the modal and no-modal SDKs into a single powerful package.
 pre-built modal UI or a custom implementation, you now use the same `@web3auth/modal` package with
 `connectTo` for no-modal-like functionality.
 
-Key improvements from v9 no-modal to v10:
+Key improvements from v7 no-modal to v10:
 
 - **Unified SDK Package:** Single `@web3auth/modal` package replaces `@web3auth/no-modal`
 - **Dashboard-Centric Configuration:** Chain configurations managed via Web3Auth Developer Dashboard
-- **Simplified Integration:** No more manual adapter registration and configuration
+- **Simplified Integration:** No more manual `OpenLoginAdapter` registration and configuration
 - **Enhanced Developer Experience:** Cleaner API with better TypeScript support
 - **Custom UI Support:** Use `connectTo` for seamless custom UI implementations
 
@@ -46,7 +46,7 @@ Key improvements from v9 no-modal to v10:
 Update to the unified v10 SDK package:
 
 ```bash npm2yarn
-npm uninstall @web3auth/no-modal @web3auth/auth-adapter @web3auth/wallet-services-plugin
+npm uninstall @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/wallet-services-plugin
 npm install @web3auth/modal
 ```
 
@@ -56,16 +56,16 @@ For custom blockchain configurations:
 npm install @web3auth/ethereum-provider
 ```
 
-## Breaking Changes from v9 to v10
+## Breaking Changes from v7 to v10
 
 ### 1. Package Migration: No-Modal → Modal
 
-**v9 used separate no-modal package:**
+**v7 used separate no-modal package:**
 
 ```typescript
 // remove-start
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { AuthAdapter } from "@web3auth/auth-adapter";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 // remove-end
 ```
@@ -81,7 +81,7 @@ import { Web3Auth } from "@web3auth/modal";
 
 ### 2. Class Name Change: Web3AuthNoModal → Web3Auth
 
-**v9 initialization:**
+**v7 initialization:**
 
 ```typescript
 // remove-start
@@ -112,11 +112,11 @@ const web3auth = new Web3Auth({
 
 ### 3. No-Modal Functionality: Direct Connection → connectTo
 
-**v9 approach for custom UI:**
+**v7 approach for custom UI:**
 
 ```typescript
 // remove-start
-const authAdapter = new AuthAdapter({
+const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
     loginConfig: {
       google: {
@@ -128,11 +128,11 @@ const authAdapter = new AuthAdapter({
   },
 });
 
-web3auth.configureAdapter(authAdapter);
+web3auth.configureAdapter(openloginAdapter);
 await web3auth.init();
 
 // Custom UI - connect directly
-await web3auth.connectTo("auth", {
+await web3auth.connectTo("openlogin", {
   loginProvider: "google",
 });
 // remove-end
@@ -159,7 +159,7 @@ await web3auth.connectTo(WALLET_CONNECTORS.AUTH, {
 
 ### 4. Chain Configuration Centralization
 
-**v9 required manual chain and provider configuration:**
+**v7 required manual chain and provider configuration:**
 
 ```typescript
 // remove-start
