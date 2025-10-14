@@ -1,6 +1,6 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { webIcons, mobileIcons, gamingIcons } from "../../common/Icons";
+import { webIcons, mobileIcons, gamingIcons, backendIcons } from "../../common/Icons";
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
@@ -20,22 +20,26 @@ export default function QuickNavigation() {
   return (
     <div className={styles.container}>
       <div className={styles.cardContainer}>
-        <Link className={styles.cardAlert} to={`${baseUrl}what-is-web3auth`}>
+        <Link className={styles.cardAlert} to={`https://docs.metamask.io/embedded-wallets/`}>
           <div className={styles.cardContent}>
             <span>
-              <b>What is Web3Auth?</b>
+              <b>What is Web3Auth (MetaMask Embedded Wallets)?</b>
             </span>
             <p>
-              Web3Auth simplifies Web3 access with easy-to-use social logins, customizable wallet
-              UI, and advanced security options, with non custodial MPC wallet management. Create a
-              user-friendly, secure entry point for crypto-native users and non-crypto users alike.
+              MetaMask Embedded Wallets (formerly Web3Auth) is a pluggable embedded wallet
+              infrastructure that simplifies Web3 wallet integration and user onboarding. It
+              supports OAuth-based logins and multiple platforms, allowing users to access Web3
+              applications through familiar authentication methods in under a minute. <br />
+              <br />
+              Users enjoy seamless onboarding while maintaining full control of their non-custodial
+              wallets, ensuring both convenience and security.
             </p>
           </div>
         </Link>
       </div>
       <h2>Explore our SDKs</h2>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to={`${baseUrl}sdk/web`}>
+        <Link className={styles.card} to={`https://docs.metamask.io/embedded-wallets/sdk/react`}>
           <div className={styles.cardHeader}>
             <h5>Web SDKs</h5>
           </div>
@@ -44,70 +48,36 @@ export default function QuickNavigation() {
               <p>Integrate Web3Auth in just 4 lines of code.</p>
             </div>
             {webIcons}
-            {/* <div className={styles.links}>
-              <a href={`https://demo.web3auth.io/`} className={styles.pillContainer}>
-                <span className={styles.pill}>Demo{chevron}</span>
-              </a>
-              <a
-                href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL`}
-                className={styles.pillContainer}
-              >
-                <span className={styles.pill}>Quick Start{chevron}</span>
-              </a>
-              <a href={`${baseUrl}examples`} className={styles.pillContainer}>
-                <span className={styles.pill}>Examples{chevron}</span>
-              </a>
-            </div> */}
           </div>
         </Link>
-        <Link className={styles.card} to={`${baseUrl}sdk/mobile`}>
+        <Link className={styles.card} to={`https://docs.metamask.io/embedded-wallets/sdk/android`}>
           <div className={styles.cardHeader}>
-            <h5>Mobile SDKs</h5>
+            <h5>Mobile & Gaming SDKs</h5>
           </div>
           <div className={styles.cardContent}>
             <div className={styles.cardContentText}>
-              <p>Native mobile authentication with no web3 expertise required.</p>
+              <p>Native mobile & gaming authentication with no web3 expertise required.</p>
             </div>
             {mobileIcons}
-
-            {/* <div className={styles.links}>
-              <a
-                href={`${baseUrl}quick-start?product=SFA&sdk=SFA_WEB`}
-                className={styles.pillContainer}
-              >
-                <span className={styles.pill}>Quick Start{chevron}</span>
-              </a>
-              <a href={`${baseUrl}examples`} className={styles.pillContainer}>
-                <span className={styles.pill}>Examples{chevron}</span>
-              </a>
-            </div> */}
           </div>
         </Link>
-        <Link className={styles.card} to={`${baseUrl}sdk/gaming`}>
+        <Link className={styles.card} to={`https://docs.metamask.io/embedded-wallets/sdk/node`}>
           <div className={styles.cardHeader}>
-            <h5>Gaming SDKs</h5>
+            <h5>Backend SDKs</h5>
           </div>
 
           <div className={styles.cardContent}>
             <div className={styles.cardContentText}>
-              <p>Effortless non-custodial wallet management for your games.</p>
+              <p>
+                Seamless integration of Web3 authentication into backend applications, AI agents,
+                and programmatic use cases.
+              </p>
             </div>
-            {gamingIcons}
-            {/* <div className={styles.links}>
-              <a
-                href={`${baseUrl}quick-start?product=GAMING&sdk=GAMING_UNITY`}
-                className={styles.pillContainer}
-              >
-                <span className={styles.pill}>Quick Start{chevron}</span>
-              </a>
-              <a href={`${baseUrl}examples`} className={styles.pillContainer}>
-                <span className={styles.pill}>Examples{chevron}</span>
-              </a>
-            </div> */}
+            {backendIcons}
           </div>
         </Link>
       </div>
-      <Link className={styles.cardAlert} to={`${baseUrl}sdk/mpc-core-kit`}>
+      <Link className={styles.cardAlert} to={`https://calendly.com/elishamm/sales`}>
         <div className={styles.cardContent}>
           <span>
             <svg
@@ -127,10 +97,7 @@ export default function QuickNavigation() {
             </svg>
             <b>Looking for a more customised solution?</b>
           </span>
-          <p>
-            Explore our MPC Core Kit Enterprise SDK offering and build and manage your version of
-            Web3Auth.
-          </p>
+          <p>Explore our Enterprise offering and build and manage your version of Web3Auth.</p>
 
           <div className={styles.btnContainerAlert}>
             Find out More

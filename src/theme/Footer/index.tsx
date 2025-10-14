@@ -63,7 +63,7 @@ export default function FooterComponent(): JSX.Element {
                 <GitHub />
               </a>
               <a
-                href="https://twitter.com/web3auth"
+                href="https://x.com/MetaMaskDev"
                 style={{ marginRight: 8 }}
                 target="_blank"
                 rel="noreferrer"
@@ -71,15 +71,12 @@ export default function FooterComponent(): JSX.Element {
                 <Twitter />
               </a>
               <a
-                href="https://youtube.com/c/web3auth"
+                href="https://www.youtube.com/@MetaMaskDeveloper"
                 style={{ marginRight: 8 }}
                 target="_blank"
                 rel="noreferrer"
               >
                 <YouTube />
-              </a>
-              <a href="https://www.linkedin.com/company/web3auth" target="_blank" rel="noreferrer">
-                <LinkedIn />
               </a>
             </div>
           </div>
@@ -89,38 +86,35 @@ export default function FooterComponent(): JSX.Element {
               <strong>Product</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/product/pnp">
-                Plug & Play
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/product/sfa">
-                Single Factor Auth
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/product/mpc-core-kit">
-                Enterprise
+              <a
+                className="footer__link-item"
+                href="https://docs.metamask.io/embedded-wallets/sdk/"
+              >
+                Web
               </a>
             </div>
             <div className="footer__item">
               <a
                 className="footer__link-item"
-                href="https://web3auth.io/pricing.html"
-                target="_blank"
-                rel="noreferrer"
+                href="https://docs.metamask.io/embedded-wallets/sdk/android"
               >
-                Pricing
+                Mobile
               </a>
             </div>
             <div className="footer__item">
               <a
                 className="footer__link-item"
-                href="https://status.web3auth.io/"
-                target="_blank"
-                rel="noreferrer"
+                href="https://docs.metamask.io/embedded-wallets/sdk/unity"
               >
-                System Status
+                Gaming
+              </a>
+            </div>
+            <div className="footer__item">
+              <a
+                className="footer__link-item"
+                href="https://docs.metamask.io/embedded-wallets/sdk/node"
+              >
+                Backend
               </a>
             </div>
           </div>
@@ -139,18 +133,13 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk">
-                SDK Reference
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/guides">
-                Guides
-              </a>
-            </div>
-            <div className="footer__item">
-              <a className="footer__link-item" href="/docs/examples">
-                Examples
+              <a
+                className="footer__link-item"
+                href="https://web3auth.io/pricing.html"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Pricing
               </a>
             </div>
           </div>

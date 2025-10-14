@@ -20,8 +20,6 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
-const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
 
 const config: Config = {
@@ -105,53 +103,20 @@ const config: Config = {
           ],
         },
         {
-          label: "Resources",
-          type: "dropdown",
-          to: "/resources",
-          position: "left",
-          items: [
-            {
-              type: "html",
-              value: resourcesDropdown,
-            },
-          ],
-        },
-        {
           label: "Quick Start",
-          to: "/quick-start",
-          position: "left",
-        },
-        {
-          label: "Guides",
-          to: "/guides",
+          to: "https://docs.metamask.io/quickstart/?product=EMBEDDED_WALLETS&walletAggregatorOnly=NO&framework=REACT&stepIndex=0",
           position: "left",
         },
         {
           label: "Examples",
-          to: "/examples",
+          to: "https://docs.metamask.io/embedded-wallets/sdk/react/examples/",
           position: "left",
-        },
-        {
-          label: "Help",
-          type: "dropdown",
-          to: "/troubleshooting",
-          position: "left",
-          items: [
-            {
-              type: "html",
-              value: helpDropdown,
-            },
-          ],
         },
         {
           position: "right",
           href: githubOrgUrl,
           className: "navbar-github-link",
           "aria-label": "GitHub Organization",
-        },
-        {
-          type: "search",
-          position: "right",
         },
         {
           type: "html",
@@ -165,13 +130,6 @@ const config: Config = {
           value: "<div></div>",
         },
       ],
-    },
-    algolia: {
-      appId: "6OF28D8CMV",
-      apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
-      indexName: "docs-web3auth",
-      contextualSearch: true,
-      insights: true,
     },
     customFields: {
       baseUrl,
@@ -236,12 +194,6 @@ const config: Config = {
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
-    [
-      path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
-      { rootDir: ".integrationBuilderCache" },
-    ],
-    path.resolve(__dirname, "plugins", "node-polyfills"),
     [
       "@docusaurus/plugin-client-redirects",
       {
