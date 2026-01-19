@@ -20,8 +20,6 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
-const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
 
 const config: Config = {
@@ -95,7 +93,7 @@ const config: Config = {
         {
           label: "SDKs",
           type: "dropdown",
-          to: "/sdk",
+          to: "https://docs.metamask.io/embedded-wallets/sdk/",
           position: "left",
           items: [
             {
@@ -105,53 +103,20 @@ const config: Config = {
           ],
         },
         {
-          label: "Resources",
-          type: "dropdown",
-          to: "/resources",
-          position: "left",
-          items: [
-            {
-              type: "html",
-              value: resourcesDropdown,
-            },
-          ],
-        },
-        {
           label: "Quick Start",
-          to: "/quick-start",
-          position: "left",
-        },
-        {
-          label: "Guides",
-          to: "/guides",
+          to: "https://docs.metamask.io/quickstart/?product=EMBEDDED_WALLETS&walletAggregatorOnly=NO&framework=REACT&stepIndex=0",
           position: "left",
         },
         {
           label: "Examples",
-          to: "/examples",
+          to: "https://docs.metamask.io/embedded-wallets/sdk/react/examples/",
           position: "left",
-        },
-        {
-          label: "Help",
-          type: "dropdown",
-          to: "/troubleshooting",
-          position: "left",
-          items: [
-            {
-              type: "html",
-              value: helpDropdown,
-            },
-          ],
         },
         {
           position: "right",
           href: githubOrgUrl,
           className: "navbar-github-link",
           "aria-label": "GitHub Organization",
-        },
-        {
-          type: "search",
-          position: "right",
         },
         {
           type: "html",
@@ -165,13 +130,6 @@ const config: Config = {
           value: "<div></div>",
         },
       ],
-    },
-    algolia: {
-      appId: "6OF28D8CMV",
-      apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
-      indexName: "docs-web3auth",
-      contextualSearch: true,
-      insights: true,
     },
     customFields: {
       baseUrl,
@@ -233,150 +191,6 @@ const config: Config = {
           priority: 0.8,
         },
       } satisfies Preset.Options,
-    ],
-  ],
-  plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
-    [
-      path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
-      { rootDir: ".integrationBuilderCache" },
-    ],
-    path.resolve(__dirname, "plugins", "node-polyfills"),
-    [
-      "@docusaurus/plugin-client-redirects",
-      {
-        redirects: [
-          {
-            from: "/get-started",
-            to: "/quick-start",
-          },
-
-          {
-            from: "/features/blockchain-agnostic",
-            to: "/features/compatible-blockchains",
-          },
-          {
-            from: "/features/wallet-aggregation",
-            to: "/features/external-wallets",
-          },
-
-          {
-            from: "/developer-dashboard/",
-            to: "/dashboard/",
-          },
-          {
-            from: "/dashboard-setup/",
-            to: "/dashboard/",
-          },
-          {
-            from: "/developer-dashboard/get-client-id",
-            to: "/dashboard/",
-          },
-          {
-            from: "/developer-dashboard/enable-interoperability",
-            to: "/dashboard/",
-          },
-          {
-            from: "/developer-dashboard/setup-custom-authentication",
-            to: "/dashboard/configure-connections",
-          },
-          {
-            from: "/developer-dashboard/billing-and-user-stats",
-            to: "/dashboard/create-new-project",
-          },
-          {
-            from: "/customauth",
-            to: "/authentication/",
-          },
-          {
-            from: "/customauth/verifiers",
-            to: "/authentication/",
-          },
-          {
-            from: "/troubleshooting/different-wallet-address-issue",
-            to: "/troubleshooting/different-private-key",
-          },
-          {
-            to: "/features/smart-accounts",
-            from: "/features/account-abstraction",
-          },
-          {
-            from: "/pnp/going-live",
-            to: "/resources/checklist",
-          },
-          {
-            from: "/core-kit/going-live",
-            to: "/resources/checklist",
-          },
-          {
-            from: "/authentication/federated-identity-providers",
-            to: "/authentication/custom-connections/auth0",
-          },
-          {
-            from: "/authentication/byo-jwt-providers",
-            to: "/authentication/custom-connections/custom-jwt",
-          },
-          {
-            from: "/product/product-fit",
-            to: "/product-fit",
-          },
-          {
-            from: "/product/core-kit",
-            to: "/product/mpc-core-kit",
-          },
-          {
-            from: "/product-fit/pnp-vs-core-kit",
-            to: "/product-fit",
-          },
-          {
-            from: "/product-fit/web3auth-for-wallets",
-            to: "/product/#web3auth-for-wallets",
-          },
-          {
-            from: "/product-fit/web3auth-for-dapps",
-            to: "/product/#web3auth-for-dapps",
-          },
-          {
-            from: "/pnp/features/custom-authentication",
-            to: "/features/custom-authentication",
-          },
-          {
-            from: "/pnp/features/mfa",
-            to: "/features/mfa",
-          },
-        ],
-        createRedirects(existingPath) {
-          // Only create redirects if the path matches certain patterns
-          if (
-            existingPath.includes("/sdk/") ||
-            existingPath.includes("/guides/") ||
-            existingPath.includes("/features/") ||
-            existingPath.includes("/product/") ||
-            existingPath.includes("/legal/")
-          ) {
-            return [
-              existingPath.replace("/sdk", "/api-reference"),
-              existingPath.replace("/sdk", "/sdk-reference"),
-              existingPath.replace(
-                "/sdk/mpc-core-kit/mpc-core-kit-js/",
-                "/sdk/core-kit/mpc-core-kit/",
-              ),
-              existingPath.replace("/sdk/pnp/web/", "/sdk/web/"),
-              existingPath.replace("/sdk/pnp/android/", "/sdk/mobile/pnp/android/"),
-              existingPath.replace("/sdk/pnp/ios/", "/sdk/mobile/pnp/ios/"),
-              existingPath.replace("/sdk/pnp/flutter/", "/sdk/mobile/pnp/flutter/"),
-              existingPath.replace("/sdk/pnp/react-native/", "/sdk/mobile/pnp/react-native/"),
-              existingPath.replace("/sdk/sfa/sfa-android/", "/sdk/mobile/sfa/android/"),
-              existingPath.replace("/sdk/sfa/sfa-ios/", "/sdk/mobile/sfa/ios/"),
-              existingPath.replace("/sdk/sfa/sfa-flutter/", "/sdk/mobile/sfa/flutter/"),
-              existingPath.replace("/sdk/sfa/sfa-react-native/", "/sdk/mobile/sfa/react-native/"),
-              existingPath.replace("/guides/", "/content-hub/guides/"),
-              existingPath.replace("/legal/", "/change-of-ownership"),
-            ].filter((redirect) => redirect !== existingPath); // Remove any redirects that point to the same path
-          }
-          return []; // Return empty array for paths that don't need redirects
-        },
-      },
     ],
   ],
   stylesheets: [
