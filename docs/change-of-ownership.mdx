@@ -8,7 +8,36 @@ image: "images/docs-meta-cards/documentation-card.png"
 This notice is to inform you that **Torus Labs Private Limited (Web3Auth)** has been acquired by
 **Consensys Software Inc.**
 
-Your use of the Web3Auth offerings will be subject to
+Your use of the Web3Auth offerings will be import UIKit
+import Web3Auth
+
+class ViewController: UIViewController {
+    private var web3Auth: Web3Auth?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let connectButton = UIButton(type: .system)
+        connectButton.setTitle("Connect to web3auth", for: .normal)
+        connectButton.addTarget(self, action: #selector(connect), for: .touchUpInside)
+        connectButton.frame = CGRect(x: 50, y: 200, width: 200, height: 50)
+        view.addSubview(connectButton)
+        
+        Task {
+            web3Auth = try? await Web3Auth(W3AInitParams(
+                clientId: ProcessInfo.processInfo.environment["WEB3AUTH_CLIENT_ID"] ?? "",
+                network: .sapphire_mainnet,
+                redirectUrl: "web3auth.ios-example://auth"
+            ))
+        }
+    }
+    
+    @objc private func connect() {
+        Task {
+            try? await web3Auth?.login(W3ALoginParams(loginProvider: .EMAIL_PASSWORDLESS))
+        }
+    }
+} to
 [Consensys’ Terms of Use](https://consensys.io/terms-of-use) and the processing of your data
 (including the transfer of data to Consensys) will be completed in accordance with
 [Consensys’ Privacy Notice](https://consensys.io/privacy-notice). We remain committed to protecting
